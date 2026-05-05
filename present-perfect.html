@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRAMMAR QUEST — Present Perfect · Unit 9</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a1628;--surface:rgba(255,255,255,0.09);--border:rgba(255,255,255,0.18);--text:#ffffff;--text-dim:rgba(255,255,255,0.75);--text-muted:rgba(255,255,255,0.45);--cyan:#00f0ff;--cyan-dim:rgba(0,240,255,0.15);--cyan-glow:rgba(0,240,255,0.6);--green:#00ff88;--green-dim:rgba(0,255,136,0.15);--green-glow:rgba(0,255,136,0.6);--red:#ff4d6d;--gold:#ffcc00;--gold-dim:rgba(255,204,0,0.18);--gold-glow:rgba(255,204,0,0.6);--purple:#cc77ff;--purple-dim:rgba(204,119,255,0.18);--purple-glow:rgba(204,119,255,0.6);--orange:#ff8c42;--radius:12px;--radius-sm:6px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{min-height:100vh;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:16px;overflow-x:hidden;position:relative;background:linear-gradient(160deg,#060d1e 0%,#0e1a3a 35%,#161030 65%,#060d1e 100%);}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 55% 45% at 15% 25%,rgba(0,100,220,0.35) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 85% 75%,rgba(80,20,160,0.3) 0%,transparent 70%),radial-gradient(ellipse 40% 35% at 55% 5%,rgba(0,180,255,0.2) 0%,transparent 65%);pointer-events:none;z-index:0;}
+#starCanvas{position:fixed;inset:0;z-index:1;pointer-events:none;}
+#particleCanvas{position:fixed;inset:0;z-index:3;pointer-events:none;}
+header{position:relative;z-index:10;padding:0 24px;height:62px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,13,30,0.85);border-bottom:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(16px);}
+header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);opacity:0.9;}
+.logo{font-family:'Orbitron',monospace;font-weight:900;font-size:18px;letter-spacing:4px;background:linear-gradient(135deg,#00f0ff,#ffffff,#cc77ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 10px rgba(0,240,255,0.5));}
+.logo-sub{font-size:10px;letter-spacing:2px;color:var(--text-muted);font-family:'Rajdhani',sans-serif;-webkit-text-fill-color:var(--text-muted);display:block;margin-top:-3px;}
+.btn-reset{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:1px;padding:7px 14px;border:1px solid rgba(255,77,109,0.35);background:rgba(255,77,109,0.07);color:rgba(255,255,255,0.45);border-radius:var(--radius-sm);cursor:pointer;transition:all 0.25s;}
+.btn-reset:hover{border-color:var(--red);color:var(--red);background:rgba(255,77,109,0.14);}
+.screen{display:none;position:relative;z-index:2;padding:24px;max-width:860px;margin:0 auto;}
+.screen.active{display:block;}
+.map-hero{text-align:center;padding:28px 0 20px;}
+.map-hero h1{font-family:'Orbitron',monospace;font-weight:900;font-size:36px;letter-spacing:6px;background:linear-gradient(135deg,#00f0ff 0%,#ffffff 50%,#cc77ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:titleGlow 3s ease-in-out infinite;margin-bottom:6px;}
+.map-hero h2{font-family:'Orbitron',monospace;font-weight:600;font-size:13px;letter-spacing:4px;color:var(--cyan);opacity:0.7;margin-bottom:8px;}
+@keyframes titleGlow{0%,100%{filter:drop-shadow(0 0 14px rgba(0,240,255,0.5));}50%{filter:drop-shadow(0 0 32px rgba(0,240,255,0.9));}}
+.map-hero p{color:var(--text-muted);font-size:13px;letter-spacing:3px;text-transform:uppercase;}
+.xp-panel{background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius);padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;gap:14px;backdrop-filter:blur(10px);}
+.xp-label{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--text-muted);min-width:24px;}
+.xp-track{flex:1;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:4px;height:14px;overflow:hidden;position:relative;}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--cyan),#8800ff,var(--purple));background-size:200% 100%;border-radius:4px;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);animation:xpShimmer 2.5s linear infinite;box-shadow:0 0 10px var(--cyan-glow);}
+@keyframes xpShimmer{0%{background-position:0% 0%;}100%{background-position:200% 0%;}}
+.xp-num{font-family:'Orbitron',monospace;font-size:12px;color:#fff;white-space:nowrap;font-weight:700;}
+.sections-list{display:flex;flex-direction:column;gap:9px;}
+.section-card{border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;gap:14px;transition:all 0.25s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden;border:2px solid;}
+.section-card::after{content:'';position:absolute;top:0;left:0;right:0;height:42%;background:linear-gradient(180deg,rgba(255,255,255,0.07) 0%,transparent 100%);pointer-events:none;border-radius:10px 10px 0 0;}
+.section-card.locked{background:linear-gradient(135deg,rgba(100,90,130,0.35) 0%,rgba(70,60,100,0.3) 100%);border-color:rgba(180,170,210,0.25);cursor:not-allowed;filter:saturate(0.3) brightness(0.7);}
+.section-card.unlocked{background:linear-gradient(135deg,rgba(0,180,255,0.28) 0%,rgba(60,30,180,0.35) 100%);border-color:var(--cyan);cursor:pointer;animation:unlockBreath 3s ease-in-out infinite;}
+@keyframes unlockBreath{0%,100%{box-shadow:0 4px 20px rgba(0,0,0,0.4),0 0 12px rgba(0,240,255,0.25);}50%{box-shadow:0 4px 24px rgba(0,0,0,0.4),0 0 28px rgba(0,240,255,0.55);}}
+.section-card.unlocked:hover{transform:translateX(7px) scale(1.01);border-color:#55ffff;box-shadow:0 6px 28px rgba(0,0,0,0.5),0 0 42px rgba(0,240,255,0.65)!important;animation:none;}
+.section-card.completed{background:linear-gradient(135deg,rgba(0,140,70,0.55) 0%,rgba(0,80,40,0.45) 100%);border-color:var(--green);opacity:0.8;}
+.section-card.revision{background:linear-gradient(135deg,rgba(200,140,0,0.5) 0%,rgba(120,80,0,0.45) 100%);border-color:var(--gold);cursor:pointer;animation:revPulse 2s ease-in-out infinite;}
+@keyframes revPulse{0%,100%{box-shadow:0 4px 20px rgba(0,0,0,0.4),0 0 14px rgba(255,204,0,0.3);}50%{box-shadow:0 4px 24px rgba(0,0,0,0.4),0 0 32px rgba(255,204,0,0.65);}}
+.section-card.revision:hover{transform:translateX(7px) scale(1.01);border-color:#ffee44;box-shadow:0 6px 28px rgba(0,0,0,0.5),0 0 44px rgba(255,204,0,0.75)!important;animation:none;}
+.section-card.revision-done{background:linear-gradient(135deg,rgba(0,140,70,0.5),rgba(0,80,40,0.4));border-color:var(--green);opacity:0.65;}
+.section-card.difficult{background:linear-gradient(135deg,rgba(150,40,220,0.55) 0%,rgba(90,10,150,0.5) 100%);border-color:var(--purple);cursor:pointer;animation:bossPulse 1.6s ease-in-out infinite;}
+@keyframes bossPulse{0%,100%{box-shadow:0 4px 20px rgba(0,0,0,0.4),0 0 16px rgba(204,119,255,0.3);}50%{box-shadow:0 4px 24px rgba(0,0,0,0.4),0 0 38px rgba(204,119,255,0.7);}}
+.section-card.difficult:hover{transform:translateX(7px) scale(1.01);border-color:#ee88ff;box-shadow:0 6px 28px rgba(0,0,0,0.5),0 0 50px rgba(204,119,255,0.8)!important;animation:none;}
+.section-card.difficult-done{background:linear-gradient(135deg,rgba(0,140,70,0.5),rgba(0,80,40,0.4));border-color:var(--green);opacity:0.65;}
+.sc-icon{font-family:'Orbitron',monospace;font-weight:900;font-size:20px;min-width:46px;text-align:center;flex-shrink:0;}
+.section-card.locked .sc-icon{color:rgba(200,190,220,0.5);}
+.section-card.unlocked .sc-icon{color:#ffffff;text-shadow:0 0 16px var(--cyan-glow);}
+.section-card.completed .sc-icon{color:var(--green);text-shadow:0 0 12px var(--green-glow);}
+.section-card.revision .sc-icon{color:#fff8aa;text-shadow:0 0 16px var(--gold-glow);}
+.section-card.revision-done .sc-icon{color:var(--green);}
+.section-card.difficult .sc-icon{color:#ffffff;text-shadow:0 0 20px var(--purple-glow);font-size:22px;}
+.section-card.difficult-done .sc-icon{color:var(--green);}
+.sc-body{flex:1;min-width:0;}
+.sc-title{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.section-card.locked .sc-title{color:rgba(200,190,220,0.55);}
+.section-card.unlocked .sc-title{color:#ffffff;}
+.section-card.completed .sc-title{color:#aaffcc;}
+.section-card.revision .sc-title{color:#fff8aa;}
+.section-card.revision-done .sc-title{color:#aaffcc;}
+.section-card.difficult .sc-title{color:#f0ccff;}
+.section-card.difficult-done .sc-title{color:#aaffcc;}
+.sc-desc{font-size:13px;color:rgba(255,255,255,0.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.section-card.unlocked .sc-desc{color:rgba(255,255,255,0.65);}
+.section-card.revision .sc-desc{color:rgba(255,248,170,0.65);}
+.section-card.difficult .sc-desc{color:rgba(240,204,255,0.65);}
+.sc-badge{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:1px;padding:5px 11px;border-radius:4px;white-space:nowrap;border:1px solid;flex-shrink:0;font-weight:700;}
+.badge-locked{border-color:rgba(200,190,220,0.3);color:rgba(200,190,220,0.45);background:rgba(100,90,130,0.2);}
+.badge-todo{border-color:var(--cyan);color:#ffffff;background:rgba(0,180,255,0.35);}
+.badge-done{border-color:var(--green);color:#aaffcc;background:rgba(0,160,80,0.3);}
+.badge-required{border-color:var(--gold);color:#fff8aa;background:rgba(180,130,0,0.4);}
+.badge-required-purple{border-color:var(--purple);color:#f0ccff;background:rgba(130,40,200,0.4);}
+.ex-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.12);flex-wrap:wrap;gap:10px;}
+.ex-title{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--cyan);text-shadow:0 0 12px var(--cyan-glow);}
+.hud{display:flex;align-items:center;gap:12px;margin-bottom:16px;background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius);padding:11px 16px;flex-wrap:wrap;backdrop-filter:blur(10px);}
+.hud-track{flex:1;min-width:120px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.1);border-radius:3px;height:10px;overflow:hidden;}
+.hud-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:3px;transition:width 0.4s ease;box-shadow:0 0 8px var(--cyan-glow);}
+.hud-text{font-family:'Orbitron',monospace;font-size:11px;color:#fff;font-weight:700;white-space:nowrap;}
+.hud-ok{font-family:'Orbitron',monospace;font-size:12px;color:var(--green);font-weight:700;}
+.hud-bad{font-family:'Orbitron',monospace;font-size:12px;color:var(--red);font-weight:700;}
+.rule-box{background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.22);border-radius:var(--radius);padding:14px 18px;margin-bottom:16px;font-size:14px;color:var(--text-dim);line-height:1.7;}
+.rule-box strong{color:var(--cyan);font-weight:700;}
+.rule-box code{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:2px 8px;font-family:'Rajdhani',sans-serif;font-size:13px;color:#ffffff;letter-spacing:0.5px;}
+.rule-box .rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+.rule-box .rule-col{background:rgba(0,0,0,0.2);border-radius:6px;padding:10px 12px;font-size:13px;}
+.rule-box .rule-col h4{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--gold);margin-bottom:6px;}
+.ex-card{background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.22);border-radius:var(--radius);padding:24px 28px;margin-bottom:14px;position:relative;overflow:hidden;animation:cardIn 0.3s cubic-bezier(0.4,0,0.2,1);backdrop-filter:blur(14px);box-shadow:0 8px 32px rgba(0,0,0,0.35);}
+.ex-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.ex-type-badge{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:2px;color:var(--text-muted);margin-bottom:10px;}
+.ex-question{font-size:17px;font-weight:600;color:#ffffff;line-height:1.7;margin-bottom:18px;}
+.fill-input{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.25);border-radius:var(--radius-sm);padding:9px 14px;font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:600;color:#ffffff;outline:none;transition:all 0.2s;letter-spacing:0.5px;min-width:180px;max-width:100%;}
+.fill-input:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,240,255,0.2),0 0 14px rgba(0,240,255,0.2);background:rgba(0,240,255,0.05);}
+.fill-input.correct{border-color:var(--green);background:rgba(0,255,136,0.1);color:var(--green);box-shadow:0 0 0 2px rgba(0,255,136,0.2),0 0 14px var(--green-glow);}
+.fill-input.wrong{border-color:var(--red);background:rgba(255,77,109,0.1);color:var(--red);}
+.word-bank{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;min-height:42px;}
+.word-chip{background:rgba(0,180,255,0.15);border:1px solid rgba(0,180,255,0.4);border-radius:6px;padding:6px 14px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;color:#ffffff;cursor:pointer;transition:all 0.18s;user-select:none;}
+.word-chip:hover{background:rgba(0,180,255,0.28);border-color:var(--cyan);transform:translateY(-1px);}
+.word-chip.used{opacity:0.3;cursor:not-allowed;background:rgba(100,100,100,0.15);border-color:rgba(255,255,255,0.1);}
+.answer-area{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius-sm);padding:10px 14px;min-height:48px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px;}
+.answer-area .word-chip{background:rgba(60,30,180,0.3);border-color:rgba(120,80,255,0.5);}
+.answer-area .word-chip:hover{background:rgba(80,40,200,0.4);border-color:var(--purple);}
+.answer-area.correct{border-color:var(--green);background:rgba(0,255,136,0.05);}
+.answer-area.wrong{border-color:var(--red);background:rgba(255,77,109,0.05);}
+.reorder-hint{font-size:13px;color:var(--text-muted);margin-bottom:10px;font-style:italic;}
+.word-box{background:rgba(0,240,255,0.07);border:1px solid rgba(0,240,255,0.3);border-radius:var(--radius-sm);padding:10px 16px;margin-bottom:14px;font-size:15px;font-weight:600;color:var(--cyan);letter-spacing:0.5px;}
+.word-box span{color:var(--text-muted);font-size:12px;letter-spacing:2px;font-family:'Orbitron',monospace;display:block;margin-bottom:6px;}
+.wb-sentences{display:flex;flex-direction:column;gap:10px;margin-bottom:4px;}
+.wb-item{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600;color:#ffffff;flex-wrap:wrap;}
+.wb-item .fill-input{min-width:140px;}
+.ec-wrong{font-size:16px;color:var(--red);text-decoration:line-through;margin-bottom:10px;padding:8px 12px;background:rgba(255,77,109,0.08);border-radius:var(--radius-sm);border:1px solid rgba(255,77,109,0.2);}
+.ec-label{font-size:13px;color:var(--text-muted);margin-bottom:8px;}
+.feedback-msg{margin-top:10px;font-size:14px;font-weight:600;min-height:20px;}
+.feedback-msg.ok{color:var(--green);}
+.feedback-msg.err{color:var(--red);}
+.action-bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+.btn{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;padding:11px 22px;border-radius:var(--radius-sm);border:1px solid;cursor:pointer;transition:all 0.2s;backdrop-filter:blur(8px);}
+.btn-primary{background:rgba(0,200,255,0.2);border-color:var(--cyan);color:#ffffff;}
+.btn-primary:hover{background:rgba(0,200,255,0.32);box-shadow:0 0 22px rgba(0,240,255,0.5);transform:translateY(-2px);}
+.btn-secondary{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.22);color:var(--text-dim);}
+.btn-secondary:hover{border-color:rgba(255,255,255,0.5);color:#ffffff;}
+.btn-green{background:rgba(0,200,100,0.22);border-color:var(--green);color:#aaffcc;}
+.btn-green:hover{background:rgba(0,200,100,0.34);box-shadow:0 0 22px rgba(0,255,136,0.5);transform:translateY(-2px);}
+.btn-back{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:1px;padding:7px 14px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.07);color:var(--text-dim);border-radius:var(--radius-sm);cursor:pointer;transition:all 0.2s;}
+.btn-back:hover{border-color:var(--cyan);color:var(--cyan);}
+.results-card{background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius);padding:36px;text-align:center;backdrop-filter:blur(14px);box-shadow:0 8px 40px rgba(0,0,0,0.4);position:relative;overflow:hidden;}
+.results-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--green),var(--purple),transparent);}
+.res-pct{font-family:'Orbitron',monospace;font-weight:900;font-size:72px;line-height:1;margin-bottom:8px;}
+.res-pct.pass{color:var(--green);text-shadow:0 0 30px var(--green-glow);animation:winGlow 1.5s ease-in-out infinite;}
+@keyframes winGlow{0%,100%{text-shadow:0 0 20px var(--green-glow);}50%{text-shadow:0 0 50px var(--green-glow),0 0 80px rgba(0,255,136,0.4);}}
+.res-pct.fail{color:var(--red);}
+.res-label{font-family:'Orbitron',monospace;font-size:12px;letter-spacing:4px;margin-bottom:6px;}
+.res-label.pass{color:var(--green);}.res-label.fail{color:var(--red);}
+.res-threshold{font-size:12px;color:var(--text-muted);letter-spacing:1px;margin-bottom:24px;}
+.res-breakdown{display:flex;justify-content:center;gap:36px;margin-bottom:24px;flex-wrap:wrap;}
+.rb-item{text-align:center;}
+.rb-num{font-family:'Orbitron',monospace;font-weight:900;font-size:34px;}
+.rb-num.g{color:var(--green);text-shadow:0 0 14px var(--green-glow);}.rb-num.r{color:var(--red);}
+.rb-label{font-size:9px;letter-spacing:2px;color:var(--text-muted);font-family:'Orbitron',monospace;}
+.retry-notice{background:rgba(255,140,66,0.12);border:1px solid rgba(255,140,66,0.3);border-radius:var(--radius-sm);padding:9px 14px;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--orange);margin-bottom:12px;}
+.completion-banner{background:rgba(255,255,255,0.09);border:2px solid rgba(255,204,0,0.55);border-radius:var(--radius);padding:40px;text-align:center;backdrop-filter:blur(14px);box-shadow:0 8px 40px rgba(255,204,0,0.2);position:relative;overflow:hidden;}
+.completion-banner::before{content:'';position:absolute;top:0;left:-200%;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:scanGold 2s linear infinite;}
+@keyframes scanGold{to{left:200%;}}
+.cb-emoji{font-size:60px;margin-bottom:14px;display:block;animation:trophy 1s ease-in-out infinite;}
+@keyframes trophy{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-8px) scale(1.05);}}
+.cb-title{font-family:'Orbitron',monospace;font-weight:900;font-size:22px;letter-spacing:4px;color:var(--gold);text-shadow:0 0 25px var(--gold-glow);margin-bottom:8px;}
+.cb-text{color:var(--text-muted);font-size:13px;letter-spacing:2px;}
+.ex-card.flash-correct{animation:fCorrect 0.5s ease forwards!important;}
+.ex-card.flash-wrong{animation:fWrong 0.4s ease forwards!important;}
+@keyframes fCorrect{0%{border-color:rgba(255,255,255,0.22)}40%{border-color:var(--green);box-shadow:0 0 40px var(--green-glow),inset 0 0 30px rgba(0,255,136,0.1)}100%{border-color:rgba(255,255,255,0.22)}}
+@keyframes fWrong{0%{border-color:rgba(255,255,255,0.22)}40%{border-color:var(--red);box-shadow:0 0 25px rgba(255,77,109,0.5)}100%{border-color:rgba(255,255,255,0.22)}}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,10,0.85);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;backdrop-filter:blur(8px);}
+.modal{background:rgba(10,18,40,0.97);border:1px solid rgba(255,255,255,0.18);border-radius:var(--radius);padding:32px;max-width:380px;width:100%;text-align:center;position:relative;}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent);}
+.modal h2{font-family:'Orbitron',monospace;font-size:14px;letter-spacing:2px;color:var(--red);margin-bottom:12px;}
+.modal p{color:var(--text-dim);font-size:14px;margin-bottom:24px;line-height:1.7;}
+.modal-actions{display:flex;gap:10px;justify-content:center;}
+.save-panel{background:rgba(0,0,0,0.35);border:1px solid rgba(0,240,255,0.25);border-radius:var(--radius);padding:14px 20px;margin-bottom:20px;backdrop-filter:blur(10px);}
+.save-panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.save-panel-label{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--cyan);opacity:0.75;}
+.save-code-display{font-family:'Orbitron',monospace;font-size:17px;font-weight:700;letter-spacing:4px;color:#ffffff;background:rgba(0,0,0,0.45);border:1px solid rgba(0,240,255,0.3);border-radius:var(--radius-sm);padding:9px 18px;text-align:center;word-break:break-all;text-shadow:0 0 10px rgba(0,240,255,0.4);margin-bottom:10px;}
+.save-panel-hint{font-size:12px;color:var(--text-muted);margin-bottom:10px;line-height:1.5;}
+.save-panel-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.save-import-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);}
+.save-import-input{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius-sm);padding:8px 14px;font-family:'Orbitron',monospace;font-size:13px;letter-spacing:2px;color:#ffffff;outline:none;flex:1;min-width:180px;transition:border-color 0.2s;}
+.save-import-input:focus{border-color:var(--cyan);}
+.save-import-input::placeholder{color:rgba(255,255,255,0.2);font-size:11px;}
+.save-import-msg{font-size:12px;margin-top:6px;min-height:16px;}
+.save-import-msg.ok{color:var(--green);}
+.save-import-msg.err{color:var(--red);}
+.btn-save{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid rgba(0,240,255,0.45);background:rgba(0,180,255,0.15);color:var(--cyan);cursor:pointer;transition:all 0.2s;}
+.btn-save:hover{background:rgba(0,180,255,0.28);border-color:var(--cyan);box-shadow:0 0 14px rgba(0,240,255,0.35);}
+.btn-save-sm{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.07);color:var(--text-dim);cursor:pointer;transition:all 0.2s;}
+.btn-save-sm:hover{border-color:rgba(255,255,255,0.45);color:#fff;}
+</style>
+</head>
+<body>
+<canvas id="starCanvas"></canvas>
+<canvas id="particleCanvas"></canvas>
+<header>
+  <div><div class="logo">GRAMMAR QUEST</div><span class="logo-sub">past simple · unit 4 · v1</span></div>
+  <button class="btn-reset" onclick="confirmReset()">&#x27F3; RESET</button>
+</header>
+<div id="screen-map" class="screen active">
+  <div class="map-hero"><h1>GRAMMAR QUEST</h1><h2>PRESENT PERFECT · UNIT 9</h2><p>from vinyl to viral &middot; unit 4</p></div>
+  <div class="xp-panel">
+    <div class="xp-label">XP</div>
+    <div class="xp-track"><div class="xp-fill" id="overallBar" style="width:0%"></div></div>
+    <div class="xp-num" id="overallText">0/0</div>
+  </div>
+  <div class="save-panel">
+    <div class="save-panel-header">
+      <span class="save-panel-label">&#x1F4BE; SAVE CODE &mdash; riprendi su qualsiasi dispositivo</span>
+    </div>
+    <div class="save-code-display" id="saveCodeDisplay">&mdash;</div>
+    <div class="save-panel-hint">Copia o fotografa questo codice. Incollalo su un altro dispositivo per riprendere da qui.</div>
+    <div class="save-panel-actions">
+      <button class="btn-save" onclick="copyCode()" id="copyBtn">&#x2398; COPIA CODICE</button>
+    </div>
+    <div class="save-import-row">
+      <input class="save-import-input" id="importInput" type="text" maxlength="200" placeholder="incolla codice da altro dispositivo..." oninput="this.value=this.value.replace(/[^A-Za-z0-9._-]/g,'')">
+      <button class="btn-save-sm" onclick="importCode()">&#x21B5; CARICA</button>
+    </div>
+    <div class="save-import-msg" id="importMsg"></div>
+  </div>
+  <div class="sections-list" id="sectionsList"></div>
+</div>
+<div id="screen-exercise" class="screen">
+  <div class="ex-header">
+    <div class="ex-title" id="exTitle"></div>
+    <button class="btn-back" onclick="goMap()">&larr; MAP</button>
+  </div>
+  <div class="hud">
+    <div class="hud-track"><div class="hud-fill" id="hudFill" style="width:0%"></div></div>
+    <div class="hud-text" id="hudText">0/0</div>
+    <span class="hud-ok" id="hudOk">&#x2713; 0</span>
+    <span class="hud-bad" id="hudBad">&#x2717; 0</span>
+  </div>
+  <div id="exerciseArea"></div>
+  <div class="action-bar">
+    <button class="btn btn-primary" id="checkBtn" onclick="checkExercise()">&#x25B6; CONTROLLA</button>
+    <button class="btn btn-secondary" id="nextBtn" onclick="nextExercise()" style="display:none">AVANTI &rarr;</button>
+  </div>
+</div>
+<div id="screen-results" class="screen"></div>
+<div id="resetModal" class="modal-overlay" style="display:none">
+  <div class="modal">
+    <h2>&#x26A0; RESET</h2>
+    <p>Tutti i progressi verranno cancellati.</p>
+    <div class="modal-actions">
+      <button class="btn" style="background:rgba(255,77,109,0.18);border-color:var(--red);color:var(--red)" onclick="doReset()">CONFERMA</button>
+      <button class="btn btn-secondary" onclick="closeModal()">ANNULLA</button>
+    </div>
+  </div>
+</div>
+<script>
+const sc=document.getElementById('starCanvas'),sctx=sc.getContext('2d');let stars=[];
+function resizeSC(){sc.width=innerWidth;sc.height=innerHeight;stars=[];for(let i=0;i<240;i++)stars.push({x:Math.random()*sc.width,y:Math.random()*sc.height,r:Math.random()*2+0.3,alpha:Math.random()*0.9+0.1,twinkle:Math.random()*Math.PI*2,ts:Math.random()*0.02+0.005,vy:Math.random()*0.08+0.01,color:['#ffffff','#ffffff','#aaddff','#ddaaff','#ffffcc'][Math.floor(Math.random()*5)]});}
+function animStars(){sctx.clearRect(0,0,sc.width,sc.height);stars.forEach(s=>{s.twinkle+=s.ts;const a=s.alpha*(0.4+0.6*Math.sin(s.twinkle));sctx.globalAlpha=a;if(s.r>1.3){sctx.save();sctx.translate(s.x,s.y);sctx.fillStyle=s.color;sctx.beginPath();for(let i=0;i<8;i++){const ang=(i*Math.PI)/4-Math.PI/2,r=i%2===0?s.r*1.6:s.r*0.35;i===0?sctx.moveTo(Math.cos(ang)*r,Math.sin(ang)*r):sctx.lineTo(Math.cos(ang)*r,Math.sin(ang)*r);}sctx.closePath();sctx.fill();sctx.restore();}else{sctx.beginPath();sctx.arc(s.x,s.y,s.r,0,Math.PI*2);sctx.fillStyle=s.color;sctx.fill();}sctx.globalAlpha=1;s.y+=s.vy;if(s.y>sc.height+5){s.y=-5;s.x=Math.random()*sc.width;}});requestAnimationFrame(animStars);}
+window.addEventListener('resize',resizeSC);resizeSC();animStars();
+const pc=document.getElementById('particleCanvas'),pctx=pc.getContext('2d');let particles=[];
+function resizePC(){pc.width=innerWidth;pc.height=innerHeight;}window.addEventListener('resize',resizePC);resizePC();
+function spawnBurst(x,y,color,count=28){for(let i=0;i<count;i++){const a=Math.random()*Math.PI*2,sp=Math.random()*7+2;particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-2.5,r:Math.random()*4+1,alpha:1,color,gravity:0.18,decay:Math.random()*0.022+0.014,star:false});}const sc2=['#ffffff','#ffffaa','#aaffff'];for(let i=0;i<12;i++){const a=Math.random()*Math.PI*2,sp=Math.random()*11+5;particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-4,r:Math.random()*3+1.5,alpha:1,color:sc2[Math.floor(Math.random()*sc2.length)],gravity:0.12,decay:Math.random()*0.028+0.018,star:true});}}
+function drawSpk(ctx,x,y,r){ctx.beginPath();for(let i=0;i<8;i++){const a=(i*Math.PI)/4-Math.PI/2,rad=i%2===0?r:r*0.35;i===0?ctx.moveTo(x+Math.cos(a)*rad,y+Math.sin(a)*rad):ctx.lineTo(x+Math.cos(a)*rad,y+Math.sin(a)*rad);}ctx.closePath();ctx.fill();}
+function animParticles(){pctx.clearRect(0,0,pc.width,pc.height);particles=particles.filter(p=>p.alpha>0);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.gravity;p.alpha-=p.decay;pctx.globalAlpha=Math.max(0,p.alpha);pctx.fillStyle=p.color;if(p.star)drawSpk(pctx,p.x,p.y,p.r);else{pctx.beginPath();pctx.arc(p.x,p.y,p.r,0,Math.PI*2);pctx.fill();}});pctx.globalAlpha=1;requestAnimationFrame(animParticles);}
+animParticles();
+function burstAt(el,color){const r=el.getBoundingClientRect();spawnBurst(r.left+r.width/2,r.top+r.height/2,color);}
+const LEVELS=[
+// ═══ LEVEL 1 — PPS affermativa ═══
+{id:1,type:"study",title:"LEVEL 01 — PRESENT PERFECT: LA FORMA",desc:"have/has + participio · affermativa · negativa · domande",
+rule:`<strong>PRESENT PERFECT — FORMA COMPLETA:</strong><br>
+&#x2714; Affermativa: <code>have / has</code> + past participle &nbsp;&middot;&nbsp; <em>She has won. / They have lost.</em><br>
+&#x2714; Negativa: <code>haven't / hasn't</code> + past participle &nbsp;&middot;&nbsp; <em>He hasn't passed. / We haven't met.</em><br>
+&#x2714; Domanda: <code>Have / Has</code> + subject + past participle? &nbsp;&middot;&nbsp; <em>Has she won? / Have they lost?</em><br>
+&#x2714; Short answers: <em>Yes, she has. / No, they haven't.</em><br>
+&#x26A0; Participi irregolari: win&rarr;<em>won</em> &middot; break&rarr;<em>broken</em> &middot; find&rarr;<em>found</em> &middot; meet&rarr;<em>met</em> &middot; lose&rarr;<em>lost</em> &middot; see&rarr;<em>seen</em> &middot; get&rarr;<em>got</em> &middot; go&rarr;<em>been/gone</em>`,
+exercises:[
+{type:"fill",q:"Andy Murray ___ Wimbledon seven times.",hint:"(win — affermativa)",a:"has won"},
+{type:"fill",q:"Legendary footballers like Beckham ___ the number 7 shirt.",hint:"(wear — affermativa)",a:"have worn"},
+{type:"fill",q:"My sister ___ a job at a technology company.",hint:"(find — affermativa)",a:"has found"},
+{type:"fill",q:"We ___ a lot of money in the lottery.",hint:"(lose — affermativa)",a:"have lost"},
+{type:"fill",q:"He ___ his driving test — he's really happy!",hint:"(pass — affermativa)",a:"has passed"},
+{type:"fill",q:"She ___ a bone playing football.",hint:"(break — affermativa)",a:"has broken"},
+{type:"fill",q:"I ___ a famous person — it was incredible!",hint:"(meet — affermativa)",a:"have met"},
+{type:"fill",q:"Jake ___ the Coliseum. He loves ancient history.",hint:"(see — affermativa)",a:"has seen"},
+{type:"fill",q:"He ___ his driving test — he has to retake it.",hint:"(fail — negativa di pass: usa fail!)",a:"hasn't passed",accept:["hasn't passed","has not passed"]},
+{type:"fill",q:"They ___ the match — it was a disaster.",hint:"(win — negativa)",a:"haven't won",accept:["haven't won","have not won"]},
+{type:"fill",q:"I ___ him — we haven't spoken yet.",hint:"(meet — negativa)",a:"haven't met",accept:["haven't met","have not met"]},
+{type:"fill",q:"She ___ the lottery — she is not lucky at all.",hint:"(win — negativa)",a:"hasn't won",accept:["hasn't won","has not won"]},
+{type:"fill",q:"___ she ___ the audition? — Yes, she ___.",hint:"(pass — domanda + short answer)",a:"Has / passed / has",accept:["Has / passed / has","Has/passed/has"]},
+{type:"fill",q:"___ they ___ the competition? — No, they ___.",hint:"(win — domanda + short answer)",a:"Have / won / haven't",accept:["Have / won / haven't","Have/won/haven't","Have / won / have not"]},
+{type:"fill",q:"___ he ___ a famous person? — Yes, he ___.",hint:"(meet — domanda + short answer)",a:"Has / met / has",accept:["Has / met / has","Has/met/has"]},
+{type:"fill",q:"___ you ___ your keys? — No, I ___.",hint:"(lose — domanda + short answer)",a:"Have / lost / haven't",accept:["Have / lost / haven't","Have/lost/haven't","Have / lost / have not"]},
+{type:"mc",q:"'___ she passed the audition?' — 'Yes, she ___.'",opts:["Have / have","Has / has","Did / did"],correct:1},
+{type:"mc",q:"'They ___ won anything — it's very unlucky.'",opts:["hasn't","haven't","didn't"],correct:1},
+{type:"mc",q:"'___ you met him before?' — 'No, I ___.'",opts:["Has / hasn't","Have / haven't","Did / didn't"],correct:1},
+{type:"reorder",instruction:"Forma una domanda:",words:["Has","Andy","Murray","won","the","competition?"],answer:"Has Andy Murray won the competition?"},
+{type:"reorder",instruction:"Forma una frase negativa:",words:["She","hasn't","broken","any","bones","in","her","life"],answer:"She hasn't broken any bones in her life"},
+{type:"reorder",instruction:"Forma una domanda:",words:["Have","your","parents","met","a","famous","person?"],answer:"Have your parents met a famous person?"},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"He have won a competition.",a:"He has won a competition.",accept:["He has won a competition."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"They has lost their tickets.",a:"They have lost their tickets.",accept:["They have lost their tickets."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Has they passed the test? — Yes, they has.",a:"Have they passed the test? — Yes, they have.",accept:["Have they passed the test? — Yes, they have."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"She has finded an amazing job.",a:"She has found an amazing job.",accept:["She has found an amazing job."]},
+]},
+{id:"r1",type:"revision",title:"⟳ RIPASSO — LIVELLO 1",desc:"affermativa · have/has + past participle",revises:[1]},
+{id:"d1",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 1",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[1]},
+
+// ═══ LEVEL 2 — Negativa, domande, ever/never ═══
+{id:2,type:"study",title:"LEVEL 02 — NEGATIVA, DOMANDE, EVER/NEVER",desc:"haven't/hasn't · Have you ever...? · short answers",
+rule:`<strong>PRESENT PERFECT — NEGATIVA E DOMANDE:</strong><br>
+&#x2714; Negativa: <code>haven't / hasn't</code> + past participle<br>
+&#x2714; Domande: <code>Have / Has</code> + subject + past participle + ?<br>
+&#x2714; <code>ever</code> nelle domande &rarr; <em>Have you <strong>ever</strong> won a competition?</em><br>
+&#x2714; <code>never</code> = mai &rarr; <em>I've <strong>never</strong> won the lottery.</em><br>
+&#x2714; Short answers: <em>Yes, I have. / No, I haven't.</em>`,
+exercises:[
+{type:"fill",q:"I've ___ seen a ghost — I don't believe in them.",hint:"(ever/never)",a:"never"},
+{type:"fill",q:"Have you ___ been in love?",hint:"(ever/never)",a:"ever"},
+{type:"fill",q:"She ___ never ___ in public before.",hint:"(sing)",a:"has / sung",accept:["has / sung","has/sung"]},
+{type:"fill",q:"We ___ never ___ Mexican food.",hint:"(eat)",a:"have / eaten",accept:["have / eaten","have/eaten"]},
+{type:"fill",q:"___ you ever ___ skiing? — Yes, I ___.",hint:"(go / short answer)",a:"Have / been / have",accept:["Have / been / have","Have/been/have"]},
+{type:"fill",q:"___ she ever ___ on TV? — No, she ___.",hint:"(be / short answer)",a:"Has / been / hasn't",accept:["Has / been / hasn't","Has/been/hasn't","Has / been / has not"]},
+{type:"fill",q:"___ they ever ___ a train? — Yes, they ___.",hint:"(miss / short answer)",a:"Have / missed / have",accept:["Have / missed / have","Have/missed/have"]},
+{type:"fill",q:"___ he ever ___ a surprise birthday party? — No, he ___.",hint:"(have / short answer)",a:"Has / had / hasn't",accept:["Has / had / hasn't","Has/had/hasn't"]},
+{type:"mc",q:"'___ your friends ever won a competition?'",opts:["Has","Have","Did"],correct:1},
+{type:"mc",q:"'She's ___ been abroad — she's scared of flying.'",opts:["ever","never","already"],correct:1},
+{type:"mc",q:"'Have you ever met a famous person?' — '___, I have!'",opts:["No","Yes","Never"],correct:1},
+{type:"reorder",instruction:"Forma una domanda con ever:",words:["Have","you","ever","had","a","surprise","birthday","party?"],answer:"Have you ever had a surprise birthday party?"},
+{type:"reorder",instruction:"Forma una frase con never:",words:["I","have","never","seen","a","ghost","in","my","life"],answer:"I have never seen a ghost in my life"},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Has you ever been to London?",a:"Have you ever been to London?",accept:["Have you ever been to London?"]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"She hasn't never missed a train.",a:"She has never missed a train.",accept:["She has never missed a train.","She hasn't missed a train."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Have they ever won? — Yes, they has.",a:"Have they ever won? — Yes, they have.",accept:["Have they ever won? — Yes, they have."]},
+]},
+{id:"r2",type:"revision",title:"⟳ RIPASSO — LIVELLO 2",desc:"negativa · domande · ever/never",revises:[2]},
+{id:"d2",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 2",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[2]},
+
+// ═══ LEVEL 3 — been vs gone ═══
+{id:3,type:"study",title:"LEVEL 03 — BEEN VS GONE",desc:"been = andato e tornato · gone = non ancora tornato",
+rule:`<strong>BEEN vs GONE:</strong><br>
+&#x2714; <code>been</code> = andato <em>e tornato</em>: <em>I've been to London.</em> (sono qui adesso)<br>
+&#x2714; <code>gone</code> = andato <em>ma non ancora tornato</em>: <em>She's gone to London.</em> (è ancora là)<br>
+&#x26A0; Con <em>ever</em> e <em>never</em> si usa sempre <code>been</code>: <em>Have you ever been to Paris?</em>`,
+exercises:[
+{type:"fill",q:"Have you ever ___ to Rome? — Yes, three times!",hint:"(been/gone)",a:"been"},
+{type:"fill",q:"Where's Claire? — She's ___ to the supermarket.",hint:"(been/gone)",a:"gone"},
+{type:"fill",q:"He's ___ to London twice — he loved it.",hint:"(been/gone)",a:"been"},
+{type:"fill",q:"Mark isn't here — he's ___ to get some milk.",hint:"(been/gone)",a:"gone"},
+{type:"fill",q:"I've never ___ abroad. I'd love to go.",hint:"(been/gone)",a:"been"},
+{type:"fill",q:"She's ___ to the Dolomites for the weekend.",hint:"(been/gone)",a:"gone"},
+{type:"fill",q:"We've ___ to that restaurant — the food was amazing.",hint:"(been/gone)",a:"been"},
+{type:"fill",q:"Dad isn't home — he's ___ to the gym.",hint:"(been/gone)",a:"gone"},
+{type:"mc",q:"'I've ___ to Australia — it was incredible!'",opts:["gone","been","went"],correct:1},
+{type:"mc",q:"'Where's Lilly? — She's ___ to school.'",opts:["been","gone","went"],correct:1},
+{type:"mc",q:"'Have they ever ___ to the UK?' — 'Yes, they have.'",opts:["gone","been","went"],correct:1},
+{type:"reorder",instruction:"Forma una frase corretta:",words:["He's","gone","to","the","library","to","study"],answer:"He's gone to the library to study"},
+{type:"reorder",instruction:"Forma una domanda:",words:["Have","you","ever","been","to","a","concert","abroad?"],answer:"Have you ever been to a concert abroad?"},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Have you ever gone to Paris?",a:"Have you ever been to Paris?",accept:["Have you ever been to Paris?"]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"She's been to the shops — she'll be back in an hour.",a:"She's gone to the shops — she'll be back in an hour.",accept:["She's gone to the shops — she'll be back in an hour."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"I've never gone abroad.",a:"I've never been abroad.",accept:["I've never been abroad."]},
+]},
+{id:"r3",type:"revision",title:"⟳ RIPASSO — LIVELLO 3",desc:"been vs gone · uso corretto",revises:[3]},
+{id:"d3",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 3",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[3]},
+
+// ═══ LEVEL 4 — PPS vs Past Simple: regole e segnali temporali ═══
+{id:4,type:"study",title:"LEVEL 04 — PPS VS PAST SIMPLE: LE REGOLE",desc:"segnali temporali · ever/never/already vs yesterday/ago/last…",
+rule:`<strong>PRESENT PERFECT vs PAST SIMPLE — QUANDO?</strong><br>
+&#x2714; <strong>Present Perfect</strong>: esperienza di vita, momento <em>non specificato</em><br>
+&nbsp;&nbsp;<em>I've been to London.</em> — non sappiamo quando<br>
+&#x2714; <strong>Past Simple</strong>: azione in un momento <em>preciso e definito</em><br>
+&nbsp;&nbsp;<em>I went there in 2022. / I went last summer.</em><br>
+&#x26A0; <strong>Past Simple</strong> con: <code>yesterday &middot; last week/year &middot; in 2020 &middot; …ago &middot; when I was…</code><br>
+&#x26A0; <strong>Present Perfect</strong> con: <code>ever &middot; never &middot; already &middot; yet &middot; just &middot; so far &middot; this week/year</code>`,
+exercises:[
+{type:"mc",q:"'I ___ to Madrid three times.' (esperienza, nessuna data)",opts:["went","have been","was"],correct:1},
+{type:"mc",q:"'I ___ to Madrid last summer.' (data precisa: last summer)",opts:["have been","have gone","went"],correct:2},
+{type:"mc",q:"'___ you ever broken a promise?' (esperienza di vita)",opts:["Did","Have","Has"],correct:1},
+{type:"mc",q:"'When ___ she win the competition?' (si chiede il quando)",opts:["has","did","have"],correct:1},
+{type:"mc",q:"'She ___ the film last night.' (ieri sera = momento definito)",opts:["has seen","saw","has saw"],correct:1},
+{type:"mc",q:"'I've seen Terminator ___ five times.' (nessuna data = PPS)",opts:["yesterday","last week","already"],correct:2},
+{type:"mc",q:"'We ___ to the Dolomites in 2021.' (anno preciso)",opts:["have been","went","have went"],correct:1},
+{type:"mc",q:"'Jake ___ his homework yet.' (yet + negativa = PPS)",opts:["didn't finish","hasn't finished","not finished"],correct:1},
+{type:"fill",q:"I ___ to Madrid three times.",hint:"(PPS — esperienza)",a:"have been",accept:["have been","'ve been"]},
+{type:"fill",q:"I ___ there last summer with my family.",hint:"(Past Simple — last summer)",a:"went"},
+{type:"fill",q:"Mel has never won anything, but last week she ___ €50 on the street.",hint:"(Past Simple — last week)",a:"found"},
+{type:"fill",q:"I ___ my driving test last June.",hint:"(Past Simple — last June)",a:"passed"},
+{type:"fill",q:"Jake has been to the gym — he ___ there an hour ago.",hint:"(Past Simple — ago)",a:"went"},
+{type:"fill",q:"She ___ already ___ her homework — she finished it this afternoon.",hint:"(PPS — already)",a:"has / finished",accept:["has / finished","has/finished"]},
+{type:"fill",q:"___ you ever ___ a ghost? — No, never!",hint:"(PPS — ever)",a:"Have / seen",accept:["Have / seen","Have/seen"]},
+{type:"fill",q:"___ did you go? — I went to Wimbledon.",hint:"(When → Past Simple per il dettaglio)",a:"When"},
+{type:"reorder",instruction:"Forma la domanda sull'esperienza (PPS):",words:["Have","you","ever","been","to","a","surprise","party?"],answer:"Have you ever been to a surprise party?"},
+{type:"reorder",instruction:"Risposta con Past Simple (data precisa):",words:["Yes","—","I","went","to","one","in","2023"],answer:"Yes — I went to one in 2023"},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"I have met her yesterday.",a:"I met her yesterday.",accept:["I met her yesterday."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Have you gone to school last Monday?",a:"Did you go to school last Monday?",accept:["Did you go to school last Monday?"]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"When have you visited Rome?",a:"When did you visit Rome?",accept:["When did you visit Rome?"]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"She has finished her homework an hour ago.",a:"She finished her homework an hour ago.",accept:["She finished her homework an hour ago."]},
+]},
+{id:"r4",type:"revision",title:"⟳ RIPASSO — LIVELLO 4",desc:"PPS vs Past Simple · segnali temporali",revises:[4]},
+{id:"d4",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 4",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[4]},
+
+// ═══ LEVEL 5 — Dialoghi: Have you ever? → When/Where/Who did? ═══
+{id:5,type:"study",title:"LEVEL 05 — DIALOGHI: HAVE YOU EVER? → WHEN DID YOU?",desc:"PPS per l'esperienza · Past Simple per i dettagli",
+rule:`<strong>IL DIALOGO TIPICO — due tempi, due funzioni:</strong><br>
+&#x2714; Si apre con il <strong>Present Perfect</strong> per l'esperienza:<br>
+&nbsp;&nbsp;<em>Have you ever been skiing?</em><br>
+&#x2714; Se la risposta è <em>Yes</em>, i dettagli (quando? dove? con chi?) vanno al <strong>Past Simple</strong>:<br>
+&nbsp;&nbsp;<em>Yes, I have. — Where did you go? — I went to the Dolomites.<br>
+&nbsp;&nbsp;When did you go? — I went last February.</em><br>
+&#x26A0; Dopo "Yes, I have" si passa <em>sempre</em> al Past Simple per i dettagli!`,
+exercises:[
+{type:"fill",q:"A: Have you ever been skiing?  B: Yes, I ___.",hint:"(short answer)",a:"have"},
+{type:"fill",q:"A: Where ___ you go?  B: I went to Cortina.",hint:"(Past Simple — dettaglio!)",a:"did"},
+{type:"fill",q:"A: When ___ you go?  B: I ___ last February.",hint:"(Past Simple × 2)",a:"did / went",accept:["did / went","did/went"]},
+{type:"fill",q:"A: Who ___ you go with?  B: I went with my class.",hint:"(Past Simple)",a:"did"},
+{type:"fill",q:"A: Have you ever eaten Mexican food?  B: No, I ___.",hint:"(short answer negativa)",a:"haven't"},
+{type:"fill",q:"A: Have you ever met a famous person?  B: Yes! I ___ Cristiano Ronaldo at the airport.",hint:"(Past Simple — dettaglio!)",a:"met"},
+{type:"fill",q:"A: When ___ that happen?  B: It ___ two years ago.",hint:"(Past Simple × 2)",a:"did / happened",accept:["did / happened","did/happened"]},
+{type:"fill",q:"A: Have you ever won a competition?  B: Yes! I ___ a photography competition last year.",hint:"(Past Simple — last year)",a:"won"},
+{type:"fill",q:"A: Have you ever broken a bone?  B: Yes, I ___ my arm when I ___ twelve.",hint:"(Past Simple × 2)",a:"broke / was",accept:["broke / was","broke/was"]},
+{type:"fill",q:"A: Have you ever missed a train?  B: Yes! I ___ the 8:15 last Monday and I ___ late for school.",hint:"(Past Simple × 2)",a:"missed / was",accept:["missed / was","missed/was"]},
+{type:"fill",q:"A: Have you ever been abroad?  B: Yes, I ___. A: Where ___ you go?  B: I ___ to London.",hint:"(short answer / did / went)",a:"have / did / went",accept:["have / did / went","have/did/went"]},
+{type:"mc",q:"A: 'Have you ever been to London?'  B: 'Yes, I ___.'",opts:["went","have","did"],correct:1},
+{type:"mc",q:"A: 'When ___ you go?' (chiedere il dettaglio dopo 'Yes, I have')",opts:["have","did","do"],correct:1},
+{type:"mc",q:"A: 'Have you ever failed an exam?'  B: 'Yes, I failed my maths exam ___.'",opts:["ever","last year","already"],correct:1},
+{type:"mc",q:"A: 'Have you ever been skiing?'  B: 'Yes!'  A: '___ did you go?'",opts:["Have","When","Did"],correct:1},
+{type:"reorder",instruction:"Forma la domanda sull'esperienza (PPS):",words:["Have","you","ever","gone","skiing","in","the","Dolomites?"],answer:"Have you ever gone skiing in the Dolomites?"},
+{type:"reorder",instruction:"Forma la domanda sul dettaglio (Past Simple):",words:["When","did","you","go","there?"],answer:"When did you go there?"},
+{type:"reorder",instruction:"Forma la risposta al dettaglio:",words:["I","went","there","last","February","with","my","school"],answer:"I went there last February with my school"},
+{type:"reorder",instruction:"Ricostruisci lo scambio completo:",words:["Have","you","ever","broken","a","bone?","—","Yes","—","I","broke","my","wrist","last","year"],answer:"Have you ever broken a bone? — Yes — I broke my wrist last year"},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"A: Have you ever been to Paris?  B: Yes! I have gone there in 2022.",a:"Yes! I went there in 2022.",accept:["Yes! I went there in 2022.","Yes, I went there in 2022."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"A: When have you visited Rome?  B: I visited it last April.",a:"When did you visit Rome?",accept:["When did you visit Rome?"]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"A: Have you ever won a prize?  B: Yes, I have won a prize last summer.",a:"Yes, I won a prize last summer.",accept:["Yes, I won a prize last summer."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"A: Did you ever eat sushi?  B: No, I never have.",a:"Have you ever eaten sushi?",accept:["Have you ever eaten sushi?"]},
+]},
+{id:"r5",type:"revision",title:"⟳ RIPASSO — LIVELLO 5",desc:"dialoghi PPS → Past Simple · esperienza + dettagli",revises:[5]},
+{id:"d5",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 5",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[5]},
+
+// ═══ LEVEL 6 — Defining Relative Clauses ═══
+{id:6,type:"study",title:"LEVEL 06 — DEFINING RELATIVE CLAUSES",desc:"who · which · that · whose · where · when",
+rule:`<strong>DEFINING RELATIVE CLAUSES:</strong><br>
+&#x2714; <code>who / that</code> &rarr; persone: <em>People <strong>who</strong> fear 13 get very stressed.</em><br>
+&#x2714; <code>which / that</code> &rarr; cose: <em>Numbers <strong>which</strong> people choose most often contain 7.</em><br>
+&#x2714; <code>whose</code> &rarr; possesso: <em>I've got a friend <strong>whose</strong> dad won MasterChef.</em><br>
+&#x2714; <code>where</code> &rarr; luoghi &nbsp;&middot;&nbsp; <code>when</code> &rarr; tempo<br>
+&#x26A0; <em>who/which/that</em> si può omettere quando è complemento oggetto della relativa.`,
+exercises:[
+{type:"fill",q:"People ___ are scared of the number 13 avoid it in daily life.",hint:"(who/which/that)",a:"who",accept:["who","that"]},
+{type:"fill",q:"The numbers ___ people choose most often all contain 7.",hint:"(who/which/that)",a:"which",accept:["which","that"]},
+{type:"fill",q:"Beckham is the footballer ___ has always worn the number 7 shirt.",hint:"(who/which/that)",a:"who",accept:["who","that"]},
+{type:"fill",q:"I've got a friend ___ dad won the lottery.",hint:"(whose/where/when)",a:"whose"},
+{type:"fill",q:"That's the hotel ___ we stayed on holiday.",hint:"(where/when/whose)",a:"where"},
+{type:"fill",q:"That was the year ___ we won the championship.",hint:"(when/where/whose)",a:"when"},
+{type:"fill",q:"Bungee jumping is something ___ I could never do.",hint:"(omissibile?)",a:"that",accept:["that","which",""]},
+{type:"fill",q:"The people ___ I go to school with will always be my closest friends.",hint:"(oggetto — omissibile)",a:"",accept:["who","that",""]},
+{type:"fill",q:"Is that the girl ___ mum won MasterChef?",hint:"(whose/who/which)",a:"whose"},
+{type:"fill",q:"These are the boots ___ Simon bought for me.",hint:"(oggetto — omissibile)",a:"that",accept:["that","which",""]},
+{type:"mc",q:"'He's the boy ___ mum won the lottery.'",opts:["who","whose","which"],correct:1},
+{type:"mc",q:"'Pizza is the takeaway food ___ I eat most often.'",opts:["who","whose","which"],correct:2},
+{type:"mc",q:"'Sydney is the city ___ I'd most like to visit.'",opts:["where","when","whose"],correct:0},
+{type:"mc",q:"'2022 was the year ___ Kate Bush went back to number one.'",opts:["where","whose","when"],correct:2},
+{type:"reorder",instruction:"Combina le due frasi con un pronome relativo:",words:["The","lottery","is","something","that","I","have","never","won"],answer:"The lottery is something that I have never won"},
+{type:"reorder",instruction:"Forma una frase corretta:",words:["She's","the","person","whose","brother","passed","the","audition"],answer:"She's the person whose brother passed the audition"},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"He's the footballer which has always worn number 7.",a:"He's the footballer who has always worn number 7.",accept:["He's the footballer who has always worn number 7.","He's the footballer that has always worn number 7."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"That's the place where I went there last year.",a:"That's the place where I went last year.",accept:["That's the place where I went last year."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"I've got a friend who his dad won the lottery.",a:"I've got a friend whose dad won the lottery.",accept:["I've got a friend whose dad won the lottery."]},
+]},
+{id:"r6",type:"revision",title:"⟳ RIPASSO — LIVELLO 6",desc:"relative clauses · who/which/that/whose/where/when",revises:[6]},
+{id:"d6",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 6",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[6]},
+
+{id:"rfinal",type:"revision",title:"⟳ FINAL BOSS — TUTTO UNIT 9",desc:"boss finale · tutti i livelli · diventa MASTER!",revises:[1,2,3,4,5,6]},
+];
+const SK='gq_pp9_s_v2',EK='gq_pp9_e_v2';
+let state={},errorMap={};
+function encodeState(){
+  try{
+    const comp=Object.keys(state).filter(k=>state[k]==='completed');
+    const errs=Object.keys(errorMap).filter(k=>errorMap[k]>=2);
+    const raw=comp.join(',')+'|'+errs.join(',');
+    const b64=btoa(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
+    return 'GQF.'+b64;
+  }catch(e){return null;}
+}
+function decodeState(code){
+  try{
+    const b64=code.trim().replace(/^[A-Za-z]+\./,'').replace(/-/g,'+').replace(/_/g,'/');
+    const pad=b64.length%4?b64+'='.repeat(4-b64.length%4):b64;
+    const raw=atob(pad);
+    const parts=raw.split('|');
+    const comp=parts[0]?parts[0].split(',').filter(Boolean):[];
+    const errs=parts[1]?parts[1].split(',').filter(Boolean):[];
+    const s={};comp.forEach(k=>{s[k]='completed';});
+    const e={};errs.forEach(k=>{e[k]=2;});
+    return {s,e};
+  }catch(ex){return null;}
+}
+function updateSaveCode(){
+  const code=encodeState();
+  const el=document.getElementById('saveCodeDisplay');
+  if(el)el.textContent=code||'—';
+}
+function copyCode(){
+  const code=document.getElementById('saveCodeDisplay').textContent;
+  if(!code||code==='—')return;
+  navigator.clipboard?.writeText(code).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=code;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+  });
+  const btn=document.getElementById('copyBtn');
+  if(btn){const orig=btn.innerHTML;btn.innerHTML='&#x2713; COPIATO!';setTimeout(()=>btn.innerHTML=orig,2000);}
+}
+function importCode(){
+  const val=(document.getElementById('importInput').value||'').trim();
+  const msg=document.getElementById('importMsg');
+  if(!val){msg.className='save-import-msg err';msg.textContent='Inserisci un codice.';return;}
+  const obj=decodeState(val);
+  if(!obj){msg.className='save-import-msg err';msg.textContent='Codice non valido — controlla di averlo copiato per intero.';return;}
+  state=obj.s;errorMap=obj.e;
+  LEVELS.forEach(s=>{if(state[s.id]===undefined)state[s.id]='locked';});
+  if(state[LEVELS[0].id]==='locked')state[LEVELS[0].id]='unlocked';
+  autoComplete();
+  saveState();
+  msg.className='save-import-msg ok';msg.textContent='Progresso caricato! Bentornato/a ✓';
+  document.getElementById('importInput').value='';
+  renderMap();
+}
+function loadState(){try{state=JSON.parse(localStorage.getItem(SK))||{};}catch(e){state={};}try{errorMap=JSON.parse(localStorage.getItem(EK))||{};}catch(e){errorMap={};}LEVELS.forEach(s=>{if(state[s.id]===undefined)state[s.id]='locked';});if(state[LEVELS[0].id]==='locked')state[LEVELS[0].id]='unlocked';saveState();}
+function saveState(){try{localStorage.setItem(SK,JSON.stringify(state));}catch(e){}try{localStorage.setItem(EK,JSON.stringify(errorMap));}catch(e){}updateSaveCode();}
+function recordError(key){errorMap[key]=(errorMap[key]||0)+1;saveState();}
+function getErrors(ids){let exs=[];ids.forEach(id=>{const s=LEVELS.find(x=>x.id===id);if(s&&s.exercises)exs=exs.concat(s.exercises.map((e,i)=>({...e,_key:`${id}_${i}`})));});return exs.filter(e=>(errorMap[e._key]||0)>=2);}
+function unlockNext(cid){const idx=LEVELS.findIndex(s=>s.id===cid);if(idx<0)return;if(idx+1<LEVELS.length){const n=LEVELS[idx+1];if(state[n.id]==='locked')state[n.id]='unlocked';}autoComplete();saveState();}
+function autoComplete(){let changed=true;while(changed){changed=false;LEVELS.forEach((s,i)=>{if(s.type==='difficult'&&state[s.id]==='unlocked'&&getErrors(s.revises).length===0){state[s.id]='completed';if(i+1<LEVELS.length&&state[LEVELS[i+1].id]==='locked'){state[LEVELS[i+1].id]='unlocked';changed=true;}}});}}
+function renderMap(){
+  const list=document.getElementById('sectionsList');list.innerHTML='';
+  const total=LEVELS.length,done=LEVELS.filter(s=>state[s.id]==='completed').length;
+  document.getElementById('overallBar').style.width=`${(done/total)*100}%`;
+  document.getElementById('overallText').textContent=`${done} / ${total}`;
+  if(done===total){const b=document.createElement('div');b.className='completion-banner';b.innerHTML=`<span class="cb-emoji">&#x1F3C6;</span><div class="cb-title">GRAMMAR MASTER!</div><div class="cb-text">hai completato tutto il Present Perfect &middot; missione compiuta</div>`;list.appendChild(b);setTimeout(()=>{for(let i=0;i<8;i++)setTimeout(()=>spawnBurst(Math.random()*innerWidth,Math.random()*innerHeight*0.6,['#00f0ff','#00ff88','#ffcc00','#cc77ff'][i%4],20),i*250);},100);return;}
+  LEVELS.forEach(s=>{
+    const st=state[s.id];const card=document.createElement('div');
+    let cls='section-card ',badge='',icon='';
+    if(typeof s.id==='number')icon=String(s.id).padStart(2,'0');
+    else if(s.type==='revision')icon='&#x21BA;';else icon='&#x2605;';
+    if(st==='completed'){cls+=s.type==='difficult'?'difficult-done':s.type==='revision'?'revision-done':'completed';badge=`<span class="sc-badge badge-done">&#x2713; DONE</span>`;}
+    else if(st==='unlocked'){if(s.type==='revision'){cls+='revision';badge=`<span class="sc-badge badge-required">&#x26A0; OBB.</span>`;}else if(s.type==='difficult'){cls+='difficult';badge=`<span class="sc-badge badge-required-purple">&#x2605; ${getErrors(s.revises).length}</span>`;}else{cls+='unlocked';badge=`<span class="sc-badge badge-todo">&#x25B6; PLAY</span>`;}}
+    else{cls+='locked';badge=`<span class="sc-badge badge-locked">&#x1F512;</span>`;}
+    card.className=cls;card.innerHTML=`<div class="sc-icon">${icon}</div><div class="sc-body"><div class="sc-title">${s.title}</div><div class="sc-desc">${s.desc}</div></div>${badge}`;
+    if(st==='unlocked')card.onclick=()=>openLevel(s);
+    list.appendChild(card);
+  });
+}
+let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,isRetry=false,retryQueue=[],selectedMC=-1,reorderWords=[];
+function openLevel(s){
+  currentLevel=s;let exs;
+  if(s.type==='study'){exs=s.exercises.map((e,i)=>({...e,_key:`${s.id}_${i}`}));}
+  else if(s.type==='revision'){exs=[];s.revises.forEach(id=>{const sec=LEVELS.find(x=>x.id===id);if(sec&&sec.exercises)exs=exs.concat(sec.exercises.map((e,i)=>({...e,_key:`${id}_${i}`})));});exs=shuffle(exs).slice(0,Math.min(exs.length,16));}
+  else{exs=getErrors(s.revises);if(!exs.length){state[s.id]='completed';unlockNext(s.id);saveState();goMap();return;}}
+  exQueue=shuffle(exs);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=false;
+  document.getElementById('exTitle').textContent=currentLevel.title;
+  showScreen('exercise');renderExercise();
+}
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function renderExercise(){
+  exChecked=false;selectedMC=-1;reorderWords=[];
+  const ex=exQueue[exIdx];
+  const pct=exQueue.length>0?(exIdx/exQueue.length)*100:0;
+  document.getElementById('hudFill').style.width=`${pct}%`;
+  document.getElementById('hudText').textContent=`${exIdx+1}/${exQueue.length}`;
+  document.getElementById('hudOk').innerHTML=`\u2713 ${okCount}`;
+  document.getElementById('hudBad').innerHTML=`\u2717 ${badCount}`;
+  document.getElementById('checkBtn').style.display='inline-block';
+  document.getElementById('nextBtn').style.display='none';
+  const ruleHtml=currentLevel.type==='study'&&currentLevel.rule?`<div class="rule-box">${currentLevel.rule}</div>`:'';
+  const retryHtml=isRetry?`<div class="retry-notice">&#x26A0; ROUND DI RECUPERO &mdash; ${exQueue.length} esercizi</div>`:'';
+  let cardHtml='';
+  if(ex.type==='fill'){
+    const hintHtml=ex.hint?`<span style="color:var(--text-muted);font-size:14px;font-weight:400"> ${ex.hint}</span>`:'';
+    cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// FILL IN THE BLANK</div><div class="ex-question">${ex.q}${hintHtml}</div><input class="fill-input" id="fillInput" autocomplete="off" spellcheck="false" placeholder="scrivi qui..." onkeydown="if(event.key==='Enter'){if(!exChecked)checkExercise();else nextExercise();}"><div class="feedback-msg" id="feedbackMsg"></div></div>`;
+  } else if(ex.type==='reorder'){
+    const shuffledIdx=shuffle(ex.words.map((_,i)=>i));
+    const chips=shuffledIdx.map(i=>`<div class="word-chip" id="chip${i}" onclick="addWord(${i},this)">${ex.words[i]}</div>`).join('');
+    cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// WORD ORDER</div><div class="ex-question">${ex.instruction}</div><div class="reorder-hint">Clicca le parole nell'ordine corretto &middot; clicca sulla risposta per rimuovere</div><div class="word-bank" id="wordBank">${chips}</div><div class="answer-area" id="answerArea"></div><div class="feedback-msg" id="feedbackMsg"></div></div>`;
+  } else if(ex.type==='wordbox'){
+    const items=ex.sentences.map((s,i)=>`<div class="wb-item">${s.pre}<input class="fill-input" id="wb${i}" autocomplete="off" spellcheck="false" placeholder="..." onkeydown="if(event.key==='Enter'&&!exChecked)checkExercise();">${s.post}</div>`).join('');
+    cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// WORD BOX</div><div class="ex-question">${ex.instruction}</div><div class="word-box"><span>// PAROLE</span>${ex.verbs.join(' &nbsp;&middot;&nbsp; ')}</div><div class="wb-sentences">${items}</div><div class="feedback-msg" id="feedbackMsg"></div></div>`;
+  } else if(ex.type==='errorcorrect'){
+    cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// ERROR CORRECTION</div><div class="ex-question">${ex.instruction}</div><div class="ec-wrong">&#x274C; ${ex.wrong}</div><div class="ec-label">Scrivi la frase corretta:</div><input class="fill-input" id="fillInput" autocomplete="off" spellcheck="false" placeholder="scrivi qui..." style="width:100%" onkeydown="if(event.key==='Enter'){if(!exChecked)checkExercise();else nextExercise();}"><div class="feedback-msg" id="feedbackMsg"></div></div>`;
+  }
+  document.getElementById('exerciseArea').innerHTML=ruleHtml+retryHtml+cardHtml;
+  if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);
+}
+function addWord(idx,el){
+  if(exChecked||el.classList.contains('used'))return;
+  el.classList.add('used');const word=el.textContent;reorderWords.push({idx,word});
+  const area=document.getElementById('answerArea');const chip=document.createElement('div');chip.className='word-chip';chip.textContent=word;
+  const ci=idx;chip.onclick=()=>{if(exChecked)return;const pos=reorderWords.findIndex(w=>w.idx===ci);if(pos>-1)reorderWords.splice(pos,1);chip.remove();document.getElementById(`chip${ci}`).classList.remove('used');};
+  area.appendChild(chip);
+}
+function norm(s){return s.trim().toLowerCase().replace(/[.,!?;:]+/g,'').replace(/[—–]/g,'-').replace(/\s+/g,' ').trim();}
+function checkExercise(){
+  if(exChecked)return;exChecked=true;
+  const ex=exQueue[exIdx];let correct=false;
+  const card=document.getElementById('exCard');const fb=document.getElementById('feedbackMsg');
+  if(ex.type==='fill'||ex.type==='errorcorrect'){
+    const val=document.getElementById('fillInput').value;
+    const accepted=(ex.accept||[ex.a]).map(norm);correct=accepted.includes(norm(val));
+    const inp=document.getElementById('fillInput');inp.classList.add(correct?'correct':'wrong');inp.disabled=true;
+    fb.className='feedback-msg '+(correct?'ok':'err');fb.innerHTML=correct?'\u2713 Corretto!':'\u2717 Risposta corretta: <strong>'+ex.a+'</strong>';
+  } else if(ex.type==='wordbox'){
+    let allCorrect=true;
+    ex.sentences.forEach((s,i)=>{
+      const inp=document.getElementById(`wb${i}`);if(!inp)return;
+      const accepted=(s.accept||[s.a]).map(norm);
+      const ok=accepted.includes(norm(inp.value));
+      inp.classList.add(ok?'correct':'wrong');inp.disabled=true;
+      if(!ok)allCorrect=false;
+    });
+    correct=allCorrect;
+    fb.className='feedback-msg '+(correct?'ok':'err');
+    fb.innerHTML=correct?'\u2713 Corretto!':'\u2717 Risposte corrette: <strong>'+ex.sentences.map(s=>s.a).join(' · ')+'</strong>';
+  } else if(ex.type==='reorder'){
+    const given=reorderWords.map(w=>w.word).join(' ');correct=norm(given)===norm(ex.answer);
+    const area=document.getElementById('answerArea');area.classList.add(correct?'correct':'wrong');
+    fb.className='feedback-msg '+(correct?'ok':'err');fb.innerHTML=correct?'\u2713 Corretto!':'\u2717 Risposta corretta: <strong>'+ex.answer+'</strong>';
+  }
+  if(correct){okCount++;if(card){card.classList.add('flash-correct');setTimeout(()=>card.classList.remove('flash-correct'),500);}burstAt(card,'#00ff88');}
+  else{badCount++;retryQueue.push(ex);if(!isRetry)recordError(ex._key);if(card){card.classList.add('flash-wrong');setTimeout(()=>card.classList.remove('flash-wrong'),400);}}
+  document.getElementById('hudOk').innerHTML=`\u2713 ${okCount}`;document.getElementById('hudBad').innerHTML=`\u2717 ${badCount}`;
+  document.getElementById('checkBtn').style.display='none';document.getElementById('nextBtn').style.display='inline-block';
+}
+function nextExercise(){
+  exIdx++;
+  if(exIdx>=exQueue.length){if(retryQueue.length>0){exQueue=shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();}
+  else renderExercise();
+}
+function showExResults(){
+  const total=exQueue.length,pct=Math.round((okCount/total)*100),passed=pct>=80;
+  if(passed){state[currentLevel.id]='completed';unlockNext(currentLevel.id);saveState();setTimeout(()=>{for(let i=0;i<6;i++)setTimeout(()=>spawnBurst(Math.random()*innerWidth,Math.random()*innerHeight*0.5,['#00f0ff','#00ff88','#ffcc00','#cc77ff'][i%4],22),i*200);},100);}
+  const btnHtml=passed?`<button class="btn btn-green" onclick="goMap()">&larr; MAPPA</button>`:`<button class="btn btn-primary" onclick="retryLevel()">&#x21BA; RIPROVA</button><button class="btn btn-secondary" onclick="goMap()">&larr; MAPPA</button>`;
+  document.getElementById('screen-results').innerHTML=`<div class="results-card"><div class="res-pct ${passed?'pass':'fail'}">${pct}%</div><div class="res-label ${passed?'pass':'fail'}">${passed?'&#x2713; LEVEL COMPLETED!':'&#x2717; TRY AGAIN'}</div><div class="res-threshold">soglia: 80% &middot; ${okCount}/${total} corretti</div><div class="res-breakdown"><div class="rb-item"><div class="rb-num g">${okCount}</div><div class="rb-label">CORRETTI</div></div><div class="rb-item"><div class="rb-num r">${badCount}</div><div class="rb-label">ERRORI</div></div></div><div class="action-bar" style="justify-content:center;margin-top:24px">${btnHtml}</div></div>`;
+  showScreen('results');
+}
+function retryLevel(){openLevel(currentLevel);}
+function confirmReset(){document.getElementById('resetModal').style.display='flex';}
+function closeModal(){document.getElementById('resetModal').style.display='none';}
+function doReset(){localStorage.removeItem(SK);localStorage.removeItem(EK);state={};errorMap={};closeModal();loadState();goMap();updateSaveCode();}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(`screen-${id}`).classList.add('active');}
+function goMap(){renderMap();showScreen('map');}
+loadState();renderMap();
+</script>
+</body>
+</html>
