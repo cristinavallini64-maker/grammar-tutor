@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VERB BE</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{
+  font-family:'Poppins',sans-serif;
+  background:#fff;
+  color:#111;
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 22px;
+  border-bottom:4px solid #cc0000;
+  flex-shrink:0;
+}
+.title{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(1.2rem,4vw,1.8rem);
+  letter-spacing:3px;color:#cc0000;
+}
+.prog{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.7rem,2vw,0.9rem);
+  color:#999;letter-spacing:2px;
+}
+.dots{
+  display:flex;gap:10px;justify-content:center;
+  padding:8px 0;flex-shrink:0;
+}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#cc0000;}
+
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  padding:18px 24px 16px;
+  visibility:hidden;
+  overflow-y:auto;
+}
+.slide.active{visibility:visible;}
+
+.slide-title{
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:clamp(0.75rem,2.5vw,0.95rem);
+  letter-spacing:2px;color:#cc0000;
+  margin-bottom:14px;
+  padding-bottom:8px;
+  border-bottom:2px solid #eee;
+  flex-shrink:0;
+  opacity:0;transition:opacity 0.4s;
+}
+.slide-title.show{opacity:1;}
+
+.row{
+  display:flex;
+  align-items:baseline;
+  gap:18px;
+  padding:11px 0;
+  border-bottom:1px solid #f0f0f0;
+  flex-wrap:wrap;
+  min-height:48px;
+}
+.row:last-of-type{border-bottom:none;}
+
+.pro  {font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:600;color:#111;min-width:55px;}
+.be   {font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:700;color:#cc0000;min-width:90px;}
+.contr{font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:600;color:#111;min-width:90px;}
+.ex   {font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:400;color:#111;flex:1;}
+.ans  {display:flex;flex-direction:column;gap:4px;min-width:150px;}
+.ans-yes{font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:600;color:#111;}
+.ans-no {font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:600;color:#111;}
+
+.cursor{
+  display:inline-block;width:2px;height:1em;
+  background:#cc0000;vertical-align:middle;margin-left:1px;
+  animation:blink 0.6s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+.warn{
+  margin-top:12px;
+  background:#fff5f5;border-left:5px solid #cc0000;
+  border-radius:0 8px 8px 0;
+  padding:12px 16px;
+  font-size:clamp(1rem,3.5vw,1.2rem);
+  color:#111;font-weight:600;line-height:1.7;
+  flex-shrink:0;opacity:0;transition:opacity 0.5s;
+}
+.warn.show{opacity:1;}
+.warn strong{color:#cc0000;}
+
+.adj-row{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  padding:10px 0;
+  border-bottom:1px solid #f0f0f0;
+  flex-wrap:wrap;
+  min-height:44px;
+}
+.adj-row:last-child{border-bottom:none;}
+.adj-row .subj{font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:600;color:#111;}
+.adj-row .be  {font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:700;color:#cc0000;}
+.adj-row .adj {font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:400;color:#111;}
+.adj-row .it  {font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:400;color:#111;}
+
+.nav{
+  display:flex;align-items:center;justify-content:center;gap:20px;
+  padding:10px 20px 14px;flex-shrink:0;
+}
+.btn-nav{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.6rem,2vw,0.75rem);
+  font-weight:700;letter-spacing:2px;
+  padding:10px 24px;border-radius:8px;
+  border:2px solid #cc0000;
+  background:#fff;color:#cc0000;
+  cursor:pointer;transition:all 0.2s;
+}
+.btn-nav:hover{background:#cc0000;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="title">⚡ VERB BE</div>
+  <div class="prog" id="prog">1 / 5</div>
+</div>
+<div class="dots" id="dots"></div>
+
+<div class="slides">
+
+  <!-- SLIDE 0: AFFERMATIVA -->
+  <div class="slide active" id="s0">
+    <div class="slide-title">✅ AFFERMATIVA</div>
+    <div class="row"><span class="pro">I</span><span class="be" data-tw="am"></span><span class="contr" data-tw="I'm"></span><span class="ex" data-tw="I'm Italian."></span></div>
+    <div class="row"><span class="pro">you</span><span class="be" data-tw="are"></span><span class="contr" data-tw="you're"></span><span class="ex" data-tw="You're a student."></span></div>
+    <div class="row"><span class="pro">he</span><span class="be" data-tw="is"></span><span class="contr" data-tw="he's"></span><span class="ex" data-tw="Marco's fifteen."></span></div>
+    <div class="row"><span class="pro">she</span><span class="be" data-tw="is"></span><span class="contr" data-tw="she's"></span><span class="ex" data-tw="Sara's ready."></span></div>
+    <div class="row"><span class="pro">it</span><span class="be" data-tw="is"></span><span class="contr" data-tw="it's"></span><span class="ex" data-tw="London's cold today."></span></div>
+    <div class="row"><span class="pro">we</span><span class="be" data-tw="are"></span><span class="contr" data-tw="we're"></span><span class="ex" data-tw="We're students."></span></div>
+    <div class="row"><span class="pro">you</span><span class="be" data-tw="are"></span><span class="contr" data-tw="you're"></span><span class="ex" data-tw="You're both wrong."></span></div>
+    <div class="row"><span class="pro">they</span><span class="be" data-tw="are"></span><span class="contr" data-tw="they're"></span><span class="ex" data-tw="Tom and Giulia are students."></span></div>
+  </div>
+
+  <!-- SLIDE 1: NEGATIVA -->
+  <div class="slide" id="s1">
+    <div class="slide-title">❌ NEGATIVA</div>
+    <div class="row"><span class="pro">I</span><span class="be" data-tw="am not"></span><span class="contr" data-tw="I'm not"></span><span class="ex" data-tw="I'm not tired."></span></div>
+    <div class="row"><span class="pro">you</span><span class="be" data-tw="are not"></span><span class="contr" data-tw="you aren't"></span><span class="ex" data-tw="You aren't ready."></span></div>
+    <div class="row"><span class="pro">he</span><span class="be" data-tw="is not"></span><span class="contr" data-tw="he isn't"></span><span class="ex" data-tw="Marco isn't happy."></span></div>
+    <div class="row"><span class="pro">she</span><span class="be" data-tw="is not"></span><span class="contr" data-tw="she isn't"></span><span class="ex" data-tw="Sara isn't late."></span></div>
+    <div class="row"><span class="pro">it</span><span class="be" data-tw="is not"></span><span class="contr" data-tw="it isn't"></span><span class="ex" data-tw="London isn't hot in November."></span></div>
+    <div class="row"><span class="pro">we</span><span class="be" data-tw="are not"></span><span class="contr" data-tw="we aren't"></span><span class="ex" data-tw="We aren't wrong."></span></div>
+    <div class="row"><span class="pro">you</span><span class="be" data-tw="are not"></span><span class="contr" data-tw="you aren't"></span><span class="ex" data-tw="You aren't late."></span></div>
+    <div class="row"><span class="pro">they</span><span class="be" data-tw="are not"></span><span class="contr" data-tw="they aren't"></span><span class="ex" data-tw="Tom and Giulia aren't ready."></span></div>
+    <div class="warn">⚠️ Con I esiste solo <strong>I'm not</strong> — "I amn't" non esiste!</div>
+  </div>
+
+  <!-- SLIDE 2: DOMANDE -->
+  <div class="slide" id="s2">
+    <div class="slide-title">❓ DOMANDE + RISPOSTE BREVI</div>
+    <div class="row"><span class="pro">I</span><span class="be" data-tw="Am I…?"></span><span class="ans"><span class="ans-yes" data-tw="Yes, I am."></span><span class="ans-no" data-tw="No, I'm not."></span></span></div>
+    <div class="row"><span class="pro">you</span><span class="be" data-tw="Are you…?"></span><span class="ans"><span class="ans-yes" data-tw="Yes, you are."></span><span class="ans-no" data-tw="No, you aren't."></span></span></div>
+    <div class="row"><span class="pro">he</span><span class="be" data-tw="Is he…?"></span><span class="ans"><span class="ans-yes" data-tw="Yes, he is."></span><span class="ans-no" data-tw="No, he isn't."></span></span></div>
+    <div class="row"><span class="pro">she</span><span class="be" data-tw="Is she…?"></span><span class="ans"><span class="ans-yes" data-tw="Yes, she is."></span><span class="ans-no" data-tw="No, she isn't."></span></span></div>
+    <div class="row"><span class="pro">it</span><span class="be" data-tw="Is it…?"></span><span class="ans"><span class="ans-yes" data-tw="Yes, it is."></span><span class="ans-no" data-tw="No, it isn't."></span></span></div>
+    <div class="row"><span class="pro">we</span><span class="be" data-tw="Are we…?"></span><span class="ans"><span class="ans-yes" data-tw="Yes, we are."></span><span class="ans-no" data-tw="No, we aren't."></span></span></div>
+    <div class="row"><span class="pro">you</span><span class="be" data-tw="Are you…?"></span><span class="ans"><span class="ans-yes" data-tw="Yes, you are."></span><span class="ans-no" data-tw="No, you aren't."></span></span></div>
+    <div class="row"><span class="pro">they</span><span class="be" data-tw="Are they…?"></span><span class="ans"><span class="ans-yes" data-tw="Yes, they are."></span><span class="ans-no" data-tw="No, they aren't."></span></span></div>
+    <div class="warn">⚠️ <strong>Yes, I am.</strong> ✅ &nbsp;·&nbsp; Yes, I'm. ❌ — la contratta NON si usa nella risposta breve affermativa!</div>
+  </div>
+
+  <!-- SLIDE 3: BE + aggettivo NORMALE -->
+  <div class="slide" id="s3">
+    <div class="slide-title">✅ BE + aggettivo</div>
+    <div class="adj-row"><span class="subj">I</span><span class="be" data-tw="am"></span><span class="adj" data-tw="happy."></span><span class="it" data-tw="→ Sono felice."></span></div>
+    <div class="adj-row"><span class="subj">Marco</span><span class="be" data-tw="is"></span><span class="adj" data-tw="sad."></span><span class="it" data-tw="→ Marco è triste."></span></div>
+    <div class="adj-row"><span class="subj">They</span><span class="be" data-tw="are"></span><span class="adj" data-tw="angry."></span><span class="it" data-tw="→ Sono arrabbiati."></span></div>
+    <div class="adj-row"><span class="subj">Sara</span><span class="be" data-tw="is"></span><span class="adj" data-tw="nervous."></span><span class="it" data-tw="→ Sara è nervosa."></span></div>
+    <div class="adj-row"><span class="subj">I</span><span class="be" data-tw="am"></span><span class="adj" data-tw="ready."></span><span class="it" data-tw="→ Sono pronto."></span></div>
+    <div class="adj-row"><span class="subj">Giulia</span><span class="be" data-tw="is"></span><span class="adj" data-tw="late."></span><span class="it" data-tw="→ Giulia è in ritardo."></span></div>
+    <div class="adj-row"><span class="subj">We</span><span class="be" data-tw="are"></span><span class="adj" data-tw="tired."></span><span class="it" data-tw="→ Siamo stanchi."></span></div>
+    <div class="adj-row"><span class="subj">Tom</span><span class="be" data-tw="is"></span><span class="adj" data-tw="tall."></span><span class="it" data-tw="→ Tom è alto."></span></div>
+    <div class="adj-row"><span class="subj">They</span><span class="be" data-tw="are"></span><span class="adj" data-tw="free."></span><span class="it" data-tw="→ Sono liberi."></span></div>
+    <div class="adj-row"><span class="subj">Sara</span><span class="be" data-tw="is"></span><span class="adj" data-tw="bored."></span><span class="it" data-tw="→ Sara si annoia."></span></div>
+  </div>
+
+  <!-- SLIDE 4: BE + aggettivo TRAPPOLA -->
+  <div class="slide" id="s4">
+    <div class="slide-title">⚠️ BE + aggettivo — attenzione alla traduzione!</div>
+    <div class="adj-row"><span class="subj">I</span><span class="be" data-tw="am"></span><span class="adj" data-tw="hungry."></span><span class="it" data-tw="→ Ho fame."></span></div>
+    <div class="adj-row"><span class="subj">Marco</span><span class="be" data-tw="is"></span><span class="adj" data-tw="thirsty."></span><span class="it" data-tw="→ Marco ha sete."></span></div>
+    <div class="adj-row"><span class="subj">They</span><span class="be" data-tw="are"></span><span class="adj" data-tw="cold."></span><span class="it" data-tw="→ Hanno freddo."></span></div>
+    <div class="adj-row"><span class="subj">Giulia</span><span class="be" data-tw="is"></span><span class="adj" data-tw="hot."></span><span class="it" data-tw="→ Giulia ha caldo."></span></div>
+    <div class="adj-row"><span class="subj">We</span><span class="be" data-tw="are"></span><span class="adj" data-tw="sleepy."></span><span class="it" data-tw="→ Abbiamo sonno."></span></div>
+    <div class="adj-row"><span class="subj">Mr Rossi</span><span class="be" data-tw="is"></span><span class="adj" data-tw="scared."></span><span class="it" data-tw="→ Il sig. Rossi ha paura."></span></div>
+    <div class="adj-row"><span class="subj">You</span><span class="be" data-tw="are"></span><span class="adj" data-tw="right."></span><span class="it" data-tw="→ Hai ragione."></span></div>
+    <div class="adj-row"><span class="subj">Marco</span><span class="be" data-tw="is"></span><span class="adj" data-tw="wrong."></span><span class="it" data-tw="→ Marco ha torto."></span></div>
+    <div class="adj-row"><span class="subj">Tom</span><span class="be" data-tw="is"></span><span class="adj" data-tw="fifteen years old."></span><span class="it" data-tw="→ Tom ha quindici anni."></span></div>
+    <div class="adj-row"><span class="subj">We</span><span class="be" data-tw="are"></span><span class="adj" data-tw="in a hurry."></span><span class="it" data-tw="→ Abbiamo fretta."></span></div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+
+<script>
+const total = 5;
+let cur = 0;
+let busy = false;
+
+const dotsEl = document.getElementById('dots');
+for(let i=0;i<total;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  dotsEl.appendChild(d);
+}
+
+function typewrite(el, text, speed){
+  return new Promise(resolve=>{
+    el.textContent='';
+    const cursor=document.createElement('span');
+    cursor.className='cursor';
+    el.appendChild(cursor);
+    let i=0;
+    function tick(){
+      if(i>=text.length){ cursor.remove(); resolve(); return; }
+      cursor.insertAdjacentText('beforebegin',text[i]);
+      i++;
+      setTimeout(tick, speed);
+    }
+    tick();
+  });
+}
+
+async function animateRow(row){
+  const els = row.querySelectorAll('[data-tw]');
+  for(const el of els){
+    el.textContent='';
+    const speed = el.classList.contains('be') ? 180 : 90;
+    await typewrite(el, el.dataset.tw, speed);
+    await new Promise(r=>setTimeout(r,150));
+  }
+}
+
+async function animateSlide(idx){
+  const slide = document.getElementById('s'+idx);
+  const title = slide.querySelector('.slide-title');
+  if(title){ title.classList.remove('show'); setTimeout(()=>title.classList.add('show'),100); }
+  await new Promise(r=>setTimeout(r,400));
+
+  const rows = slide.querySelectorAll('.row, .adj-row');
+  for(const row of rows){
+    await animateRow(row);
+    await new Promise(r=>setTimeout(r,400));
+  }
+
+  const warn = slide.querySelector('.warn');
+  if(warn){ await new Promise(r=>setTimeout(r,200)); warn.classList.add('show'); }
+}
+
+function go(dir){
+  if(busy) return;
+  const prev=cur;
+  cur=Math.max(0,Math.min(total-1,cur+dir));
+  if(cur===prev) return;
+  busy=true;
+
+  const oldSlide=document.getElementById('s'+prev);
+  const newSlide=document.getElementById('s'+cur);
+
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+
+  oldSlide.style.transition='opacity 0.25s ease';
+  oldSlide.style.opacity='0';
+
+  setTimeout(()=>{
+    oldSlide.style.cssText='';
+    oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';
+    newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';
+      newSlide.style.opacity='1';
+      setTimeout(()=>{ newSlide.style.cssText=''; busy=false; },260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');
+    dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===total-1;
+  },260);
+}
+
+let tx=0;
+const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) go(dx<0?1:-1);
+},{passive:true});
+
+animateSlide(0);
+</script>
+</body>
+</html>
