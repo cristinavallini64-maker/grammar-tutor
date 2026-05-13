@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verb Be</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #fff; font-family: 'Nunito', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 16px; }
+
+  .topbar { width: 100%; max-width: 860px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .topbar h1 { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 4px; color: #FF0000; }
+  .btn-audio { border: none; border-radius: 20px; padding: 8px 20px; font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; background: #eee; color: #555; transition: all 0.2s; }
+  .btn-audio.on { background: #2E7D32; color: #fff; }
+  .btn-audio:disabled { opacity: 0.5; cursor: wait; }
+
+  .card { width: 100%; max-width: 860px; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.12); min-height: 440px; display: flex; flex-direction: column; }
+
+  .slide { display: none; flex: 1; flex-direction: column; }
+  .slide.active { display: flex; }
+
+  .band { padding: 14px 28px; display: flex; align-items: center; gap: 12px; }
+  .band .num { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 3px; opacity: 0.6; }
+  .band .stitle { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 2px; }
+
+  .content { flex: 1; padding: 20px 28px 24px; display: flex; flex-direction: column; gap: 16px; background: #fff; }
+
+  .formula-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .fbox { border-radius: 14px; padding: 14px 22px; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem, 5vw, 3.2rem); letter-spacing: 2px; opacity: 0; transform: scale(0.8); transition: all 0.4s cubic-bezier(.34,1.56,.64,1); }
+  .fbox.show { opacity: 1; transform: scale(1); }
+  .fbox.subj { background: #E3F2FD; color: #0D47A1; }
+  .fbox.verb { background: #FF0000; color: #fff; }
+  .fbox.verb.green { background: #2E7D32; }
+  .fbox.verb.blue { background: #1565C0; }
+  .fbox.verb.purple { background: #6A1B9A; }
+  .fbox.comp { background: #F3E5F5; color: #4A148C; }
+  .arrow { font-size: 2rem; color: #ccc; opacity: 0; transition: opacity 0.4s ease; font-weight: 900; }
+  .arrow.show { opacity: 1; }
+
+  .ex-list { display: flex; flex-direction: column; gap: 8px; }
+  .ex { border-radius: 12px; padding: 13px 18px; opacity: 0; transform: translateX(-12px); transition: all 0.45s ease; }
+  .ex.show { opacity: 1; transform: translateX(0); }
+  .ex-en { font-size: clamp(1.05rem, 2.5vw, 1.25rem); font-weight: 900; }
+  .ex-it { font-size: 0.88rem; margin-top: 3px; opacity: 0.7; font-weight: 400; }
+
+  .ex.aff { background: #E8F5E9; border-left: 5px solid #2E7D32; }
+  .ex.aff .ex-en { color: #1B5E20; }
+  .ex.neg { background: #FFEBEE; border-left: 5px solid #FF0000; }
+  .ex.neg .ex-en { color: #B71C1C; }
+  .ex.q   { background: #E3F2FD; border-left: 5px solid #1565C0; }
+  .ex.q   .ex-en { color: #0D47A1; }
+  .ex.adj { background: #F3E5F5; border-left: 5px solid #6A1B9A; }
+  .ex.adj .ex-en { color: #4A148C; }
+
+  .warn { background: #FFF3E0; border-left: 5px solid #FF6D00; border-radius: 0 12px 12px 0; padding: 12px 18px; font-size: clamp(0.9rem, 2vw, 1.05rem); color: #BF360C; font-weight: 900; opacity: 0; transition: opacity 0.5s ease 0.8s; }
+  .warn.show { opacity: 1; }
+  .tip { background: #E3F2FD; border-left: 5px solid #1565C0; border-radius: 0 12px 12px 0; padding: 12px 18px; font-size: clamp(0.9rem, 2vw, 1.05rem); color: #0D47A1; font-weight: 700; opacity: 0; transition: opacity 0.5s ease 0.8s; }
+  .tip.show { opacity: 1; }
+
+  .sum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sum-cell { border-radius: 14px; padding: 14px 16px; opacity: 0; transform: translateY(10px); transition: all 0.4s ease; }
+  .sum-cell.show { opacity: 1; transform: translateY(0); }
+  .sum-cell .sc-label { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 2px; margin-bottom: 6px; }
+  .sum-cell .sc-content { font-size: clamp(0.88rem, 1.9vw, 1rem); font-weight: 700; line-height: 1.5; }
+  .sc-g { background: #E8F5E9; color: #1B5E20; }
+  .sc-r { background: #FFEBEE; color: #B71C1C; }
+  .sc-b { background: #E3F2FD; color: #0D47A1; }
+  .sc-p { background: #F3E5F5; color: #4A148C; }
+  .sc-o { background: #FFF3E0; color: #BF360C; grid-column: span 2; }
+
+  .nav { display: flex; gap: 12px; margin-top: 18px; align-items: center; justify-content: center; flex-wrap: wrap; }
+  .btn-nav { border: none; border-radius: 8px; padding: 10px 28px; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; background: #1565C0; color: #fff; transition: all 0.2s; }
+  .btn-nav:hover { background: #0D47A1; }
+  .btn-nav:disabled { background: #ddd; color: #aaa; cursor: not-allowed; }
+  .prog { font-size: 0.95rem; color: #aaa; font-weight: 700; }
+  .dots { display: flex; gap: 7px; margin-top: 10px; justify-content: center; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: #eee; transition: background 0.3s; }
+  .dot.active { background: #FF0000; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>⚡ Verb BE</h1>
+  <button class="btn-audio" id="audioBtn" onclick="toggleAudio()">🔇 Audio</button>
+</div>
+
+<div class="card">
+
+  <!-- SLIDE 0: le tre forme -->
+  <div class="slide active" id="s0">
+    <div class="band" style="background:#FF0000;">
+      <span class="num" style="color:#fff;">01 / 06</span>
+      <span class="stitle" style="color:#fff;">BE = ESSERE</span>
+    </div>
+    <div class="content">
+      <div class="formula-row" id="fr0">
+        <div class="fbox subj" data-i="0">I</div>
+        <div class="arrow" data-i="1">→</div>
+        <div class="fbox verb" data-i="2">AM</div>
+        <div style="flex-basis:100%;height:0"></div>
+        <div class="fbox subj" data-i="3">He / She / It</div>
+        <div class="arrow" data-i="4">→</div>
+        <div class="fbox verb" data-i="5" style="background:#FF6D00;">IS</div>
+        <div style="flex-basis:100%;height:0"></div>
+        <div class="fbox subj" data-i="6">You / We / They</div>
+        <div class="arrow" data-i="7">→</div>
+        <div class="fbox verb" data-i="8" style="background:#1565C0;">ARE</div>
+      </div>
+      <div class="tip" id="tip0">💡 Forma contratta: I<strong>'m</strong> · He<strong>'s</strong> · She<strong>'s</strong> · We<strong>'re</strong> · They<strong>'re</strong></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 1: affermativa -->
+  <div class="slide" id="s1">
+    <div class="band" style="background:#2E7D32;">
+      <span class="num" style="color:#fff;">02 / 06</span>
+      <span class="stitle" style="color:#fff;">AFFERMATIVA ✅</span>
+    </div>
+    <div class="content">
+      <div class="formula-row" id="fr1">
+        <div class="fbox subj" data-i="0">Soggetto</div>
+        <div class="arrow" data-i="1">+</div>
+        <div class="fbox verb green" data-i="2">AM / IS / ARE</div>
+        <div class="arrow" data-i="3">+</div>
+        <div class="fbox comp" data-i="4">...</div>
+      </div>
+      <div class="ex-list" id="ex1">
+        <div class="ex aff" data-i="0"><div class="ex-en">I <strong>am</strong> Italian. → I<strong>'m</strong> Italian.</div><div class="ex-it">Sono italiano/a.</div></div>
+        <div class="ex aff" data-i="1"><div class="ex-en">She <strong>is</strong> 15. → She<strong>'s</strong> 15.</div><div class="ex-it">Lei ha 15 anni.</div></div>
+        <div class="ex aff" data-i="2"><div class="ex-en">They <strong>are</strong> students. → They<strong>'re</strong> students.</div><div class="ex-it">Loro sono studenti.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: negativa -->
+  <div class="slide" id="s2">
+    <div class="band" style="background:#B71C1C;">
+      <span class="num" style="color:#fff;">03 / 06</span>
+      <span class="stitle" style="color:#fff;">NEGATIVA ❌</span>
+    </div>
+    <div class="content">
+      <div class="formula-row" id="fr2">
+        <div class="fbox subj" data-i="0">Soggetto</div>
+        <div class="arrow" data-i="1">+</div>
+        <div class="fbox verb" data-i="2">AM/IS/ARE</div>
+        <div class="arrow" data-i="3">+</div>
+        <div class="fbox verb" data-i="4" style="background:#B71C1C;font-size:clamp(2.5rem,7vw,4.5rem);letter-spacing:4px;">NOT</div>
+      </div>
+      <div class="ex-list" id="ex2">
+        <div class="ex neg" data-i="0"><div class="ex-en">I am <strong>not</strong> tired. → I<strong>'m not</strong> tired.</div><div class="ex-it">Non sono stanco/a.</div></div>
+        <div class="ex neg" data-i="1"><div class="ex-en">He is <strong>not</strong> happy. → He <strong>isn't</strong> happy.</div><div class="ex-it">Lui non è felice.</div></div>
+        <div class="ex neg" data-i="2"><div class="ex-en">We are <strong>not</strong> late. → We <strong>aren't</strong> late.</div><div class="ex-it">Non siamo in ritardo.</div></div>
+      </div>
+      <div class="warn" id="warn2">⚠️ Con I → sempre <strong>I'm not</strong> &nbsp;·&nbsp; "I amn't" NON ESISTE!</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: domande -->
+  <div class="slide" id="s3">
+    <div class="band" style="background:#1565C0;">
+      <span class="num" style="color:#fff;">04 / 06</span>
+      <span class="stitle" style="color:#fff;">DOMANDE ❓</span>
+    </div>
+    <div class="content">
+      <div class="formula-row" id="fr3">
+        <div class="fbox verb blue" data-i="0">AM/IS/ARE</div>
+        <div class="arrow" data-i="1">+</div>
+        <div class="fbox subj" data-i="2">Soggetto</div>
+        <div class="arrow" data-i="3">+</div>
+        <div class="fbox comp" data-i="4">... ?</div>
+      </div>
+      <div class="ex-list" id="ex3">
+        <div class="ex q" data-i="0"><div class="ex-en"><strong>Are</strong> you ready? — Yes, I <strong>am</strong>. / No, I'm <strong>not</strong>.</div><div class="ex-it">Sei pronto? — Sì. / No.</div></div>
+        <div class="ex q" data-i="1"><div class="ex-en"><strong>Is</strong> she Italian? — Yes, she <strong>is</strong>. / No, she <strong>isn't</strong>.</div><div class="ex-it">È italiana? — Sì. / No.</div></div>
+      </div>
+      <div class="warn" id="warn3">⚠️ Risposta breve affermativa: <strong>Yes, I am.</strong> ✅ &nbsp;·&nbsp; Yes, I'm. ❌</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: BE + aggettivi -->
+  <div class="slide" id="s4">
+    <div class="band" style="background:#6A1B9A;">
+      <span class="num" style="color:#fff;">05 / 06</span>
+      <span class="stitle" style="color:#fff;">BE + AGGETTIVI 🌡️</span>
+    </div>
+    <div class="content">
+      <p style="font-size:clamp(1rem,2.2vw,1.15rem);color:#333;line-height:1.6;">In inglese usi <strong>BE</strong> dove in italiano dici <strong>"avere"</strong>. Non tradurre alla lettera!</p>
+      <div class="ex-list" id="ex4">
+        <div class="ex adj" data-i="0"><div class="ex-en">I <strong>am</strong> hungry.</div><div class="ex-it">Ho fame. (NON "sono fame"!)</div></div>
+        <div class="ex adj" data-i="1"><div class="ex-en">She <strong>is</strong> cold.</div><div class="ex-it">Ha freddo.</div></div>
+        <div class="ex adj" data-i="2"><div class="ex-en">He <strong>is</strong> 15 years old.</div><div class="ex-it">Ha 15 anni.</div></div>
+        <div class="ex adj" data-i="3"><div class="ex-en">They <strong>are</strong> tired.</div><div class="ex-it">Sono stanchi.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: riepilogo -->
+  <div class="slide" id="s5">
+    <div class="band" style="background:#333;">
+      <span class="num" style="color:#fff;">06 / 06</span>
+      <span class="stitle" style="color:#fff;">RIEPILOGO ✅</span>
+    </div>
+    <div class="content">
+      <div class="sum-grid" id="sum">
+        <div class="sum-cell sc-g" data-i="0"><div class="sc-label">✅ Affermativa</div><div class="sc-content">I <strong>am</strong> · He/She <strong>is</strong> · We/They <strong>are</strong><br>Contratta: I'm · she's · they're</div></div>
+        <div class="sum-cell sc-r" data-i="1"><div class="sc-label">❌ Negativa</div><div class="sc-content">I'm <strong>not</strong> · He <strong>isn't</strong> · They <strong>aren't</strong></div></div>
+        <div class="sum-cell sc-b" data-i="2"><div class="sc-label">❓ Domanda</div><div class="sc-content"><strong>Am/Is/Are</strong> + soggetto?<br>Yes, I am. / No, I'm not.</div></div>
+        <div class="sum-cell sc-p" data-i="3"><div class="sc-label">🌡️ Aggettivi</div><div class="sc-content">I am hungry = ho fame<br>She is cold = ha freddo</div></div>
+        <div class="sum-cell sc-o" data-i="4"><div class="sc-label">⚡ Ricorda</div><div class="sc-content">I'm not ✅ &nbsp;·&nbsp; I amn't ❌ &nbsp;&nbsp;|&nbsp;&nbsp; Yes, I am ✅ &nbsp;·&nbsp; Yes, I'm ❌</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="dots" id="dots"></div>
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="changeSlide(-1)" disabled>◀ Indietro</button>
+  <span class="prog" id="prog">1 / 6</span>
+  <button class="btn-nav" id="nextBtn" onclick="changeSlide(1)">Avanti ▶</button>
+</div>
+
+<!-- DEBUG PANEL -->
+<div id="dbg" style="margin-top:18px;width:100%;max-width:860px;background:#1a1a2e;border-radius:12px;padding:14px 18px;font-family:monospace;font-size:0.8rem;color:#0f0;max-height:180px;overflow-y:auto;display:none;">
+  <div style="color:#aaa;margin-bottom:6px;">🔍 Debug log (rimuovi prima di usare in classe)</div>
+  <div id="dbgLog"></div>
+</div>
+<div style="margin-top:8px;text-align:center;">
+  <button onclick="document.getElementById('dbg').style.display=document.getElementById('dbg').style.display==='none'?'block':'none'" style="border:none;background:none;font-size:0.75rem;color:#aaa;cursor:pointer;text-decoration:underline;">🔍 Mostra/nascondi debug</button>
+</div>
+
+<script>
+const total = 6;
+
+// ─── SCRIPT AUDIO ────────────────────────────────────────────────────────────
+// Testi scritti per suonare naturali e colloquiali, non come una lista di regole.
+// Ogni slide ha parti in italiano (it-IT) e inglese (en-GB) alternate.
+const speech = [
+  // Slide 0 — Le tre forme
+  [
+    { l: 'it-IT', t: "Partiamo dal verbo BE — cioè essere. In inglese non esiste un'unica forma: cambia in base al soggetto." },
+    { l: 'en-GB', t: "With I, you say AM. With he, she or it, you say IS. And with you, we or they, you say ARE." },
+    { l: 'it-IT', t: "Poi c'è la forma contratta, che si usa moltissimo nel parlato: I'm, he's, she's, we're, they're." }
+  ],
+  // Slide 1 — Affermativa
+  [
+    { l: 'it-IT', t: "Alla forma affermativa è semplice: soggetto, poi am, is o are, e il resto della frase. Senti questi esempi." },
+    { l: 'en-GB', t: "I'm Italian. She's fifteen. They're students." },
+    { l: 'it-IT', t: "La forma contratta si preferisce sempre nel parlato e nello scritto informale. Usala senza paura." }
+  ],
+  // Slide 2 — Negativa
+  [
+    { l: 'it-IT', t: "Per la negativa basta aggiungere NOT dopo il verbo. Oppure puoi usare la forma contratta: isn't, aren't." },
+    { l: 'en-GB', t: "I'm not tired. He isn't happy. We aren't late." },
+    { l: 'it-IT', t: "Attenzione: con I si dice sempre I'm not. La forma I amn't non esiste in inglese — non usarla mai." }
+  ],
+  // Slide 3 — Domande
+  [
+    { l: 'it-IT', t: "Per fare una domanda, il verbo viene prima del soggetto. È l'opposto dell'italiano, dove di solito si cambia solo l'intonazione." },
+    { l: 'en-GB', t: "Are you ready? Yes, I am. No, I'm not. Is she Italian? Yes, she is." },
+    { l: 'it-IT', t: "Nella risposta breve affermativa non si usa mai la contratta. Si dice Yes, I am — non Yes, I'm. Questo è un errore comunissimo." }
+  ],
+  // Slide 4 — BE + aggettivi
+  [
+    { l: 'it-IT', t: "C'è un punto che mette spesso in difficoltà: in inglese si usa BE in molti casi dove noi usiamo avere. Non tradurre alla lettera!" },
+    { l: 'en-GB', t: "I am hungry means ho fame, not sono fame. She is cold means ha freddo. He is fifteen years old means ha quindici anni." },
+    { l: 'it-IT', t: "Anche tired, bored, scared e molti altri aggettivi si usano con BE. Abituati all'idea: in inglese si è stanchi, annoiati, spaventati — non si ha." }
+  ],
+  // Slide 5 — Riepilogo
+  [
+    { l: 'it-IT', t: "Facciamo un riepilogo veloce. Affermativa:" },
+    { l: 'en-GB', t: "I am, he is, they are." },
+    { l: 'it-IT', t: "Negativa:" },
+    { l: 'en-GB', t: "I'm not, he isn't, they aren't." },
+    { l: 'it-IT', t: "Domanda:" },
+    { l: 'en-GB', t: "Am I? Is she? Are they?" },
+    { l: 'it-IT', t: "E i due errori da non fare: I amn't non esiste. E alla risposta breve affermativa si dice sempre Yes, I am — mai Yes, I'm." }
+  ]
+];
+
+// ─── STATO ───────────────────────────────────────────────────────────────────
+let cur = 0;
+let audioOn = false;
+let currentAudio = null;
+let speaking = false;
+
+const WORKER_URL = "https://grammar-tts.cristinavallini64.workers.dev/";
+
+// ─── DOTS ────────────────────────────────────────────────────────────────────
+const dotsEl = document.getElementById('dots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  dotsEl.appendChild(d);
+}
+
+// ─── ANIMAZIONI SLIDE ────────────────────────────────────────────────────────
+function animateSlide(idx) {
+  const fr = document.getElementById('fr' + idx);
+  if (fr) {
+    fr.querySelectorAll('.fbox,.arrow').forEach((el, i) => {
+      const delay = parseInt(el.dataset.i || i) * 150;
+      setTimeout(() => el.classList.add('show'), delay);
+    });
+  }
+  const ex = document.getElementById('ex' + idx);
+  if (ex) ex.querySelectorAll('.ex').forEach((e, i) => setTimeout(() => e.classList.add('show'), 400 + i * 220));
+  const w = document.getElementById('warn' + idx);
+  if (w) w.classList.add('show');
+  const t = document.getElementById('tip' + idx);
+  if (t) t.classList.add('show');
+  if (idx === 5) document.getElementById('sum').querySelectorAll('.sum-cell').forEach((c, i) => setTimeout(() => c.classList.add('show'), i * 160));
+}
+
+function resetSlide(idx) {
+  const fr = document.getElementById('fr' + idx);
+  if (fr) fr.querySelectorAll('.fbox,.arrow').forEach(el => el.classList.remove('show'));
+  const ex = document.getElementById('ex' + idx);
+  if (ex) ex.querySelectorAll('.ex').forEach(e => e.classList.remove('show'));
+  ['warn', 'tip'].forEach(p => { const el = document.getElementById(p + idx); if (el) el.classList.remove('show'); });
+  const sum = document.getElementById('sum');
+  if (sum) sum.querySelectorAll('.sum-cell').forEach(c => c.classList.remove('show'));
+}
+
+function changeSlide(dir) {
+  stopAudio();
+  resetSlide(cur);
+  document.getElementById('s' + cur).classList.remove('active');
+  dotsEl.children[cur].classList.remove('active');
+  cur = Math.max(0, Math.min(total - 1, cur + dir));
+  document.getElementById('s' + cur).classList.add('active');
+  dotsEl.children[cur].classList.add('active');
+  document.getElementById('prog').textContent = (cur + 1) + ' / ' + total;
+  document.getElementById('prevBtn').disabled = cur === 0;
+  document.getElementById('nextBtn').disabled = cur === total - 1;
+  setTimeout(() => animateSlide(cur), 80);
+  if (audioOn) speak();
+}
+
+// ─── DEBUG LOG ────────────────────────────────────────────────────────────────
+function log(msg, color) {
+  const el = document.getElementById('dbgLog');
+  const line = document.createElement('div');
+  line.style.color = color || '#0f0';
+  line.textContent = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+
+// ─── AUDIO: ElevenLabs con fallback speechSynthesis ──────────────────────────
+function stopAudio() {
+  speaking = false;
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.src = '';
+    currentAudio = null;
+  }
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+}
+
+function speakPartFallback(text, lang) {
+  return new Promise((resolve) => {
+    if (!speaking || !window.speechSynthesis) { resolve(); return; }
+    log('FALLBACK speechSynthesis: ' + text.substring(0, 40) + '...', '#ffaa00');
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = lang;
+    u.rate = lang === 'en-GB' ? 0.85 : 0.88;
+    u.pitch = 1.05;
+    const voices = window.speechSynthesis.getVoices();
+    const voice = voices.find(v => v.lang === lang && v.name.includes('Google'))
+                || voices.find(v => v.lang === lang)
+                || voices.find(v => v.lang.startsWith(lang.split('-')[0]));
+    if (voice) u.voice = voice;
+    u.onend = resolve;
+    u.onerror = () => resolve();
+    window.speechSynthesis.speak(u);
+  });
+}
+
+function speakPart(text, lang) {
+  return new Promise(async (resolve) => {
+    if (!speaking) { resolve(); return; }
+    log('ElevenLabs → [' + lang + '] ' + text.substring(0, 40) + '...');
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, lang })
+      });
+      log('Worker status: ' + res.status, res.ok ? '#0f0' : '#f55');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      log('Audio ricevuto: ' + (data.audio ? data.audio.length + ' chars' : 'NESSUNO'), data.audio ? '#0f0' : '#f55');
+      if (!data.audio) {
+        if (data.error) log('Errore worker: ' + data.error, '#f55');
+        await speakPartFallback(text, lang);
+        resolve();
+        return;
+      }
+      if (!speaking) { resolve(); return; }
+      const audio = new Audio("data:audio/mp3;base64," + data.audio);
+      currentAudio = audio;
+      audio.onended = () => { log('✓ fine parte'); resolve(); };
+      audio.onerror = async (e) => {
+        log('Errore audio: ' + e.type, '#f55');
+        await speakPartFallback(text, lang);
+        resolve();
+      };
+      audio.play().catch(async (e) => {
+        log('play() bloccato: ' + e.message, '#f55');
+        await speakPartFallback(text, lang);
+        resolve();
+      });
+    } catch (e) {
+      log('Fetch error: ' + e.message, '#f55');
+      await speakPartFallback(text, lang);
+      resolve();
+    }
+  });
+}
+
+async function speak() {
+  if (!audioOn) return;
+  stopAudio();
+  speaking = true;
+  log('=== Slide ' + (cur+1) + ' ===', '#88f');
+
+  const btn = document.getElementById('audioBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Audio...';
+
+  const parts = speech[cur];
+  for (const { l, t } of parts) {
+    if (!speaking) break;
+    await speakPart(t, l);
+  }
+
+  if (speaking) {
+    btn.disabled = false;
+    btn.textContent = '🔊 Audio';
+  }
+}
+
+function toggleAudio() {
+  audioOn = !audioOn;
+  const btn = document.getElementById('audioBtn');
+  if (audioOn) {
+    btn.classList.add('on');
+    speak();
+  } else {
+    btn.classList.remove('on');
+    btn.textContent = '🔇 Audio';
+    btn.disabled = false;
+    stopAudio();
+  }
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+setTimeout(() => animateSlide(0), 300);
+</script>
+</body>
+</html>
