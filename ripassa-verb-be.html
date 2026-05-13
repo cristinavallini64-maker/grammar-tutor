@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verb BE — Ripassa</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@600;700;800;900&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+
+body{
+  font-family:'Nunito',sans-serif;
+  background:#f5f7ff;
+  color:#1a1a2e;
+  display:flex;flex-direction:column;
+}
+
+/* ── HEADER ── */
+header{
+  flex-shrink:0;
+  background:#1a1a2e;
+  padding:0 22px;height:58px;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 3px 16px rgba(0,0,0,0.25);
+}
+.h-logo{
+  font-family:'Orbitron',monospace;font-weight:900;font-size:13px;
+  letter-spacing:3px;color:#00e5ff;
+}
+.h-logo span{color:rgba(255,255,255,0.5);font-size:9px;display:block;letter-spacing:2px;margin-top:-2px;}
+.h-title{
+  font-family:'Orbitron',monospace;font-weight:900;font-size:22px;
+  letter-spacing:5px;
+  background:linear-gradient(135deg,#00e5ff,#ffffff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.h-back{
+  font-family:'Orbitron',monospace;font-size:8px;letter-spacing:1px;
+  padding:7px 14px;border:2px solid rgba(255,255,255,0.2);
+  background:transparent;color:rgba(255,255,255,0.5);
+  border-radius:6px;cursor:pointer;text-decoration:none;transition:all 0.2s;
+}
+.h-back:hover{border-color:#00e5ff;color:#00e5ff;}
+
+/* ── NAV ── */
+.secnav{
+  flex-shrink:0;background:#fff;
+  border-bottom:3px solid #e0e4f0;
+  padding:10px 20px;display:flex;gap:8px;overflow-x:auto;
+}
+.snav{
+  font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;
+  padding:8px 16px;border-radius:20px;cursor:pointer;
+  border:2px solid #dde1f0;background:#f0f2ff;
+  color:#7a7fa8;transition:all 0.2s;white-space:nowrap;
+}
+.snav:hover{border-color:#7c83d6;color:#3d4499;}
+.snav.active{background:#3d4499;border-color:#3d4499;color:#fff;}
+.snav.done{background:#e8fff3;border-color:#00c46e;color:#007a44;}
+
+/* ── STAGE ── */
+.stage{
+  flex:1;overflow-y:auto;
+  padding:24px 28px;
+  display:flex;flex-direction:column;gap:16px;
+}
+
+/* TITOLO */
+.sec-title{
+  font-family:'Orbitron',monospace;font-weight:900;font-size:19px;letter-spacing:4px;
+  color:#fff;text-align:center;
+  padding:14px 24px;
+  background:#3d4499;
+  border-radius:12px;
+  box-shadow:0 6px 20px rgba(61,68,153,0.35);
+  opacity:0;transform:translateY(-16px) scale(0.95);
+  transition:all 0.5s cubic-bezier(0.34,1.4,0.64,1);
+}
+.sec-title.on{opacity:1;transform:translateY(0) scale(1);}
+
+/* SPIEGAZIONE */
+.spieg{
+  background:#fff;
+  border-left:6px solid #00a8cc;
+  border-radius:0 14px 14px 0;
+  padding:18px 22px;
+  box-shadow:0 4px 18px rgba(0,0,0,0.08);
+  font-family:'Caveat',cursive;font-size:23px;
+  color:#1a1a2e;line-height:1.7;
+  opacity:0;transform:translateX(-24px);
+  transition:all 0.5s ease;
+}
+.spieg.on{opacity:1;transform:translateX(0);}
+.spieg strong{color:#1a1a2e;font-size:24px;}
+.cy{color:#0077aa;font-weight:900;}
+.re{color:#cc0033;font-weight:900;}
+.gr{color:#007744;font-weight:900;}
+.go{color:#cc7700;font-weight:900;}
+.pu{color:#6600bb;font-weight:900;}
+
+/* FORMULA */
+.formula-wrap{
+  background:#fff;
+  border-radius:14px;padding:16px 20px;
+  box-shadow:0 4px 18px rgba(0,0,0,0.07);
+  display:flex;flex-wrap:wrap;gap:10px;
+  align-items:center;justify-content:center;
+  min-height:60px;
+}
+.formula-label{
+  width:100%;font-family:'Orbitron',monospace;font-size:8px;
+  letter-spacing:2px;color:#aab;margin-bottom:4px;
+}
+.fseg{
+  font-family:'Orbitron',monospace;font-size:12px;font-weight:700;
+  padding:9px 18px;border-radius:9px;letter-spacing:1px;
+  opacity:0;transform:translateY(16px) scale(0.75);
+  transition:all 0.38s cubic-bezier(0.34,1.56,0.64,1);
+}
+.fseg.on{opacity:1;transform:translateY(0) scale(1);}
+.fs-s{background:#e0f4ff;color:#005f8a;border:2px solid #00a8cc;}
+.fs-v{background:#fff8e0;color:#7a4900;border:2px solid #cc9900;}
+.fs-n{background:#ffe8ec;color:#990022;border:2px solid #cc0033;}
+.fs-r{background:#f0e8ff;color:#440088;border:2px solid #8833cc;}
+.fs-p{background:none;border:none;color:#ccc;font-size:20px;padding:0 4px;}
+
+/* ESEMPI */
+.esempi-wrap{
+  background:#fff;
+  border-radius:14px;
+  padding:16px 20px;
+  box-shadow:0 4px 18px rgba(0,0,0,0.07);
+  display:flex;flex-direction:column;gap:10px;
+}
+.esempi-label{
+  font-family:'Orbitron',monospace;font-size:8px;
+  letter-spacing:2px;color:#aab;margin-bottom:2px;
+}
+.esem{
+  display:flex;align-items:flex-start;gap:12px;
+  font-family:'Caveat',cursive;font-size:24px;
+  color:#1a1a2e;line-height:1.4;
+  padding:8px 12px;border-radius:10px;
+  opacity:0;transform:translateX(-20px);
+  transition:all 0.45s ease;
+}
+.esem.on{
+  opacity:1;transform:translateX(0);
+  background:#f8f9ff;
+}
+.etag{
+  font-family:'Orbitron',monospace;font-size:8px;font-weight:700;
+  padding:5px 9px;border-radius:6px;flex-shrink:0;
+  margin-top:5px;letter-spacing:1px;
+}
+.t-pos{background:#e0f4ff;color:#005f8a;}
+.t-neg{background:#ffe8ec;color:#990022;}
+.t-q  {background:#fff8e0;color:#7a4900;}
+.t-ans{background:#e8fff3;color:#007744;}
+
+/* colori inline */
+.cy2{color:#0077aa;font-weight:900;}
+.re2{color:#cc0033;font-weight:900;}
+.gr2{color:#007744;font-weight:900;}
+.go2{color:#cc7700;font-weight:900;}
+.pu2{color:#6600bb;font-weight:900;}
+
+/* ATTENZIONE */
+.att{
+  display:flex;gap:12px;align-items:flex-start;
+  background:#fffbe6;
+  border:2px solid #e6b800;
+  border-radius:12px;padding:14px 18px;
+  font-family:'Caveat',cursive;font-size:21px;
+  color:#3a2f00;line-height:1.6;
+  box-shadow:0 4px 14px rgba(230,184,0,0.15);
+  opacity:0;transform:translateY(12px);
+  transition:all 0.5s ease;
+}
+.att.on{opacity:1;transform:translateY(0);}
+.att .right{color:#007744;font-weight:900;}
+.att .wrong{color:#cc0033;text-decoration:line-through;}
+
+/* ── CONTROLS ── */
+.controls{
+  flex-shrink:0;
+  background:#1a1a2e;
+  padding:12px 22px;
+  display:flex;align-items:center;gap:12px;
+  box-shadow:0 -3px 16px rgba(0,0,0,0.2);
+}
+.btn-inizia{
+  font-family:'Orbitron',monospace;font-size:10px;font-weight:700;
+  letter-spacing:2px;padding:11px 26px;border-radius:8px;
+  cursor:pointer;border:none;
+  background:#00e5ff;color:#000;
+  transition:all 0.22s;
+}
+.btn-inizia:hover{transform:scale(1.05);box-shadow:0 0 22px rgba(0,229,255,0.5);}
+.btn-inizia.go{background:#ffd600;animation:blinkbtn 1s ease-in-out infinite;}
+@keyframes blinkbtn{0%,100%{opacity:1;}50%{opacity:0.75;}}
+.btn-rileggi{
+  font-family:'Orbitron',monospace;font-size:10px;font-weight:700;
+  letter-spacing:1px;padding:11px 20px;border-radius:8px;
+  cursor:pointer;background:transparent;
+  border:2px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.55);
+  transition:all 0.2s;
+}
+.btn-rileggi:hover{border-color:#fff;color:#fff;}
+.status{
+  font-family:'Orbitron',monospace;font-size:8px;letter-spacing:1px;
+  color:rgba(255,255,255,0.35);flex:1;text-align:center;
+}
+.audiobars{
+  display:flex;gap:3px;align-items:flex-end;height:18px;
+  opacity:0;transition:opacity 0.3s;
+}
+.audiobars.on{opacity:1;}
+.abar{width:5px;border-radius:3px;animation:abanim 0.7s ease-in-out infinite;}
+.abar:nth-child(1){background:#00e5ff;animation-delay:0s;}
+.abar:nth-child(2){background:#ffd600;animation-delay:0.15s;}
+.abar:nth-child(3){background:#cc77ff;animation-delay:0.3s;}
+@keyframes abanim{0%,100%{height:3px;}50%{height:18px;}}
+.alang{
+  font-family:'Orbitron',monospace;font-size:10px;font-weight:700;
+  color:#ffd600;letter-spacing:1px;min-width:24px;
+}
+.btn-avanti{
+  font-family:'Orbitron',monospace;font-size:10px;font-weight:700;
+  letter-spacing:1px;padding:11px 22px;border-radius:8px;
+  cursor:pointer;background:transparent;
+  border:2px solid #00e676;color:#00e676;
+  transition:all 0.2s;
+}
+.btn-avanti:hover{background:rgba(0,230,118,0.12);}
+.btn-avanti:disabled{opacity:0.2;cursor:not-allowed;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="h-logo">GRAMMAR QUEST<span>📖 RIPASSA</span></div>
+  <div class="h-title">VERB BE</div>
+  <a class="h-back" href="javascript:history.back()">← BACK</a>
+</header>
+
+<div class="secnav" id="secnav"></div>
+
+<div class="stage" id="stage">
+  <div class="sec-title" id="secTitle"></div>
+  <div class="spieg" id="spieg"></div>
+  <div class="formula-wrap" id="formulaWrap">
+    <div class="formula-label">FORMULA</div>
+  </div>
+  <div class="esempi-wrap" id="esempiWrap">
+    <div class="esempi-label">ESEMPI IN INGLESE</div>
+  </div>
+  <div class="att" id="att">
+    <span style="font-size:26px;flex-shrink:0;margin-top:2px">⚡</span>
+    <span id="attTxt"></span>
+  </div>
+</div>
+
+<div class="controls">
+  <button class="btn-inizia" id="btnInizia" onclick="runAnim()">▶ INIZIA</button>
+  <button class="btn-rileggi" id="btnRileggi" onclick="rileggi()" style="display:none">↺ RILEGGI</button>
+  <div class="audiobars" id="abars">
+    <div class="abar"></div><div class="abar"></div><div class="abar"></div>
+  </div>
+  <span class="alang" id="alang"></span>
+  <div class="status" id="status">Premi INIZIA per cominciare</div>
+  <button class="btn-avanti" id="btnAvanti" onclick="goNext()" disabled>AVANTI →</button>
+</div>
+
+<script>
+const WORKER = 'https://grammar-tts.cristinavallini64.workers.dev';
+
+const SEC = [
+  {
+    label: '01 · Affermativa',
+    title: 'FORMA AFFERMATIVA',
+    spieg: `Il verbo <strong>be</strong> significa <strong>"essere"</strong>. Cambia con la persona:<br>
+<span class="cy">am</span> con <em>I</em> &nbsp;·&nbsp;
+<span class="cy">is</span> con <em>he / she / it</em> &nbsp;·&nbsp;
+<span class="cy">are</span> con tutti gli altri.<br>
+In conversazione si usano quasi sempre le <strong>contrazioni</strong>:
+<span class="cy">I'm</span>, <span class="cy">she's</span>, <span class="cy">they're</span>…`,
+    formula: [
+      {t:'SOGGETTO',c:'fs-s'},{t:'+',c:'fs-p'},
+      {t:'am / is / are',c:'fs-v'},{t:'+',c:'fs-p'},
+      {t:'resto della frase',c:'fs-r'}
+    ],
+    esempi: [
+      {tag:'pos', h:`<span class="cy2">I'm</span> a student from Vicenza.`},
+      {tag:'pos', h:`<span class="cy2">She's</span> sixteen and <span class="cy2">she's</span> very tall.`},
+      {tag:'pos', h:`Marco and Luca <span class="cy2">are</span> in class 1B.`},
+      {tag:'pos', h:`It <span class="cy2">'s</span> Monday — we <span class="cy2">'re</span> already tired.`},
+    ],
+    att: `Nelle risposte brevi affermative <span class="right">mai</span> la contrazione!<br>
+<span class="right">Yes, I am.</span> ✓ &nbsp;—&nbsp; <span class="wrong">Yes, I'm.</span> ✗`,
+    it: `Il verbo be in italiano significa "essere". Cambia forma a seconda della persona: am si usa solo con I, is con he, she, it, e are con tutti gli altri. Nelle conversazioni si usano quasi sempre le contrazioni: I'm, you're, he's, she's, we're, they're.`,
+    en: `I'm a student from Vicenza. She's sixteen and she's very tall. Marco and Luca are in class 1B. It's Monday and we're already tired.`
+  },
+  {
+    label: '02 · Negativa',
+    title: 'FORMA NEGATIVA',
+    spieg: `Per il <strong>negativo</strong> si aggiunge <span class="re">not</span> dopo il verbo.<br>
+Con <em>he / she / it</em> → <span class="re">isn't</span> &nbsp;·&nbsp;
+Con <em>we / you / they</em> → <span class="re">aren't</span><br>
+Con <em>I</em> → solo <span class="re">I'm not</span> — non esiste <em style="text-decoration:line-through;opacity:0.5">I amn't</em>!`,
+    formula: [
+      {t:'SOGGETTO',c:'fs-s'},{t:'+',c:'fs-p'},
+      {t:'am/is/are',c:'fs-v'},{t:'+',c:'fs-p'},
+      {t:'NOT',c:'fs-n'},{t:'+',c:'fs-p'},
+      {t:'resto',c:'fs-r'}
+    ],
+    esempi: [
+      {tag:'neg', h:`I <span class="re2">'m not</span> from Spain. I <span class="cy2">'m</span> from Italy.`},
+      {tag:'neg', h:`He <span class="re2">isn't</span> a teacher. He <span class="cy2">'s</span> a student.`},
+      {tag:'neg', h:`They <span class="re2">aren't</span> late. They <span class="cy2">'re</span> on time.`},
+      {tag:'neg', h:`The laptop <span class="re2">isn't</span> new — it <span class="cy2">'s</span> three years old.`},
+    ],
+    att: `<span class="right">isn't</span> = is not &nbsp;·&nbsp; <span class="right">aren't</span> = are not<br>
+Con I: solo <span class="right">I'm not</span> — mai <span class="wrong">I amn't</span>`,
+    it: `Per il negativo si aggiunge "not" dopo il verbo be. Con he, she, it si usa isn't. Con we, you, they si usa aren't. Attenzione: con I l'unica forma corretta è I'm not — non esiste I amn't!`,
+    en: `I'm not from Spain. I'm from Italy. He isn't a teacher. He's a student. They aren't late. They're on time. The laptop isn't new — it's three years old.`
+  },
+  {
+    label: '03 · Domande sì/no',
+    title: 'DOMANDE SÌ / NO',
+    spieg: `Per fare una domanda si <strong>invertono</strong> il verbo e il soggetto.<br>
+Nella <strong>risposta breve</strong> si ripete solo il verbo be.<br>
+⚠ Risposta <span class="gr">affermativa</span> → <strong>mai la contrazione!</strong>`,
+    formula: [
+      {t:'AM / IS / ARE',c:'fs-v'},{t:'+',c:'fs-p'},
+      {t:'SOGGETTO',c:'fs-s'},{t:'+',c:'fs-p'},
+      {t:'… ?',c:'fs-r'}
+    ],
+    esempi: [
+      {tag:'q',   h:`<span class="go2">Are</span> <span class="cy2">you</span> Italian?`},
+      {tag:'ans', h:`Yes, I <span class="gr2">am</span>. &nbsp;/&nbsp; No, I <span class="re2">'m not</span>.`},
+      {tag:'q',   h:`<span class="go2">Is</span> <span class="cy2">she</span> at home?`},
+      {tag:'ans', h:`Yes, she <span class="gr2">is</span>. &nbsp;/&nbsp; No, she <span class="re2">isn't</span>.`},
+      {tag:'q',   h:`<span class="go2">Are</span> <span class="cy2">they</span> in class 1A?`},
+      {tag:'ans', h:`Yes, they <span class="gr2">are</span>. &nbsp;/&nbsp; No, they <span class="re2">aren't</span>.`},
+    ],
+    att: `<span class="right">Yes, I am.</span> ✓ &nbsp;—&nbsp; <span class="wrong">Yes, I'm.</span> ✗<br>
+<span class="right">Yes, she is.</span> ✓ &nbsp;—&nbsp; <span class="wrong">Yes, she's.</span> ✗`,
+    it: `Per fare una domanda sì o no con il verbo be, si invertono il verbo e il soggetto. Nella risposta breve si ripete solo il verbo be. Attenzione: nella risposta affermativa non si usa mai la contrazione!`,
+    en: `Are you Italian? Yes, I am. No, I'm not. Is she at home? Yes, she is. No, she isn't. Are they in class 1A? Yes, they are. No, they aren't.`
+  },
+  {
+    label: '04 · Domande wh-',
+    title: 'DOMANDE CON WH-',
+    spieg: `Per chiedere un'informazione specifica si mette una <span class="pu">parola interrogativa</span> all'inizio.<br>
+Struttura: <span class="pu">WH-word</span> + <span class="go">be</span> + <span class="cy">soggetto</span> ?`,
+    formula: [
+      {t:'WH- WORD',c:'fs-r'},{t:'+',c:'fs-p'},
+      {t:'AM / IS / ARE',c:'fs-v'},{t:'+',c:'fs-p'},
+      {t:'SOGGETTO ?',c:'fs-s'}
+    ],
+    esempi: [
+      {tag:'q', h:`<span class="pu2">Where</span> <span class="go2">are</span> <span class="cy2">you</span> from?`},
+      {tag:'q', h:`<span class="pu2">What</span> <span class="go2">is</span> <span class="cy2">your</span> name?`},
+      {tag:'q', h:`<span class="pu2">How old</span> <span class="go2">is</span> <span class="cy2">she</span>?`},
+      {tag:'q', h:`<span class="pu2">Who</span> <span class="go2">is</span> <span class="cy2">your</span> favourite teacher?`},
+      {tag:'q', h:`<span class="pu2">Why</span> <span class="go2">are</span> <span class="cy2">you</span> always late?`},
+    ],
+    att: null,
+    it: `Per chiedere un'informazione specifica si aggiunge una parola interrogativa all'inizio: who, what, where, when, why, how old. La struttura è: parola interrogativa, verbo be, soggetto, punto interrogativo.`,
+    en: `Where are you from? What is your name? How old is she? Who is your favourite teacher? Why are you always late?`
+  }
+];
+
+const TAGS = {pos:['t-pos','+'], neg:['t-neg','−'], q:['t-q','?'], ans:['t-ans','✓']};
+const w = ms => new Promise(r => setTimeout(r, ms));
+let cur = 0, done = new Set(), running = false, curAudio = null;
+
+/* ── NAV ── */
+function renderNav() {
+  document.getElementById('secnav').innerHTML = SEC.map((s,i) =>
+    `<button class="snav${i===cur?' active':''}${done.has(i)?' done':''}" onclick="jumpTo(${i})">${done.has(i)?'✓ ':''}${s.label}</button>`
+  ).join('');
+}
+
+/* ── CLEAR ── */
+function clearBoard() {
+  const t = document.getElementById('secTitle');
+  t.className = 'sec-title'; t.textContent = '';
+  const s = document.getElementById('spieg');
+  s.className = 'spieg'; s.innerHTML = '';
+  const fw = document.getElementById('formulaWrap');
+  fw.innerHTML = '<div class="formula-label">FORMULA</div>';
+  const ew = document.getElementById('esempiWrap');
+  ew.innerHTML = '<div class="esempi-label">ESEMPI IN INGLESE</div>';
+  const a = document.getElementById('att');
+  a.className = 'att';
+  document.getElementById('attTxt').innerHTML = '';
+}
+
+/* ── AUDIO ── */
+function setAudio(on, lang='') {
+  document.getElementById('abars').className = 'audiobars' + (on?' on':'');
+  document.getElementById('alang').textContent = lang;
+}
+
+async function fetchAudio(text, lang) {
+  const r = await fetch(WORKER, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({text, lang})
+  });
+  if(!r.ok) throw new Error('worker');
+  const d = await r.json();
+  if(d.error) throw new Error(d.error);
+  const b = atob(d.audio), a = new Uint8Array(b.length);
+  for(let i=0;i<b.length;i++) a[i]=b.charCodeAt(i);
+  return URL.createObjectURL(new Blob([a],{type:'audio/mpeg'}));
+}
+
+function playUrl(url) {
+  return new Promise((res,rej) => {
+    const a = new Audio(url);
+    curAudio = a;
+    a.onended = res; a.onerror = rej;
+    a.play().catch(rej);
+  });
+}
+
+/* ── ANIMAZIONE ── */
+async function runAnim() {
+  if(running) return;
+  running = true;
+  const s = SEC[cur];
+  clearBoard();
+  const btn = document.getElementById('btnInizia');
+  btn.className = 'btn-inizia go';
+  btn.textContent = '● IN CORSO';
+  document.getElementById('btnRileggi').style.display = 'none';
+  document.getElementById('btnAvanti').disabled = true;
+  document.getElementById('status').textContent = 'Carico audio…';
+
+  let urlIT, urlEN;
+  try {
+    [urlIT, urlEN] = await Promise.all([
+      fetchAudio(s.it, 'it-IT'),
+      fetchAudio(s.en, 'en-GB')
+    ]);
+  } catch(e) {
+    document.getElementById('status').textContent = '❌ Errore connessione';
+    btn.className = 'btn-inizia'; btn.textContent = '▶ INIZIA';
+    running = false; return;
+  }
+
+  // 1. Titolo esplode
+  await w(200);
+  const tEl = document.getElementById('secTitle');
+  tEl.textContent = s.title;
+  tEl.classList.add('on');
+  await w(450);
+
+  // 2. Spiegazione scivola + audio IT
+  const sEl = document.getElementById('spieg');
+  sEl.innerHTML = s.spieg;
+  sEl.classList.add('on');
+  setAudio(true, 'IT');
+  document.getElementById('status').textContent = 'Spiegazione in italiano…';
+  await playUrl(urlIT);
+  URL.revokeObjectURL(urlIT);
+  setAudio(false);
+  await w(350);
+
+  // 3. Formula salta dentro pezzo per pezzo
+  const fw = document.getElementById('formulaWrap');
+  document.getElementById('status').textContent = 'Formula…';
+  for(const seg of s.formula) {
+    const sp = document.createElement('span');
+    sp.className = 'fseg ' + seg.c;
+    sp.textContent = seg.t;
+    fw.appendChild(sp);
+    await w(60); sp.classList.add('on');
+    await w(seg.c==='fs-p' ? 90 : 260);
+  }
+  await w(380);
+
+  // 4. Esempi uno alla volta + audio EN
+  const ew = document.getElementById('esempiWrap');
+  setAudio(true, 'EN');
+  document.getElementById('status').textContent = 'Esempi in inglese…';
+  const enP = playUrl(urlEN);
+  for(const ex of s.esempi) {
+    const [tc,sym] = TAGS[ex.tag];
+    const d = document.createElement('div');
+    d.className = 'esem';
+    d.innerHTML = `<span class="etag ${tc}">${sym}</span><span>${ex.h}</span>`;
+    ew.appendChild(d);
+    await w(60); d.classList.add('on');
+    await w(700);
+  }
+  await enP;
+  URL.revokeObjectURL(urlEN);
+  setAudio(false);
+
+  // 5. Attenzione
+  if(s.att) {
+    await w(300);
+    document.getElementById('attTxt').innerHTML = s.att;
+    document.getElementById('att').classList.add('on');
+  }
+
+  await w(200);
+  running = false;
+  done.add(cur);
+  renderNav();
+  btn.className = 'btn-inizia'; btn.textContent = '▶ INIZIA';
+  document.getElementById('btnRileggi').style.display = 'inline-block';
+  document.getElementById('btnAvanti').disabled = cur >= SEC.length-1;
+  document.getElementById('status').textContent =
+    cur < SEC.length-1 ? '✓ Completata! Premi AVANTI →' : '🎉 Verb BE completato!';
+}
+
+function stopCurrent() {
+  if(curAudio) { curAudio.pause(); curAudio = null; }
+  running = false;
+}
+
+function rileggi() {
+  stopCurrent();
+  document.getElementById('btnInizia').textContent = '▶ INIZIA';
+  runAnim();
+}
+
+function jumpTo(idx) {
+  if(running) stopCurrent();
+  cur = idx; renderNav(); clearBoard();
+  document.getElementById('btnInizia').className = 'btn-inizia';
+  document.getElementById('btnInizia').textContent = '▶ INIZIA';
+  document.getElementById('btnRileggi').style.display = 'none';
+  document.getElementById('btnAvanti').disabled = true;
+  document.getElementById('status').textContent = 'Premi INIZIA per cominciare';
+}
+
+function goNext() {
+  if(cur < SEC.length-1) {
+    cur++;
+    renderNav(); clearBoard();
+    document.getElementById('btnInizia').className = 'btn-inizia';
+    document.getElementById('btnInizia').textContent = '▶ INIZIA';
+    document.getElementById('btnRileggi').style.display = 'none';
+    document.getElementById('btnAvanti').disabled = true;
+    document.getElementById('status').textContent = 'Premi INIZIA per cominciare';
+  }
+}
+
+renderNav();
+</script>
+</body>
+</html>
