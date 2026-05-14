@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Some / Any</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{
+  font-family:'Poppins',sans-serif;
+  background:#fff;
+  color:#111;
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 22px;
+  border-bottom:4px solid #d97706;
+  flex-shrink:0;
+}
+.title{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(1rem,3.5vw,1.5rem);
+  letter-spacing:3px;color:#d97706;
+}
+.prog{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.7rem,2vw,0.9rem);
+  color:#999;letter-spacing:2px;
+}
+.dots{
+  display:flex;gap:10px;justify-content:center;
+  padding:8px 0;flex-shrink:0;
+}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#d97706;}
+
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  padding:18px 24px 16px;
+  visibility:hidden;
+  overflow-y:auto;
+}
+.slide.active{visibility:visible;}
+
+.slide-title{
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:clamp(0.75rem,2.5vw,0.95rem);
+  letter-spacing:2px;
+  margin-bottom:14px;
+  padding-bottom:8px;
+  border-bottom:2px solid #eee;
+  flex-shrink:0;
+  opacity:0;transition:opacity 0.4s;
+}
+.slide-title.show{opacity:1;}
+
+.ex-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:11px 0;
+  border-bottom:1px solid #f0f0f0;
+  flex-wrap:wrap;
+  min-height:48px;
+}
+.ex-row:last-of-type{border-bottom:none;}
+.ex-label{
+  font-size:clamp(0.65rem,1.8vw,0.78rem);font-weight:700;
+  padding:4px 10px;border-radius:20px;
+  color:#fff;white-space:nowrap;flex-shrink:0;
+  font-family:'Orbitron',monospace;letter-spacing:1px;
+  min-width:90px;text-align:center;
+}
+.ex-text{font-size:clamp(1rem,3.5vw,1.2rem);font-weight:400;color:#111;flex:1;}
+
+.cursor{
+  display:inline-block;width:2px;height:1em;
+  background:#d97706;vertical-align:middle;margin-left:1px;
+  animation:blink 0.6s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+.warn{
+  margin-top:12px;
+  background:#fffbeb;border-left:5px solid #d97706;
+  border-radius:0 8px 8px 0;
+  padding:12px 16px;
+  font-size:clamp(0.9rem,3vw,1.05rem);
+  color:#111;font-weight:600;line-height:1.8;
+  flex-shrink:0;opacity:0;transition:opacity 0.5s;
+}
+.warn.show{opacity:1;}
+.warn strong{color:#d97706;}
+.ok{color:#16a34a;}
+.no{color:#dc2626;text-decoration:line-through;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="title">🔵 SOME / ANY</div>
+  <div class="prog" id="prog">1 / 5</div>
+</div>
+<div class="dots" id="dots"></div>
+
+<div class="slides">
+
+  <!-- SLIDE 0: SOME affermativo -->
+  <div class="slide active" id="s0">
+    <div class="slide-title" style="color:#10b981">✅ SOME — frasi affermative</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">SOME + plur.</span>
+      <span class="ex-text" data-tw="There are some books on the desk."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">SOME + plur.</span>
+      <span class="ex-text" data-tw="I've got some friends in England."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">SOME + plur.</span>
+      <span class="ex-text" data-tw="There are some good cafés near school."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#059669">SOME + nn.</span>
+      <span class="ex-text" data-tw="There's some milk in the fridge."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#059669">SOME + nn.</span>
+      <span class="ex-text" data-tw="I need some information about the course."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#059669">SOME + nn.</span>
+      <span class="ex-text" data-tw="There's some water in the bottle."></span>
+    </div>
+    <div class="warn">
+      ⚠ <strong>SOME</strong> si usa nelle frasi <strong>affermative</strong><br>
+      Con nomi numerabili plurali &nbsp;·&nbsp; Con nomi non numerabili
+    </div>
+  </div>
+
+  <!-- SLIDE 1: ANY negativo -->
+  <div class="slide" id="s1">
+    <div class="slide-title" style="color:#ef4444">❌ ANY — frasi negative</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">ANY + plur.</span>
+      <span class="ex-text" data-tw="There aren't any books on the desk."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">ANY + plur.</span>
+      <span class="ex-text" data-tw="I haven't got any friends here."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">ANY + plur.</span>
+      <span class="ex-text" data-tw="There aren't any good restaurants in this street."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#dc2626">ANY + nn.</span>
+      <span class="ex-text" data-tw="There isn't any milk in the fridge."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#dc2626">ANY + nn.</span>
+      <span class="ex-text" data-tw="I don't want any sugar in my coffee."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#dc2626">ANY + nn.</span>
+      <span class="ex-text" data-tw="We haven't got any time."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#7c3aed">NO + plur.</span>
+      <span class="ex-text" data-tw="There are no books on the desk. (= aren't any)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#7c3aed">NO + nn.</span>
+      <span class="ex-text" data-tw="There's no milk in the fridge. (= isn't any)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#7c3aed">NO + nn.</span>
+      <span class="ex-text" data-tw="We've got no time. (= haven't got any)"></span>
+    </div>
+    <div class="warn">
+      ⚠ <strong>ANY</strong> nelle frasi <strong>negative</strong> = nessuno / nessuna quantità<br>
+      <strong>NOT ANY</strong> e <strong>NO</strong> sono equivalenti — stesso significato!<br>
+      <span class="ok">There isn't any milk. ✓</span> &nbsp;=&nbsp; <span class="ok">There's no milk. ✓</span><br>
+      <span class="ok">I haven't got any friends. ✓</span> &nbsp;=&nbsp; <span class="ok">I've got no friends. ✓</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: ANY interrogativo -->
+  <div class="slide" id="s2">
+    <div class="slide-title" style="color:#f59e0b">❓ ANY — domande</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">ANY + plur.</span>
+      <span class="ex-text" data-tw="Are there any good shops near here?"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">ANY + plur.</span>
+      <span class="ex-text" data-tw="Have you got any brothers or sisters?"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">ANY + plur.</span>
+      <span class="ex-text" data-tw="Are there any students from Italy in your class?"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#d97706">ANY + nn.</span>
+      <span class="ex-text" data-tw="Is there any coffee left?"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#d97706">ANY + nn.</span>
+      <span class="ex-text" data-tw="Do you want any help?"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#d97706">ANY + nn.</span>
+      <span class="ex-text" data-tw="Is there any water in the bottle?"></span>
+    </div>
+    <div class="warn">
+      ⚠ <strong>ANY</strong> nelle domande = "qualche / un po' di"<br>
+      La risposta può usare <strong>some</strong>:<br>
+      <span class="ok">Are there any shops? — Yes, there are some. ✓</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: SOME vs ANY confronto -->
+  <div class="slide" id="s3">
+    <div class="slide-title" style="color:#8b5cf6">⚡ SOME vs ANY — stessa situazione, contesto diverso</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">SOME ✓</span>
+      <span class="ex-text" data-tw="I've got some money. (affermativa)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">ANY ✓</span>
+      <span class="ex-text" data-tw="I haven't got any money. (negativa)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">ANY ✓</span>
+      <span class="ex-text" data-tw="Have you got any money? (domanda)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">SOME ✓</span>
+      <span class="ex-text" data-tw="There are some eggs in the fridge."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">ANY ✓</span>
+      <span class="ex-text" data-tw="There aren't any eggs in the fridge."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">ANY ✓</span>
+      <span class="ex-text" data-tw="Are there any eggs in the fridge?"></span>
+    </div>
+    <div class="warn">
+      ⚠ Regola base:<br>
+      <span class="ok">SOME</span> → affermative &nbsp;·&nbsp; <span class="ok">ANY</span> → negative e domande
+    </div>
+  </div>
+
+  <!-- SLIDE 4: SOME nelle OFFERTE e RICHIESTE -->
+  <div class="slide" id="s4">
+    <div class="slide-title" style="color:#ec4899">🎁 SOME nelle OFFERTE e RICHIESTE — eccezione!</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ec4899">OFFERTA</span>
+      <span class="ex-text" data-tw="Would you like some tea? — Yes, please."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ec4899">OFFERTA</span>
+      <span class="ex-text" data-tw="Would you like some biscuits?"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ec4899">OFFERTA</span>
+      <span class="ex-text" data-tw="Would you like some more water?"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ec4899">OFFERTA</span>
+      <span class="ex-text" data-tw="Would you like some help with that?"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">RICHIESTA</span>
+      <span class="ex-text" data-tw="Can I have some water, please?"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">RICHIESTA</span>
+      <span class="ex-text" data-tw="Could I have some information?"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">RICHIESTA</span>
+      <span class="ex-text" data-tw="Can I borrow some money?"></span>
+    </div>
+    <div class="warn">
+      ⚠ Sono domande ma si usa <strong>SOME</strong> — non any!<br>
+      Offerte: <span class="ok">Would you like some…? ✓</span><br>
+      Richieste: <span class="ok">Can / Could I have some…? ✓</span><br>
+      Perché? La risposta attesa è <strong>sì</strong> — funziona come un'affermativa!
+    </div>
+  </div>
+
+</div>
+
+<div class="nav" style="display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled style="font-family:'Orbitron',monospace;font-size:clamp(0.6rem,2vw,0.75rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #d97706;background:#fff;color:#d97706;cursor:pointer;transition:all 0.2s;">◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)" style="font-family:'Orbitron',monospace;font-size:clamp(0.6rem,2vw,0.75rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #d97706;background:#fff;color:#d97706;cursor:pointer;transition:all 0.2s;">AVANTI ▶</button>
+</div>
+
+<script>
+const total = 5;
+let cur = 0;
+let busy = false;
+
+const dotsEl = document.getElementById('dots');
+for(let i=0;i<total;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  dotsEl.appendChild(d);
+}
+
+function typewrite(el, text, speed){
+  return new Promise(resolve=>{
+    el.textContent='';
+    const cursor=document.createElement('span');
+    cursor.className='cursor';
+    el.appendChild(cursor);
+    let i=0;
+    function tick(){
+      if(i>=text.length){ cursor.remove(); resolve(); return; }
+      cursor.insertAdjacentText('beforebegin',text[i]);
+      i++;
+      setTimeout(tick, speed);
+    }
+    tick();
+  });
+}
+
+async function animateRow(row){
+  const els = row.querySelectorAll('[data-tw]');
+  for(const el of els){
+    el.textContent='';
+    await typewrite(el, el.dataset.tw, 80);
+    await new Promise(r=>setTimeout(r,100));
+  }
+}
+
+async function animateSlide(idx){
+  const slide = document.getElementById('s'+idx);
+  const title = slide.querySelector('.slide-title');
+  if(title){ title.classList.remove('show'); setTimeout(()=>title.classList.add('show'),100); }
+  await new Promise(r=>setTimeout(r,400));
+
+  const rows = slide.querySelectorAll('.ex-row');
+  for(const row of rows){
+    await animateRow(row);
+    await new Promise(r=>setTimeout(r,500));
+  }
+
+  const warn = slide.querySelector('.warn');
+  if(warn){ await new Promise(r=>setTimeout(r,200)); warn.classList.add('show'); }
+}
+
+function go(dir){
+  if(busy) return;
+  const prev=cur;
+  cur=Math.max(0,Math.min(total-1,cur+dir));
+  if(cur===prev) return;
+  busy=true;
+
+  const oldSlide=document.getElementById('s'+prev);
+  const newSlide=document.getElementById('s'+cur);
+
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.querySelectorAll('.slide-title').forEach(t=>t.classList.remove('show'));
+
+  oldSlide.style.transition='opacity 0.25s ease';
+  oldSlide.style.opacity='0';
+
+  setTimeout(()=>{
+    oldSlide.style.cssText='';
+    oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';
+    newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';
+      newSlide.style.opacity='1';
+      setTimeout(()=>{ newSlide.style.cssText=''; busy=false; },260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');
+    dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===total-1;
+  },260);
+}
+
+let tx=0;
+const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) go(dx<0?1:-1);
+},{passive:true});
+
+animateSlide(0);
+</script>
+</body>
+</html>

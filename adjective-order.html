@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adjective Order</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{
+  font-family:'Poppins',sans-serif;
+  background:#fff;
+  color:#111;
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 22px;
+  border-bottom:4px solid #e11d48;
+  flex-shrink:0;
+}
+.title{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(0.85rem,3vw,1.3rem);
+  letter-spacing:3px;color:#e11d48;
+}
+.prog{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.7rem,2vw,0.9rem);
+  color:#999;letter-spacing:2px;
+}
+.dots{
+  display:flex;gap:10px;justify-content:center;
+  padding:8px 0;flex-shrink:0;
+}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#e11d48;}
+
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  padding:18px 24px 16px;
+  visibility:hidden;
+  overflow-y:auto;
+}
+.slide.active{visibility:visible;}
+
+.slide-title{
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:clamp(0.75rem,2.5vw,0.95rem);
+  letter-spacing:2px;
+  margin-bottom:14px;
+  padding-bottom:8px;
+  border-bottom:2px solid #eee;
+  flex-shrink:0;
+  opacity:0;transition:opacity 0.4s;
+}
+.slide-title.show{opacity:1;}
+
+/* ordine aggettivi — sequenza colorata */
+.order-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+  margin-bottom:14px;
+  opacity:0;transform:translateY(10px);
+  transition:all 0.45s ease;
+}
+.order-row.on{opacity:1;transform:translateY(0);}
+.obox{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.6rem,1.8vw,0.75rem);
+  font-weight:700;letter-spacing:1px;
+  padding:8px 12px;border-radius:8px;
+  color:#fff;text-align:center;
+  min-width:70px;
+}
+.arr{font-size:18px;color:#ccc;font-weight:400;}
+
+/* righe esempi */
+.ex-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:11px 0;
+  border-bottom:1px solid #f0f0f0;
+  flex-wrap:wrap;
+  min-height:48px;
+}
+.ex-row:last-of-type{border-bottom:none;}
+.ex-label{
+  font-size:clamp(0.65rem,1.8vw,0.78rem);font-weight:700;
+  padding:4px 10px;border-radius:20px;
+  color:#fff;white-space:nowrap;flex-shrink:0;
+  font-family:'Orbitron',monospace;letter-spacing:1px;
+  min-width:80px;text-align:center;
+}
+.ex-text{font-size:clamp(1rem,3.5vw,1.2rem);font-weight:400;color:#111;flex:1;}
+
+/* tabella ordine nella slide 0 */
+.cat-row{
+  display:grid;
+  grid-template-columns: 110px 110px 1fr;
+  align-items:center;
+  gap:14px;
+  padding:9px 0;
+  border-bottom:1px solid #f0f0f0;
+  min-height:44px;
+}
+.cat-row:last-of-type{border-bottom:none;}
+.cat-num{
+  font-family:'Orbitron',monospace;font-size:clamp(0.65rem,1.8vw,0.75rem);
+  font-weight:700;padding:4px 8px;border-radius:6px;
+  color:#fff;text-align:center;
+}
+.cat-name{font-size:clamp(0.9rem,3vw,1.05rem);font-weight:700;color:#333;}
+.cat-ex{font-size:clamp(0.85rem,2.8vw,1rem);font-weight:400;color:#555;}
+
+.cursor{
+  display:inline-block;width:2px;height:1em;
+  background:#e11d48;vertical-align:middle;margin-left:1px;
+  animation:blink 0.6s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+.warn{
+  margin-top:12px;
+  background:#fff1f2;border-left:5px solid #e11d48;
+  border-radius:0 8px 8px 0;
+  padding:12px 16px;
+  font-size:clamp(0.9rem,3vw,1.05rem);
+  color:#111;font-weight:600;line-height:1.8;
+  flex-shrink:0;opacity:0;transition:opacity 0.5s;
+}
+.warn.show{opacity:1;}
+.warn strong{color:#e11d48;}
+.ok{color:#16a34a;}
+.no{color:#dc2626;text-decoration:line-through;}
+
+.nav{
+  display:flex;align-items:center;justify-content:center;gap:20px;
+  padding:10px 20px 14px;flex-shrink:0;
+}
+.btn-nav{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.6rem,2vw,0.75rem);
+  font-weight:700;letter-spacing:2px;
+  padding:10px 24px;border-radius:8px;
+  border:2px solid #e11d48;
+  background:#fff;color:#e11d48;
+  cursor:pointer;transition:all 0.2s;
+}
+.btn-nav:hover{background:#e11d48;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="title">🎨 ADJECTIVE ORDER</div>
+  <div class="prog" id="prog">1 / 3</div>
+</div>
+<div class="dots" id="dots"></div>
+
+<div class="slides">
+
+  <!-- SLIDE 0: l'ordine -->
+  <div class="slide active" id="s0">
+    <div class="slide-title" style="color:#e11d48">🎨 L'ORDINE DEGLI AGGETTIVI IN INGLESE</div>
+
+    <div class="order-row" id="ord">
+      <span class="obox" style="background:#e11d48">OPINIONE</span>
+      <span class="arr">→</span>
+      <span class="obox" style="background:#f59e0b">DIMENSIONE</span>
+      <span class="arr">→</span>
+      <span class="obox" style="background:#10b981">ETÀ</span>
+      <span class="arr">→</span>
+      <span class="obox" style="background:#3b82f6">FORMA</span>
+      <span class="arr">→</span>
+      <span class="obox" style="background:#a855f7">COLORE</span>
+      <span class="arr">→</span>
+      <span class="obox" style="background:#ec4899">ORIGINE</span>
+      <span class="arr">→</span>
+      <span class="obox" style="background:#f97316">MATERIALE</span>
+      <span class="arr">→</span>
+      <span class="obox" style="background:#64748b">SCOPO</span>
+      <span class="arr">→</span>
+      <span class="obox" style="background:#111">NOME</span>
+    </div>
+
+    <div class="cat-row">
+      <span class="cat-num" style="background:#e11d48">OPINIONE</span>
+      <span class="cat-name" data-tw="beautiful"></span>
+      <span class="cat-ex" data-tw="nice · lovely · horrible · ugly"></span>
+    </div>
+    <div class="cat-row">
+      <span class="cat-num" style="background:#f59e0b">DIMENSIONE</span>
+      <span class="cat-name" data-tw="big"></span>
+      <span class="cat-ex" data-tw="small · tall · long · short · tiny"></span>
+    </div>
+    <div class="cat-row">
+      <span class="cat-num" style="background:#10b981">ETÀ</span>
+      <span class="cat-name" data-tw="old"></span>
+      <span class="cat-ex" data-tw="young · new · ancient · modern"></span>
+    </div>
+    <div class="cat-row">
+      <span class="cat-num" style="background:#3b82f6">FORMA</span>
+      <span class="cat-name" data-tw="round"></span>
+      <span class="cat-ex" data-tw="square · oval · flat · triangular"></span>
+    </div>
+    <div class="cat-row">
+      <span class="cat-num" style="background:#a855f7">COLORE</span>
+      <span class="cat-name" data-tw="red"></span>
+      <span class="cat-ex" data-tw="blue · green · dark · pale · striped"></span>
+    </div>
+    <div class="cat-row">
+      <span class="cat-num" style="background:#ec4899">ORIGINE</span>
+      <span class="cat-name" data-tw="Italian"></span>
+      <span class="cat-ex" data-tw="French · Japanese · northern · local"></span>
+    </div>
+    <div class="cat-row">
+      <span class="cat-num" style="background:#f97316">MATERIALE</span>
+      <span class="cat-name" data-tw="wooden"></span>
+      <span class="cat-ex" data-tw="plastic · metal · leather · cotton"></span>
+    </div>
+    <div class="warn">
+      ⚠ In italiano l'ordine è più libero — in inglese è <strong>fisso</strong>!<br>
+      Non devi usarli tutti — ma quando ce ne sono più di uno, <strong>rispetta la sequenza</strong>.
+    </div>
+  </div>
+
+  <!-- SLIDE 1: esempi con 2 aggettivi -->
+  <div class="slide" id="s1">
+    <div class="slide-title" style="color:#e11d48">✅ DUE AGGETTIVI — l'ordine in pratica</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#e11d48">OPin. + DIM.</span>
+      <span class="ex-text" data-tw="a nice big house (non: big nice house)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">DIM. + COL.</span>
+      <span class="ex-text" data-tw="a small red car (non: red small car)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">ETÀ + COL.</span>
+      <span class="ex-text" data-tw="an old black dog"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#a855f7">COL. + ORIG.</span>
+      <span class="ex-text" data-tw="a blue Italian sports car"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ec4899">OPin. + ORIG.</span>
+      <span class="ex-text" data-tw="a beautiful French dress"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f97316">DIM. + MAT.</span>
+      <span class="ex-text" data-tw="a big wooden table"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#3b82f6">DIM. + ETÀ</span>
+      <span class="ex-text" data-tw="a tall young man"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#64748b">COL. + MAT.</span>
+      <span class="ex-text" data-tw="a black leather jacket"></span>
+    </div>
+    <div class="warn">
+      ⚠ <span class="no">a red big car</span> ✗ &nbsp;—&nbsp; <span class="ok">a big red car</span> ✓<br>
+      Dimensione viene <strong>sempre prima</strong> del colore!
+    </div>
+  </div>
+
+  <!-- SLIDE 2: esempi con 3 aggettivi -->
+  <div class="slide" id="s2">
+    <div class="slide-title" style="color:#10b981">✅ TRE AGGETTIVI — sequenza completa</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#e11d48">3 agg.</span>
+      <span class="ex-text" data-tw="a lovely small old house"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#e11d48">3 agg.</span>
+      <span class="ex-text" data-tw="a nice big blue bag"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#e11d48">3 agg.</span>
+      <span class="ex-text" data-tw="an old round wooden table"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#e11d48">3 agg.</span>
+      <span class="ex-text" data-tw="a beautiful young Italian woman"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#e11d48">3 agg.</span>
+      <span class="ex-text" data-tw="a small black leather wallet"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#e11d48">3 agg.</span>
+      <span class="ex-text" data-tw="a horrible big green monster"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#e11d48">3 agg.</span>
+      <span class="ex-text" data-tw="a nice new Japanese robot"></span>
+    </div>
+    <div class="warn">
+      ⚠ Con tre aggettivi: <strong>opinione → dimensione → età → colore → origine → materiale</strong><br>
+      <span class="ok">a lovely small old house ✓</span><br>
+      <span class="no">a old small lovely house</span> ✗
+    </div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+
+<script>
+const total = 3;
+let cur = 0;
+let busy = false;
+
+const dotsEl = document.getElementById('dots');
+for(let i=0;i<total;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  dotsEl.appendChild(d);
+}
+
+function typewrite(el, text, speed){
+  return new Promise(resolve=>{
+    el.textContent='';
+    const cursor=document.createElement('span');
+    cursor.className='cursor';
+    el.appendChild(cursor);
+    let i=0;
+    function tick(){
+      if(i>=text.length){ cursor.remove(); resolve(); return; }
+      cursor.insertAdjacentText('beforebegin',text[i]);
+      i++;
+      setTimeout(tick, speed);
+    }
+    tick();
+  });
+}
+
+async function animateRow(row){
+  const els = row.querySelectorAll('[data-tw]');
+  for(const el of els){
+    el.textContent='';
+    const isCatName = el.classList.contains('cat-name');
+    await typewrite(el, el.dataset.tw, isCatName ? 180 : 80);
+    await new Promise(r=>setTimeout(r,100));
+  }
+}
+
+async function animateSlide(idx){
+  const slide = document.getElementById('s'+idx);
+  const title = slide.querySelector('.slide-title');
+  if(title){ title.classList.remove('show'); setTimeout(()=>title.classList.add('show'),100); }
+  await new Promise(r=>setTimeout(r,400));
+
+  // slide 0: anima prima la sequenza colorata
+  if(idx===0){
+    const ord = slide.querySelector('#ord');
+    if(ord){ await new Promise(r=>setTimeout(r,100)); ord.classList.add('on'); await new Promise(r=>setTimeout(r,600)); }
+  }
+
+  const rows = slide.querySelectorAll('.cat-row, .ex-row');
+  for(const row of rows){
+    await animateRow(row);
+    await new Promise(r=>setTimeout(r,500));
+  }
+
+  const warn = slide.querySelector('.warn');
+  if(warn){ await new Promise(r=>setTimeout(r,200)); warn.classList.add('show'); }
+}
+
+function go(dir){
+  if(busy) return;
+  const prev=cur;
+  cur=Math.max(0,Math.min(total-1,cur+dir));
+  if(cur===prev) return;
+  busy=true;
+
+  const oldSlide=document.getElementById('s'+prev);
+  const newSlide=document.getElementById('s'+cur);
+
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.querySelectorAll('.slide-title').forEach(t=>t.classList.remove('show'));
+  const ord = oldSlide.querySelector('#ord');
+  if(ord) ord.classList.remove('on');
+
+  oldSlide.style.transition='opacity 0.25s ease';
+  oldSlide.style.opacity='0';
+
+  setTimeout(()=>{
+    oldSlide.style.cssText='';
+    oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';
+    newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';
+      newSlide.style.opacity='1';
+      setTimeout(()=>{ newSlide.style.cssText=''; busy=false; },260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');
+    dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===total-1;
+  },260);
+}
+
+let tx=0;
+const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) go(dx<0?1:-1);
+},{passive:true});
+
+animateSlide(0);
+</script>
+</body>
+</html>

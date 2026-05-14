@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prepositions of Place</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{
+  font-family:'Poppins',sans-serif;
+  background:#fff;
+  color:#111;
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 22px;
+  border-bottom:4px solid #7c3aed;
+  flex-shrink:0;
+}
+.title{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(0.85rem,3vw,1.3rem);
+  letter-spacing:3px;color:#7c3aed;
+}
+.prog{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.7rem,2vw,0.9rem);
+  color:#999;letter-spacing:2px;
+}
+.dots{
+  display:flex;gap:10px;justify-content:center;
+  padding:8px 0;flex-shrink:0;
+}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#7c3aed;}
+
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  padding:18px 24px 16px;
+  visibility:hidden;
+  overflow-y:auto;
+}
+.slide.active{visibility:visible;}
+
+.slide-title{
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:clamp(0.75rem,2.5vw,0.95rem);
+  letter-spacing:2px;
+  margin-bottom:14px;
+  padding-bottom:8px;
+  border-bottom:2px solid #eee;
+  flex-shrink:0;
+  opacity:0;transition:opacity 0.4s;
+}
+.slide-title.show{opacity:1;}
+
+.row{
+  display:grid;
+  grid-template-columns: 140px 130px 1fr;
+  align-items:center;
+  gap:14px;
+  padding:9px 0;
+  border-bottom:1px solid #f0f0f0;
+  min-height:46px;
+}
+.row:last-of-type{border-bottom:none;}
+.prep{font-size:clamp(1rem,3.5vw,1.3rem);font-weight:900;}
+.sig{font-size:clamp(0.9rem,3vw,1.05rem);font-weight:600;color:#555;}
+.ex{font-size:clamp(0.85rem,2.8vw,1rem);font-weight:400;color:#111;}
+
+.ex-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:11px 0;
+  border-bottom:1px solid #f0f0f0;
+  flex-wrap:wrap;
+  min-height:48px;
+}
+.ex-row:last-of-type{border-bottom:none;}
+.ex-label{
+  font-size:clamp(0.65rem,1.8vw,0.78rem);font-weight:700;
+  padding:4px 10px;border-radius:20px;
+  color:#fff;white-space:nowrap;flex-shrink:0;
+  font-family:'Orbitron',monospace;letter-spacing:1px;
+  min-width:100px;text-align:center;
+}
+.ex-text{font-size:clamp(1rem,3.5vw,1.2rem);font-weight:400;color:#111;flex:1;}
+
+.cursor{
+  display:inline-block;width:2px;height:1em;
+  background:#7c3aed;vertical-align:middle;margin-left:1px;
+  animation:blink 0.6s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+.warn{
+  margin-top:12px;
+  background:#f5f3ff;border-left:5px solid #7c3aed;
+  border-radius:0 8px 8px 0;
+  padding:12px 16px;
+  font-size:clamp(0.9rem,3vw,1.05rem);
+  color:#111;font-weight:600;line-height:1.8;
+  flex-shrink:0;opacity:0;transition:opacity 0.5s;
+}
+.warn.show{opacity:1;}
+.warn strong{color:#7c3aed;}
+.ok{color:#16a34a;}
+.no{color:#dc2626;text-decoration:line-through;}
+
+.nav{
+  display:flex;align-items:center;justify-content:center;gap:20px;
+  padding:10px 20px 14px;flex-shrink:0;
+}
+.btn-nav{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.6rem,2vw,0.75rem);
+  font-weight:700;letter-spacing:2px;
+  padding:10px 24px;border-radius:8px;
+  border:2px solid #7c3aed;
+  background:#fff;color:#7c3aed;
+  cursor:pointer;transition:all 0.2s;
+}
+.btn-nav:hover{background:#7c3aed;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="title">📌 PREPOSITIONS OF PLACE</div>
+  <div class="prog" id="prog">1 / 3</div>
+</div>
+<div class="dots" id="dots"></div>
+
+<div class="slides">
+
+  <!-- SLIDE 0: tabella completa -->
+  <div class="slide active" id="s0">
+    <div class="slide-title" style="color:#7c3aed">📌 PREPOSIZIONE → SIGNIFICATO → ESEMPIO</div>
+    <div class="row">
+      <span class="prep" style="color:#ef4444" data-tw="in"></span>
+      <span class="sig" data-tw="dentro / in"></span>
+      <span class="ex" data-tw="The book is in the bag."></span>
+    </div>
+    <div class="row">
+      <span class="prep" style="color:#f59e0b" data-tw="on"></span>
+      <span class="sig" data-tw="sopra (a contatto)"></span>
+      <span class="ex" data-tw="The pen is on the desk."></span>
+    </div>
+    <div class="row">
+      <span class="prep" style="color:#10b981" data-tw="at"></span>
+      <span class="sig" data-tw="a / presso (un punto)"></span>
+      <span class="ex" data-tw="She's at school."></span>
+    </div>
+    <div class="row">
+      <span class="prep" style="color:#3b82f6" data-tw="under"></span>
+      <span class="sig" data-tw="sotto"></span>
+      <span class="ex" data-tw="The cat is under the chair."></span>
+    </div>
+    <div class="row">
+      <span class="prep" style="color:#ec4899" data-tw="next to"></span>
+      <span class="sig" data-tw="accanto a"></span>
+      <span class="ex" data-tw="The bank is next to the supermarket."></span>
+    </div>
+    <div class="row">
+      <span class="prep" style="color:#a855f7" data-tw="between"></span>
+      <span class="sig" data-tw="tra (due cose)"></span>
+      <span class="ex" data-tw="The school is between the park and the café."></span>
+    </div>
+    <div class="row">
+      <span class="prep" style="color:#0891b2" data-tw="behind"></span>
+      <span class="sig" data-tw="dietro"></span>
+      <span class="ex" data-tw="There's a garden behind the house."></span>
+    </div>
+    <div class="row">
+      <span class="prep" style="color:#f97316" data-tw="in front of"></span>
+      <span class="sig" data-tw="davanti a"></span>
+      <span class="ex" data-tw="There's a bus stop in front of the school."></span>
+    </div>
+    <div class="row">
+      <span class="prep" style="color:#16a34a" data-tw="opposite"></span>
+      <span class="sig" data-tw="di fronte a"></span>
+      <span class="ex" data-tw="The café is opposite the station."></span>
+    </div>
+    <div class="row">
+      <span class="prep" style="color:#dc2626" data-tw="above / below"></span>
+      <span class="sig" data-tw="sopra / sotto (no contatto)"></span>
+      <span class="ex" data-tw="The lamp is above the table."></span>
+    </div>
+  </div>
+
+  <!-- SLIDE 1: IN / ON / AT a confronto -->
+  <div class="slide" id="s1">
+    <div class="slide-title" style="color:#ef4444">⚡ IN / ON / AT — le tre più difficili!</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">IN</span>
+      <span class="ex-text" data-tw="The milk is in the fridge. (dentro)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">IN</span>
+      <span class="ex-text" data-tw="She lives in Italy. (dentro un paese)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">IN</span>
+      <span class="ex-text" data-tw="There's a park in my town."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">ON</span>
+      <span class="ex-text" data-tw="The keys are on the table. (sulla superficie)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">ON</span>
+      <span class="ex-text" data-tw="There's a map on the wall."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">ON</span>
+      <span class="ex-text" data-tw="The school is on Park Street."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">AT</span>
+      <span class="ex-text" data-tw="I'm at school. (punto specifico)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">AT</span>
+      <span class="ex-text" data-tw="She's at the bus stop."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">AT</span>
+      <span class="ex-text" data-tw="We're at home. They're at work."></span>
+    </div>
+    <div class="warn">
+      ⚠ <strong>IN</strong> = dentro uno spazio &nbsp;·&nbsp; <strong>ON</strong> = su una superficie / via<br>
+      <strong>AT</strong> = in un punto preciso<br>
+      <span class="ok">at school / at home / at work / at the station</span> — sempre AT!
+    </div>
+  </div>
+
+  <!-- SLIDE 2: in contesto -->
+  <div class="slide" id="s2">
+    <div class="slide-title" style="color:#10b981">✅ IN CONTESTO — descrivi una stanza o una città</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">IN</span>
+      <span class="ex-text" data-tw="There's a sofa in the living room."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">ON</span>
+      <span class="ex-text" data-tw="There are some books on the shelf."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#3b82f6">UNDER</span>
+      <span class="ex-text" data-tw="My dog is under the bed. Again."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ec4899">NEXT TO</span>
+      <span class="ex-text" data-tw="The pharmacy is next to the supermarket."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#a855f7">BETWEEN</span>
+      <span class="ex-text" data-tw="The post office is between the bank and the café."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#0891b2">BEHIND</span>
+      <span class="ex-text" data-tw="There's a car park behind the shopping centre."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f97316">IN FRONT OF</span>
+      <span class="ex-text" data-tw="There's a fountain in front of the town hall."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#16a34a">OPPOSITE</span>
+      <span class="ex-text" data-tw="The hotel is opposite the train station."></span>
+    </div>
+    <div class="warn">
+      ⚠ <strong>in front of</strong> ≠ <strong>opposite</strong><br>
+      <span class="ok">in front of</span> = davanti (stesso lato della strada)<br>
+      <span class="ok">opposite</span> = di fronte (lato opposto della strada)
+    </div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+
+<script>
+const total = 3;
+let cur = 0;
+let busy = false;
+
+const dotsEl = document.getElementById('dots');
+for(let i=0;i<total;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  dotsEl.appendChild(d);
+}
+
+function typewrite(el, text, speed){
+  return new Promise(resolve=>{
+    el.textContent='';
+    const cursor=document.createElement('span');
+    cursor.className='cursor';
+    el.appendChild(cursor);
+    let i=0;
+    function tick(){
+      if(i>=text.length){ cursor.remove(); resolve(); return; }
+      cursor.insertAdjacentText('beforebegin',text[i]);
+      i++;
+      setTimeout(tick, speed);
+    }
+    tick();
+  });
+}
+
+async function animateRow(row){
+  const els = row.querySelectorAll('[data-tw]');
+  for(const el of els){
+    el.textContent='';
+    const isPrep = el.classList.contains('prep');
+    await typewrite(el, el.dataset.tw, isPrep ? 200 : 80);
+    await new Promise(r=>setTimeout(r,100));
+  }
+}
+
+async function animateSlide(idx){
+  const slide = document.getElementById('s'+idx);
+  const title = slide.querySelector('.slide-title');
+  if(title){ title.classList.remove('show'); setTimeout(()=>title.classList.add('show'),100); }
+  await new Promise(r=>setTimeout(r,400));
+
+  const rows = slide.querySelectorAll('.row, .ex-row');
+  for(const row of rows){
+    await animateRow(row);
+    await new Promise(r=>setTimeout(r,500));
+  }
+
+  const warn = slide.querySelector('.warn');
+  if(warn){ await new Promise(r=>setTimeout(r,200)); warn.classList.add('show'); }
+}
+
+function go(dir){
+  if(busy) return;
+  const prev=cur;
+  cur=Math.max(0,Math.min(total-1,cur+dir));
+  if(cur===prev) return;
+  busy=true;
+
+  const oldSlide=document.getElementById('s'+prev);
+  const newSlide=document.getElementById('s'+cur);
+
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.querySelectorAll('.slide-title').forEach(t=>t.classList.remove('show'));
+
+  oldSlide.style.transition='opacity 0.25s ease';
+  oldSlide.style.opacity='0';
+
+  setTimeout(()=>{
+    oldSlide.style.cssText='';
+    oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';
+    newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';
+      newSlide.style.opacity='1';
+      setTimeout(()=>{ newSlide.style.cssText=''; busy=false; },260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');
+    dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===total-1;
+  },260);
+}
+
+let tx=0;
+const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) go(dx<0?1:-1);
+},{passive:true});
+
+animateSlide(0);
+</script>
+</body>
+</html>
