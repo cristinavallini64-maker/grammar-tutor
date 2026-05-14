@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Possessive Adjectives</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{
+  font-family:'Poppins',sans-serif;
+  background:#fff;
+  color:#111;
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 22px;
+  border-bottom:4px solid #7c3aed;
+  flex-shrink:0;
+}
+.title{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(1rem,3.5vw,1.5rem);
+  letter-spacing:3px;color:#7c3aed;
+}
+.prog{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.7rem,2vw,0.9rem);
+  color:#999;letter-spacing:2px;
+}
+.dots{
+  display:flex;gap:10px;justify-content:center;
+  padding:8px 0;flex-shrink:0;
+}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#7c3aed;}
+
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  padding:18px 24px 16px;
+  visibility:hidden;
+  overflow-y:auto;
+}
+.slide.active{visibility:visible;}
+
+.slide-title{
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:clamp(0.75rem,2.5vw,0.95rem);
+  letter-spacing:2px;
+  margin-bottom:14px;
+  padding-bottom:8px;
+  border-bottom:2px solid #eee;
+  flex-shrink:0;
+  opacity:0;transition:opacity 0.4s;
+}
+.slide-title.show{opacity:1;}
+
+/* SLIDE 0 — tabella pronome / aggettivo / esempio */
+.row{
+  display:grid;
+  grid-template-columns:70px 90px 1fr;
+  align-items:center;
+  gap:14px;
+  padding:9px 0;
+  border-bottom:1px solid #f0f0f0;
+  min-height:46px;
+}
+.row:last-of-type{border-bottom:none;}
+
+.pro{
+  font-size:clamp(1rem,3.5vw,1.25rem);font-weight:700;
+  padding:4px 8px;border-radius:8px;
+  color:#fff;text-align:center;
+}
+.adj{font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:900;}
+.ex {font-size:clamp(0.9rem,3vw,1.1rem);font-weight:400;color:#444;}
+
+.c-i   {background:#ef4444;} .adj-i   {color:#ef4444;}
+.c-you {background:#f59e0b;} .adj-you {color:#f59e0b;}
+.c-he  {background:#3b82f6;} .adj-he  {color:#3b82f6;}
+.c-she {background:#ec4899;} .adj-she {color:#ec4899;}
+.c-it  {background:#8b5cf6;} .adj-it  {color:#8b5cf6;}
+.c-we  {background:#10b981;} .adj-we  {color:#10b981;}
+.c-they{background:#6366f1;} .adj-they{color:#6366f1;}
+
+/* SLIDE 1-3 — righe etichetta + testo */
+.ex-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:11px 0;
+  border-bottom:1px solid #f0f0f0;
+  flex-wrap:wrap;
+  min-height:48px;
+}
+.ex-row:last-of-type{border-bottom:none;}
+.ex-label{
+  font-size:clamp(0.7rem,2vw,0.8rem);font-weight:700;
+  padding:4px 10px;border-radius:20px;
+  color:#fff;white-space:nowrap;flex-shrink:0;
+  font-family:'Orbitron',monospace;letter-spacing:1px;
+}
+.ex-text{font-size:clamp(1rem,3.5vw,1.25rem);font-weight:400;color:#111;flex:1;}
+
+/* cursore typewriter */
+.cursor{
+  display:inline-block;width:2px;height:1em;
+  background:#7c3aed;vertical-align:middle;margin-left:1px;
+  animation:blink 0.6s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* box attenzione */
+.warn{
+  margin-top:12px;
+  background:#faf5ff;border-left:5px solid #7c3aed;
+  border-radius:0 8px 8px 0;
+  padding:12px 16px;
+  font-size:clamp(0.95rem,3.2vw,1.1rem);
+  color:#111;font-weight:600;line-height:1.8;
+  flex-shrink:0;opacity:0;transition:opacity 0.5s;
+}
+.warn.show{opacity:1;}
+.warn strong{color:#7c3aed;}
+.ok{color:#16a34a;}
+.no{color:#dc2626;text-decoration:line-through;}
+
+/* nav */
+.nav{
+  display:flex;align-items:center;justify-content:center;gap:20px;
+  padding:10px 20px 14px;flex-shrink:0;
+}
+.btn-nav{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.6rem,2vw,0.75rem);
+  font-weight:700;letter-spacing:2px;
+  padding:10px 24px;border-radius:8px;
+  border:2px solid #7c3aed;
+  background:#fff;color:#7c3aed;
+  cursor:pointer;transition:all 0.2s;
+}
+.btn-nav:hover{background:#7c3aed;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="title">🔑 POSSESSIVE ADJECTIVES</div>
+  <div class="prog" id="prog">1 / 4</div>
+</div>
+<div class="dots" id="dots"></div>
+
+<div class="slides">
+
+  <!-- SLIDE 0: tabella completa -->
+  <div class="slide active" id="s0">
+    <div class="slide-title" style="color:#7c3aed">🔑 PRONOME → AGGETTIVO POSSESSIVO → ESEMPIO</div>
+    <div class="row">
+      <span class="pro c-i">I</span>
+      <span class="adj adj-i" data-tw="my"></span>
+      <span class="ex" data-tw="My name is Marco."></span>
+    </div>
+    <div class="row">
+      <span class="pro c-you">you</span>
+      <span class="adj adj-you" data-tw="your"></span>
+      <span class="ex" data-tw="Your phone is new."></span>
+    </div>
+    <div class="row">
+      <span class="pro c-he">he</span>
+      <span class="adj adj-he" data-tw="his"></span>
+      <span class="ex" data-tw="His sister is a doctor."></span>
+    </div>
+    <div class="row">
+      <span class="pro c-she">she</span>
+      <span class="adj adj-she" data-tw="her"></span>
+      <span class="ex" data-tw="Her bag is blue."></span>
+    </div>
+    <div class="row">
+      <span class="pro c-it">it</span>
+      <span class="adj adj-it" data-tw="its"></span>
+      <span class="ex" data-tw="The cat and its toy."></span>
+    </div>
+    <div class="row">
+      <span class="pro c-we">we</span>
+      <span class="adj adj-we" data-tw="our"></span>
+      <span class="ex" data-tw="Our school is in Vicenza."></span>
+    </div>
+    <div class="row">
+      <span class="pro c-they">they</span>
+      <span class="adj adj-they" data-tw="their"></span>
+      <span class="ex" data-tw="Their teacher is very strict."></span>
+    </div>
+    <div class="warn">
+      ⚠ Gli aggettivi possessivi <strong>non cambiano al plurale</strong>:<br>
+      <span class="ok">my book ✓</span> &nbsp;·&nbsp; <span class="ok">my books ✓</span> &nbsp;—&nbsp; <span class="no">mys books</span> ✗
+    </div>
+  </div>
+
+  <!-- SLIDE 1: his vs her -->
+  <div class="slide" id="s1">
+    <div class="slide-title" style="color:#3b82f6">⚡ HIS o HER? Dipende da CHI possiede — non dall'oggetto!</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#3b82f6">HIS = lui</span>
+      <span class="ex-text" data-tw="Marco has a bike. His bike is red."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ec4899">HER = lei</span>
+      <span class="ex-text" data-tw="Sara has a bike. Her bike is red."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#3b82f6">HIS</span>
+      <span class="ex-text" data-tw="Marco has a dog. His dog is big."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ec4899">HER</span>
+      <span class="ex-text" data-tw="Sara has a dog. Her dog is big."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#3b82f6">HIS</span>
+      <span class="ex-text" data-tw="Marco has a sister. His sister is a doctor."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ec4899">HER</span>
+      <span class="ex-text" data-tw="Sara has a sister. Her sister is a doctor."></span>
+    </div>
+    <div class="warn">
+      ⚠ In italiano "suo/sua" vale per tutti. In inglese guarda <strong>chi possiede</strong>:<br>
+      La bike &egrave; sempre la stessa &mdash; cambia solo il possessore!<br>
+      <span class="ok">his bike</span> = la bici di lui &nbsp;&middot;&nbsp; <span class="ok">her bike</span> = la bici di lei
+    </div>
+  </div>
+
+  <!-- SLIDE 2: its vs it's -->
+  <div class="slide" id="s2">
+    <div class="slide-title" style="color:#8b5cf6">⚡ ITS vs IT'S — non confonderli!</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#8b5cf6">ITS = di esso</span>
+      <span class="ex-text" data-tw="The dog wags its tail."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#8b5cf6">ITS</span>
+      <span class="ex-text" data-tw="The school has its own website."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#8b5cf6">ITS</span>
+      <span class="ex-text" data-tw="The city is famous for its history."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">IT'S = IT IS</span>
+      <span class="ex-text" data-tw="It's cold today.  (= It is cold)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">IT'S</span>
+      <span class="ex-text" data-tw="It's Monday and we're tired."></span>
+    </div>
+    <div class="warn">
+      <span class="ok">its</span> = aggettivo possessivo — <strong>nessun apostrofo</strong><br>
+      <span class="ok">it's</span> = it is — <strong>con apostrofo</strong><br>
+      <em>The cat drinks <span class="ok">its</span> milk.</em> &nbsp;·&nbsp; <em><span class="ok">It's</span> raining.</em>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: tutti in contesto -->
+  <div class="slide" id="s3">
+    <div class="slide-title" style="color:#10b981">✅ TUTTI GLI AGGETTIVI IN CONTESTO</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">MY</span>
+      <span class="ex-text" data-tw="My name is Luca and I'm from Padova."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">YOUR</span>
+      <span class="ex-text" data-tw="What's your favourite subject?"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#3b82f6">HIS</span>
+      <span class="ex-text" data-tw="Marco and his brother are in class 2B."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ec4899">HER</span>
+      <span class="ex-text" data-tw="Anna loves her new laptop."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#8b5cf6">ITS</span>
+      <span class="ex-text" data-tw="The robot moves its arm very fast."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">OUR</span>
+      <span class="ex-text" data-tw="Our school has a fantastic electronics lab."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#6366f1">THEIR</span>
+      <span class="ex-text" data-tw="Tom and Sara forgot their homework. Again."></span>
+    </div>
+    <div class="warn">
+      ⚠ L'aggettivo possessivo va sempre <strong>prima del nome</strong>:<br>
+      <span class="ok">my book ✓</span> &nbsp;—&nbsp; <span class="no">book my</span> ✗
+    </div>
+  </div>
+
+</div><!-- /slides -->
+
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+
+<script>
+const total = 4;
+let cur = 0;
+let busy = false;
+
+const dotsEl = document.getElementById('dots');
+for(let i=0;i<total;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  dotsEl.appendChild(d);
+}
+
+function typewrite(el, text, speed){
+  return new Promise(resolve=>{
+    el.textContent='';
+    const cursor=document.createElement('span');
+    cursor.className='cursor';
+    el.appendChild(cursor);
+    let i=0;
+    function tick(){
+      if(i>=text.length){ cursor.remove(); resolve(); return; }
+      cursor.insertAdjacentText('beforebegin',text[i]);
+      i++;
+      setTimeout(tick, speed);
+    }
+    tick();
+  });
+}
+
+async function animateRow(row){
+  const els = row.querySelectorAll('[data-tw]');
+  for(const el of els){
+    el.textContent='';
+    const speed = el.classList.contains('adj') ? 300 : 140;
+    await typewrite(el, el.dataset.tw, speed);
+    await new Promise(r=>setTimeout(r,100));
+  }
+}
+
+async function animateSlide(idx){
+  const slide = document.getElementById('s'+idx);
+  const title = slide.querySelector('.slide-title');
+  if(title){ title.classList.remove('show'); setTimeout(()=>title.classList.add('show'),100); }
+  await new Promise(r=>setTimeout(r,400));
+
+  const rows = slide.querySelectorAll('.row, .ex-row');
+  for(const row of rows){
+    await animateRow(row);
+    await new Promise(r=>setTimeout(r,500));
+  }
+
+  const warn = slide.querySelector('.warn');
+  if(warn){ await new Promise(r=>setTimeout(r,200)); warn.classList.add('show'); }
+}
+
+function go(dir){
+  if(busy) return;
+  const prev=cur;
+  cur=Math.max(0,Math.min(total-1,cur+dir));
+  if(cur===prev) return;
+  busy=true;
+
+  const oldSlide=document.getElementById('s'+prev);
+  const newSlide=document.getElementById('s'+cur);
+
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.querySelectorAll('.slide-title').forEach(t=>t.classList.remove('show'));
+
+  oldSlide.style.transition='opacity 0.25s ease';
+  oldSlide.style.opacity='0';
+
+  setTimeout(()=>{
+    oldSlide.style.cssText='';
+    oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';
+    newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';
+      newSlide.style.opacity='1';
+      setTimeout(()=>{ newSlide.style.cssText=''; busy=false; },260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');
+    dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===total-1;
+  },260);
+}
+
+let tx=0;
+const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) go(dx<0?1:-1);
+},{passive:true});
+
+animateSlide(0);
+</script>
+</body>
+</html>
