@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starter A·B·C – Ripassa</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d0d; font-family: 'Nunito', sans-serif; min-height: 100vh; padding: 24px 16px; }
+
+  .header {
+    max-width: 700px;
+    margin: 0 auto 28px;
+    background: #00CFCF;
+    border-radius: 14px;
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 3px; color: #000; }
+  .header p { font-size: 0.95rem; color: #111; font-weight: 700; margin-top: 4px; }
+
+  .list { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+
+  .item {
+    background: #1a1a1a;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border-left: 5px solid #00CFCF;
+  }
+
+  .item-name { font-weight: 900; font-size: 1.05rem; color: #fff; }
+  .item-args { font-size: 0.82rem; color: #888; margin-top: 3px; }
+
+  .btn-ripassa {
+    background: #00CFCF;
+    color: #000;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .btn-ripassa:hover { background: #00b5b5; }
+  .btn-ripassa.soon { background: #333; color: #666; cursor: not-allowed; }
+
+  .back {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #000;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.9rem;
+    background: #00CFCF;
+    padding: 7px 18px;
+    border-radius: 20px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: fit-content;
+  }
+</style>
+</head>
+<body>
+
+<div style="max-width:700px;margin:0 auto 16px;">
+  <a href="javascript:history.back()" class="back">← Torna indietro</a>
+</div>
+
+<div class="header">
+  <div>
+    <h1>📖 Starter A · B · C</h1>
+    <p>Scegli un argomento da ripassare</p>
+  </div>
+</div>
+
+<div class="list">
+
+  <div class="item">
+    <div>
+      <div class="item-name">Verb BE</div>
+      <div class="item-args">am / is / are · forma contratta · negativa · domande · be + aggettivo</div>
+    </div>
+    <a href="https://cristinavallini64-maker.github.io/grammar-tutor/verb-be-slides.html" target="_blank" class="btn-ripassa">📖 Ripassa</a>
+  </div>
+
+  <div class="item">
+    <div>
+      <div class="item-name">Possessive Adjectives</div>
+      <div class="item-args">my · your · his · her · its · our · their</div>
+    </div>
+    <a href="https://cristinavallini64-maker.github.io/grammar-tutor/possessive-adjectives.html" target="_blank" class="btn-ripassa">📖 Ripassa</a>
+  </div>
+
+  <div class="item">
+    <div>
+      <div class="item-name">Question Words</div>
+      <div class="item-args">who · what · where · when · why · how</div>
+    </div>
+    <span class="btn-ripassa soon">🔜 Prossimamente</span>
+  </div>
+
+  <div class="item">
+    <div>
+      <div class="item-name">Articles: a / an · the</div>
+      <div class="item-args">articolo indeterminativo e determinativo</div>
+    </div>
+    <span class="btn-ripassa soon">🔜 Prossimamente</span>
+  </div>
+
+  <div class="item">
+    <div>
+      <div class="item-name">Plural Nouns</div>
+      <div class="item-args">regola generale · eccezioni · plurali irregolari</div>
+    </div>
+    <span class="btn-ripassa soon">🔜 Prossimamente</span>
+  </div>
+
+  <div class="item">
+    <div>
+      <div class="item-name">This / That / These / Those</div>
+      <div class="item-args">dimostrativi singolari e plurali · vicino e lontano</div>
+    </div>
+    <span class="btn-ripassa soon">🔜 Prossimamente</span>
+  </div>
+
+  <div class="item">
+    <div>
+      <div class="item-name">Have Got</div>
+      <div class="item-args">affermativa · negativa · domande · forma contratta</div>
+    </div>
+    <span class="btn-ripassa soon">🔜 Prossimamente</span>
+  </div>
+
+  <div class="item">
+    <div>
+      <div class="item-name">Possessive 's</div>
+      <div class="item-args">il genitivo sassone · singolare e plurale</div>
+    </div>
+    <span class="btn-ripassa soon">🔜 Prossimamente</span>
+  </div>
+
+  <div class="item">
+    <div>
+      <div class="item-name">Possessive Pronouns</div>
+      <div class="item-args">mine · yours · his · hers · its · ours · theirs</div>
+    </div>
+    <span class="btn-ripassa soon">🔜 Prossimamente</span>
+  </div>
+
+</div>
+
+</body>
+</html>
