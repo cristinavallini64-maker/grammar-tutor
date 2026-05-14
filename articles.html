@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Articles: a / an / the</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{
+  font-family:'Poppins',sans-serif;
+  background:#fff;
+  color:#111;
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 22px;
+  border-bottom:4px solid #f59e0b;
+  flex-shrink:0;
+}
+.title{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(1rem,3.5vw,1.5rem);
+  letter-spacing:3px;color:#f59e0b;
+}
+.prog{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.7rem,2vw,0.9rem);
+  color:#999;letter-spacing:2px;
+}
+.dots{
+  display:flex;gap:10px;justify-content:center;
+  padding:8px 0;flex-shrink:0;
+}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#f59e0b;}
+
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  padding:18px 24px 16px;
+  visibility:hidden;
+  overflow-y:auto;
+}
+.slide.active{visibility:visible;}
+
+.slide-title{
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:clamp(0.75rem,2.5vw,0.95rem);
+  letter-spacing:2px;
+  margin-bottom:14px;
+  padding-bottom:8px;
+  border-bottom:2px solid #eee;
+  flex-shrink:0;
+  opacity:0;transition:opacity 0.4s;
+}
+.slide-title.show{opacity:1;}
+
+/* righe con etichetta + testo */
+.ex-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:11px 0;
+  border-bottom:1px solid #f0f0f0;
+  flex-wrap:wrap;
+  min-height:48px;
+}
+.ex-row:last-of-type{border-bottom:none;}
+.ex-label{
+  font-size:clamp(0.75rem,2.2vw,0.85rem);font-weight:700;
+  padding:5px 12px;border-radius:20px;
+  color:#fff;white-space:nowrap;flex-shrink:0;
+  font-family:'Orbitron',monospace;letter-spacing:1px;
+  min-width:70px;text-align:center;
+}
+.ex-text{font-size:clamp(1rem,3.5vw,1.25rem);font-weight:400;color:#111;flex:1;}
+
+.cursor{
+  display:inline-block;width:2px;height:1em;
+  background:#f59e0b;vertical-align:middle;margin-left:1px;
+  animation:blink 0.6s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+.warn{
+  margin-top:12px;
+  background:#fffbeb;border-left:5px solid #f59e0b;
+  border-radius:0 8px 8px 0;
+  padding:12px 16px;
+  font-size:clamp(0.95rem,3.2vw,1.1rem);
+  color:#111;font-weight:600;line-height:1.8;
+  flex-shrink:0;opacity:0;transition:opacity 0.5s;
+}
+.warn.show{opacity:1;}
+.warn strong{color:#f59e0b;}
+.ok{color:#16a34a;}
+.no{color:#dc2626;text-decoration:line-through;}
+
+.nav{
+  display:flex;align-items:center;justify-content:center;gap:20px;
+  padding:10px 20px 14px;flex-shrink:0;
+}
+.btn-nav{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.6rem,2vw,0.75rem);
+  font-weight:700;letter-spacing:2px;
+  padding:10px 24px;border-radius:8px;
+  border:2px solid #f59e0b;
+  background:#fff;color:#f59e0b;
+  cursor:pointer;transition:all 0.2s;
+}
+.btn-nav:hover{background:#f59e0b;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="title">📖 ARTICLES: A / AN / THE</div>
+  <div class="prog" id="prog">1 / 4</div>
+</div>
+<div class="dots" id="dots"></div>
+
+<div class="slides">
+
+  <!-- SLIDE 0: A vs AN -->
+  <div class="slide active" id="s0">
+    <div class="slide-title" style="color:#f59e0b">📖 A o AN? Dipende dal suono iniziale!</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">A</span>
+      <span class="ex-text" data-tw="a book — consonante (b)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">A</span>
+      <span class="ex-text" data-tw="a student — consonante (s)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">A</span>
+      <span class="ex-text" data-tw="a university — suono /j/ (non vocale!)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">A</span>
+      <span class="ex-text" data-tw="a European country — suono /j/"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">AN</span>
+      <span class="ex-text" data-tw="an apple — vocale (a)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">AN</span>
+      <span class="ex-text" data-tw="an engineer — vocale (e)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">AN</span>
+      <span class="ex-text" data-tw="an umbrella — vocale (u)"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">AN</span>
+      <span class="ex-text" data-tw="an hour — la H è muta, suono /aʊ/"></span>
+    </div>
+    <div class="warn">
+      ⚠ La regola dipende dal <strong>suono</strong>, non dalla lettera scritta!<br>
+      <span class="ok">a university ✓</span> (suono /j/) &nbsp;—&nbsp; <span class="ok">an hour ✓</span> (H muta)
+    </div>
+  </div>
+
+  <!-- SLIDE 1: quando si usa A/AN -->
+  <div class="slide" id="s1">
+    <div class="slide-title" style="color:#f59e0b">📖 QUANDO si usa A / AN</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">1ª volta</span>
+      <span class="ex-text" data-tw="I have a dog. — ne parlo per la prima volta"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">1ª volta</span>
+      <span class="ex-text" data-tw="There is a new student in class."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f97316">categoria</span>
+      <span class="ex-text" data-tw="She is a doctor. — professione / categoria"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f97316">categoria</span>
+      <span class="ex-text" data-tw="It's a mammal. — classificazione"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#a855f7">quantità</span>
+      <span class="ex-text" data-tw="I drink a glass of water every morning."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#a855f7">quantità</span>
+      <span class="ex-text" data-tw="He earns €30,000 a year."></span>
+    </div>
+    <div class="warn">
+      ⚠ A / AN si usa solo con nomi <strong>singolari numerabili</strong>:<br>
+      <span class="ok">a book ✓</span> &nbsp;·&nbsp; <span class="no">a books</span> ✗ &nbsp;·&nbsp; <span class="no">a water</span> ✗
+    </div>
+  </div>
+
+  <!-- SLIDE 2: quando si usa THE -->
+  <div class="slide" id="s2">
+    <div class="slide-title" style="color:#0ea5e9">📖 QUANDO si usa THE</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#0ea5e9">già noto</span>
+      <span class="ex-text" data-tw="I have a dog. The dog is very friendly."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#0ea5e9">già noto</span>
+      <span class="ex-text" data-tw="There's a café near school. The café is great."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">unico</span>
+      <span class="ex-text" data-tw="The sun is a star. — ce n'è solo uno"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">unico</span>
+      <span class="ex-text" data-tw="The President of Italy is in Rome."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#6366f1">superlat.</span>
+      <span class="ex-text" data-tw="It's the best film of the year."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#6366f1">superlat.</span>
+      <span class="ex-text" data-tw="She's the tallest girl in the class."></span>
+    </div>
+    <div class="warn">
+      ⚠ <strong>THE</strong> si usa con singolari, plurali e non numerabili:<br>
+      <span class="ok">the book ✓</span> &nbsp;·&nbsp; <span class="ok">the books ✓</span> &nbsp;·&nbsp; <span class="ok">the water ✓</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: zero article -->
+  <div class="slide" id="s3">
+    <div class="slide-title" style="color:#ef4444">🚫 QUANDO non si mette nessun articolo</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">plurali</span>
+      <span class="ex-text" data-tw="Dogs are friendly animals. — in generale"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">plurali</span>
+      <span class="ex-text" data-tw="Students need to study every day."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f97316">non num.</span>
+      <span class="ex-text" data-tw="Water is essential for life. — in generale"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f97316">non num.</span>
+      <span class="ex-text" data-tw="I love music and sport."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#a855f7">nomi propri</span>
+      <span class="ex-text" data-tw="Italy is in Europe. — paesi, città, persone"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#a855f7">nomi propri</span>
+      <span class="ex-text" data-tw="Marco lives in Vicenza."></span>
+    </div>
+    <div class="warn">
+      ⚠ Attenzione: <span class="ok">the United Kingdom ✓</span> · <span class="ok">the Netherlands ✓</span><br>
+      Con alcuni paesi di nome plurale o composto si usa <strong>the</strong>!
+    </div>
+  </div>
+
+</div><!-- /slides -->
+
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+
+<script>
+const total = 4;
+let cur = 0;
+let busy = false;
+
+const dotsEl = document.getElementById('dots');
+for(let i=0;i<total;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  dotsEl.appendChild(d);
+}
+
+function typewrite(el, text, speed){
+  return new Promise(resolve=>{
+    el.textContent='';
+    const cursor=document.createElement('span');
+    cursor.className='cursor';
+    el.appendChild(cursor);
+    let i=0;
+    function tick(){
+      if(i>=text.length){ cursor.remove(); resolve(); return; }
+      cursor.insertAdjacentText('beforebegin',text[i]);
+      i++;
+      setTimeout(tick, speed);
+    }
+    tick();
+  });
+}
+
+async function animateRow(row){
+  const els = row.querySelectorAll('[data-tw]');
+  for(const el of els){
+    el.textContent='';
+    await typewrite(el, el.dataset.tw, 90);
+    await new Promise(r=>setTimeout(r,120));
+  }
+}
+
+async function animateSlide(idx){
+  const slide = document.getElementById('s'+idx);
+  const title = slide.querySelector('.slide-title');
+  if(title){ title.classList.remove('show'); setTimeout(()=>title.classList.add('show'),100); }
+  await new Promise(r=>setTimeout(r,400));
+
+  const rows = slide.querySelectorAll('.ex-row');
+  for(const row of rows){
+    await animateRow(row);
+    await new Promise(r=>setTimeout(r,500));
+  }
+
+  const warn = slide.querySelector('.warn');
+  if(warn){ await new Promise(r=>setTimeout(r,200)); warn.classList.add('show'); }
+}
+
+function go(dir){
+  if(busy) return;
+  const prev=cur;
+  cur=Math.max(0,Math.min(total-1,cur+dir));
+  if(cur===prev) return;
+  busy=true;
+
+  const oldSlide=document.getElementById('s'+prev);
+  const newSlide=document.getElementById('s'+cur);
+
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.querySelectorAll('.slide-title').forEach(t=>t.classList.remove('show'));
+
+  oldSlide.style.transition='opacity 0.25s ease';
+  oldSlide.style.opacity='0';
+
+  setTimeout(()=>{
+    oldSlide.style.cssText='';
+    oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';
+    newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';
+      newSlide.style.opacity='1';
+      setTimeout(()=>{ newSlide.style.cssText=''; busy=false; },260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');
+    dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===total-1;
+  },260);
+}
+
+let tx=0;
+const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) go(dx<0?1:-1);
+},{passive:true});
+
+animateSlide(0);
+</script>
+</body>
+</html>
