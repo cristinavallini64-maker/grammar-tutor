@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Have Got / Have</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{
+  font-family:'Poppins',sans-serif;
+  background:#fff;
+  color:#111;
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 22px;
+  border-bottom:4px solid #06b6d4;
+  flex-shrink:0;
+}
+.title{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(0.85rem,3vw,1.3rem);
+  letter-spacing:3px;color:#06b6d4;
+}
+.prog{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.7rem,2vw,0.9rem);
+  color:#999;letter-spacing:2px;
+}
+.dots{
+  display:flex;gap:10px;justify-content:center;
+  padding:8px 0;flex-shrink:0;
+}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#06b6d4;}
+
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  padding:18px 24px 16px;
+  visibility:hidden;
+  overflow-y:auto;
+}
+.slide.active{visibility:visible;}
+
+.slide-title{
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:clamp(0.75rem,2.5vw,0.95rem);
+  letter-spacing:2px;
+  margin-bottom:14px;
+  padding-bottom:8px;
+  border-bottom:2px solid #eee;
+  flex-shrink:0;
+  opacity:0;transition:opacity 0.4s;
+}
+.slide-title.show{opacity:1;}
+
+/* tabella: pronome / verbo / contrazione / esempio */
+.row{
+  display:grid;
+  grid-template-columns: 65px 120px 110px 1fr;
+  align-items:center;
+  gap:10px;
+  padding:8px 0;
+  border-bottom:1px solid #f0f0f0;
+  min-height:44px;
+}
+.row:last-of-type{border-bottom:none;}
+.pro{
+  font-size:clamp(0.95rem,3vw,1.15rem);font-weight:700;color:#111;
+}
+.vb{
+  font-size:clamp(0.95rem,3vw,1.2rem);font-weight:900;
+}
+.contr{
+  font-size:clamp(0.9rem,2.8vw,1.1rem);font-weight:600;color:#555;
+}
+.ex{
+  font-size:clamp(0.85rem,2.6vw,1rem);font-weight:400;color:#444;
+}
+
+/* righe esempi */
+.ex-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 0;
+  border-bottom:1px solid #f0f0f0;
+  flex-wrap:wrap;
+  min-height:46px;
+}
+.ex-row:last-of-type{border-bottom:none;}
+.ex-label{
+  font-size:clamp(0.65rem,1.8vw,0.78rem);font-weight:700;
+  padding:4px 10px;border-radius:20px;
+  color:#fff;white-space:nowrap;flex-shrink:0;
+  font-family:'Orbitron',monospace;letter-spacing:1px;
+  min-width:75px;text-align:center;
+}
+.ex-text{font-size:clamp(0.95rem,3.2vw,1.2rem);font-weight:400;color:#111;flex:1;}
+
+/* griglia espressioni */
+.expr-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+  gap:8px;
+  margin-top:4px;
+}
+.expr-card{
+  border-radius:10px;
+  padding:8px 12px;
+  opacity:0;transform:translateY(10px);
+  transition:all 0.35s ease;
+}
+.expr-card.on{opacity:1;transform:translateY(0);}
+.expr-en{font-size:clamp(0.95rem,3vw,1.1rem);font-weight:700;}
+.expr-it{font-size:clamp(0.8rem,2.5vw,0.9rem);font-weight:400;color:#555;margin-top:1px;}
+
+.cursor{
+  display:inline-block;width:2px;height:1em;
+  background:#06b6d4;vertical-align:middle;margin-left:1px;
+  animation:blink 0.6s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+.warn{
+  margin-top:10px;
+  background:#ecfeff;border-left:5px solid #06b6d4;
+  border-radius:0 8px 8px 0;
+  padding:12px 16px;
+  font-size:clamp(0.9rem,3vw,1.05rem);
+  color:#111;font-weight:600;line-height:1.8;
+  flex-shrink:0;opacity:0;transition:opacity 0.5s;
+}
+.warn.show{opacity:1;}
+.warn strong{color:#06b6d4;}
+.ok{color:#16a34a;}
+.no{color:#dc2626;text-decoration:line-through;}
+
+.nav{
+  display:flex;align-items:center;justify-content:center;gap:20px;
+  padding:10px 20px 14px;flex-shrink:0;
+}
+.btn-nav{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.6rem,2vw,0.75rem);
+  font-weight:700;letter-spacing:2px;
+  padding:10px 24px;border-radius:8px;
+  border:2px solid #06b6d4;
+  background:#fff;color:#06b6d4;
+  cursor:pointer;transition:all 0.2s;
+}
+.btn-nav:hover{background:#06b6d4;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="title">💡 HAVE GOT / HAVE</div>
+  <div class="prog" id="prog">1 / 5</div>
+</div>
+<div class="dots" id="dots"></div>
+
+<div class="slides">
+
+  <!-- SLIDE 0: HAVE GOT affermativa + negativa -->
+  <div class="slide active" id="s0">
+    <div class="slide-title" style="color:#06b6d4">💡 HAVE GOT — affermativa e negativa</div>
+    <div class="row">
+      <span class="pro">I / you</span>
+      <span class="vb" style="color:#06b6d4" data-tw="have got"></span>
+      <span class="contr" data-tw="'ve got"></span>
+      <span class="ex" data-tw="I've got a dog."></span>
+    </div>
+    <div class="row">
+      <span class="pro">he / she</span>
+      <span class="vb" style="color:#06b6d4" data-tw="has got"></span>
+      <span class="contr" data-tw="'s got"></span>
+      <span class="ex" data-tw="She's got a new bike."></span>
+    </div>
+    <div class="row">
+      <span class="pro">we / they</span>
+      <span class="vb" style="color:#06b6d4" data-tw="have got"></span>
+      <span class="contr" data-tw="'ve got"></span>
+      <span class="ex" data-tw="They've got two cats."></span>
+    </div>
+    <div class="row">
+      <span class="pro">I / you</span>
+      <span class="vb" style="color:#ef4444" data-tw="haven't got"></span>
+      <span class="contr" data-tw="—"></span>
+      <span class="ex" data-tw="I haven't got a car."></span>
+    </div>
+    <div class="row">
+      <span class="pro">he / she</span>
+      <span class="vb" style="color:#ef4444" data-tw="hasn't got"></span>
+      <span class="contr" data-tw="—"></span>
+      <span class="ex" data-tw="He hasn't got a sister."></span>
+    </div>
+    <div class="row">
+      <span class="pro">we / they</span>
+      <span class="vb" style="color:#ef4444" data-tw="haven't got"></span>
+      <span class="contr" data-tw="—"></span>
+      <span class="ex" data-tw="We haven't got a garden."></span>
+    </div>
+    <div class="warn">
+      ⚠ <strong>have got</strong> = <strong>has got</strong> con he / she / it<br>
+      Negativo: <span class="ok">haven't got</span> · <span class="ok">hasn't got</span> — non si usa <strong>not</strong> da solo!
+    </div>
+  </div>
+
+  <!-- SLIDE 1: HAVE GOT domande -->
+  <div class="slide" id="s1">
+    <div class="slide-title" style="color:#06b6d4">❓ HAVE GOT — domande e risposte brevi</div>
+    <div class="row">
+      <span class="pro">I / you</span>
+      <span class="vb" style="color:#f59e0b" data-tw="Have you got…?"></span>
+      <span class="contr" data-tw="Yes, I have."></span>
+      <span class="ex" data-tw="No, I haven't."></span>
+    </div>
+    <div class="row">
+      <span class="pro">he / she</span>
+      <span class="vb" style="color:#f59e0b" data-tw="Has she got…?"></span>
+      <span class="contr" data-tw="Yes, she has."></span>
+      <span class="ex" data-tw="No, she hasn't."></span>
+    </div>
+    <div class="row">
+      <span class="pro">we / they</span>
+      <span class="vb" style="color:#f59e0b" data-tw="Have they got…?"></span>
+      <span class="contr" data-tw="Yes, they have."></span>
+      <span class="ex" data-tw="No, they haven't."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">?</span>
+      <span class="ex-text" data-tw="Have you got a pet? — Yes, I have. I've got a rabbit."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">?</span>
+      <span class="ex-text" data-tw="Has Marco got a smartphone? — No, he hasn't."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">?</span>
+      <span class="ex-text" data-tw="Have they got a big house? — Yes, they have."></span>
+    </div>
+    <div class="warn">
+      ⚠ Nelle risposte brevi <strong>mai la contrazione affermativa</strong>:<br>
+      <span class="ok">Yes, I have. ✓</span> &nbsp;—&nbsp; <span class="no">Yes, I've.</span> ✗
+    </div>
+  </div>
+
+  <!-- SLIDE 2: HAVE senza got con DO/DOES -->
+  <div class="slide" id="s2">
+    <div class="slide-title" style="color:#a855f7">💡 HAVE (senza got) — si coniuga con DO / DOES</div>
+    <div class="row">
+      <span class="pro">I / you</span>
+      <span class="vb" style="color:#a855f7" data-tw="have"></span>
+      <span class="contr" data-tw="do / don't"></span>
+      <span class="ex" data-tw="I have a dog. / I don't have a dog."></span>
+    </div>
+    <div class="row">
+      <span class="pro">he / she</span>
+      <span class="vb" style="color:#a855f7" data-tw="has"></span>
+      <span class="contr" data-tw="does / doesn't"></span>
+      <span class="ex" data-tw="She has a bike. / She doesn't have a bike."></span>
+    </div>
+    <div class="row">
+      <span class="pro">we / they</span>
+      <span class="vb" style="color:#a855f7" data-tw="have"></span>
+      <span class="contr" data-tw="do / don't"></span>
+      <span class="ex" data-tw="They have a cat. / They don't have a cat."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">NEG.</span>
+      <span class="ex-text" data-tw="I don't have a brother."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#ef4444">NEG.</span>
+      <span class="ex-text" data-tw="She doesn't have a car."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">?</span>
+      <span class="ex-text" data-tw="Do you have a pet? — Yes, I do."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#f59e0b">?</span>
+      <span class="ex-text" data-tw="Does she have a sister? — No, she doesn't."></span>
+    </div>
+    <div class="warn">
+      ⚠ Con <strong>have</strong> (possesso, senza got) si usa <strong>do / does</strong> per negativo e domande:<br>
+      <span class="ok">Does he have a dog? ✓</span> &nbsp;—&nbsp; <span class="no">Has he a dog?</span> ✗ (solo British English formale)
+    </div>
+  </div>
+
+  <!-- SLIDE 3: HAVE GOT vs HAVE a confronto -->
+  <div class="slide" id="s3">
+    <div class="slide-title" style="color:#10b981">⚡ HAVE GOT vs HAVE — stessa frase, due modi</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#06b6d4">HAVE GOT</span>
+      <span class="ex-text" data-tw="I've got a dog. / I haven't got a dog."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#a855f7">HAVE</span>
+      <span class="ex-text" data-tw="I have a dog. / I don't have a dog."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#06b6d4">HAVE GOT</span>
+      <span class="ex-text" data-tw="She's got a new phone. / She hasn't got a new phone."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#a855f7">HAVE</span>
+      <span class="ex-text" data-tw="She has a new phone. / She doesn't have a new phone."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#06b6d4">HAVE GOT</span>
+      <span class="ex-text" data-tw="Have you got a pen? — Yes, I have."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#a855f7">HAVE</span>
+      <span class="ex-text" data-tw="Do you have a pen? — Yes, I do."></span>
+    </div>
+    <div class="warn">
+      ⚠ <strong>Have got</strong> = più comune in British English<br>
+      <strong>Have</strong> (con do/does) = più comune in American English<br>
+      Entrambi corretti — ma <span class="ok">non mescolarli</span> nella stessa frase!
+    </div>
+  </div>
+
+  <!-- SLIDE 4: HAVE in espressioni fisse -->
+  <div class="slide" id="s4">
+    <div class="slide-title" style="color:#f97316">🔥 HAVE in espressioni fisse — sempre con DO / DOES!</div>
+    <div class="expr-grid" id="exprGrid">
+      <div class="expr-card" style="background:#fff7ed;border-left:4px solid #f97316">
+        <div class="expr-en" style="color:#f97316">have breakfast</div>
+        <div class="expr-it">fare colazione</div>
+      </div>
+      <div class="expr-card" style="background:#fff7ed;border-left:4px solid #f97316">
+        <div class="expr-en" style="color:#f97316">have lunch</div>
+        <div class="expr-it">pranzare</div>
+      </div>
+      <div class="expr-card" style="background:#fff7ed;border-left:4px solid #f97316">
+        <div class="expr-en" style="color:#f97316">have dinner</div>
+        <div class="expr-it">cenare</div>
+      </div>
+      <div class="expr-card" style="background:#fdf4ff;border-left:4px solid #a855f7">
+        <div class="expr-en" style="color:#a855f7">have a shower</div>
+        <div class="expr-it">fare la doccia</div>
+      </div>
+      <div class="expr-card" style="background:#fdf4ff;border-left:4px solid #a855f7">
+        <div class="expr-en" style="color:#a855f7">have a bath</div>
+        <div class="expr-it">fare il bagno</div>
+      </div>
+      <div class="expr-card" style="background:#fdf4ff;border-left:4px solid #a855f7">
+        <div class="expr-en" style="color:#a855f7">have a wash</div>
+        <div class="expr-it">lavarsi</div>
+      </div>
+      <div class="expr-card" style="background:#f0fdf4;border-left:4px solid #10b981">
+        <div class="expr-en" style="color:#10b981">have a good time</div>
+        <div class="expr-it">divertirsi</div>
+      </div>
+      <div class="expr-card" style="background:#f0fdf4;border-left:4px solid #10b981">
+        <div class="expr-en" style="color:#10b981">have fun</div>
+        <div class="expr-it">divertirsi</div>
+      </div>
+      <div class="expr-card" style="background:#f0fdf4;border-left:4px solid #10b981">
+        <div class="expr-en" style="color:#10b981">have a rest</div>
+        <div class="expr-it">riposarsi</div>
+      </div>
+      <div class="expr-card" style="background:#eff6ff;border-left:4px solid #3b82f6">
+        <div class="expr-en" style="color:#3b82f6">have a drink</div>
+        <div class="expr-it">bere qualcosa</div>
+      </div>
+      <div class="expr-card" style="background:#eff6ff;border-left:4px solid #3b82f6">
+        <div class="expr-en" style="color:#3b82f6">have a coffee</div>
+        <div class="expr-it">prendere un caffè</div>
+      </div>
+      <div class="expr-card" style="background:#eff6ff;border-left:4px solid #3b82f6">
+        <div class="expr-en" style="color:#3b82f6">have a snack</div>
+        <div class="expr-it">fare uno spuntino</div>
+      </div>
+      <div class="expr-card" style="background:#fef2f2;border-left:4px solid #ef4444">
+        <div class="expr-en" style="color:#ef4444">have a look</div>
+        <div class="expr-it">dare un'occhiata</div>
+      </div>
+      <div class="expr-card" style="background:#fef2f2;border-left:4px solid #ef4444">
+        <div class="expr-en" style="color:#ef4444">have a dream</div>
+        <div class="expr-it">fare un sogno</div>
+      </div>
+      <div class="expr-card" style="background:#fef2f2;border-left:4px solid #ef4444">
+        <div class="expr-en" style="color:#ef4444">have a chat</div>
+        <div class="expr-it">fare due chiacchiere</div>
+      </div>
+      <div class="expr-card" style="background:#fefce8;border-left:4px solid #eab308">
+        <div class="expr-en" style="color:#eab308">have a problem</div>
+        <div class="expr-it">avere un problema</div>
+      </div>
+      <div class="expr-card" style="background:#fefce8;border-left:4px solid #eab308">
+        <div class="expr-en" style="color:#eab308">have an argument</div>
+        <div class="expr-it">litigare</div>
+      </div>
+      <div class="expr-card" style="background:#fefce8;border-left:4px solid #eab308">
+        <div class="expr-en" style="color:#eab308">have a meeting</div>
+        <div class="expr-it">avere una riunione</div>
+      </div>
+      <div class="expr-card" style="background:#f5f3ff;border-left:4px solid #6366f1">
+        <div class="expr-en" style="color:#6366f1">have a class</div>
+        <div class="expr-it">avere lezione</div>
+      </div>
+      <div class="expr-card" style="background:#f5f3ff;border-left:4px solid #6366f1">
+        <div class="expr-en" style="color:#6366f1">have a test</div>
+        <div class="expr-it">avere un compito in classe</div>
+      </div>
+      <div class="expr-card" style="background:#f5f3ff;border-left:4px solid #6366f1">
+        <div class="expr-en" style="color:#6366f1">have a holiday</div>
+        <div class="expr-it">essere in vacanza</div>
+      </div>
+    </div>
+    <div class="warn">
+      ⚠ Con queste espressioni <strong>mai have got</strong>:<br>
+      <span class="ok">Do you have breakfast every day? ✓</span><br>
+      <span class="no">Have you got breakfast every day?</span> ✗
+    </div>
+  </div>
+
+</div><!-- /slides -->
+
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+
+<script>
+const total = 5;
+let cur = 0;
+let busy = false;
+
+const dotsEl = document.getElementById('dots');
+for(let i=0;i<total;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  dotsEl.appendChild(d);
+}
+
+function typewrite(el, text, speed){
+  return new Promise(resolve=>{
+    el.textContent='';
+    const cursor=document.createElement('span');
+    cursor.className='cursor';
+    el.appendChild(cursor);
+    let i=0;
+    function tick(){
+      if(i>=text.length){ cursor.remove(); resolve(); return; }
+      cursor.insertAdjacentText('beforebegin',text[i]);
+      i++;
+      setTimeout(tick, speed);
+    }
+    tick();
+  });
+}
+
+async function animateRow(row){
+  const els = row.querySelectorAll('[data-tw]');
+  for(const el of els){
+    el.textContent='';
+    const isVerb = el.classList.contains('vb');
+    await typewrite(el, el.dataset.tw, isVerb ? 180 : 80);
+    await new Promise(r=>setTimeout(r,100));
+  }
+}
+
+async function animateExprGrid(){
+  const cards = document.querySelectorAll('#exprGrid .expr-card');
+  for(const card of cards){
+    card.classList.add('on');
+    await new Promise(r=>setTimeout(r,120));
+  }
+}
+
+async function animateSlide(idx){
+  const slide = document.getElementById('s'+idx);
+  const title = slide.querySelector('.slide-title');
+  if(title){ title.classList.remove('show'); setTimeout(()=>title.classList.add('show'),100); }
+  await new Promise(r=>setTimeout(r,400));
+
+  if(idx === 4){
+    // slide espressioni: cards una alla volta
+    document.querySelectorAll('#exprGrid .expr-card').forEach(c=>c.classList.remove('on'));
+    await animateExprGrid();
+  } else {
+    const rows = slide.querySelectorAll('.row, .ex-row');
+    for(const row of rows){
+      await animateRow(row);
+      await new Promise(r=>setTimeout(r,500));
+    }
+  }
+
+  const warn = slide.querySelector('.warn');
+  if(warn){ await new Promise(r=>setTimeout(r,200)); warn.classList.add('show'); }
+}
+
+function go(dir){
+  if(busy) return;
+  const prev=cur;
+  cur=Math.max(0,Math.min(total-1,cur+dir));
+  if(cur===prev) return;
+  busy=true;
+
+  const oldSlide=document.getElementById('s'+prev);
+  const newSlide=document.getElementById('s'+cur);
+
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.querySelectorAll('.slide-title').forEach(t=>t.classList.remove('show'));
+  oldSlide.querySelectorAll('.expr-card').forEach(c=>c.classList.remove('on'));
+
+  oldSlide.style.transition='opacity 0.25s ease';
+  oldSlide.style.opacity='0';
+
+  setTimeout(()=>{
+    oldSlide.style.cssText='';
+    oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';
+    newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';
+      newSlide.style.opacity='1';
+      setTimeout(()=>{ newSlide.style.cssText=''; busy=false; },260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');
+    dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===total-1;
+  },260);
+}
+
+let tx=0;
+const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) go(dx<0?1:-1);
+},{passive:true});
+
+animateSlide(0);
+</script>
+</body>
+</html>
