@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Possessive 's</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{
+  font-family:'Poppins',sans-serif;
+  background:#fff;
+  color:#111;
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 22px;
+  border-bottom:4px solid #e11d48;
+  flex-shrink:0;
+}
+.title{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(1rem,3.5vw,1.5rem);
+  letter-spacing:3px;color:#e11d48;
+}
+.prog{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.7rem,2vw,0.9rem);
+  color:#999;letter-spacing:2px;
+}
+.dots{
+  display:flex;gap:10px;justify-content:center;
+  padding:8px 0;flex-shrink:0;
+}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#e11d48;}
+
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  padding:18px 24px 16px;
+  visibility:hidden;
+  overflow-y:auto;
+}
+.slide.active{visibility:visible;}
+
+.slide-title{
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:clamp(0.75rem,2.5vw,0.95rem);
+  letter-spacing:2px;
+  margin-bottom:14px;
+  padding-bottom:8px;
+  border-bottom:2px solid #eee;
+  flex-shrink:0;
+  opacity:0;transition:opacity 0.4s;
+}
+.slide-title.show{opacity:1;}
+
+/* tabella: struttura → esempio → traduzione */
+.row{
+  display:grid;
+  grid-template-columns: 180px 1fr 1fr;
+  align-items:center;
+  gap:14px;
+  padding:9px 0;
+  border-bottom:1px solid #f0f0f0;
+  min-height:46px;
+}
+.row:last-of-type{border-bottom:none;}
+.struct{
+  font-size:clamp(0.95rem,3vw,1.15rem);font-weight:900;
+}
+.eng{font-size:clamp(0.95rem,3vw,1.15rem);font-weight:400;color:#111;}
+.ita{font-size:clamp(0.9rem,2.8vw,1.05rem);font-weight:400;color:#777;font-style:italic;}
+
+/* righe esempi */
+.ex-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:11px 0;
+  border-bottom:1px solid #f0f0f0;
+  flex-wrap:wrap;
+  min-height:48px;
+}
+.ex-row:last-of-type{border-bottom:none;}
+.ex-label{
+  font-size:clamp(0.65rem,1.8vw,0.78rem);font-weight:700;
+  padding:4px 10px;border-radius:20px;
+  color:#fff;white-space:nowrap;flex-shrink:0;
+  font-family:'Orbitron',monospace;letter-spacing:1px;
+  min-width:80px;text-align:center;
+}
+.ex-text{font-size:clamp(1rem,3.5vw,1.25rem);font-weight:400;color:#111;flex:1;}
+
+.cursor{
+  display:inline-block;width:2px;height:1em;
+  background:#e11d48;vertical-align:middle;margin-left:1px;
+  animation:blink 0.6s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+.warn{
+  margin-top:12px;
+  background:#fff1f2;border-left:5px solid #e11d48;
+  border-radius:0 8px 8px 0;
+  padding:12px 16px;
+  font-size:clamp(0.95rem,3.2vw,1.05rem);
+  color:#111;font-weight:600;line-height:1.8;
+  flex-shrink:0;opacity:0;transition:opacity 0.5s;
+}
+.warn.show{opacity:1;}
+.warn strong{color:#e11d48;}
+.ok{color:#16a34a;}
+.no{color:#dc2626;text-decoration:line-through;}
+
+.nav{
+  display:flex;align-items:center;justify-content:center;gap:20px;
+  padding:10px 20px 14px;flex-shrink:0;
+}
+.btn-nav{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(0.6rem,2vw,0.75rem);
+  font-weight:700;letter-spacing:2px;
+  padding:10px 24px;border-radius:8px;
+  border:2px solid #e11d48;
+  background:#fff;color:#e11d48;
+  cursor:pointer;transition:all 0.2s;
+}
+.btn-nav:hover{background:#e11d48;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="title">🔗 POSSESSIVE 'S</div>
+  <div class="prog" id="prog">1 / 3</div>
+</div>
+<div class="dots" id="dots"></div>
+
+<div class="slides">
+
+  <!-- SLIDE 0: la regola -->
+  <div class="slide active" id="s0">
+    <div class="slide-title" style="color:#e11d48">🔗 LA REGOLA — PERSONA + 'S + COSA POSSEDUTA</div>
+    <div class="row">
+      <span class="struct" style="color:#e11d48" data-tw="Marco's bike"></span>
+      <span class="eng" data-tw="Marco's bike is red."></span>
+      <span class="ita" data-tw="la bici di Marco"></span>
+    </div>
+    <div class="row">
+      <span class="struct" style="color:#e11d48" data-tw="Sara's dog"></span>
+      <span class="eng" data-tw="Sara's dog is very big."></span>
+      <span class="ita" data-tw="il cane di Sara"></span>
+    </div>
+    <div class="row">
+      <span class="struct" style="color:#e11d48" data-tw="my mum's phone"></span>
+      <span class="eng" data-tw="My mum's phone is new."></span>
+      <span class="ita" data-tw="il telefono di mia mamma"></span>
+    </div>
+    <div class="row">
+      <span class="struct" style="color:#e11d48" data-tw="Tom's sister"></span>
+      <span class="eng" data-tw="Tom's sister is a doctor."></span>
+      <span class="ita" data-tw="la sorella di Tom"></span>
+    </div>
+    <div class="row">
+      <span class="struct" style="color:#e11d48" data-tw="the teacher's bag"></span>
+      <span class="eng" data-tw="The teacher's bag is on the desk."></span>
+      <span class="ita" data-tw="la borsa dell'insegnante"></span>
+    </div>
+    <div class="row">
+      <span class="struct" style="color:#e11d48" data-tw="my friend's car"></span>
+      <span class="eng" data-tw="My friend's car is black."></span>
+      <span class="ita" data-tw="la macchina del mio amico"></span>
+    </div>
+    <div class="warn">
+      ⚠ In italiano si dice <strong>"di + persona"</strong> — in inglese si gira tutto:<br>
+      <span class="ok">Marco's bike ✓</span> &nbsp;—&nbsp; <span class="no">the bike of Marco</span> ✗ (solo con cose, non persone)
+    </div>
+  </div>
+
+  <!-- SLIDE 1: singolare vs plurale -->
+  <div class="slide" id="s1">
+    <div class="slide-title" style="color:#e11d48">⚡ SINGOLARE vs PLURALE — attenzione all'apostrofo!</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#e11d48">SING. + 'S</span>
+      <span class="ex-text" data-tw="my brother's room → la stanza di mio fratello"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#e11d48">SING. + 'S</span>
+      <span class="ex-text" data-tw="the student's book → il libro dello studente"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#e11d48">SING. + 'S</span>
+      <span class="ex-text" data-tw="James's guitar → la chitarra di James"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#3b82f6">PLUR. + S'</span>
+      <span class="ex-text" data-tw="my brothers' room → la stanza dei miei fratelli"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#3b82f6">PLUR. + S'</span>
+      <span class="ex-text" data-tw="the students' books → i libri degli studenti"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">IRREG. + 'S</span>
+      <span class="ex-text" data-tw="the children's toys → i giocattoli dei bambini"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#10b981">IRREG. + 'S</span>
+      <span class="ex-text" data-tw="the women's team → la squadra delle donne"></span>
+    </div>
+    <div class="warn">
+      ⚠ Singolare → <strong>persona + 's</strong> &nbsp;·&nbsp; Plurale regolare → <strong>persone + s'</strong><br>
+      Plurale irregolare (children, women…) → <strong>'s</strong> come il singolare!
+    </div>
+  </div>
+
+  <!-- SLIDE 2: in contesto + errori classici -->
+  <div class="slide" id="s2">
+    <div class="slide-title" style="color:#10b981">✅ IN CONTESTO — frasi complete</div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#e11d48">'S</span>
+      <span class="ex-text" data-tw="Anna's favourite subject is maths."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#e11d48">'S</span>
+      <span class="ex-text" data-tw="My dad's car is really old."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#e11d48">'S</span>
+      <span class="ex-text" data-tw="What's your best friend's name?"></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#e11d48">'S</span>
+      <span class="ex-text" data-tw="The school's website is very modern."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#3b82f6">S'</span>
+      <span class="ex-text" data-tw="The teachers' meeting is on Monday."></span>
+    </div>
+    <div class="ex-row">
+      <span class="ex-label" style="background:#3b82f6">S'</span>
+      <span class="ex-text" data-tw="All the students' phones are on the desk."></span>
+    </div>
+    <div class="warn">
+      ⚠ Non confondere:<br>
+      <span class="ok">Marco's → possessivo</span> &nbsp;·&nbsp; <span class="ok">Marco's late → Marco is late (contrazione)</span><br>
+      Il contesto ti dice quale delle due è!
+    </div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+
+<script>
+const total = 3;
+let cur = 0;
+let busy = false;
+
+const dotsEl = document.getElementById('dots');
+for(let i=0;i<total;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  dotsEl.appendChild(d);
+}
+
+function typewrite(el, text, speed){
+  return new Promise(resolve=>{
+    el.textContent='';
+    const cursor=document.createElement('span');
+    cursor.className='cursor';
+    el.appendChild(cursor);
+    let i=0;
+    function tick(){
+      if(i>=text.length){ cursor.remove(); resolve(); return; }
+      cursor.insertAdjacentText('beforebegin',text[i]);
+      i++;
+      setTimeout(tick, speed);
+    }
+    tick();
+  });
+}
+
+async function animateRow(row){
+  const els = row.querySelectorAll('[data-tw]');
+  for(const el of els){
+    el.textContent='';
+    const isStruct = el.classList.contains('struct');
+    await typewrite(el, el.dataset.tw, isStruct ? 180 : 80);
+    await new Promise(r=>setTimeout(r,100));
+  }
+}
+
+async function animateSlide(idx){
+  const slide = document.getElementById('s'+idx);
+  const title = slide.querySelector('.slide-title');
+  if(title){ title.classList.remove('show'); setTimeout(()=>title.classList.add('show'),100); }
+  await new Promise(r=>setTimeout(r,400));
+
+  const rows = slide.querySelectorAll('.row, .ex-row');
+  for(const row of rows){
+    await animateRow(row);
+    await new Promise(r=>setTimeout(r,500));
+  }
+
+  const warn = slide.querySelector('.warn');
+  if(warn){ await new Promise(r=>setTimeout(r,200)); warn.classList.add('show'); }
+}
+
+function go(dir){
+  if(busy) return;
+  const prev=cur;
+  cur=Math.max(0,Math.min(total-1,cur+dir));
+  if(cur===prev) return;
+  busy=true;
+
+  const oldSlide=document.getElementById('s'+prev);
+  const newSlide=document.getElementById('s'+cur);
+
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.querySelectorAll('.slide-title').forEach(t=>t.classList.remove('show'));
+
+  oldSlide.style.transition='opacity 0.25s ease';
+  oldSlide.style.opacity='0';
+
+  setTimeout(()=>{
+    oldSlide.style.cssText='';
+    oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';
+    newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';
+      newSlide.style.opacity='1';
+      setTimeout(()=>{ newSlide.style.cssText=''; busy=false; },260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');
+    dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===total-1;
+  },260);
+}
+
+let tx=0;
+const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) go(dx<0?1:-1);
+},{passive:true});
+
+animateSlide(0);
+</script>
+</body>
+</html>
