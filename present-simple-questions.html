@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRESENT SIMPLE — Domande e Risposte</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #0077cc;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(1.2rem,4vw,1.8rem);letter-spacing:3px;color:#0077cc;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.7rem,2vw,0.9rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:8px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#0077cc;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:18px 24px 16px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.75rem,2.5vw,0.95rem);letter-spacing:2px;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+.t-blue{color:#0077cc;}.t-red{color:#cc0000;}.t-green{color:#007700;}.t-orange{color:#cc6600;}.t-purple{color:#7700cc;}
+
+.row{display:flex;align-items:baseline;gap:18px;padding:11px 0;border-bottom:1px solid #f0f0f0;flex-wrap:wrap;min-height:48px;}
+.row:last-of-type{border-bottom:none;}
+
+.pro {font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:600;color:#111;min-width:90px;}
+.vb  {display:inline;min-width:120px;}
+.aux {font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:700;color:#0077cc;}
+.stem{font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:700;color:#0077cc;}
+.end {font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:900;color:#cc0000;opacity:0;display:inline;transition:opacity 0.3s ease;}
+.end.show{opacity:1;}
+.nt  {font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:900;color:#e0007a;opacity:0;display:inline;transition:opacity 0.3s ease;}
+.nt.show{opacity:1;}
+.nota{font-size:clamp(0.65rem,2vw,0.8rem);font-weight:700;color:#e0007a;margin-left:4px;opacity:0;display:inline;transition:opacity 0.3s ease 0.1s;}
+.nota.show{opacity:1;}
+.base{font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:700;color:#0077cc;min-width:100px;}
+.ex  {font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:400;color:#111;flex:1;}
+
+/* domanda: DO/DOES in verde, soggetto nero, verbo base blu */
+.qdo {font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:900;color:#007700;}
+.qsub{font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:600;color:#111;}
+.qv  {font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:700;color:#0077cc;}
+
+/* risposte brevi */
+.ans {display:flex;flex-direction:column;gap:4px;flex:1;}
+.ans-yes{font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:600;color:#007700;}
+.ans-no {font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:600;color:#cc0000;}
+
+.cursor{display:inline-block;width:2px;height:1em;background:#0077cc;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+.warn{margin-top:12px;border-radius:0 8px 8px 0;padding:12px 16px;font-size:clamp(1rem,3.5vw,1.2rem);color:#111;font-weight:600;line-height:1.7;flex-shrink:0;opacity:0;transition:opacity 0.5s;}
+.warn.show{opacity:1;}
+.warn-blue  {background:#e8f4ff;border-left:5px solid #0077cc;}
+.warn-red   {background:#fff5f5;border-left:5px solid #cc0000;}
+.warn-orange{background:#fff8e8;border-left:5px solid #cc6600;}
+.warn-green {background:#f0fff5;border-left:5px solid #007700;}
+.warn strong{font-weight:900;}
+.ok{color:#007700;font-weight:700;}.no{color:#cc0000;text-decoration:line-through;}
+
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.6rem,2vw,0.75rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #0077cc;background:#fff;color:#0077cc;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#0077cc;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="title">⚡ PRESENT SIMPLE</div>
+  <div class="prog" id="prog">1 / 4</div>
+</div>
+<div class="dots" id="dots"></div>
+
+<div class="slides">
+
+<!-- SLIDE 0: DOMANDE SÌ/NO con I/YOU/WE/THEY -->
+<div class="slide active" id="s0">
+  <div class="slide-title t-green">❓ DOMANDE SÌ/NO — DO</div>
+  <div class="row"><span class="pro">I</span><span class="qdo" data-tw="Do"></span><span class="qsub" data-tw="I"></span><span class="qv" data-tw="play?"></span><span class="ans"><span class="ans-yes" data-tw="Yes, I do."></span><span class="ans-no" data-tw="No, I don't."></span></span></div>
+  <div class="row"><span class="pro">you</span><span class="qdo" data-tw="Do"></span><span class="qsub" data-tw="you"></span><span class="qv" data-tw="study?"></span><span class="ans"><span class="ans-yes" data-tw="Yes, I do."></span><span class="ans-no" data-tw="No, I don't."></span></span></div>
+  <div class="row"><span class="pro">we</span><span class="qdo" data-tw="Do"></span><span class="qsub" data-tw="we"></span><span class="qv" data-tw="live here?"></span><span class="ans"><span class="ans-yes" data-tw="Yes, we do."></span><span class="ans-no" data-tw="No, we don't."></span></span></div>
+  <div class="row"><span class="pro">they</span><span class="qdo" data-tw="Do"></span><span class="qsub" data-tw="they"></span><span class="qv" data-tw="work in Milan?"></span><span class="ans"><span class="ans-yes" data-tw="Yes, they do."></span><span class="ans-no" data-tw="No, they don't."></span></span></div>
+  <div class="warn warn-green show">Struttura: <strong style="color:#007700">DO</strong> + soggetto + <strong style="color:#0077cc">verbo base</strong> ?<br>Risposta breve: Yes/No + soggetto + <strong>do/don't</strong></div>
+</div>
+
+<!-- SLIDE 1: DOMANDE SÌ/NO con HE/SHE/IT -->
+<div class="slide" id="s1">
+  <div class="slide-title t-green">❓ DOMANDE SÌ/NO — DOES</div>
+  <div class="row"><span class="pro">he</span><span class="qdo" data-tw="Does"></span><span class="qsub" data-tw="he"></span><span class="qv" data-tw="work?"></span><span class="ans"><span class="ans-yes" data-tw="Yes, he does."></span><span class="ans-no" data-tw="No, he doesn't."></span></span></div>
+  <div class="row"><span class="pro">she</span><span class="qdo" data-tw="Does"></span><span class="qsub" data-tw="she"></span><span class="qv" data-tw="study?"></span><span class="ans"><span class="ans-yes" data-tw="Yes, she does."></span><span class="ans-no" data-tw="No, she doesn't."></span></span></div>
+  <div class="row"><span class="pro">it</span><span class="qdo" data-tw="Does"></span><span class="qsub" data-tw="it"></span><span class="qv" data-tw="stop here?"></span><span class="ans"><span class="ans-yes" data-tw="Yes, it does."></span><span class="ans-no" data-tw="No, it doesn't."></span></span></div>
+  <div class="row"><span class="pro">Marco</span><span class="qdo" data-tw="Does"></span><span class="qsub" data-tw="Marco"></span><span class="qv" data-tw="play guitar?"></span><span class="ans"><span class="ans-yes" data-tw="Yes, he does."></span><span class="ans-no" data-tw="No, he doesn't."></span></span></div>
+  <div class="warn warn-green">Struttura: <strong style="color:#007700">DOES</strong> + soggetto + <strong style="color:#0077cc">verbo base</strong> ?<br>Risposta breve: Yes/No + soggetto + <strong>does/doesn't</strong><br>⚠️ Nella risposta breve <strong>non si ripete il verbo</strong>!</div>
+</div>
+
+<!-- SLIDE 2: WH- QUESTIONS -->
+<div class="slide" id="s2">
+  <div class="slide-title t-purple">❓ WH- QUESTIONS</div>
+  <div class="row"><span class="qdo" data-tw="Where"></span><span class="qdo" data-tw="do"></span><span class="qsub" data-tw="you"></span><span class="qv" data-tw="live?"></span><span class="ex" data-tw="— In Milan."></span></div>
+  <div class="row"><span class="qdo" data-tw="What"></span><span class="qdo" data-tw="do"></span><span class="qsub" data-tw="they"></span><span class="qv" data-tw="study?"></span><span class="ex" data-tw="— Engineering."></span></div>
+  <div class="row"><span class="qdo" data-tw="Where"></span><span class="qdo" data-tw="does"></span><span class="qsub" data-tw="she"></span><span class="qv" data-tw="work?"></span><span class="ex" data-tw="— In Rome."></span></div>
+  <div class="row"><span class="qdo" data-tw="What"></span><span class="qdo" data-tw="does"></span><span class="qsub" data-tw="he"></span><span class="qv" data-tw="do?"></span><span class="ex" data-tw="— He's a teacher."></span></div>
+  <div class="row"><span class="qdo" data-tw="How often"></span><span class="qdo" data-tw="do"></span><span class="qsub" data-tw="you"></span><span class="qv" data-tw="go to the gym?"></span><span class="ex" data-tw="— Twice a week."></span></div>
+  <div class="warn warn-orange">Struttura: <strong style="color:#7700cc">WH-WORD</strong> + <strong style="color:#007700">do/does</strong> + soggetto + <strong style="color:#0077cc">verbo base</strong> ?<br>⚠️ Con <em>he/she/it</em> → <strong>does</strong>, verbo base senza -s!</div>
+</div>
+
+<!-- SLIDE 3: ERRORI COMUNI -->
+<div class="slide" id="s3">
+  <div class="slide-title t-red">⚠️ ERRORI COMUNI</div>
+  <div class="row"><span class="ex" data-tw="Does she works here?"></span><span class="ex" style="color:#cc0000" data-tw="✗"></span></div>
+  <div class="row"><span class="ex" data-tw="Does she work here?"></span><span class="ex" style="color:#007700" data-tw="✓"></span></div>
+  <div class="row"><span class="ex" data-tw="Do he play football?"></span><span class="ex" style="color:#cc0000" data-tw="✗"></span></div>
+  <div class="row"><span class="ex" data-tw="Does he play football?"></span><span class="ex" style="color:#007700" data-tw="✓"></span></div>
+  <div class="row"><span class="ex" data-tw="Yes, she does play."></span><span class="ex" style="color:#cc0000" data-tw="✗"></span></div>
+  <div class="row"><span class="ex" data-tw="Yes, she does."></span><span class="ex" style="color:#007700" data-tw="✓"></span></div>
+  <div class="warn warn-red">⚠️ Nella domanda con <strong>does</strong> il verbo è sempre la <strong>forma base</strong>.<br>Nella risposta breve <strong>non si ripete mai il verbo principale</strong>.</div>
+</div>
+
+</div>
+
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+
+<script>
+const total=4;
+let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<total;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
+function typewrite(el,text,speed){
+  return new Promise(resolve=>{
+    el.textContent='';
+    const cursor=document.createElement('span');cursor.className='cursor';el.appendChild(cursor);
+    let i=0;
+    function tick(){if(i>=text.length){cursor.remove();resolve();return;}cursor.insertAdjacentText('beforebegin',text[i]);i++;setTimeout(tick,speed);}
+    tick();
+  });
+}
+
+async function animateRow(row){
+  const els=row.querySelectorAll('[data-tw]');
+  for(const el of els){
+    const isKey=el.classList.contains('qdo')||el.classList.contains('aux')||el.classList.contains('stem');
+    await typewrite(el,el.dataset.tw,isKey?160:70);
+    await new Promise(r=>setTimeout(r,120));
+  }
+}
+
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await new Promise(r=>setTimeout(r,400));
+  const rows=slide.querySelectorAll('.row');
+  for(const row of rows){await animateRow(row);await new Promise(r=>setTimeout(r,300));}
+  const warn=slide.querySelector('.warn:not(.show)');
+  if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+}
+
+function go(dir){
+  if(busy)return;
+  const prev=cur;cur=Math.max(0,Math.min(total-1,cur+dir));
+  if(cur===prev)return;
+  busy=true;
+  const oldSlide=document.getElementById('s'+prev);
+  const newSlide=document.getElementById('s'+cur);
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
+  setTimeout(()=>{
+    oldSlide.style.cssText='';oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';
+      setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===total-1;
+  },260);
+}
+
+let tx=0;
+const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+
+animateSlide(0);
+</script>
+</body>
+</html>

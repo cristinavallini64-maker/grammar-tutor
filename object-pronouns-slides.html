@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Object Pronouns</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #cc0000;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.85rem,3vw,1.5rem);letter-spacing:3px;color:#cc0000;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.65rem,2vw,0.85rem);color:#999;letter-spacing:2px;}
+
+.dots{display:flex;gap:10px;justify-content:center;padding:7px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#cc0000;}
+
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#cc0000;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+
+/* ── SLIDE 0: tabella soggetto → oggetto ── */
+.pro-table{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-radius:10px;overflow:hidden;flex-shrink:0;}
+.pt-head{font-family:'Orbitron',monospace;font-size:clamp(0.6rem,1.8vw,0.75rem);letter-spacing:2px;font-weight:700;background:#cc0000;color:#fff;padding:10px 14px;text-align:center;}
+.pt-cell{padding:10px 14px;text-align:center;border-bottom:1px solid #f0f0f0;font-size:clamp(0.9rem,3vw,1.1rem);}
+.pt-cell.subj{font-weight:700;color:#111;background:#fafafa;}
+.pt-cell.arr{color:#bbb;font-size:1.1rem;background:#fafafa;}
+.pt-cell.obj{font-weight:700;color:#cc0000;background:#fff5f5;}
+.pt-cell.ex{grid-column:1/-1;text-align:left;font-size:clamp(0.8rem,2.5vw,0.95rem);color:#555;background:#fff;padding:7px 14px;border-bottom:1px solid #f4f4f4;}
+.pt-row-last .pt-cell{border-bottom:none;}
+.pt-row-last .pt-cell.ex{border-bottom:none;}
+
+/* ── SLIDE 1: uso in frase ── */
+.use-row{display:flex;flex-direction:column;gap:3px;padding:8px 0;border-bottom:1px solid #f0f0f0;}
+.use-row:last-child{border-bottom:none;}
+.use-q{font-size:clamp(0.88rem,2.9vw,1.05rem);color:#888;}
+.use-a{font-size:clamp(0.95rem,3.2vw,1.15rem);font-weight:600;color:#111;}
+.pos-section{margin-bottom:12px;flex-shrink:0;}
+.pos-label{font-family:'Orbitron',monospace;font-size:clamp(0.58rem,1.8vw,0.76rem);letter-spacing:2px;color:#cc0000;font-weight:700;margin-bottom:8px;opacity:0;transition:opacity 0.4s;}
+.pos-label.show{opacity:1;}
+.pos-row{display:flex;align-items:baseline;padding:7px 0;border-bottom:1px solid #f0f0f0;min-height:40px;}
+.pos-row:last-child{border-bottom:none;}
+.p-ex{font-size:clamp(0.88rem,2.9vw,1.05rem);color:#111;flex:1;}
+.hl{font-weight:900;color:#cc0000;font-style:normal;}
+
+/* ── SLIDE 2: subject vs object ── */
+.cmp-row{display:flex;gap:16px;padding:8px 0;border-bottom:1px solid #f0f0f0;align-items:baseline;flex-wrap:wrap;}
+.cmp-row:last-child{border-bottom:none;}
+.cmp-s{flex:1;font-size:clamp(0.88rem,2.9vw,1.05rem);color:#111;}
+.cmp-o{flex:1;font-size:clamp(0.88rem,2.9vw,1.05rem);font-weight:700;color:#cc0000;}
+.cmp-label{font-family:'Orbitron',monospace;font-size:clamp(0.55rem,1.6vw,0.7rem);letter-spacing:2px;font-weight:700;padding:3px 10px;border-radius:4px;white-space:nowrap;}
+.lbl-s{background:#f0f0f0;color:#555;}
+.lbl-o{background:#fff0f0;color:#cc0000;}
+
+/* ── SLIDE 3: errori ── */
+.err-pair{padding:8px 0;border-bottom:1px solid #f0f0f0;}
+.err-pair:last-child{border-bottom:none;}
+.err-wrong{font-size:clamp(0.88rem,2.8vw,1.05rem);color:#c00;}
+.err-ok{font-size:clamp(0.88rem,2.8vw,1.05rem);font-weight:700;color:#007733;}
+.err-note{font-size:clamp(0.72rem,2.1vw,0.84rem);color:#888;font-style:italic;margin-top:2px;opacity:0;transition:opacity 0.4s;}
+
+.warn{background:#fff5f5;border-left:5px solid #cc0000;border-radius:0 8px 8px 0;padding:11px 16px;font-size:clamp(0.82rem,2.6vw,0.98rem);color:#111;font-weight:600;line-height:1.7;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:12px;}
+.warn.show{opacity:1;}
+.warn strong{color:#cc0000;}
+
+.cursor{display:inline-block;width:2px;height:1em;background:#cc0000;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.55rem,1.8vw,0.72rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #cc0000;background:#fff;color:#cc0000;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#cc0000;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="title">🔄 OBJECT PRONOUNS</div>
+  <div class="prog" id="prog">1 / 5</div>
+</div>
+<div class="dots" id="dots"></div>
+
+<div class="slides">
+
+  <!-- ══ SLIDE 0: tabella ══ -->
+  <div class="slide active" id="s0">
+    <div class="slide-title">📋 SOGGETTO → COMPLEMENTO OGGETTO</div>
+    <div class="pro-table" id="ptable">
+      <div class="pt-head">SOGGETTO</div>
+      <div class="pt-head">→</div>
+      <div class="pt-head">OGGETTO</div>
+
+      <div class="pt-cell subj" data-tw="I"></div>
+      <div class="pt-cell arr">→</div>
+      <div class="pt-cell obj" data-tw="me"></div>
+
+      <div class="pt-cell subj" data-tw="you"></div>
+      <div class="pt-cell arr">→</div>
+      <div class="pt-cell obj" data-tw="you"></div>
+
+      <div class="pt-cell subj" data-tw="he"></div>
+      <div class="pt-cell arr">→</div>
+      <div class="pt-cell obj" data-tw="him"></div>
+
+      <div class="pt-cell subj" data-tw="she"></div>
+      <div class="pt-cell arr">→</div>
+      <div class="pt-cell obj" data-tw="her"></div>
+
+      <div class="pt-cell subj" data-tw="it"></div>
+      <div class="pt-cell arr">→</div>
+      <div class="pt-cell obj" data-tw="it"></div>
+
+      <div class="pt-cell subj" data-tw="we"></div>
+      <div class="pt-cell arr">→</div>
+      <div class="pt-cell obj" data-tw="us"></div>
+
+      <div class="pt-cell subj" data-tw="you (pl.)"></div>
+      <div class="pt-cell arr">→</div>
+      <div class="pt-cell obj" data-tw="you"></div>
+
+      <div class="pt-cell subj pt-row-last" data-tw="they"></div>
+      <div class="pt-cell arr pt-row-last">→</div>
+      <div class="pt-cell obj pt-row-last" data-tw="them"></div>
+    </div>
+
+    <div class="warn">⚠️ Il pronome oggetto va <strong>dopo il verbo</strong> o dopo una <strong>preposizione</strong>:<br>
+    I like <strong>her</strong>. &nbsp;·&nbsp; She speaks to <strong>him</strong>. &nbsp;·&nbsp; This is for <strong>us</strong>.</div>
+  </div>
+
+  <!-- ══ SLIDE 1: uso nelle frasi ══ -->
+  <div class="slide" id="s1">
+    <div class="slide-title">💬 COME SI USA — ESEMPI IN CONTESTO</div>
+
+    <div class="use-row">
+      <span class="use-q" data-tw="Do you know Marco?"></span>
+      <span class="use-a" data-tw="Yes, I know ❮him❯ very well."></span>
+    </div>
+    <div class="use-row">
+      <span class="use-q" data-tw="What about Sara and Giulia?"></span>
+      <span class="use-a" data-tw="I sit next to ❮them❯ in class."></span>
+    </div>
+    <div class="use-row">
+      <span class="use-q" data-tw="Can you help me with this exercise?"></span>
+      <span class="use-a" data-tw="Sure! I can explain ❮it❯ to ❮you❯."></span>
+    </div>
+    <div class="use-row">
+      <span class="use-q" data-tw="Is this homework for me and Jake?"></span>
+      <span class="use-a" data-tw="Yes, the teacher gave ❮it❯ to ❮us❯."></span>
+    </div>
+    <div class="use-row">
+      <span class="use-q" data-tw="Do your parents know your teacher?"></span>
+      <span class="use-a" data-tw="Yes, they speak to ❮her❯ every month."></span>
+    </div>
+    <div class="use-row">
+      <span class="use-q" data-tw="What do you think of this song?"></span>
+      <span class="use-a" data-tw="I love ❮it❯ — I listen to ❮it❯ every day!"></span>
+    </div>
+
+    <div class="warn">🔑 Chiedi sempre: <strong>chi fa l'azione?</strong> → soggetto &nbsp;·&nbsp; <strong>chi/cosa riceve l'azione?</strong> → pronome oggetto</div>
+  </div>
+
+  <!-- ══ SLIDE 2: dopo le preposizioni ══ -->
+  <div class="slide" id="s2">
+    <div class="slide-title">🔗 DOPO LE PREPOSIZIONI — SEMPRE OGGETTO!</div>
+
+    <div class="pos-section">
+      <div class="pos-label">PREPOSIZIONE + PRONOME OGGETTO</div>
+      <div class="pos-row"><span class="p-ex" data-tw="Can you come with ❮me❯?  (with + me, not with I)"></span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="This present is for ❮her❯.  (for + her, not for she)"></span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="I sit next to ❮him❯ in class.  (next to + him)"></span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="She went to the party without ❮us❯.  (without + us)"></span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="He never talks to ❮them❯.  (to + them)"></span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="Don't look at ❮me❯ like that!  (at + me)"></span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="I wrote a message to ❮him❯ but he didn't reply.  (to + him)"></span></div>
+    </div>
+
+    <div class="warn">
+      ⚠️ <strong>Preposizioni comuni che vogliono il pronome oggetto:</strong><br>
+      with · for · to · from · about · at · of · without · next to · behind · near · between
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 3: soggetto vs oggetto ══ -->
+  <div class="slide" id="s3">
+    <div class="slide-title">⚖️ SOGGETTO vs OGGETTO — IL CONTRASTO</div>
+
+    <div class="cmp-row">
+      <span class="cmp-label lbl-s">SOGGETTO</span>
+      <span class="cmp-label lbl-o">OGGETTO</span>
+    </div>
+    <div class="cmp-row">
+      <span class="cmp-s" data-tw="❮I❯ like Sara.  (io faccio l'azione)"></span>
+      <span class="cmp-o" data-tw="Sara likes ❮me❯.  (io ricevo l'azione)"></span>
+    </div>
+    <div class="cmp-row">
+      <span class="cmp-s" data-tw="❮He❯ phones Giulia every day."></span>
+      <span class="cmp-o" data-tw="Giulia phones ❮him❯ every day."></span>
+    </div>
+    <div class="cmp-row">
+      <span class="cmp-s" data-tw="❮She❯ helps us a lot."></span>
+      <span class="cmp-o" data-tw="We really appreciate ❮her❯."></span>
+    </div>
+    <div class="cmp-row">
+      <span class="cmp-s" data-tw="❮They❯ invited us to the party."></span>
+      <span class="cmp-o" data-tw="We can't go with ❮them❯."></span>
+    </div>
+    <div class="cmp-row">
+      <span class="cmp-s" data-tw="❮We❯ study together every day."></span>
+      <span class="cmp-o" data-tw="The teacher always helps ❮us❯."></span>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 4: errori tipici ══ -->
+  <div class="slide" id="s4">
+    <div class="slide-title">🚨 ERRORI TIPICI DA EVITARE</div>
+
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  I see she every day and I like she."></div>
+      <div class="err-ok"    data-tw="✅  I see her every day and I like her."></div>
+      <div class="err-note">she = soggetto  ·  her = oggetto (dopo il verbo)</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  Can you help I? I don't understand it."></div>
+      <div class="err-ok"    data-tw="✅  Can you help me? I don't understand it."></div>
+      <div class="err-note">I = soggetto  ·  me = oggetto (dopo il verbo)</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  They invite we to the party but we can't go with they."></div>
+      <div class="err-ok"    data-tw="✅  They invite us to the party but we can't go with them."></div>
+      <div class="err-note">we / they = soggetto  ·  us / them = oggetto</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  Aurora talks to he but he never listens to she."></div>
+      <div class="err-ok"    data-tw="✅  Aurora talks to him but he never listens to her."></div>
+      <div class="err-note">dopo una preposizione si usa sempre il pronome OGGETTO</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  Me and Jake study together every day."></div>
+      <div class="err-ok"    data-tw="✅  Jake and I study together every day."></div>
+      <div class="err-note">quando sei soggetto della frase: Jake and I, not me and Jake</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+
+<script>
+const TOTAL=5;
+let cur=0,busy=false;
+
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  dotsEl.appendChild(d);
+}
+
+function typewrite(el,text,speed){
+  return new Promise(resolve=>{
+    el.textContent='';
+    const c=document.createElement('span');
+    c.className='cursor';
+    el.appendChild(c);
+    const plain=text.replace(/❮|❯/g,'');
+    let i=0;
+    function tick(){
+      if(i>=plain.length){c.remove();resolve();return;}
+      c.insertAdjacentText('beforebegin',plain[i++]);
+      setTimeout(tick,speed);
+    }
+    tick();
+  });
+}
+
+function typewriteHL(el,text,speed){
+  return new Promise(resolve=>{
+    const plain=text.replace(/❮|❯/g,'');
+    el.textContent='';
+    const c=document.createElement('span');
+    c.className='cursor';
+    el.appendChild(c);
+    let i=0;
+    function tick(){
+      if(i>=plain.length){
+        c.remove();
+        el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');
+        resolve();return;
+      }
+      c.insertAdjacentText('beforebegin',plain[i++]);
+      setTimeout(tick,speed);
+    }
+    tick();
+  });
+}
+
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await new Promise(r=>setTimeout(r,400));
+
+  if(idx===0){
+    // animate table cells row by row (skip headers and arrows)
+    const cells=slide.querySelectorAll('[data-tw]');
+    for(const cell of cells){
+      await typewrite(cell,cell.dataset.tw,cell.classList.contains('subj')?80:110);
+      await new Promise(r=>setTimeout(r,60));
+    }
+    const warn=slide.querySelector('.warn');
+    if(warn){await new Promise(r=>setTimeout(r,300));warn.classList.add('show');}
+  }
+  else if(idx===1){
+    for(const row of slide.querySelectorAll('.use-row')){
+      const q=row.querySelector('.use-q');
+      const a=row.querySelector('.use-a');
+      if(q) await typewrite(q,q.dataset.tw,45);
+      await new Promise(r=>setTimeout(r,100));
+      if(a) await typewriteHL(a,a.dataset.tw,55);
+      await new Promise(r=>setTimeout(r,280));
+    }
+    const warn=slide.querySelector('.warn');
+    if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  }
+  else if(idx===2){
+    // prepositions slide
+    for(const sec of slide.querySelectorAll('.pos-section')){
+      const lbl=sec.querySelector('.pos-label');
+      if(lbl){lbl.classList.add('show');await new Promise(r=>setTimeout(r,280));}
+      for(const row of sec.querySelectorAll('.pos-row')){
+        const el=row.querySelector('[data-tw]');
+        if(el) await typewriteHL(el,el.dataset.tw,55);
+        await new Promise(r=>setTimeout(r,220));
+      }
+    }
+    const warn=slide.querySelector('.warn');
+    if(warn){await new Promise(r=>setTimeout(r,250));warn.classList.add('show');}
+  }
+  else if(idx===3){
+    // soggetto vs oggetto
+    const rows=slide.querySelectorAll('.cmp-row');
+    for(let i=0;i<rows.length;i++){
+      if(i===0) continue;
+      const s=rows[i].querySelector('.cmp-s');
+      const o=rows[i].querySelector('.cmp-o');
+      if(s) await typewriteHL(s,s.dataset.tw,52);
+      await new Promise(r=>setTimeout(r,120));
+      if(o) await typewriteHL(o,o.dataset.tw,52);
+      await new Promise(r=>setTimeout(r,260));
+    }
+    const warn=slide.querySelector('.warn');
+    if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  }
+  else if(idx===4){
+    for(const pair of slide.querySelectorAll('.err-pair')){
+      const wrong=pair.querySelector('.err-wrong');
+      const ok=pair.querySelector('.err-ok');
+      const note=pair.querySelector('.err-note');
+      if(wrong) await typewrite(wrong,wrong.dataset.tw,52);
+      await new Promise(r=>setTimeout(r,130));
+      if(ok) await typewrite(ok,ok.dataset.tw,52);
+      if(note) setTimeout(()=>note.style.opacity='1',150);
+      await new Promise(r=>setTimeout(r,320));
+    }
+  }
+}
+
+function go(dir){
+  if(busy)return;
+  const prev=cur;
+  cur=Math.max(0,Math.min(TOTAL-1,cur+dir));
+  if(cur===prev)return;
+  busy=true;
+
+  const oldSlide=document.getElementById('s'+prev);
+  const newSlide=document.getElementById('s'+cur);
+
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('.pos-label').forEach(l=>l.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.querySelectorAll('.err-note').forEach(n=>n.style.opacity='0');
+
+  oldSlide.style.transition='opacity 0.25s ease';
+  oldSlide.style.opacity='0';
+
+  setTimeout(()=>{
+    oldSlide.style.cssText='';
+    oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';
+    newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';
+      newSlide.style.opacity='1';
+      setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');
+    dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+TOTAL;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===TOTAL-1;
+  },260);
+}
+
+let tx=0;
+const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+
+animateSlide(0);
+</script>
+</body>
+</html>

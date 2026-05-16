@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRESENT SIMPLE — Aff. &amp; Neg.</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #0077cc;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(1.2rem,4vw,1.8rem);letter-spacing:3px;color:#0077cc;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.7rem,2vw,0.9rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:8px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#0077cc;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:18px 24px 16px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.75rem,2.5vw,0.95rem);letter-spacing:2px;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+.t-blue{color:#0077cc;}.t-red{color:#cc0000;}.t-green{color:#007700;}.t-orange{color:#cc6600;}
+.row{display:flex;align-items:baseline;gap:18px;padding:11px 0;border-bottom:1px solid #f0f0f0;flex-wrap:wrap;min-height:48px;}
+.row:last-of-type{border-bottom:none;}
+.vb{display:inline;min-width:120px;}
+.pro{font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:600;color:#111;min-width:90px;}
+.stem{font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:700;color:#0077cc;min-width:80px;}
+.end{font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:900;color:#cc0000;opacity:0;display:inline;transition:opacity 0.3s ease;}
+.end.show{opacity:1;}
+.aux{font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:700;color:#007700;min-width:60px;}
+.aux-es{font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:900;color:#cc0000;display:inline;}
+.nt{font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:900;color:#cc6600;opacity:0;display:inline;transition:opacity 0.3s ease;}
+.nt.show{opacity:1;}
+.nota{font-size:clamp(0.65rem,2vw,0.8rem);font-weight:700;color:#cc6600;margin-left:4px;opacity:0;display:inline;transition:opacity 0.3s ease 0.1s;}
+.nota.show{opacity:1;}
+.base{font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:700;color:#0077cc;min-width:100px;}
+.ex{font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:400;color:#111;flex:1;}
+.cursor{display:inline-block;width:2px;height:1em;background:#0077cc;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.warn{margin-top:12px;border-radius:0 8px 8px 0;padding:12px 16px;font-size:clamp(1rem,3.5vw,1.2rem);color:#111;font-weight:600;line-height:1.7;flex-shrink:0;opacity:0;transition:opacity 0.5s;}
+.warn.show{opacity:1;}
+.warn-blue{background:#e8f4ff;border-left:5px solid #0077cc;}
+.warn-red{background:#fff5f5;border-left:5px solid #cc0000;}
+.warn-orange{background:#fff8e8;border-left:5px solid #cc6600;}
+.warn strong{font-weight:900;}
+.ok{color:#007700;font-weight:700;}.no{color:#cc0000;text-decoration:line-through;}
+.sp-card{background:#f5f5f5;border-radius:10px;padding:12px 16px;margin-bottom:10px;}
+.sp-label{font-family:'Orbitron',monospace;font-size:clamp(0.65rem,2vw,0.78rem);font-weight:700;color:#cc6600;letter-spacing:1px;margin-bottom:8px;}
+.sp-words{display:flex;flex-wrap:wrap;gap:16px;align-items:baseline;}
+.sp-w{font-size:clamp(1.1rem,3.8vw,1.4rem);font-weight:700;white-space:nowrap;}
+.sp-w .st{color:#0077cc;}.sp-w .en{color:#cc0000;font-weight:900;opacity:0;transition:opacity 0.3s ease;}
+.sp-w .en.show{opacity:1;}
+.sp-w .irr{color:#7700cc;font-weight:900;}
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.6rem,2vw,0.75rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #0077cc;background:#fff;color:#0077cc;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#0077cc;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="title">⚡ PRESENT SIMPLE</div><div class="prog" id="prog">1 / 5</div></div>
+<div class="dots" id="dots"></div>
+<div class="slides">
+<div class="slide active" id="s0">
+  <div class="slide-title t-blue">✅ AFFERMATIVA — I / YOU / WE / THEY</div>
+  <div class="row"><span class="pro">I</span><span class="stem" data-tw="play"></span><span class="ex" data-tw="I play football every Saturday."></span></div>
+  <div class="row"><span class="pro">you</span><span class="stem" data-tw="study"></span><span class="ex" data-tw="You study hard — well done!"></span></div>
+  <div class="row"><span class="pro">we</span><span class="stem" data-tw="live"></span><span class="ex" data-tw="We live near the school."></span></div>
+  <div class="row"><span class="pro">they</span><span class="stem" data-tw="work"></span><span class="ex" data-tw="They work in Milan."></span></div>
+  <div class="warn warn-blue show">Con <strong>I / you / we / they</strong> il verbo è uguale all'<strong>infinito</strong> — nessuna modifica.<br>Si usa per azioni abituali e fatti sempre veri.</div>
+</div>
+<div class="slide" id="s1">
+  <div class="slide-title t-blue">✅ AFFERMATIVA — HE / SHE / IT</div>
+  <div class="row"><span class="pro">he</span><span class="vb"><span class="stem" data-tw="work"></span><span class="end">s</span></span><span class="ex" data-tw="He works in Milan."></span></div>
+  <div class="row"><span class="pro">she</span><span class="vb"><span class="stem" data-tw="studi"></span><span class="end">es</span></span><span class="ex" data-tw="She studies engineering."></span></div>
+  <div class="row"><span class="pro">it</span><span class="vb"><span class="stem" data-tw="leav"></span><span class="end">es</span></span><span class="ex" data-tw="The train leaves at 7:30."></span></div>
+  <div class="row"><span class="pro">Marco</span><span class="vb"><span class="stem" data-tw="watch"></span><span class="end">es</span></span><span class="ex" data-tw="Marco watches TV after dinner."></span></div>
+  <div class="row"><span class="pro">my mum</span><span class="vb"><span class="stem" style="color:#7700cc" data-tw="has"></span></span><span class="ex" data-tw="My mum has a red car."></span></div>
+  <div class="warn warn-orange">⚠️ Con <strong>he / she / it</strong> si aggiunge qualcosa al verbo base. Il <strong style="color:#cc0000">rosso</strong> arriva dopo!</div>
+</div>
+<div class="slide" id="s2">
+  <div class="slide-title t-orange">⚙️ SPELLING — HE / SHE / IT</div>
+  <div class="sp-card"><div class="sp-label">la maggior parte → +S</div><div class="sp-words"><span class="sp-w"><span class="st" data-tw="work"></span><span class="en">s</span></span><span class="sp-w"><span class="st" data-tw="play"></span><span class="en">s</span></span><span class="sp-w"><span class="st" data-tw="read"></span><span class="en">s</span></span><span class="sp-w"><span class="st" data-tw="live"></span><span class="en">s</span></span></div></div>
+  <div class="sp-card"><div class="sp-label">-ch · -sh · -ss · -x · -o → +ES</div><div class="sp-words"><span class="sp-w"><span class="st" data-tw="watch"></span><span class="en">es</span></span><span class="sp-w"><span class="st" data-tw="wash"></span><span class="en">es</span></span><span class="sp-w"><span class="st" data-tw="go"></span><span class="en">es</span></span><span class="sp-w"><span class="st" data-tw="fix"></span><span class="en">es</span></span></div></div>
+  <div class="sp-card"><div class="sp-label">consonante +Y → tolgo Y, +IES</div><div class="sp-words"><span class="sp-w"><span class="st" data-tw="studi"></span><span class="en">es</span></span><span class="sp-w"><span class="st" data-tw="fl"></span><span class="en">ies</span></span><span class="sp-w"><span class="st" data-tw="carri"></span><span class="en">es</span></span></div></div>
+  <div class="sp-card"><div class="sp-label">⚠️ irregolari</div><div class="sp-words"><span class="sp-w"><span class="irr" data-tw="has"></span></span><span class="sp-w"><span class="irr" data-tw="is"></span></span><span class="sp-w"><span class="irr" data-tw="does"></span></span></div></div>
+  <div class="warn warn-orange"><span class="no">She studys</span> ✗ → <span class="ok">She studies</span> ✓ &nbsp;·&nbsp; <span class="no">He gos</span> ✗ → <span class="ok">He goes</span> ✓</div>
+</div>
+<div class="slide" id="s3">
+  <div class="slide-title t-red">❌ NEGATIVA — DON'T / DOESN'T</div>
+  <div class="row"><span class="pro">I / you<br>we / they</span><span class="vb"><span class="aux" data-tw="DO"></span><span class="nt">N'T</span><span class="nota"> = <span style="color:#007700">DO</span> + NOT</span></span><span class="base" data-tw="+ verbo base"></span><span class="ex" data-tw="I don't like horror films."></span></div>
+  <div class="row"><span class="pro">he / she / it</span><span class="vb"><span class="aux" data-tw="DO"></span><span class="aux-es">ES</span><span class="nt">N'T</span><span class="nota"> = <span style="color:#007700">DO</span><span style="color:#cc0000">ES</span> + NOT</span></span><span class="base" data-tw="+ verbo base"></span><span class="ex" data-tw="She doesn't study Physics."></span></div>
+  <div class="row"><span class="pro">my dad</span><span class="vb"><span class="aux" data-tw="DO"></span><span class="aux-es">ES</span><span class="nt">N'T</span><span class="nota"> = <span style="color:#007700">DO</span><span style="color:#cc0000">ES</span> + NOT</span></span><span class="base" data-tw="cook"></span><span class="ex" data-tw="My dad doesn't cook — mum does!"></span></div>
+  <div class="row"><span class="pro">they</span><span class="vb"><span class="aux" data-tw="DO"></span><span class="nt">N'T</span><span class="nota"> = <span style="color:#007700">DO</span> + NOT</span></span><span class="base" data-tw="go"></span><span class="ex" data-tw="They don't go to school on Saturdays."></span></div>
+  <div class="warn warn-red">⚠️ Dopo <strong>doesn't</strong> il verbo è SEMPRE la <strong>forma base</strong> — senza -s!<br><span class="no">She doesn't likes pizza.</span> ✗ → <span class="ok">She doesn't like pizza.</span> ✓</div>
+</div>
+<div class="slide" id="s4">
+  <div class="slide-title t-green">🔄 AFFERMATIVA vs NEGATIVA</div>
+  <div class="row"><span class="pro">Giulia</span><span class="stem" data-tw="studies"></span><span class="ex" data-tw="maths but she doesn't like Physics."></span></div>
+  <div class="row"><span class="pro">I</span><span class="stem" data-tw="speak"></span><span class="ex" data-tw="English but I don't speak French."></span></div>
+  <div class="row"><span class="pro">he</span><span class="stem" data-tw="works"></span><span class="ex" data-tw="in Milan but he doesn't drive."></span></div>
+  <div class="row"><span class="pro">they</span><span class="stem" data-tw="play"></span><span class="ex" data-tw="football but they don't play basketball."></span></div>
+  <div class="warn warn-red">⚠️ Errori più comuni:<br><span class="no">She don't study.</span> ✗ → <span class="ok">She doesn't study.</span> ✓<br><span class="no">He doesn't goes.</span> ✗ → <span class="ok">He doesn't go.</span> ✓<br><span class="no">They studys English.</span> ✗ → <span class="ok">They study English.</span> ✓</div>
+</div>
+</div>
+<div class="nav"><button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button><button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button></div>
+<script>
+const total=5;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<total;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+function typewrite(el,text,speed){return new Promise(resolve=>{el.textContent='';const cursor=document.createElement('span');cursor.className='cursor';el.appendChild(cursor);let i=0;function tick(){if(i>=text.length){cursor.remove();resolve();return;}cursor.insertAdjacentText('beforebegin',text[i]);i++;setTimeout(tick,speed);}tick();});}
+async function animateRow(row){const stemEl=row.querySelector('.stem[data-tw]');const auxEl=row.querySelector('.aux[data-tw]');if(stemEl){await typewrite(stemEl,stemEl.dataset.tw,170);await new Promise(r=>setTimeout(r,300));}if(auxEl){await typewrite(auxEl,auxEl.dataset.tw,150);await new Promise(r=>setTimeout(r,300));}const endEl=row.querySelector('.end');const ntEl=row.querySelector('.nt');if(endEl){endEl.classList.add('show');await new Promise(r=>setTimeout(r,400));}if(ntEl){ntEl.classList.add('show');const nota=row.querySelector('.nota');if(nota)nota.classList.add('show');await new Promise(r=>setTimeout(r,400));}const baseEl=row.querySelector('.base[data-tw]');if(baseEl){await typewrite(baseEl,baseEl.dataset.tw,130);await new Promise(r=>setTimeout(r,100));}const exEl=row.querySelector('.ex[data-tw]');if(exEl){await typewrite(exEl,exEl.dataset.tw,55);}}
+async function animateSlide(idx){const slide=document.getElementById('s'+idx);const title=slide.querySelector('.slide-title');if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}await new Promise(r=>setTimeout(r,400));const rows=slide.querySelectorAll('.row');for(const row of rows){await animateRow(row);await new Promise(r=>setTimeout(r,280));}const spWords=slide.querySelectorAll('.sp-w');for(const spw of spWords){const stEl=spw.querySelector('.st[data-tw],.irr[data-tw]');const enEl=spw.querySelector('.en');if(stEl){await typewrite(stEl,stEl.dataset.tw,160);await new Promise(r=>setTimeout(r,200));}if(enEl){enEl.classList.add('show');await new Promise(r=>setTimeout(r,350));}}const warn=slide.querySelector('.warn:not(.show)');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}}
+function go(dir){if(busy)return;const prev=cur;cur=Math.max(0,Math.min(total-1,cur+dir));if(cur===prev)return;busy=true;const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');oldSlide.querySelectorAll('.end,.nt,.nota,.sp-w .en').forEach(e=>e.classList.remove('show'));oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';setTimeout(()=>{oldSlide.style.cssText='';oldSlide.classList.remove('active');newSlide.style.opacity='0';newSlide.classList.add('active');requestAnimationFrame(()=>requestAnimationFrame(()=>{newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);}));animateSlide(cur);dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');document.getElementById('prog').textContent=(cur+1)+' / '+total;document.getElementById('prevBtn').disabled=cur===0;document.getElementById('nextBtn').disabled=cur===total-1;},260);}
+let tx=0;const sl=document.querySelector('.slides');sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+animateSlide(0);
+</script>
+</body>
+</html>
