@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Love / Like / Hate + -ing</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #cc0000;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.78rem,2.7vw,1.35rem);letter-spacing:3px;color:#cc0000;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.65rem,2vw,0.85rem);color:#999;letter-spacing:2px;}
+
+.dots{display:flex;gap:10px;justify-content:center;padding:7px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#cc0000;}
+
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#cc0000;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+
+/* ── SLIDE 0: i verbi ── */
+.verb-grid{display:flex;flex-direction:column;gap:8px;flex-shrink:0;}
+.verb-row{display:flex;align-items:center;gap:14px;padding:9px 14px;border-radius:10px;border-left:5px solid #cc0000;background:#fafafa;min-height:50px;}
+.v-name{font-size:clamp(1rem,3.5vw,1.25rem);font-weight:900;color:#cc0000;min-width:130px;}
+.v-it{font-size:clamp(0.82rem,2.6vw,0.98rem);color:#555;flex:1;}
+.v-ex{font-size:clamp(0.82rem,2.6vw,0.98rem);color:#111;flex:2;font-style:italic;}
+.verb-row.love{border-color:#cc0000;}
+.verb-row.like{border-color:#e07030;}
+.verb-row.dont-mind{border-color:#bb8800;}
+.verb-row.hate{border-color:#555;}
+.verb-row.cant-stand{border-color:#333;}
+.verb-row.enjoy{border-color:#007733;}
+.verb-row.prefer{border-color:#005599;}
+
+/* ── SLIDE 1: la regola -ing ── */
+.rule-box{background:#fff5f5;border:2px solid #cc0000;border-radius:12px;padding:14px 18px;margin-bottom:16px;flex-shrink:0;}
+.rule-formula{font-family:'Orbitron',monospace;font-size:clamp(0.8rem,2.6vw,1rem);font-weight:700;color:#cc0000;letter-spacing:2px;margin-bottom:10px;opacity:0;transition:opacity 0.4s;}
+.rule-formula.show{opacity:1;}
+.rule-ex{font-size:clamp(0.9rem,3vw,1.1rem);color:#111;line-height:2;}
+
+.ing-rows{display:flex;flex-direction:column;}
+.ing-row{display:flex;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid #f0f0f0;min-height:38px;}
+.ing-row:last-child{border-bottom:none;}
+.i-base{font-size:clamp(0.88rem,2.8vw,1.05rem);font-weight:700;color:#888;min-width:90px;}
+.i-arr{color:#ccc;}
+.i-ing{font-size:clamp(0.88rem,2.8vw,1.05rem);font-weight:700;color:#cc0000;min-width:110px;}
+.i-rule{font-size:clamp(0.75rem,2.2vw,0.88rem);color:#888;font-style:italic;flex:1;}
+
+/* ── SLIDE 2: frasi complete ── */
+.sent-row{display:flex;flex-direction:column;gap:2px;padding:8px 0;border-bottom:1px solid #f0f0f0;}
+.sent-row:last-child{border-bottom:none;}
+.s-en{font-size:clamp(0.9rem,3vw,1.1rem);font-weight:600;color:#111;}
+.s-it{font-size:clamp(0.8rem,2.5vw,0.94rem);color:#888;}
+.hl{font-weight:900;color:#cc0000;font-style:normal;}
+
+/* ── SLIDE 3: very much + like ── */
+.vm-section{margin-bottom:14px;}
+.vm-label{font-family:'Orbitron',monospace;font-size:clamp(0.58rem,1.8vw,0.76rem);letter-spacing:2px;color:#cc0000;font-weight:700;margin-bottom:8px;opacity:0;transition:opacity 0.4s;}
+.vm-label.show{opacity:1;}
+.vm-row{padding:5px 0;border-bottom:1px solid #f0f0f0;}
+.vm-row:last-child{border-bottom:none;}
+.vm-ex{font-size:clamp(0.88rem,2.9vw,1.06rem);color:#111;display:block;}
+.vm-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;display:block;opacity:0;transition:opacity 0.4s;}
+
+/* ── SLIDE 4: errori ── */
+.err-pair{padding:6px 0;border-bottom:1px solid #f0f0f0;}
+.err-pair:last-child{border-bottom:none;}
+.err-wrong{font-size:clamp(0.83rem,2.6vw,0.99rem);color:#c00;}
+.err-ok{font-size:clamp(0.83rem,2.6vw,0.99rem);font-weight:700;color:#007733;}
+.err-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;}
+.err-note{font-size:clamp(0.63rem,1.8vw,0.77rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
+
+.warn{background:#fff5f5;border-left:5px solid #cc0000;border-radius:0 8px 8px 0;padding:11px 16px;font-size:clamp(0.82rem,2.6vw,0.98rem);color:#111;font-weight:600;line-height:1.7;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:12px;}
+.warn.show{opacity:1;}
+.warn strong{color:#cc0000;}
+
+.cursor{display:inline-block;width:2px;height:1em;background:#cc0000;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.55rem,1.8vw,0.72rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #cc0000;background:#fff;color:#cc0000;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#cc0000;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="title">❤️ LOVE / LIKE / HATE + -ING</div>
+  <div class="prog" id="prog">1 / 5</div>
+</div>
+<div class="dots" id="dots"></div>
+
+<div class="slides">
+
+  <!-- ══ SLIDE 0: i verbi di preferenza ══ -->
+  <div class="slide active" id="s0">
+    <div class="slide-title">💬 I VERBI DI PREFERENZA</div>
+    <div class="verb-grid">
+      <div class="verb-row love">
+        <span class="v-name" data-tw="love"></span>
+        <span class="v-it"   data-tw="adorare"></span>
+        <span class="v-ex"   data-tw="I love going to the cinema."></span>
+      </div>
+      <div class="verb-row like">
+        <span class="v-name" data-tw="like"></span>
+        <span class="v-it"   data-tw="piacere"></span>
+        <span class="v-ex"   data-tw="She likes cooking at the weekend."></span>
+      </div>
+      <div class="verb-row dont-mind">
+        <span class="v-name" data-tw="don't mind"></span>
+        <span class="v-it"   data-tw="non mi dispiace"></span>
+        <span class="v-ex"   data-tw="I don't mind waiting."></span>
+      </div>
+      <div class="verb-row hate">
+        <span class="v-name" data-tw="hate"></span>
+        <span class="v-it"   data-tw="odiare"></span>
+        <span class="v-ex"   data-tw="He hates doing the washing-up."></span>
+      </div>
+      <div class="verb-row cant-stand">
+        <span class="v-name" data-tw="can't stand"></span>
+        <span class="v-it"   data-tw="non sopportare"></span>
+        <span class="v-ex"   data-tw="I can't stand queuing."></span>
+      </div>
+      <div class="verb-row enjoy">
+        <span class="v-name" data-tw="enjoy"></span>
+        <span class="v-it"   data-tw="godere / apprezzare"></span>
+        <span class="v-ex"   data-tw="We enjoy playing video games."></span>
+      </div>
+      <div class="verb-row prefer">
+        <span class="v-name" data-tw="prefer"></span>
+        <span class="v-it"   data-tw="preferire"></span>
+        <span class="v-ex"   data-tw="She prefers staying at home."></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 1: la regola + formazione -ing ══ -->
+  <div class="slide" id="s1">
+    <div class="slide-title">📐 LA REGOLA + COME SI FORMA -ING</div>
+
+    <div class="rule-box">
+      <div class="rule-formula">VERBO DI PREFERENZA + VERBO-ing</div>
+      <div class="rule-ex" id="ruleex"></div>
+    </div>
+
+    <div class="ing-rows">
+      <div class="ing-row">
+        <span class="i-base" data-tw="play"></span>
+        <span class="i-arr">→</span>
+        <span class="i-ing"  data-tw="playing"></span>
+        <span class="i-rule" data-tw="regola base: + ing"></span>
+      </div>
+      <div class="ing-row">
+        <span class="i-base" data-tw="watch"></span>
+        <span class="i-arr">→</span>
+        <span class="i-ing"  data-tw="watching"></span>
+        <span class="i-rule" data-tw="regola base: + ing"></span>
+      </div>
+      <div class="ing-row">
+        <span class="i-base" data-tw="dance"></span>
+        <span class="i-arr">→</span>
+        <span class="i-ing"  data-tw="dancing"></span>
+        <span class="i-rule" data-tw="-e finale → si toglie, + ing"></span>
+      </div>
+      <div class="ing-row">
+        <span class="i-base" data-tw="ride"></span>
+        <span class="i-arr">→</span>
+        <span class="i-ing"  data-tw="riding"></span>
+        <span class="i-rule" data-tw="-e finale → si toglie, + ing"></span>
+      </div>
+      <div class="ing-row">
+        <span class="i-base" data-tw="swim"></span>
+        <span class="i-arr">→</span>
+        <span class="i-ing"  data-tw="swimming"></span>
+        <span class="i-rule" data-tw="CVC → consonante finale raddoppiata"></span>
+      </div>
+      <div class="ing-row">
+        <span class="i-base" data-tw="run"></span>
+        <span class="i-arr">→</span>
+        <span class="i-ing"  data-tw="running"></span>
+        <span class="i-rule" data-tw="CVC → consonante finale raddoppiata"></span>
+      </div>
+      <div class="ing-row">
+        <span class="i-base" data-tw="lie"></span>
+        <span class="i-arr">→</span>
+        <span class="i-ing"  data-tw="lying"></span>
+        <span class="i-rule" data-tw="-ie finale → ying"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 2: frasi complete in contesto ══ -->
+  <div class="slide" id="s2">
+    <div class="slide-title">✍️ FRASI COMPLETE — IN CONTESTO</div>
+
+    <div class="sent-row">
+      <span class="s-en" data-tw="I love ❮going❯ to the cinema but I hate ❮waiting❯ for the bus."></span>
+      <span class="s-it" data-tw="Adoro andare al cinema ma odio aspettare il bus."></span>
+    </div>
+    <div class="sent-row">
+      <span class="s-en" data-tw="She enjoys ❮cooking❯ but she can't stand ❮washing❯ the dishes."></span>
+      <span class="s-it" data-tw="Le piace cucinare ma non sopporta lavare i piatti."></span>
+    </div>
+    <div class="sent-row">
+      <span class="s-en" data-tw="He doesn't mind ❮tidying❯ his room but hates ❮ironing❯."></span>
+      <span class="s-it" data-tw="Non gli dispiace riordinare la stanza ma odia stirare."></span>
+    </div>
+    <div class="sent-row">
+      <span class="s-en" data-tw="Do you like ❮swimming❯? — Yes, I love it!"></span>
+      <span class="s-it" data-tw="Ti piace nuotare? — Sì, lo adoro!"></span>
+    </div>
+    <div class="sent-row">
+      <span class="s-en" data-tw="They prefer ❮staying❯ at home to ❮going❯ out."></span>
+      <span class="s-it" data-tw="Preferiscono stare a casa piuttosto che uscire."></span>
+    </div>
+    <div class="sent-row">
+      <span class="s-en" data-tw="I can't stand ❮queuing❯ — I always get so impatient!"></span>
+      <span class="s-it" data-tw="Non sopporto fare la fila — perdo sempre la pazienza!"></span>
+    </div>
+
+    <div class="warn">⚠️ Nota: <strong>do you like…?</strong> → risposta breve con pronome oggetto:<br>
+      Do you like swimming? — Yes, I love <strong>it</strong>! &nbsp;·&nbsp; Not really, I prefer <strong>running</strong>.</div>
+  </div>
+
+  <!-- ══ SLIDE 3: like very much + posizione ══ -->
+  <div class="slide" id="s3">
+    <div class="slide-title">📍 LIKE VERY MUCH — POSIZIONE</div>
+
+    <div class="vm-section">
+      <div class="vm-label">VERY MUCH va DOPO il complemento, non prima</div>
+      <div class="vm-row"><span class="vm-ex" data-tw="❌  I like very much playing tennis."></span><span class="vm-it">Mi piace molto giocare a tennis. (posizione sbagliata)</span></div>
+      <div class="vm-row"><span class="vm-ex" data-tw="✅  I like playing tennis very much."></span><span class="vm-it">Mi piace molto giocare a tennis. ✓</span></div>
+      <div class="vm-row"><span class="vm-ex" data-tw="❌  She loves very much dancing."></span><span class="vm-it">Le piace molto ballare. (posizione sbagliata)</span></div>
+      <div class="vm-row"><span class="vm-ex" data-tw="✅  She loves dancing very much."></span><span class="vm-it">Le piace molto ballare. ✓</span></div>
+    </div>
+
+    <div class="vm-section">
+      <div class="vm-label">ALTRI MODIFICATORI — stessa regola</div>
+      <div class="vm-row"><span class="vm-ex" data-tw="I like swimming a lot.  ✅"></span><span class="vm-it">Mi piace molto nuotare.</span></div>
+      <div class="vm-row"><span class="vm-ex" data-tw="She really loves cooking.  ✅  (really → prima del verbo!)"></span><span class="vm-it">Ama davvero cucinare. — really sta PRIMA del verbo.</span></div>
+      <div class="vm-row"><span class="vm-ex" data-tw="He absolutely hates getting up early.  ✅"></span><span class="vm-it">Odia assolutamente alzarsi presto.</span></div>
+    </div>
+
+    <div class="warn">
+      💡 <strong>really</strong> va PRIMA del verbo di preferenza:<br>
+      I <strong>really</strong> love cooking. &nbsp;✅<br>
+      I love cooking <strong>really much</strong>. &nbsp;❌ → corretto: <strong>very much</strong> o <strong>a lot</strong>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 4: errori tipici ══ -->
+  <div class="slide" id="s4">
+    <div class="slide-title">🚨 ERRORI TIPICI DA EVITARE</div>
+
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  I love go to the cinema."></div>
+      <div class="err-ok"    data-tw="✅  I love going to the cinema."></div>
+      <div class="err-it">Adoro andare al cinema.</div>
+      <div class="err-note">dopo love/like/hate → sempre verbo + -ing, mai infinito base</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  She hates to wash the dishes."></div>
+      <div class="err-ok"    data-tw="✅  She hates washing the dishes."></div>
+      <div class="err-it">Odia lavare i piatti.</div>
+      <div class="err-note">to + infinito dopo questi verbi non è corretto in British English</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  He enjoys play video games."></div>
+      <div class="err-ok"    data-tw="✅  He enjoys playing video games."></div>
+      <div class="err-it">Si diverte a giocare ai videogiochi.</div>
+      <div class="err-note">enjoy vuole sempre -ing — non esiste "enjoy to play"</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  I like very much swimming."></div>
+      <div class="err-ok"    data-tw="✅  I like swimming very much."></div>
+      <div class="err-it">Mi piace molto nuotare.</div>
+      <div class="err-note">very much va sempre DOPO il complemento (-ing), non prima</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  I can't stand to queue — it drives me crazy."></div>
+      <div class="err-ok"    data-tw="✅  I can't stand queuing — it drives me crazy."></div>
+      <div class="err-it">Non sopporto fare la fila — mi fa impazzire.</div>
+      <div class="err-note">can't stand + -ing, non to + infinito</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+
+<script>
+const TOTAL=5;
+let cur=0,busy=false;
+
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  dotsEl.appendChild(d);
+}
+
+function typewrite(el,text,speed){
+  return new Promise(resolve=>{
+    el.textContent='';
+    const c=document.createElement('span');
+    c.className='cursor';
+    el.appendChild(c);
+    const plain=text.replace(/❮|❯/g,'');
+    let i=0;
+    function tick(){
+      if(i>=plain.length){c.remove();resolve();return;}
+      c.insertAdjacentText('beforebegin',plain[i++]);
+      setTimeout(tick,speed);
+    }
+    tick();
+  });
+}
+
+function typewriteHL(el,text,speed){
+  return new Promise(resolve=>{
+    const plain=text.replace(/❮|❯/g,'');
+    el.textContent='';
+    const c=document.createElement('span');
+    c.className='cursor';
+    el.appendChild(c);
+    let i=0;
+    function tick(){
+      if(i>=plain.length){
+        c.remove();
+        el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');
+        resolve();return;
+      }
+      c.insertAdjacentText('beforebegin',plain[i++]);
+      setTimeout(tick,speed);
+    }
+    tick();
+  });
+}
+
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await new Promise(r=>setTimeout(r,400));
+
+  if(idx===0){
+    for(const row of slide.querySelectorAll('.verb-row')){
+      const els=row.querySelectorAll('[data-tw]');
+      for(const el of els){
+        const speed=el.classList.contains('v-name')?100:50;
+        await typewrite(el,el.dataset.tw,speed);
+        await new Promise(r=>setTimeout(r,50));
+      }
+      await new Promise(r=>setTimeout(r,200));
+    }
+  }
+  else if(idx===1){
+    // formula
+    const formula=slide.querySelector('.rule-formula');
+    if(formula){formula.classList.add('show');}
+    // example sentences typed out
+    const ruleex=document.getElementById('ruleex');
+    const examples=[
+      'I love <strong style="color:#cc0000">watch</strong>ing TV.',
+      'She hates <strong style="color:#cc0000">do</strong>ing her homework.',
+      'We enjoy <strong style="color:#cc0000">play</strong>ing football.'
+    ];
+    ruleex.innerHTML='';
+    for(const ex of examples){
+      await new Promise(r=>setTimeout(r,180));
+      const span=document.createElement('div');
+      span.innerHTML=ex;
+      span.style.opacity='0';
+      span.style.transition='opacity 0.35s';
+      ruleex.appendChild(span);
+      setTimeout(()=>span.style.opacity='1',50);
+      await new Promise(r=>setTimeout(r,400));
+    }
+    await new Promise(r=>setTimeout(r,300));
+    // -ing formation table
+    for(const row of slide.querySelectorAll('.ing-row')){
+      const els=row.querySelectorAll('[data-tw]');
+      for(const el of els){
+        const speed=el.classList.contains('i-base')||el.classList.contains('i-ing')?90:45;
+        await typewrite(el,el.dataset.tw,speed);
+        await new Promise(r=>setTimeout(r,60));
+      }
+      await new Promise(r=>setTimeout(r,180));
+    }
+  }
+  else if(idx===2){
+    for(const row of slide.querySelectorAll('.sent-row')){
+      const en=row.querySelector('.s-en');
+      const it=row.querySelector('.s-it');
+      if(en) await typewriteHL(en,en.dataset.tw,50);
+      await new Promise(r=>setTimeout(r,80));
+      if(it) await typewrite(it,it.dataset.tw,35);
+      await new Promise(r=>setTimeout(r,260));
+    }
+    const warn=slide.querySelector('.warn');
+    if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  }
+  else if(idx===3){
+    for(const sec of slide.querySelectorAll('.vm-section')){
+      const lbl=sec.querySelector('.vm-label');
+      if(lbl){lbl.classList.add('show');await new Promise(r=>setTimeout(r,260));}
+      for(const row of sec.querySelectorAll('.vm-row')){
+        const ex=row.querySelector('.vm-ex'),it=row.querySelector('.vm-it');
+        if(ex) await typewrite(ex,ex.dataset.tw,50);
+        if(it){it.style.transition='opacity 0.4s';setTimeout(()=>it.style.opacity='1',80);}
+        await new Promise(r=>setTimeout(r,200));
+      }
+      await new Promise(r=>setTimeout(r,180));
+    }
+    const warn=slide.querySelector('.warn');
+    if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  }
+  else if(idx===4){
+    for(const pair of slide.querySelectorAll('.err-pair')){
+      const wrong=pair.querySelector('.err-wrong');
+      const ok=pair.querySelector('.err-ok');
+      const it=pair.querySelector('.err-it');
+      const note=pair.querySelector('.err-note');
+      if(wrong) await typewrite(wrong,wrong.dataset.tw,50);
+      await new Promise(r=>setTimeout(r,120));
+      if(ok) await typewrite(ok,ok.dataset.tw,50);
+      if(it){it.style.transition='opacity 0.4s';setTimeout(()=>it.style.opacity='1',80);}
+      if(note) setTimeout(()=>note.style.opacity='1',220);
+      await new Promise(r=>setTimeout(r,300));
+    }
+  }
+}
+
+function go(dir){
+  if(busy)return;
+  const prev=cur;
+  cur=Math.max(0,Math.min(TOTAL-1,cur+dir));
+  if(cur===prev)return;
+  busy=true;
+
+  const oldSlide=document.getElementById('s'+prev);
+  const newSlide=document.getElementById('s'+cur);
+
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('.vm-label').forEach(l=>l.classList.remove('show'));
+  oldSlide.querySelectorAll('.rule-formula').forEach(f=>f.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.querySelectorAll('.vm-it,.err-it,.err-note').forEach(n=>n.style.opacity='0');
+  const re=oldSlide.querySelector('#ruleex');
+  if(re) re.innerHTML='';
+
+  oldSlide.style.transition='opacity 0.25s ease';
+  oldSlide.style.opacity='0';
+
+  setTimeout(()=>{
+    oldSlide.style.cssText='';
+    oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';
+    newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';
+      newSlide.style.opacity='1';
+      setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');
+    dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+TOTAL;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===TOTAL-1;
+  },260);
+}
+
+let tx=0;
+const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+
+animateSlide(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adverbs of Frequency</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #cc0000;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.85rem,3vw,1.5rem);letter-spacing:3px;color:#cc0000;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.65rem,2vw,0.85rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:7px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#cc0000;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#cc0000;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+.freq-scale{display:flex;align-items:stretch;border-radius:10px;overflow:hidden;margin-bottom:14px;height:38px;flex-shrink:0;}
+.freq-seg{display:flex;align-items:center;justify-content:center;font-weight:700;font-size:clamp(0.44rem,1.3vw,0.66rem);color:#fff;flex:1;opacity:0;transition:opacity 0.4s;text-align:center;padding:0 2px;line-height:1.2;}
+.s0{background:#cc0000;}.s1{background:#d62b2b;}.s2{background:#e05020;}.s3{background:#e07030;}.s4{background:#bb8800;}.s5{background:#887700;}.s6{background:#555;}
+.freq-rows{display:flex;flex-direction:column;}
+.freq-row{display:grid;grid-template-columns:auto auto 1fr;grid-template-rows:auto auto;gap:0 10px;padding:5px 0;border-bottom:1px solid #f0f0f0;align-items:baseline;}
+.freq-row:last-child{border-bottom:none;}
+.f-adv{font-size:clamp(0.85rem,2.7vw,1.05rem);font-weight:700;color:#cc0000;white-space:nowrap;grid-row:1;}
+.f-pct{font-size:clamp(0.68rem,1.9vw,0.82rem);font-weight:600;color:#aaa;white-space:nowrap;grid-row:1;}
+.f-ex {font-size:clamp(0.78rem,2.5vw,0.95rem);color:#333;grid-row:1;}
+.f-it {font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;grid-column:3;grid-row:2;opacity:0;transition:opacity 0.4s;}
+.pos-section{margin-bottom:10px;flex-shrink:0;}
+.pos-label{font-family:'Orbitron',monospace;font-size:clamp(0.56rem,1.7vw,0.74rem);letter-spacing:2px;color:#cc0000;font-weight:700;margin-bottom:6px;opacity:0;transition:opacity 0.4s;}
+.pos-label.show{opacity:1;}
+.pos-row{padding:5px 0;border-bottom:1px solid #f0f0f0;}
+.pos-row:last-child{border-bottom:none;}
+.p-ex{font-size:clamp(0.85rem,2.8vw,1.04rem);color:#111;display:block;}
+.p-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;display:block;opacity:0;transition:opacity 0.4s;}
+.hl{font-weight:700;color:#cc0000;font-style:normal;}
+.q-row{padding:6px 0;border-bottom:1px solid #f0f0f0;}
+.q-row:last-child{border-bottom:none;}
+.q-q{font-size:clamp(0.85rem,2.8vw,1.04rem);font-weight:600;color:#111;display:block;}
+.q-a{font-size:clamp(0.78rem,2.4vw,0.94rem);color:#555;display:block;}
+.q-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;display:block;opacity:0;transition:opacity 0.4s;}
+.err-pair{padding:6px 0;border-bottom:1px solid #f0f0f0;}
+.err-pair:last-child{border-bottom:none;}
+.err-wrong{font-size:clamp(0.82rem,2.6vw,0.99rem);color:#c00;}
+.err-ok   {font-size:clamp(0.82rem,2.6vw,0.99rem);font-weight:700;color:#007733;}
+.err-it   {font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;}
+.err-note {font-size:clamp(0.63rem,1.8vw,0.77rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
+.warn{background:#fff5f5;border-left:5px solid #cc0000;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.8rem,2.5vw,0.96rem);color:#111;font-weight:600;line-height:1.7;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:8px;}
+.warn.show{opacity:1;}
+.warn strong{color:#cc0000;}
+.cursor{display:inline-block;width:2px;height:1em;background:#cc0000;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.55rem,1.8vw,0.72rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #cc0000;background:#fff;color:#cc0000;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#cc0000;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="title">📅 ADVERBS OF FREQUENCY</div><div class="prog" id="prog">1 / 5</div></div>
+<div class="dots" id="dots"></div>
+<div class="slides">
+
+  <div class="slide active" id="s0">
+    <div class="slide-title">📊 LA SCALA DELLA FREQUENZA</div>
+    <div class="freq-scale">
+      <div class="freq-seg s0">always</div><div class="freq-seg s1">usually</div><div class="freq-seg s2">often</div>
+      <div class="freq-seg s3">sometimes</div><div class="freq-seg s4">rarely/seldom</div>
+      <div class="freq-seg s5">hardly ever</div><div class="freq-seg s6">never</div>
+    </div>
+    <div class="freq-rows">
+      <div class="freq-row"><span class="f-adv" data-tw="always"></span><span class="f-pct" data-tw="100%"></span><span class="f-ex" data-tw="I always brush my teeth before bed."></span><span class="f-it">Mi lavo sempre i denti prima di dormire.</span></div>
+      <div class="freq-row"><span class="f-adv" data-tw="usually"></span><span class="f-pct" data-tw="~80%"></span><span class="f-ex" data-tw="She usually has coffee in the morning."></span><span class="f-it">Di solito prende il caffè la mattina.</span></div>
+      <div class="freq-row"><span class="f-adv" data-tw="often"></span><span class="f-pct" data-tw="~60%"></span><span class="f-ex" data-tw="We often play video games after school."></span><span class="f-it">Spesso giochiamo ai videogiochi dopo scuola.</span></div>
+      <div class="freq-row"><span class="f-adv" data-tw="sometimes"></span><span class="f-pct" data-tw="~40%"></span><span class="f-ex" data-tw="He sometimes forgets his homework."></span><span class="f-it">A volte dimentica i compiti.</span></div>
+      <div class="freq-row"><span class="f-adv" data-tw="rarely / seldom"></span><span class="f-pct" data-tw="~10%"></span><span class="f-ex" data-tw="I rarely eat breakfast. / She seldom complains."></span><span class="f-it">Raramente faccio colazione. / Si lamenta raramente.</span></div>
+      <div class="freq-row"><span class="f-adv" data-tw="hardly ever"></span><span class="f-pct" data-tw="~5%"></span><span class="f-ex" data-tw="He hardly ever watches TV."></span><span class="f-it">Non guarda quasi mai la TV.</span></div>
+      <div class="freq-row"><span class="f-adv" data-tw="never"></span><span class="f-pct" data-tw="0%"></span><span class="f-ex" data-tw="They never arrive late."></span><span class="f-it">Non arrivano mai in ritardo.</span></div>
+    </div>
+  </div>
+
+  <div class="slide" id="s1">
+    <div class="slide-title">📍 POSIZIONE — CON I VERBI COMUNI</div>
+    <div class="pos-section">
+      <div class="pos-label">SOGGETTO + ❮AVVERBIO❯ + VERBO</div>
+      <div class="pos-row"><span class="p-ex" data-tw="I ❮always❯ walk to school."></span><span class="p-it">Vado sempre a scuola a piedi.</span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="She ❮usually❯ studies in the evening."></span><span class="p-it">Di solito studia di sera.</span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="They ❮often❯ play football after school."></span><span class="p-it">Giocano spesso a calcio dopo scuola.</span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="He ❮sometimes❯ forgets his homework."></span><span class="p-it">A volte dimentica i compiti.</span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="I ❮rarely❯ eat breakfast on weekdays."></span><span class="p-it">Raramente faccio colazione nei giorni feriali.</span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="She ❮hardly ever❯ watches TV."></span><span class="p-it">Non guarda quasi mai la TV.</span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="They ❮never❯ arrive late."></span><span class="p-it">Non arrivano mai in ritardo.</span></div>
+    </div>
+    <div class="pos-section">
+      <div class="pos-label">SOMETIMES → anche all'inizio o alla fine</div>
+      <div class="pos-row"><span class="p-ex" data-tw="Sometimes I walk to school.  ✅"></span><span class="p-it">A volte vado a scuola a piedi.</span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="I walk to school sometimes.  ✅"></span><span class="p-it">Vado a scuola a piedi, a volte.</span></div>
+    </div>
+    <div class="warn">⚠️ <strong>always / usually / often / never / rarely / seldom / hardly ever</strong> NON si mettono all'inizio o alla fine della frase.</div>
+  </div>
+
+  <div class="slide" id="s2">
+    <div class="slide-title">📍 POSIZIONE — CON IL VERBO BE</div>
+    <div class="pos-section">
+      <div class="pos-label">BE + ❮AVVERBIO❯  (avverbio DOPO be!)</div>
+      <div class="pos-row"><span class="p-ex" data-tw="He ❮is❯ ❮always❯ late."></span><span class="p-it">È sempre in ritardo.</span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="She ❮is❯ ❮usually❯ at home in the afternoon."></span><span class="p-it">Di solito è a casa nel pomeriggio.</span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="We ❮are❯ ❮often❯ tired on Mondays."></span><span class="p-it">Il lunedì siamo spesso stanchi.</span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="He ❮is❯ ❮sometimes❯ rude — but rarely!"></span><span class="p-it">A volte è scortese — ma raramente!</span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="They ❮are❯ ❮rarely❯ wrong."></span><span class="p-it">Hanno raramente torto.</span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="She ❮is❯ ❮hardly ever❯ rude to anyone."></span><span class="p-it">Non è quasi mai scortese con nessuno.</span></div>
+      <div class="pos-row"><span class="p-ex" data-tw="Marco ❮is❯ ❮never❯ on time."></span><span class="p-it">Marco non è mai puntuale.</span></div>
+    </div>
+    <div class="warn">⚠️ Confronta:<br><strong>verbo comune</strong> → avverbio <strong>PRIMA</strong> · I <em>always</em> walk.<br><strong>be</strong> → avverbio <strong>DOPO</strong> · I am <em>always</em> tired.<br>❌ She always is late. &nbsp; ✅ She is always late.</div>
+  </div>
+
+  <div class="slide" id="s3">
+    <div class="slide-title">❓ HOW OFTEN…? — CHIEDERE LA FREQUENZA</div>
+    <div class="q-row">
+      <span class="q-q" data-tw="How often do you go to the gym?"></span>
+      <span class="q-a" data-tw="→ Three times a week. / Hardly ever."></span>
+      <span class="q-it">Ogni quanto vai in palestra? — Tre volte a settimana. / Quasi mai.</span>
+    </div>
+    <div class="q-row">
+      <span class="q-q" data-tw="How often does she check her phone?"></span>
+      <span class="q-a" data-tw="→ Every five minutes! / All the time."></span>
+      <span class="q-it">Ogni quanto controlla il telefono? — Ogni cinque minuti! / Sempre.</span>
+    </div>
+    <div class="q-row">
+      <span class="q-q" data-tw="How often do they travel abroad?"></span>
+      <span class="q-a" data-tw="→ Once a year. / Rarely."></span>
+      <span class="q-it">Ogni quanto viaggiano all'estero? — Una volta l'anno. / Raramente.</span>
+    </div>
+    <div class="q-row">
+      <span class="q-q" data-tw="How often do you eat pizza?"></span>
+      <span class="q-a" data-tw="→ Twice a month. / Seldom — I prefer pasta!"></span>
+      <span class="q-it">Ogni quanto mangi la pizza? — Due volte al mese. / Raramente — preferisco la pasta!</span>
+    </div>
+    <div class="warn">💬 <strong>Espressioni utili:</strong><br>every day · once a week · twice a month · three times a year<br>every five minutes · all the time · not very often · hardly ever</div>
+  </div>
+
+  <div class="slide" id="s4">
+    <div class="slide-title">🚨 ERRORI TIPICI DA EVITARE</div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  I go always to school by bike."></div>
+      <div class="err-ok"    data-tw="✅  I always go to school by bike."></div>
+      <div class="err-it">Vado sempre a scuola in bici.</div>
+      <div class="err-note">l'avverbio va PRIMA del verbo, non dopo</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  Always she forgets her keys."></div>
+      <div class="err-ok"    data-tw="✅  She always forgets her keys."></div>
+      <div class="err-it">Dimentica sempre le chiavi.</div>
+      <div class="err-note">always/rarely/seldom/hardly ever NON aprono la frase</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  She is hardly never late."></div>
+      <div class="err-ok"    data-tw="✅  She is hardly ever late."></div>
+      <div class="err-it">È quasi mai in ritardo.</div>
+      <div class="err-note">hardly ever = quasi mai — "hardly never" non esiste!</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  I never don't eat meat."></div>
+      <div class="err-ok"    data-tw="✅  I never eat meat."></div>
+      <div class="err-it">Non mangio mai carne.</div>
+      <div class="err-note">never è già negativo — non serve don't/doesn't</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  He is rarely never on time."></div>
+      <div class="err-ok"    data-tw="✅  He is rarely on time. / He is never on time."></div>
+      <div class="err-it">È raramente puntuale. / Non è mai puntuale.</div>
+      <div class="err-note">non si usano due avverbi di frequenza negativi insieme</div>
+    </div>
+  </div>
+
+</div>
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+<script>
+const TOTAL=5;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await new Promise(r=>setTimeout(r,400));
+  if(idx===0){
+    for(const seg of slide.querySelectorAll('.freq-seg')){seg.style.opacity='1';await new Promise(r=>setTimeout(r,100));}
+    await new Promise(r=>setTimeout(r,180));
+    for(const row of slide.querySelectorAll('.freq-row')){
+      const adv=row.querySelector('.f-adv'),pct=row.querySelector('.f-pct'),ex=row.querySelector('.f-ex'),it=row.querySelector('.f-it');
+      if(adv)await tw(adv,adv.dataset.tw,100);await new Promise(r=>setTimeout(r,40));
+      if(pct)await tw(pct,pct.dataset.tw,45);await new Promise(r=>setTimeout(r,40));
+      if(ex)await tw(ex,ex.dataset.tw,45);fi(it);await new Promise(r=>setTimeout(r,190));
+    }
+  } else if(idx===1||idx===2){
+    for(const sec of slide.querySelectorAll('.pos-section')){
+      const lbl=sec.querySelector('.pos-label');if(lbl){lbl.classList.add('show');await new Promise(r=>setTimeout(r,250));}
+      for(const row of sec.querySelectorAll('.pos-row')){const ex=row.querySelector('.p-ex'),it=row.querySelector('.p-it');if(ex)await twHL(ex,ex.dataset.tw,50);fi(it);await new Promise(r=>setTimeout(r,200));}
+      await new Promise(r=>setTimeout(r,160));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  } else if(idx===3){
+    for(const row of slide.querySelectorAll('.q-row')){
+      const q=row.querySelector('.q-q'),a=row.querySelector('.q-a'),it=row.querySelector('.q-it');
+      if(q)await tw(q,q.dataset.tw,48);await new Promise(r=>setTimeout(r,70));
+      if(a)await tw(a,a.dataset.tw,36);fi(it);await new Promise(r=>setTimeout(r,250));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  } else if(idx===4){
+    for(const pair of slide.querySelectorAll('.err-pair')){
+      const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
+      if(wrong)await tw(wrong,wrong.dataset.tw,46);await new Promise(r=>setTimeout(r,100));
+      if(ok)await tw(ok,ok.dataset.tw,46);fi(it);if(note)setTimeout(()=>note.style.opacity='1',220);await new Promise(r=>setTimeout(r,290));
+    }
+  }
+}
+function go(dir){
+  if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
+  const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('.pos-label').forEach(l=>l.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.querySelectorAll('.freq-seg').forEach(s=>s.style.opacity='0');
+  oldSlide.querySelectorAll('.f-it,.p-it,.q-it,.err-it,.err-note').forEach(n=>n.style.opacity='0');
+  oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
+  setTimeout(()=>{
+    oldSlide.style.cssText='';oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);}));
+    animateSlide(cur);dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+TOTAL;
+    document.getElementById('prevBtn').disabled=cur===0;document.getElementById('nextBtn').disabled=cur===TOTAL-1;
+  },260);
+}
+let tx=0;const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+animateSlide(0);
+</script>
+</body>
+</html>
