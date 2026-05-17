@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Too much / Too many / Enough</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #cc0000;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.75rem,2.6vw,1.3rem);letter-spacing:2px;color:#cc0000;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.65rem,2vw,0.85rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:7px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#cc0000;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#cc0000;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+
+/* matrice 3 colonne */
+.mx-table{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;border-radius:10px;overflow:hidden;border:2px solid #eee;margin-bottom:10px;}
+.mx-head{font-family:'Orbitron',monospace;font-size:clamp(0.54rem,1.6vw,0.74rem);letter-spacing:2px;font-weight:700;padding:9px 8px;text-align:center;color:#fff;}
+.mx-head.t0{background:#888;}
+.mx-head.tm{background:#cc0000;}
+.mx-head.ty{background:#883300;}
+.mx-head.te{background:#007733;}
+.mx-rl{padding:9px 12px;font-size:clamp(0.72rem,2.1vw,0.87rem);font-weight:700;background:#fafafa;border-bottom:1px solid #f0f0f0;border-right:2px solid #eee;line-height:1.3;}
+.mx-cell{padding:8px 6px;font-size:clamp(0.68rem,1.9vw,0.83rem);text-align:center;border-bottom:1px solid #f0f0f0;border-right:1px solid #f0f0f0;line-height:1.3;}
+.mx-cell:nth-child(4n){border-right:none;}
+.mx-rl:nth-last-child(-n+4),.mx-cell:nth-last-child(-n+3){border-bottom:none;}
+.mx-cell.m{background:#fff5f5;}
+.mx-cell.y{background:#fff8f3;}
+.mx-cell.e{background:#f0fff5;}
+
+/* esempi in contesto */
+.use-row{padding:7px 0;border-bottom:1px solid #f0f0f0;}
+.use-row:last-child{border-bottom:none;}
+.use-ex{font-size:clamp(0.88rem,2.9vw,1.06rem);font-weight:600;color:#111;display:block;}
+.use-it{font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;display:block;opacity:0;transition:opacity 0.4s;margin-top:2px;}
+.use-tag{font-family:'Orbitron',monospace;font-size:clamp(0.5rem,1.4vw,0.62rem);letter-spacing:1.5px;font-weight:700;padding:2px 7px;border-radius:4px;margin-right:7px;vertical-align:middle;}
+.tag-tm{background:#cc0000;color:#fff;}
+.tag-ty{background:#883300;color:#fff;}
+.tag-en{background:#007733;color:#fff;}
+.tag-ne{background:#994400;color:#fff;}
+.tag-adj{background:#0055aa;color:#fff;}
+
+/* sezioni interne */
+.sec-label{font-family:'Orbitron',monospace;font-size:clamp(0.56rem,1.7vw,0.74rem);letter-spacing:2px;color:#cc0000;font-weight:700;margin:8px 0 4px;opacity:0;transition:opacity 0.4s;}
+.sec-label.show{opacity:1;}
+
+/* errori */
+.err-pair{padding:6px 0;border-bottom:1px solid #f0f0f0;}
+.err-pair:last-child{border-bottom:none;}
+.err-wrong{font-size:clamp(0.82rem,2.6vw,0.99rem);color:#c00;}
+.err-ok{font-size:clamp(0.82rem,2.6vw,0.99rem);font-weight:700;color:#007733;}
+.err-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;margin-top:1px;}
+.err-note{font-size:clamp(0.63rem,1.8vw,0.77rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
+
+.hl{font-weight:900;color:#cc0000;font-style:normal;}
+.warn{background:#fff5f5;border-left:5px solid #cc0000;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.78rem,2.4vw,0.94rem);color:#111;font-weight:600;line-height:1.7;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:8px;}
+.warn.show{opacity:1;}
+.warn strong{color:#cc0000;}
+.cursor{display:inline-block;width:2px;height:1em;background:#cc0000;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.55rem,1.8vw,0.72rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #cc0000;background:#fff;color:#cc0000;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#cc0000;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="title">⚠️ TOO MUCH / TOO MANY / ENOUGH</div><div class="prog" id="prog">1 / 5</div></div>
+<div class="dots" id="dots"></div>
+<div class="slides">
+
+  <!-- ══ SLIDE 0: panoramica ══ -->
+  <div class="slide active" id="s0">
+    <div class="slide-title">📋 PANORAMICA — TRE QUANTIFICATORI</div>
+    <div class="mx-table">
+      <div class="mx-head t0"></div>
+      <div class="mx-head tm">TOO MUCH</div>
+      <div class="mx-head ty">TOO MANY</div>
+      <div class="mx-head te">ENOUGH</div>
+      <div class="mx-rl" data-tw="📦 CON CHE NOMI?"></div>
+      <div class="mx-cell m" data-tw="❮UNCOUNTABLE❯"></div>
+      <div class="mx-cell y" data-tw="❮COUNTABLE❯ plurale"></div>
+      <div class="mx-cell e" data-tw="❮entrambi❯ U e C"></div>
+      <div class="mx-rl" data-tw="💬 SIGNIFICATO"></div>
+      <div class="mx-cell m" data-tw="troppo / troppa"></div>
+      <div class="mx-cell y" data-tw="troppi / troppe"></div>
+      <div class="mx-cell e" data-tw="abbastanza (not enough = non abbastanza)"></div>
+      <div class="mx-rl" data-tw="⚡ CONNOTAZIONE"></div>
+      <div class="mx-cell m" data-tw="⚠️ negativa — eccesso"></div>
+      <div class="mx-cell y" data-tw="⚠️ negativa — eccesso"></div>
+      <div class="mx-cell e" data-tw="✓ positiva / ✗ negativa"></div>
+      <div class="mx-rl" data-tw="📍 POSIZIONE"></div>
+      <div class="mx-cell m" data-tw="prima del nome"></div>
+      <div class="mx-cell y" data-tw="prima del nome"></div>
+      <div class="mx-cell e" data-tw="prima del nome / dopo agg."></div>
+    </div>
+    <div class="warn">🔑 <strong>Too much / too many</strong> = sempre negativo → indica un <strong>eccesso</strong>.<br>
+    <strong>Enough</strong> = quantità giusta ✓ &nbsp;·&nbsp; <strong>Not enough</strong> = quantità insufficiente ✗<br>
+    <strong>Enough</strong> va <em>prima</em> del nome ma <em>dopo</em> l'aggettivo: <strong>enough time</strong> · <strong>warm enough</strong>.</div>
+  </div>
+
+  <!-- ══ SLIDE 1: TOO MUCH ══ -->
+  <div class="slide" id="s1">
+    <div class="slide-title">🔴 TOO MUCH — USO E ESEMPI  (con U)</div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-tm">U</span><span data-tw="There's ❮too much❯ salt in this soup."></span></span>
+      <span class="use-it">C'è troppo sale in questa minestra.  (salt = U)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-tm">U</span><span data-tw="I drink ❮too much❯ coffee — I can't sleep!"></span></span>
+      <span class="use-it">Bevo troppo caffè — non riesco a dormire!  (coffee = U)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-tm">U</span><span data-tw="Don't use ❮too much❯ oil when you cook."></span></span>
+      <span class="use-it">Non usare troppo olio quando cucini.  (oil = U)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-tm">U</span><span data-tw="There's ❮too much❯ traffic in the city centre."></span></span>
+      <span class="use-it">C'è troppo traffico in centro.  (traffic = U)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-tm">U</span><span data-tw="I spend ❮too much❯ time on my phone."></span></span>
+      <span class="use-it">Passo troppo tempo sul telefono.  (time = U)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-tm">U</span><span data-tw="This trip costs ❮too much❯ money."></span></span>
+      <span class="use-it">Questo viaggio costa troppo.  (money = U)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-tm">U</span><span data-tw="There was ❮too much❯ noise during the exam."></span></span>
+      <span class="use-it">C'era troppo rumore durante l'esame.  (noise = U)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-tm">U</span><span data-tw="He ate ❮too much❯ and now he feels sick."></span></span>
+      <span class="use-it">Ha mangiato troppo e ora si sente male.  (standalone, no noun)</span>
+    </div>
+    <div class="warn">🔑 <strong>Too much</strong> con <strong>U</strong> → indica sempre qualcosa di <strong>eccessivo e negativo</strong>.</div>
+  </div>
+
+  <!-- ══ SLIDE 2: TOO MANY ══ -->
+  <div class="slide" id="s2">
+    <div class="slide-title">🟠 TOO MANY — USO E ESEMPI  (con C plurale)</div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-ty">C</span><span data-tw="There are ❮too many❯ cars on the road."></span></span>
+      <span class="use-it">Ci sono troppe macchine in strada.  (cars = C)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-ty">C</span><span data-tw="I have ❮too many❯ things to do today."></span></span>
+      <span class="use-it">Ho troppe cose da fare oggi.  (things = C)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-ty">C</span><span data-tw="There are ❮too many❯ students in this class."></span></span>
+      <span class="use-it">Ci sono troppi studenti in questa classe.  (students = C)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-ty">C</span><span data-tw="You make ❮too many❯ mistakes in your writing."></span></span>
+      <span class="use-it">Fai troppi errori nel tuo scritto.  (mistakes = C)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-ty">C</span><span data-tw="I ate ❮too many❯ biscuits last night."></span></span>
+      <span class="use-it">Ho mangiato troppi biscotti ieri sera.  (biscuits = C)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-ty">C</span><span data-tw="There are ❮too many❯ apps on my phone."></span></span>
+      <span class="use-it">Ci sono troppe app sul mio telefono.  (apps = C)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-ty">C</span><span data-tw="We have ❮too many❯ exercises for tonight."></span></span>
+      <span class="use-it">Abbiamo troppi esercizi per stasera.  (exercises = C)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-ty">C</span><span data-tw="Too many ❮cooks❯ spoil the broth."></span></span>
+      <span class="use-it">Troppi cuochi rovinano il brodo.  (proverbio inglese)</span>
+    </div>
+    <div class="warn">🔑 <strong>Too many</strong> con <strong>C plurale</strong> → indica sempre un numero <strong>eccessivo e problematico</strong>.</div>
+  </div>
+
+  <!-- ══ SLIDE 3: ENOUGH / NOT ENOUGH ══ -->
+  <div class="slide" id="s3">
+    <div class="slide-title">🟢 ENOUGH / NOT ENOUGH — USO E POSIZIONE</div>
+    <div class="sec-label" id="s3-a">✓ ENOUGH + NOME — quantità sufficiente</div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-en">C</span><span data-tw="Are there ❮enough❯ chairs for everyone?"></span></span>
+      <span class="use-it">Ci sono abbastanza sedie per tutti?</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-en">U</span><span data-tw="We have ❮enough❯ time to finish the test."></span></span>
+      <span class="use-it">Abbiamo abbastanza tempo per finire il test.</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-en">U</span><span data-tw="Is there ❮enough❯ food for the party?"></span></span>
+      <span class="use-it">C'è abbastanza cibo per la festa?</span>
+    </div>
+    <div class="sec-label" id="s3-b">✗ NOT ENOUGH + NOME — quantità insufficiente</div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-ne">U</span><span data-tw="I haven't got ❮enough❯ money."></span></span>
+      <span class="use-it">Non ho abbastanza soldi.</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-ne">C</span><span data-tw="There aren't ❮enough❯ students for the trip."></span></span>
+      <span class="use-it">Non ci sono abbastanza studenti per la gita.</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-ne">U</span><span data-tw="We don't have ❮enough❯ information yet."></span></span>
+      <span class="use-it">Non abbiamo ancora abbastanza informazioni.</span>
+    </div>
+    <div class="sec-label" id="s3-c">🔵 AGG. + ENOUGH — dopo l'aggettivo!</div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-adj">AGG.</span><span data-tw="Is it warm ❮enough❯ for you?"></span></span>
+      <span class="use-it">È abbastanza caldo per te?  (enough DOPO l'aggettivo)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-adj">AGG.</span><span data-tw="He's not old ❮enough❯ to drive."></span></span>
+      <span class="use-it">Non è abbastanza grande per guidare.</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-adj">AGG.</span><span data-tw="The coffee isn't hot ❮enough❯."></span></span>
+      <span class="use-it">Il caffè non è abbastanza caldo.</span>
+    </div>
+    <div class="warn">⚠️ <strong>Enough</strong> + nome → <strong>PRIMA</strong> del nome: <strong>enough time</strong> ✓<br>
+    Aggettivo + <strong>enough</strong> → <strong>DOPO</strong> l'aggettivo: <strong>warm enough</strong> ✓<br>
+    ❌ <em>enough warm</em> · ❌ <em>time enough</em></div>
+  </div>
+
+  <!-- ══ SLIDE 4: errori ══ -->
+  <div class="slide" id="s4">
+    <div class="slide-title">🚨 ERRORI TIPICI DA EVITARE</div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  There are too much cars on the road."></div>
+      <div class="err-ok"    data-tw="✅  There are too many cars on the road."></div>
+      <div class="err-it">Ci sono troppe macchine in strada.</div>
+      <div class="err-note">cars = countable plurale → too many (non too much)</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  I drink too many coffee."></div>
+      <div class="err-ok"    data-tw="✅  I drink too much coffee."></div>
+      <div class="err-it">Bevo troppo caffè.</div>
+      <div class="err-note">coffee = uncountable → too much (non too many)</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  I don't have enough of time."></div>
+      <div class="err-ok"    data-tw="✅  I don't have enough time."></div>
+      <div class="err-it">Non ho abbastanza tempo.</div>
+      <div class="err-note">enough + nome: no "of" in mezzo → enough time (diretto)</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  It's enough warm to go out."></div>
+      <div class="err-ok"    data-tw="✅  It's warm enough to go out."></div>
+      <div class="err-it">È abbastanza caldo per uscire.</div>
+      <div class="err-note">con aggettivi: enough va DOPO (warm enough, not enough warm)</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  There is too many homework tonight."></div>
+      <div class="err-ok"    data-tw="✅  There is too much homework tonight."></div>
+      <div class="err-it">C'è troppo compito stasera.</div>
+      <div class="err-note">homework = uncountable → too much + verbo singolare (is)</div>
+    </div>
+  </div>
+
+</div>
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+<script>
+document.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+const TOTAL=5;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  // ── RESET COMPLETO ──────────────────────────────────────────────────
+  slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+  slide.querySelectorAll('.use-it,.err-it,.err-note,.cu-it').forEach(el=>el.style.opacity='0');
+  slide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  slide.querySelectorAll('.sec-label').forEach(l=>l.classList.remove('show'));
+  // ────────────────────────────────────────────────────────────────────
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await new Promise(r=>setTimeout(r,400));
+  if(idx===0){
+    const allCells=[...slide.querySelectorAll('.mx-rl[data-tw],.mx-cell[data-tw]')];
+    for(let i=0;i<allCells.length;i++){
+      await tw(allCells[i],allCells[i].dataset.tw,22);
+      await new Promise(r=>setTimeout(r,i%4===3?160:35));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,250));warn.classList.add('show');}
+  } else if(idx===1||idx===2){
+    for(const row of slide.querySelectorAll('.use-row')){
+      const ex=row.querySelector('[data-tw]'),it=row.querySelector('.use-it');
+      if(ex)await twHL(ex,ex.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,200));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  } else if(idx===3){
+    const sections=[
+      {lbl:document.getElementById('s3-a'),rows:[...slide.querySelectorAll('.use-row')].slice(0,3)},
+      {lbl:document.getElementById('s3-b'),rows:[...slide.querySelectorAll('.use-row')].slice(3,6)},
+      {lbl:document.getElementById('s3-c'),rows:[...slide.querySelectorAll('.use-row')].slice(6)},
+    ];
+    for(const sec of sections){
+      if(sec.lbl){sec.lbl.classList.add('show');await new Promise(r=>setTimeout(r,220));}
+      for(const row of sec.rows){
+        const ex=row.querySelector('[data-tw]'),it=row.querySelector('.use-it');
+        if(ex)await twHL(ex,ex.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,200));
+      }
+      await new Promise(r=>setTimeout(r,120));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  } else if(idx===4){
+    for(const pair of slide.querySelectorAll('.err-pair')){
+      const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
+      if(wrong)await tw(wrong,wrong.dataset.tw,42);await new Promise(r=>setTimeout(r,100));
+      if(ok)await tw(ok,ok.dataset.tw,42);fi(it);if(note)setTimeout(()=>note.style.opacity='1',220);await new Promise(r=>setTimeout(r,280));
+    }
+  }
+}
+function go(dir){
+  if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
+  const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
+  oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
+  setTimeout(()=>{
+    oldSlide.style.cssText='';oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);}));
+    animateSlide(cur);dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+TOTAL;
+    document.getElementById('prevBtn').disabled=cur===0;document.getElementById('nextBtn').disabled=cur===TOTAL-1;
+  },260);
+}
+let tx=0;const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+animateSlide(0);
+</script>
+</body>
+</html>
