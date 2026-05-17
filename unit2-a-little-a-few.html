@@ -1,326 +1,86 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-  <meta charset="UTF-8">
-  <title>The English Framework - Grammar Tutor</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f6f9;
-      color: #333;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .slides {
-      width: 100%;
-      max-width: 900px;
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      position: relative;
-      min-height: 500px;
-    }
-    .slide {
-      display: none;
-    }
-    .slide.active {
-      display: block;
-    }
-    .slide-title {
-      font-size: 20px;
-      font-weight: bold;
-      color: #0c2340;
-      margin-bottom: 25px;
-      border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 10px;
-    }
-    
-    .mx-table, .use-row, .con-row, .err-pair {
-      margin-bottom: 24px;
-      padding: 15px;
-      background: #fafbfc;
-      border-radius: 8px;
-      border-left: 4px solid #cbd5e1;
-    }
-    
-    .con-row {
-      border-left-color: #3b82f6;
-    }
-    
-    .con-pos, .con-neg {
-      margin-bottom: 12px;
-    }
-    
-    .con-tag, .use-tag, .tag-int, .tag-aff, .tag-neg, .tag-pos, .tag-neg-con {
-      display: inline-block;
-      padding: 4px 8px;
-      font-size: 11px;
-      font-weight: bold;
-      border-radius: 4px;
-      margin-right: 10px;
-      text-transform: uppercase;
-    }
-    .tag-pos, .tag-int, .tag-aff {
-      background-color: #e6f4ea;
-      color: #137333;
-    }
-    .tag-neg-con, .tag-neg {
-      background-color: #fce8e6;
-      color: #c5221f;
-    }
-    
-    .con-ex, .use-ex, .err-wrong, .err-ok {
-      font-size: 16px;
-      font-weight: 500;
-      display: inline-block;
-    }
-    
-    /* Le scritte sotto partono invisibili per non anticipare la macchina da scrivere */
-    .con-sub {
-      display: block;
-      font-size: 13px;
-      color: #666;
-      margin-left: 10px;
-      margin-top: 4px;
-      font-style: italic;
-      opacity: 0;
-    }
-    
-    .con-it, .use-it, .err-it {
-      display: block;
-      margin-top: 8px;
-      font-size: 14px;
-      color: #4a5568;
-      border-top: 1px dashed #e2e8f0;
-      padding-top: 6px;
-    }
-    
-    .hl-keyword {
-      color: #d93025;
-      font-weight: bold;
-    }
-    
-    .warn {
-      background-color: #fff7ed;
-      border: 1px solid #ffedd5;
-      border-left: 4px solid #f97316;
-      padding: 15px;
-      border-radius: 8px;
-      margin-top: 20px;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-    
-    .err-wrong { color: #c5221f; text-decoration: line-through; }
-    .err-ok { color: #137333; margin-left: 15px; }
-    .err-note { display: block; margin-top: 4px; font-size: 12px; color: #718096; }
+<script>
+document.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
 
-    .nav-controls {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      max-width: 900px;
-      margin-top: 20px;
+const TOTAL=5;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
+function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+
+function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+function showWarn(el){if(el){el.style.transition='opacity 0.5s';setTimeout(()=>el.style.opacity='1',50);}}
+
+function resetSlide(slide){
+  slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+  slide.querySelectorAll('.use-it,.con-it,.err-it,.err-note,.cu-it,.warn').forEach(el=>{
+    el.style.transition='none';
+    el.style.opacity='0';
+  });
+}
+
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  resetSlide(slide);
+  const title=slide.querySelector('.slide-title');
+  if(title){
+    title.style.transition='none';
+    title.style.opacity='0';
+    setTimeout(()=>{title.style.transition='opacity 0.4s';title.style.opacity='1';},100);
+  }
+  await new Promise(r=>setTimeout(r,400));
+  if(idx===0){
+    for(const cell of slide.querySelectorAll('.cu-cell[data-tw]')){await twHL(cell,cell.dataset.tw,38);await new Promise(r=>setTimeout(r,80));}
+    for(const ex of slide.querySelectorAll('.cu-ex[data-tw]')){
+      await twHL(ex,ex.dataset.tw,42);fi(ex.nextElementSibling);
+      await new Promise(r=>setTimeout(r,150));
     }
-    button {
-      padding: 10px 20px;
-      font-size: 14px;
-      font-weight: bold;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      background-color: #0c2340;
-      color: white;
-      transition: background 0.2s;
+    showWarn(slide.querySelector('.warn'));
+  } else if(idx===1||idx===2){
+    for(const row of slide.querySelectorAll('.use-row')){
+      const ex=row.querySelector('[data-tw]'),it=row.querySelector('.use-it');
+      if(ex)await twHL(ex,ex.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,200));
     }
-    button:hover { background-color: #1a365d; }
-    button:disabled { background-color: #cbd5e1; cursor: not-allowed; }
-  </style>
-</head>
-<body>
-
-  <div class="slides">
-    
-    <div class="slide active" id="s0">
-      <div class="slide-title">📋 PANORAMICA — QUANDO SI USANO MANY, MUCH, A LOT OF</div>
-      <div class="mx-table">
-        <div class="con-ex" data-tw="QUANTIFIER MATRICES — COUNTABLE vs UNCOUNTABLE"></div>
-        <div class="con-sub" style="opacity: 1;">Tabella riassuntiva per l'uso corretto nei diversi contesti.</div>
-      </div>
-      <div class="warn">
-        <strong>Regola Generale:</strong><br>
-        • <strong>A lot of / Lots of</strong> si usa principalmente nelle frasi affermative.<br>
-        • <strong>Many</strong> si usa per sostantivi numerabili plurale.<br>
-        • <strong>Much</strong> si usa per sostantivi non numerabili.
-      </div>
-    </div>
-
-    <div class="slide" id="s1">
-      <div class="slide-title">✨ A LOT OF / LOTS OF — FRASI AFFERMATIVE</div>
-      <div class="use-row">
-        <span class="use-tag tag-int">Numerabile</span>
-        <span class="use-ex" data-tw="She has ❮a lot of❯ books."></span>
-        <span class="use-it">Ha molti libri.</span>
-      </div>
-      <div class="use-row">
-        <span class="use-tag tag-aff">Non Numerabile</span>
-        <span class="use-ex" data-tw="We need ❮lots of❯ time."></span>
-        <span class="use-it">Abbiamo bisogno di molto tempo.</span>
-      </div>
-    </div>
-
-    <div class="slide" id="s2">
-      <div class="slide-title">🟢 MANY — USO E ESEMPI (COUNTABLE)</div>
-      <div class="use-row">
-        <span class="use-tag tag-neg">Negativa</span>
-        <span class="use-ex" data-tw="There aren't ❮many❯ students in the lab."></span>
-        <span class="use-it">Non ci sono molti studenti in laboratorio.</span>
-      </div>
-      <div class="use-row">
-        <span class="use-tag tag-int">Interrogativa</span>
-        <span class="use-ex" data-tw="How ❮many❯ devices did you connect?"></span>
-        <span class="use-it">Quanti dispositivi hai collegato?</span>
-      </div>
-    </div>
-
-    <div class="slide" id="s3">
-      <div class="slide-title">⚠️ CON "a" vs SENZA "a" — CAMBIA TUTTO!</div>
-      
-      <div class="con-row">
-        <div class="con-pos">
-          <span class="con-tag tag-pos">CON "a" → positivo</span>
-          <span class="con-ex" data-tw="There's ❮a little❯ time left."></span>
-          <span class="con-sub">un po' -> possiamo farcela</span>
-        </div>
-        <div class="con-neg">
-          <span class="con-tag tag-neg-con">SENZA "a" → negativo</span>
-          <span class="con-ex" data-tw="There's ❮little❯ time left."></span>
-          <span class="con-sub">pochissimo -> siamo nei guai</span>
-        </div>
-        <span class="con-it">C'è ancora un po' di tempo &nbsp;↔&nbsp; C'è pochissimo tempo</span>
-      </div>
-
-      <div class="con-row">
-        <div class="con-pos">
-          <span class="con-tag tag-pos">CON "a" → positivo</span>
-          <span class="con-ex" data-tw="A ❮few❯ students understood."></span>
-          <span class="con-sub">alcuni -> almeno qualcuno</span>
-        </div>
-        <div class="con-neg">
-          <span class="con-tag tag-neg-con">SENZA "a" → negativo</span>
-          <span class="con-ex" data-tw="❮Few❯ students understood."></span>
-          <span class="con-sub">pochissimi -> quasi nessuno</span>
-        </div>
-        <span class="con-it">Alcuni studenti hanno capito &nbsp;↔&nbsp; Pochissimi studenti hanno capito</span>
-      </div>
-
-      <div class="warn">🔑 <strong>Very little / very few</strong> = pochissimo/a, pochissimi/e:<br>
-      There are <strong>very few</strong> mistakes. → Ci sono pochissimi errori.</div>
-    </div>
-
-    <div class="slide" id="s4">
-      <div class="slide-title">❌ ERRORI COMUNI DA EVITARE</div>
-      <div class="err-pair">
-        <span class="err-wrong" data-tw="He has much money."></span>
-        <span class="err-ok" data-tw="He has a lot of money."></span>
-        <span class="err-it">Errore: 'much' non si usa normalmente nelle frasi affermative standard.</span>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="nav-controls">
-    <button id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
-    <button id="nextBtn" onclick="go(1)">AVANTI ▶</button>
-  </div>
-
-  <script>
-    let currentSlide = 0;
-    const totalSlides = 5;
-
-    function tw(el, text, speed) {
-      return new Promise(resolve => {
-        let i = 0;
-        el.textContent = '';
-        function type() {
-          if (i < text.length) {
-            el.textContent += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-          } else {
-            resolve();
-          }
-        }
-        type();
-      });
+    showWarn(slide.querySelector('.warn'));
+  } else if(idx===3){
+    for(const row of slide.querySelectorAll('.con-row')){
+      const pos=row.querySelector('.con-pos .con-ex'),neg=row.querySelector('.con-neg .con-ex'),it=row.querySelector('.con-it');
+      if(pos)await twHL(pos,pos.dataset.tw,42);await new Promise(r=>setTimeout(r,120));
+      if(neg)await twHL(neg,neg.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,240));
     }
-
-    function twHL(el, text, speed) {
-      return new Promise(resolve => {
-        let i = 0;
-        el.innerHTML = '';
-        let isHighlighted = false;
-        let currentSpan = null;
-
-        function type() {
-          if (i < text.length) {
-            let char = text.charAt(i);
-            if (char === '❮') {
-              isHighlighted = true;
-              currentSpan = document.createElement('span');
-              currentSpan.className = 'hl-keyword';
-              el.appendChild(currentSpan);
-              i++;
-              type();
-              return;
-            }
-            if (char === '❯') {
-              isHighlighted = false;
-              currentSpan = null;
-              i++;
-              type();
-              return;
-            }
-
-            if (isHighlighted && currentSpan) {
-              currentSpan.textContent += char;
-            } else {
-              el.appendChild(document.createTextNode(char));
-            }
-            i++;
-            setTimeout(type, speed);
-          } else {
-            resolve();
-          }
-        }
-        type();
-      });
+    showWarn(slide.querySelector('.warn'));
+  } else if(idx===4){
+    for(const pair of slide.querySelectorAll('.err-pair')){
+      const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
+      if(wrong)await tw(wrong,wrong.dataset.tw,42);await new Promise(r=>setTimeout(r,100));
+      if(ok)await tw(ok,ok.dataset.tw,42);
+      fi(it);
+      if(note){note.style.transition='opacity 0.4s';setTimeout(()=>note.style.opacity='1',220);}
+      await new Promise(r=>setTimeout(r,280));
     }
+  }
+}
 
-    function fi(el) {
-      if(!el) return;
-      el.style.transition = 'none';
-      el.style.opacity = '0';
-      setTimeout(() => {
-        el.style.transition = 'opacity 0.5s';
-        el.style.opacity = '1';
-      }, 50);
-    }
-
-    function showWarn(el) {
-      if(!el) return;
-      el.style.transition = 'none';
-      el.style.opacity = '0';
-      setTimeout(() => {
-        el.style.transition = 'opacity 0.4s';
-        el.style.opacity = '1';
-      }, 150);
-    }
-
-    function resetSlide(slide){
-      slide.querySelectorAll('[data-tw]').forEach(el => el.textContent = '');
-      slide.querySelectorAll('.use-it,.con-it,.err-it
+function go(dir){
+  if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
+  const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
+  oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
+  setTimeout(()=>{
+    oldSlide.style.cssText='';oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';
+      setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+TOTAL;
+    document.getElementById('prevBtn').disabled=cur===0;document.getElementById('nextBtn').disabled=cur===TOTAL-1;
+  },260);
+}
+let tx=0;const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+animateSlide(0);
+</script>
