@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countable & Uncountable Nouns</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #0077cc;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.8rem,2.8vw,1.3rem);letter-spacing:2px;color:#0077cc;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.7rem,2vw,0.9rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:8px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#0077cc;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.7rem,2.2vw,0.9rem);letter-spacing:2px;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+.t-blue{color:#0077cc;}.t-green{color:#007700;}.t-red{color:#cc0000;}.t-orange{color:#cc6600;}
+
+.row{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;align-items:baseline;gap:0 18px;padding:9px 0;border-bottom:1px solid #f0f0f0;min-height:44px;}
+.row:last-of-type{border-bottom:none;}
+.label{font-size:clamp(0.85rem,2.8vw,1.1rem);font-weight:700;color:#0077cc;grid-row:1/3;align-self:center;white-space:nowrap;min-width:90px;}
+.row-main{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+.row-it{font-size:clamp(0.68rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.45s;grid-column:2;}
+.kw{font-size:clamp(1rem,3.2vw,1.25rem);font-weight:700;color:#0077cc;}
+.ex{font-size:clamp(0.95rem,3vw,1.15rem);font-weight:400;color:#111;}
+
+.trap-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.trap-item{background:#fff8e8;border-left:4px solid #cc6600;border-radius:0 8px 8px 0;padding:8px 12px;opacity:0;transition:opacity 0.3s;}
+.trap-item.show{opacity:1;}
+.trap-en{font-size:clamp(0.9rem,2.8vw,1.1rem);font-weight:700;color:#cc6600;}
+.trap-it{font-size:clamp(0.65rem,1.8vw,0.78rem);color:#888;font-style:italic;}
+
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.cmp-col{background:#f8f8f8;border-radius:10px;padding:10px 14px;}
+.cmp-head{font-family:'Orbitron',monospace;font-size:clamp(0.55rem,1.6vw,0.7rem);font-weight:700;letter-spacing:1px;margin-bottom:8px;}
+.cmp-head.blue{color:#0077cc;}.cmp-head.red{color:#cc0000;}
+.cmp-word{font-size:clamp(0.88rem,2.7vw,1.05rem);font-weight:400;color:#111;line-height:2;opacity:0;transition:opacity 0.3s;}
+.cmp-word.show{opacity:1;}
+
+.warn{margin-top:8px;border-radius:0 8px 8px 0;padding:11px 15px;font-size:clamp(0.85rem,2.8vw,1.05rem);color:#111;font-weight:600;line-height:1.7;flex-shrink:0;opacity:0;transition:opacity 0.5s;}
+.warn.show{opacity:1;}
+.warn-blue{background:#e8f4ff;border-left:5px solid #0077cc;}
+.warn-orange{background:#fff8e8;border-left:5px solid #cc6600;}
+.warn-red{background:#fff5f5;border-left:5px solid #cc0000;}
+.warn strong{font-weight:900;}
+.ok{color:#007700;font-weight:700;}.no{color:#cc0000;text-decoration:line-through;}
+.intro-p{font-size:clamp(0.78rem,2.2vw,0.88rem);color:#555;margin-bottom:10px;opacity:0;transition:opacity 0.4s;}
+.intro-p.show{opacity:1;}
+
+.cursor{display:inline-block;width:2px;height:1em;background:#0077cc;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.6rem,2vw,0.75rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #0077cc;background:#fff;color:#0077cc;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#0077cc;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="title">📦 COUNTABLE &amp; UNCOUNTABLE</div>
+  <div class="prog" id="prog">1 / 4</div>
+</div>
+<div class="dots" id="dots"></div>
+<div class="slides">
+
+<!-- SLIDE 0: Countable -->
+<div class="slide active" id="s0">
+  <div class="slide-title t-blue">✅ COUNTABLE NOUNS (C) — NOMI NUMERABILI</div>
+  <div class="row">
+    <span class="label">Cosa sono?</span>
+    <div class="row-main"><span class="ex" data-tw="Cose che si possono contare → hanno il plurale."></span></div>
+    <div class="row-it">They can be counted — they have a plural form.</div>
+  </div>
+  <div class="row">
+    <span class="label">Singolare</span>
+    <div class="row-main"><span class="ex" data-tw="I eat "></span><span class="kw" data-tw="a banana"></span><span class="ex" data-tw=" and "></span><span class="kw" data-tw="two biscuits"></span><span class="ex" data-tw=" every morning."></span></div>
+    <div class="row-it">Mangio una banana e due biscotti ogni mattina.</div>
+  </div>
+  <div class="row">
+    <span class="label">Articolo</span>
+    <div class="row-main"><span class="kw" data-tw="a"></span><span class="ex" data-tw=" banana  ·  "></span><span class="kw" data-tw="an"></span><span class="ex" data-tw=" apple  ·  "></span><span class="kw" data-tw="—"></span><span class="ex" data-tw=" bananas (generico)"></span></div>
+    <div class="row-it">a/an al singolare · nessun articolo al plurale generico</div>
+  </div>
+  <div class="row">
+    <span class="label">Verbo</span>
+    <div class="row-main"><span class="kw" data-tw="Singolare"></span><span class="ex" data-tw=" con 1 cosa · "></span><span class="kw" data-tw="Plurale"></span><span class="ex" data-tw=" con 2+ cose"></span></div>
+    <div class="row-it">A biscuit is nice. · Two biscuits are nice.</div>
+  </div>
+  <div class="warn warn-blue">Con i <strong>Countable</strong> si possono usare numeri: <strong>one apple, three oranges…</strong><br>Hai anche a/an: <strong>a cake · an egg</strong></div>
+</div>
+
+<!-- SLIDE 1: Uncountable -->
+<div class="slide" id="s1">
+  <div class="slide-title t-red">🚫 UNCOUNTABLE NOUNS (U) — NOMI NON NUMERABILI</div>
+  <div class="row">
+    <span class="label">Cosa sono?</span>
+    <div class="row-main"><span class="ex" data-tw="Cose che NON si possono contare → niente plurale, niente a/an."></span></div>
+    <div class="row-it">They cannot be counted — no plural, no a/an.</div>
+  </div>
+  <div class="row">
+    <span class="label">Esempio</span>
+    <div class="row-main"><span class="ex" data-tw="I prefer "></span><span class="kw" data-tw="juice"></span><span class="ex" data-tw=" to tea."></span></div>
+    <div class="row-it">Preferisco il succo al tè. (NO: a juice / juices)</div>
+  </div>
+  <div class="row">
+    <span class="label">Esempio</span>
+    <div class="row-main"><span class="kw" data-tw="Rice"></span><span class="ex" data-tw=" is nice for lunch."></span></div>
+    <div class="row-it">Il riso è buono per pranzo. (NO: a rice / rices)</div>
+  </div>
+  <div class="row">
+    <span class="label">Quantità</span>
+    <div class="row-main"><span class="ex" data-tw="a "></span><span class="kw" data-tw="glass of"></span><span class="ex" data-tw=" juice  ·  a "></span><span class="kw" data-tw="bowl of"></span><span class="ex" data-tw=" rice  ·  a "></span><span class="kw" data-tw="piece of"></span><span class="ex" data-tw=" cake"></span></div>
+    <div class="row-it">Si usa un "contenitore/porzione" per indicare quantità specifica.</div>
+  </div>
+  <div class="warn warn-red">⚠️ I non numerabili vanno con il verbo al <strong>singolare</strong>:<br><span class="no">Milks are good.</span> ✗ → <span class="ok">Milk is good.</span> ✓  ·  <span class="no">a rice</span> ✗</div>
+</div>
+
+<!-- SLIDE 2: Trappole -->
+<div class="slide" id="s2">
+  <div class="slide-title t-orange">⚠️ ATTENZIONE — TRAPPOLE IT → EN</div>
+  <p class="intro-p">Alcune parole <strong>numerabili in italiano</strong> sono <strong>non numerabili in inglese</strong> (e viceversa)!</p>
+  <div class="trap-grid">
+    <div class="trap-item"><div class="trap-en">furniture (U)</div><div class="trap-it">mobili → no "a furniture"</div></div>
+    <div class="trap-item"><div class="trap-en">hair (U)</div><div class="trap-it">capelli → no "hairs"</div></div>
+    <div class="trap-item"><div class="trap-en">homework (U)</div><div class="trap-it">compiti → no "homeworks"</div></div>
+    <div class="trap-item"><div class="trap-en">information (U)</div><div class="trap-it">informazioni → no "informations"</div></div>
+    <div class="trap-item"><div class="trap-en">news (U)</div><div class="trap-it">notizie → no "a news"</div></div>
+    <div class="trap-item"><div class="trap-en">grapes (C)</div><div class="trap-it">uva → in inglese è C!</div></div>
+    <div class="trap-item"><div class="trap-en">people (C)</div><div class="trap-it">gente → plurale in inglese!</div></div>
+    <div class="trap-item"><div class="trap-en">chicken (U/C)</div><div class="trap-it">U = carne · C = un pollo</div></div>
+  </div>
+  <div class="warn warn-orange">💡 <strong>My hair is long.</strong> ✓ &nbsp;·&nbsp; <span class="no">My hairs are long.</span> ✗<br><strong>There's a lot of furniture.</strong> ✓ &nbsp;·&nbsp; <span class="no">There are furnitures.</span> ✗</div>
+</div>
+
+<!-- SLIDE 3: C vs U stesso nome -->
+<div class="slide" id="s3">
+  <div class="slide-title t-green">🔄 STESSO NOME — SIGNIFICATO DIVERSO (C o U)</div>
+  <p class="intro-p">Alcuni nomi possono essere C o U a seconda del contesto:</p>
+  <div class="cmp">
+    <div class="cmp-col">
+      <div class="cmp-head blue">UNCOUNTABLE (U) = in generale</div>
+      <div class="cmp-word">Where is the <strong>cheese</strong>? <span style="color:#888;font-size:0.8em">(il formaggio)</span></div>
+      <div class="cmp-word">I don't like <strong>cheese</strong>.</div>
+      <div class="cmp-word"><strong>Chicken</strong> is good for you. <span style="color:#888;font-size:0.8em">(carne)</span></div>
+      <div class="cmp-word"><strong>Coffee</strong> is hot. <span style="color:#888;font-size:0.8em">(il caffè in genere)</span></div>
+    </div>
+    <div class="cmp-col">
+      <div class="cmp-head red">COUNTABLE (C) = cosa specifica</div>
+      <div class="cmp-word">She bought <strong>a cheese</strong>. <span style="color:#888;font-size:0.8em">(una forma)</span></div>
+      <div class="cmp-word">I ate <strong>a chocolate</strong>. <span style="color:#888;font-size:0.8em">(un cioccolatino)</span></div>
+      <div class="cmp-word">They have <strong>a chicken</strong>. <span style="color:#888;font-size:0.8em">(un pollo vivo)</span></div>
+      <div class="cmp-word">Two <strong>coffees</strong>, please! <span style="color:#888;font-size:0.8em">(due tazze)</span></div>
+    </div>
+  </div>
+  <div class="warn warn-blue">💡 Regola pratica: puoi mettere un numero davanti? → <strong>Countable</strong>. No? → <strong>Uncountable</strong>.</div>
+</div>
+
+</div>
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+<script>
+const total=4;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<total;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
+function typewrite(el,text,speed){
+  return new Promise(resolve=>{
+    el.textContent='';const cursor=document.createElement('span');cursor.className='cursor';el.appendChild(cursor);
+    let i=0;function tick(){if(i>=text.length){cursor.remove();resolve();return;}cursor.insertAdjacentText('beforebegin',text[i]);i++;setTimeout(tick,speed);}tick();
+  });
+}
+
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await new Promise(r=>setTimeout(r,400));
+  const intro=slide.querySelector('.intro-p');
+  if(intro){intro.classList.add('show');}
+  const rows=slide.querySelectorAll('.row');
+  for(const row of rows){
+    const els=row.querySelectorAll('[data-tw]');
+    for(const el of els){
+      const spd=el.classList.contains('kw')?110:50;
+      await typewrite(el,el.dataset.tw,spd);
+      await new Promise(r=>setTimeout(r,60));
+    }
+    const itEl=row.querySelector('.row-it');
+    if(itEl){await new Promise(r=>setTimeout(r,80));itEl.style.opacity='1';}
+    await new Promise(r=>setTimeout(r,180));
+  }
+  const traps=slide.querySelectorAll('.trap-item');
+  for(const t of traps){t.classList.add('show');await new Promise(r=>setTimeout(r,140));}
+  const cmpWords=slide.querySelectorAll('.cmp-word');
+  for(const w of cmpWords){w.classList.add('show');await new Promise(r=>setTimeout(r,280));}
+  const warn=slide.querySelector('.warn');
+  if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+}
+
+function resetSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  slide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  slide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  slide.querySelectorAll('.trap-item,.cmp-word').forEach(e=>e.classList.remove('show'));
+  slide.querySelectorAll('.row-it').forEach(e=>e.style.opacity='0');
+  slide.querySelectorAll('.intro-p').forEach(e=>e.classList.remove('show'));
+}
+
+function go(dir){
+  if(busy)return;
+  const prev=cur;cur=Math.max(0,Math.min(total-1,cur+dir));if(cur===prev)return;
+  busy=true;
+  const oldSlide=document.getElementById('s'+prev);
+  const newSlide=document.getElementById('s'+cur);
+  resetSlide(prev);
+  oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
+  setTimeout(()=>{
+    oldSlide.style.cssText='';oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';
+      setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===total-1;
+  },260);
+}
+
+let tx=0;const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+animateSlide(0);
+</script>
+</body>
+</html>

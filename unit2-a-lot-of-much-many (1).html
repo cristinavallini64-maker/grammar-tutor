@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A lot of / Lots of</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #0077cc;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.75rem,2.5vw,1.15rem);letter-spacing:2px;color:#0077cc;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.7rem,2vw,0.9rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:8px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#0077cc;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.7rem,2.2vw,0.9rem);letter-spacing:2px;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+.t-blue{color:#0077cc;}.t-green{color:#007700;}.t-red{color:#cc0000;}.t-orange{color:#cc6600;}.t-purple{color:#7700cc;}
+
+.row{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;align-items:baseline;gap:0 18px;padding:9px 0;border-bottom:1px solid #f0f0f0;min-height:44px;}
+.row:last-of-type{border-bottom:none;}
+.label{font-size:clamp(0.82rem,2.6vw,1.05rem);font-weight:700;grid-row:1/3;align-self:center;white-space:nowrap;min-width:90px;}
+.row-main{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
+.row-it{font-size:clamp(0.68rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.45s;grid-column:2;}
+.kw{font-size:clamp(1rem,3.2vw,1.25rem);font-weight:900;color:#0077cc;}
+.kwg{font-size:clamp(1rem,3.2vw,1.25rem);font-weight:900;color:#007700;}
+.kwr{font-size:clamp(1rem,3.2vw,1.25rem);font-weight:900;color:#cc0000;}
+.kwp{font-size:clamp(1rem,3.2vw,1.25rem);font-weight:900;color:#7700cc;}
+.ex{font-size:clamp(0.95rem,3vw,1.15rem);font-weight:400;color:#111;}
+
+.warn{margin-top:8px;border-radius:0 8px 8px 0;padding:11px 15px;font-size:clamp(0.85rem,2.8vw,1.05rem);color:#111;font-weight:600;line-height:1.7;flex-shrink:0;opacity:0;transition:opacity 0.5s;}
+.warn.show{opacity:1;}
+.warn-blue{background:#e8f4ff;border-left:5px solid #0077cc;}
+.warn-green{background:#f0fff0;border-left:5px solid #007700;}
+.warn-orange{background:#fff8e8;border-left:5px solid #cc6600;}
+.warn-red{background:#fff5f5;border-left:5px solid #cc0000;}
+.warn strong{font-weight:900;}
+.ok{color:#007700;font-weight:700;}.no{color:#cc0000;text-decoration:line-through;}
+.intro-p{font-size:clamp(0.78rem,2.2vw,0.88rem);color:#555;margin-bottom:10px;opacity:0;transition:opacity 0.4s;}
+.intro-p.show{opacity:1;}
+
+.cursor{display:inline-block;width:2px;height:1em;background:#0077cc;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.6rem,2vw,0.75rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #0077cc;background:#fff;color:#0077cc;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#0077cc;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="title">📊 A LOT OF / LOTS OF</div>
+  <div class="prog" id="prog">1 / 2</div>
+</div>
+<div class="dots" id="dots"></div>
+<div class="slides">
+
+<!-- SLIDE 0: A lot of / Lots of -->
+<div class="slide active" id="s0">
+  <div class="slide-title t-blue">✅ A LOT OF / LOTS OF — grandi quantità</div>
+  <p class="intro-p"><strong>A lot of / lots of</strong> = "molto/a, molti/e, tanta/o". Si usano <strong>con C e con U</strong>, nelle affermative — ma anche in negative e interrogative nel parlato.</p>
+  <div class="row">
+    <span class="label" style="color:#0077cc">C plurale</span>
+    <div class="row-main"><span class="ex" data-tw="There's "></span><span class="kw" data-tw="a lot of"></span><span class="ex" data-tw=" salt in this pasta."></span></div>
+    <div class="row-it">C'è molto sale in questa pasta.</div>
+  </div>
+  <div class="row">
+    <span class="label" style="color:#0077cc">U</span>
+    <div class="row-main"><span class="ex" data-tw="She eats "></span><span class="kw" data-tw="a lot of"></span><span class="ex" data-tw=" vegetables."></span></div>
+    <div class="row-it">Lei mangia molte verdure.</div>
+  </div>
+  <div class="row">
+    <span class="label" style="color:#0077cc">Da solo</span>
+    <div class="row-main"><span class="ex" data-tw="How much fruit do you eat? — "></span><span class="kw" data-tw="A lot."></span></div>
+    <div class="row-it">Quanta frutta mangi? — Molta. (senza nome dopo!)</div>
+  </div>
+  <div class="row">
+    <span class="label" style="color:#0077cc">Neg./Int.</span>
+    <div class="row-main"><span class="ex" data-tw="Has he got "></span><span class="kw" data-tw="a lot of"></span><span class="ex" data-tw=" problems? — nel parlato OK!"></span></div>
+    <div class="row-it">Ha molti problemi? (nel parlato si usa a lot of)</div>
+  </div>
+  <div class="warn warn-blue"><strong>A lot of = lots of</strong> — stesso significato, intercambiabili.<br>Se il nome è già detto prima, si usa solo <strong>a lot</strong> (senza "of"): <span class="ok">I eat a lot.</span></div>
+</div>
+
+<!-- SLIDE 1: Riassunto solo a lot of / lots of -->
+<div class="slide" id="s1">
+  <div class="slide-title t-green">🔄 A LOT OF vs LOTS OF — riassunto</div>
+  <div class="row">
+    <span class="label" style="color:#0077cc;min-width:110px">a lot of</span>
+    <div class="row-main"><span class="ex" data-tw="C + U · aff · neg · int (parlato)"></span></div>
+    <div class="row-it">a lot of sugar · a lot of eggs · a lot of friends</div>
+  </div>
+  <div class="row">
+    <span class="label" style="color:#0077cc;min-width:110px">lots of</span>
+    <div class="row-main"><span class="ex" data-tw="C + U · uguale a 'a lot of' · più informale"></span></div>
+    <div class="row-it">lots of vegetables · lots of people · lots of time</div>
+  </div>
+  <div class="row">
+    <span class="label" style="color:#0077cc;min-width:110px">a lot</span>
+    <div class="row-main"><span class="ex" data-tw="da solo, senza nome dopo"></span></div>
+    <div class="row-it">I eat a lot. / She studies a lot. / Thanks a lot!</div>
+  </div>
+  <div class="row">
+    <span class="label" style="color:#cc6600;min-width:110px">neg/int</span>
+    <div class="row-main"><span class="ex" data-tw="Has he got "></span><span class="kw" data-tw="a lot of"></span><span class="ex" data-tw=" problems? (parlato ✓)"></span></div>
+    <div class="row-it">Nel parlato a lot of funziona ovunque — anche in neg/int.</div>
+  </div>
+  <div class="warn warn-blue">💡 <strong>A lot of = lots of</strong> — intercambiabili, stesso significato.<br>Funzionano con <strong>C e U</strong>, in qualsiasi tipo di frase nel parlato.<br>Per neg/int nello scritto formale → vedi <em>(not) much / many</em>.</div>
+</div>
+
+</div>
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+<script>
+const total=2;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<total;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+function typewrite(el,text,speed){
+  return new Promise(resolve=>{
+    el.textContent='';const cursor=document.createElement('span');cursor.className='cursor';el.appendChild(cursor);
+    let i=0;function tick(){if(i>=text.length){cursor.remove();resolve();return;}cursor.insertAdjacentText('beforebegin',text[i]);i++;setTimeout(tick,speed);}tick();
+  });
+}
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await new Promise(r=>setTimeout(r,400));
+  const intro=slide.querySelector('.intro-p');
+  if(intro){intro.classList.add('show');}
+  const rows=slide.querySelectorAll('.row');
+  for(const row of rows){
+    const els=row.querySelectorAll('[data-tw]');
+    for(const el of els){
+      const isKw=el.classList.contains('kw')||el.classList.contains('kwg')||el.classList.contains('kwr')||el.classList.contains('kwp');
+      await typewrite(el,el.dataset.tw,isKw?110:50);
+      await new Promise(r=>setTimeout(r,60));
+    }
+    const itEl=row.querySelector('.row-it');
+    if(itEl){await new Promise(r=>setTimeout(r,80));itEl.style.opacity='1';}
+    await new Promise(r=>setTimeout(r,200));
+  }
+  const warn=slide.querySelector('.warn');
+  if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+}
+function resetSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  slide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  slide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  slide.querySelectorAll('.row-it').forEach(e=>e.style.opacity='0');
+  slide.querySelectorAll('.intro-p').forEach(e=>e.classList.remove('show'));
+}
+function go(dir){
+  if(busy)return;
+  const prev=cur;cur=Math.max(0,Math.min(total-1,cur+dir));if(cur===prev)return;
+  busy=true;
+  const oldSlide=document.getElementById('s'+prev);
+  const newSlide=document.getElementById('s'+cur);
+  resetSlide(prev);
+  oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
+  setTimeout(()=>{
+    oldSlide.style.cssText='';oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';
+      setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===total-1;
+  },260);
+}
+let tx=0;const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+animateSlide(0);
+</script>
+</body>
+</html>
