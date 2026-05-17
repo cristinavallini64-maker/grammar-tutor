@@ -79,6 +79,7 @@
       display: inline-block;
     }
     
+    /* Le scritte sotto partono invisibili per non anticipare la macchina da scrivere */
     .con-sub {
       display: block;
       font-size: 13px;
@@ -86,6 +87,7 @@
       margin-left: 10px;
       margin-top: 4px;
       font-style: italic;
+      opacity: 0;
     }
     
     .con-it, .use-it, .err-it {
@@ -147,53 +149,41 @@
       <div class="slide-title">📋 PANORAMICA — QUANDO SI USANO MANY, MUCH, A LOT OF</div>
       <div class="mx-table">
         <div class="con-ex" data-tw="QUANTIFIER MATRICES — COUNTABLE vs UNCOUNTABLE"></div>
-        <div class="con-sub" data-tw="Tabella riassuntiva per l'uso corretto nei diversi contesti."></div>
+        <div class="con-sub" style="opacity: 1;">Tabella riassuntiva per l'uso corretto nei diversi contesti.</div>
       </div>
       <div class="warn">
         <strong>Regola Generale:</strong><br>
-        • <strong>A lot of / Lots of</strong> si usa principalmente nelle frasi affermative per sia numerabili che non numerabili.<br>
-        • <strong>Many</strong> si usa per sostantivi numerabili (plurali), specialmente in frasi negative e interrogative.<br>
-        • <strong>Much</strong> si usa per sostantivi non numerabili (singolari), specialmente in frasi negative e interrogative.
+        • <strong>A lot of / Lots of</strong> si usa principalmente nelle frasi affermative.<br>
+        • <strong>Many</strong> si usa per sostantivi numerabili plurale.<br>
+        • <strong>Much</strong> si usa per sostantivi non numerabili.
       </div>
     </div>
 
     <div class="slide" id="s1">
       <div class="slide-title">✨ A LOT OF / LOTS OF — FRASI AFFERMATIVE</div>
-      
       <div class="use-row">
         <span class="use-tag tag-int">Numerabile</span>
         <span class="use-ex" data-tw="She has ❮a lot of❯ books."></span>
-        <span class="use-it">Ha molti libri. (Contabile/Plurale)</span>
+        <span class="use-it">Ha molti libri.</span>
       </div>
-
       <div class="use-row">
         <span class="use-tag tag-aff">Non Numerabile</span>
         <span class="use-ex" data-tw="We need ❮lots of❯ time."></span>
-        <span class="use-it">Abbiamo bisogno di molto tempo. (Non contabile)</span>
-      </div>
-
-      <div class="warn">
-        💡 <strong>Nota informale:</strong> <em>A lot of</em> e <em>lots of</em> sono perfettamente intercambiabili nell'inglese parlato e quotidiano.
+        <span class="use-it">Abbiamo bisogno di molto tempo.</span>
       </div>
     </div>
 
     <div class="slide" id="s2">
       <div class="slide-title">🟢 MANY — USO E ESEMPI (COUNTABLE)</div>
-      
       <div class="use-row">
         <span class="use-tag tag-neg">Negativa</span>
         <span class="use-ex" data-tw="There aren't ❮many❯ students in the lab."></span>
         <span class="use-it">Non ci sono molti studenti in laboratorio.</span>
       </div>
-
       <div class="use-row">
         <span class="use-tag tag-int">Interrogativa</span>
         <span class="use-ex" data-tw="How ❮many❯ devices did you connect?"></span>
         <span class="use-it">Quanti dispositivi hai collegato?</span>
-      </div>
-
-      <div class="warn">
-        ❌ Non usare <strong>much</strong> con parole plurali come *devices* o *students*.
       </div>
     </div>
 
@@ -204,12 +194,12 @@
         <div class="con-pos">
           <span class="con-tag tag-pos">CON "a" → positivo</span>
           <span class="con-ex" data-tw="There's ❮a little❯ time left."></span>
-          <span class="con-sub" data-tw="un po' -> possiamo farcela"></span>
+          <span class="con-sub">un po' -> possiamo farcela</span>
         </div>
         <div class="con-neg">
           <span class="con-tag tag-neg-con">SENZA "a" → negativo</span>
           <span class="con-ex" data-tw="There's ❮little❯ time left."></span>
-          <span class="con-sub" data-tw="pochissimo -> siamo nei guai"></span>
+          <span class="con-sub">pochissimo -> siamo nei guai</span>
         </div>
         <span class="con-it">C'è ancora un po' di tempo &nbsp;↔&nbsp; C'è pochissimo tempo</span>
       </div>
@@ -218,12 +208,12 @@
         <div class="con-pos">
           <span class="con-tag tag-pos">CON "a" → positivo</span>
           <span class="con-ex" data-tw="A ❮few❯ students understood."></span>
-          <span class="con-sub" data-tw="alcuni -> almeno qualcuno"></span>
+          <span class="con-sub">alcuni -> almeno qualcuno</span>
         </div>
         <div class="con-neg">
           <span class="con-tag tag-neg-con">SENZA "a" → negativo</span>
           <span class="con-ex" data-tw="❮Few❯ students understood."></span>
-          <span class="con-sub" data-tw="pochissimi -> quasi nessuno"></span>
+          <span class="con-sub">pochissimi -> quasi nessuno</span>
         </div>
         <span class="con-it">Alcuni studenti hanno capito &nbsp;↔&nbsp; Pochissimi studenti hanno capito</span>
       </div>
@@ -234,17 +224,10 @@
 
     <div class="slide" id="s4">
       <div class="slide-title">❌ ERRORI COMUNI DA EVITARE</div>
-      
       <div class="err-pair">
         <span class="err-wrong" data-tw="He has much money."></span>
         <span class="err-ok" data-tw="He has a lot of money."></span>
         <span class="err-it">Errore: 'much' non si usa normalmente nelle frasi affermative standard.</span>
-      </div>
-
-      <div class="err-pair">
-        <span class="err-wrong" data-tw="A lot of students is here."></span>
-        <span class="err-ok" data-tw="A lot of students are here."></span>
-        <span class="err-it">Errore di concordanza verbale con i sostantivi plurali numerabili.</span>
       </div>
     </div>
 
@@ -340,104 +323,4 @@
 
     function resetSlide(slide){
       slide.querySelectorAll('[data-tw]').forEach(el => el.textContent = '');
-      slide.querySelectorAll('.use-it,.con-it,.err-it,.err-note,.cu-it,.con-sub').forEach(el => {
-        el.style.transition = 'none';
-        el.style.opacity = '0';
-      });
-      slide.querySelectorAll('.warn').forEach(el => {
-        el.style.transition = 'none';
-        el.style.opacity = '0';
-      });
-    }
-
-    async function animateSlide(idx){
-      const slide = document.getElementById('s' + idx);
-      if(!slide) return;
-      resetSlide(slide);
-      const title = slide.querySelector('.slide-title');
-      if(title){
-        title.style.transition = 'none'; title.style.opacity = '0';
-        setTimeout(() => { title.style.transition = 'opacity 0.4s'; title.style.opacity = '1'; }, 100);
-      }
-      await new Promise(r => setTimeout(r, 400));
-      
-      if(idx === 0){
-        const cell = slide.querySelector('.con-ex[data-tw]');
-        const sub = slide.querySelector('.con-sub[data-tw]');
-        if(cell) { await twHL(cell, cell.dataset.tw, 35); }
-        if(sub) { sub.style.opacity = '1'; await tw(sub, sub.dataset.tw, 25); }
-        showWarn(slide.querySelector('.warn'));
-      } 
-      else if(idx === 1 || idx === 2){
-        for(const row of slide.querySelectorAll('.use-row')){
-          const ex = row.querySelector('[data-tw]');
-          const it = row.querySelector('.use-it');
-          if(ex) await twHL(ex, ex.dataset.tw, 42);
-          if(it) fi(it);
-          await new Promise(r => setTimeout(r, 200));
-        }
-        showWarn(slide.querySelector('.warn'));
-      } 
-      else if(idx === 3){
-        for(const row of slide.querySelectorAll('.con-row')){
-          const posEx = row.querySelector('.con-pos .con-ex');
-          const posSub = row.querySelector('.con-pos .con-sub');
-          const negEx = row.querySelector('.con-neg .con-ex');
-          const negSub = row.querySelector('.con-neg .con-sub');
-          const it = row.querySelector('.con-it');
-          
-          if(posEx){
-            await twHL(posEx, posEx.dataset.tw, 42);
-            if(posSub){ posSub.style.opacity = '1'; await tw(posSub, posSub.dataset.tw, 30); }
-            await new Promise(r => setTimeout(r, 120));
-          }
-          if(negEx){
-            await twHL(negEx, negEx.dataset.tw, 42);
-            if(negSub){ negSub.style.opacity = '1'; await tw(negSub, negSub.dataset.tw, 30); }
-            if(it) fi(it);
-            await new Promise(r => setTimeout(r, 240));
-          }
-        }
-        showWarn(slide.querySelector('.warn'));
-      } 
-      else if(idx === 4){
-        for(const pair of slide.querySelectorAll('.err-pair')){
-          const wrong = pair.querySelector('.err-wrong');
-          const ok = pair.querySelector('.err-ok');
-          const it = pair.querySelector('.err-it');
-          if(wrong) await tw(wrong, wrong.dataset.tw, 42);
-          await new Promise(r => setTimeout(r, 100));
-          if(ok) await tw(ok, ok.dataset.tw, 42);
-          if(it) fi(it);
-          await new Promise(r => setTimeout(r, 280));
-        }
-      }
-    }
-
-    function go(dir) {
-      const slides = document.querySelectorAll('.slide');
-      slides[currentSlide].classList.remove('active');
-      
-      currentSlide += dir;
-      if (currentSlide < 0) currentSlide = 0;
-      if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
-      
-      slides[currentSlide].classList.add('active');
-      
-      document.getElementById('prevBtn').disabled = (currentSlide === 0);
-      document.getElementById('nextBtn').disabled = (currentSlide === totalSlides - 1);
-      
-      animateSlide(currentSlide);
-    }
-
-    let tx = 0; const sl = document.querySelector('.slides');
-    sl.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
-    sl.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1); }, { passive: true });
-    document.addEventListener('keydown', e => { if (e.key === 'ArrowRight') go(1); if (e.key === 'ArrowLeft') go(-1); });
-
-    window.onload = () => {
-      animateSlide(0);
-    };
-  </script>
-</body>
-</html>
+      slide.querySelectorAll('.use-it,.con-it,.err-it
