@@ -30,8 +30,8 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 .cu-cell.many{background:#f0fff5;border-right:1px solid #eee;}
 .cu-cell.much{background:#fff5f5;}
 .cu-cell:last-of-type,.cu-cell:nth-last-of-type(2){border-bottom:none;}
-.cu-ex{font-weight:700;color:#111;}
-.cu-it{display:block;font-size:0.78em;color:#888;font-style:italic;margin-top:2px;}
+.cu-ex{font-weight:700;color:#111;display:block;}
+.cu-it{display:block;font-size:0.78em;color:#888;font-style:italic;margin-top:2px;opacity:0;transition:opacity 0.4s;}
 .hl-many{color:#007733;font-weight:900;}
 .hl-much{color:#cc0000;font-weight:900;}
 
@@ -51,7 +51,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 .cont-ex{font-size:clamp(0.85rem,2.7vw,1.02rem);color:#111;font-weight:600;display:block;}
 .cont-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;display:block;margin-top:2px;}
 .hl{font-weight:900;color:#cc0000;font-style:normal;}
-.hl2{font-weight:900;color:#007733;font-style:normal;}
 
 /* risposte tipiche */
 .ans-row{padding:6px 0;border-bottom:1px solid #f0f0f0;display:flex;gap:14px;flex-wrap:wrap;align-items:baseline;}
@@ -95,10 +94,10 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
       <div class="cu-cell much" data-tw="✓ con sostantivi ❮UNCOUNTABLE❯"></div>
       <div class="cu-cell many" data-tw="✓ significa ❮quanti / quante❯"></div>
       <div class="cu-cell much" data-tw="✓ significa ❮quanto / quanta❯"></div>
-      <div class="cu-cell many"><span class="cu-ex">How many students are there?</span><span class="cu-it">Quanti studenti ci sono?</span></div>
-      <div class="cu-cell much"><span class="cu-ex">How much pasta is there?</span><span class="cu-it">Quanta pasta c'è?</span></div>
-      <div class="cu-cell many"><span class="cu-ex">How many books do you have?</span><span class="cu-it">Quanti libri hai?</span></div>
-      <div class="cu-cell much"><span class="cu-ex">How much water do you drink?</span><span class="cu-it">Quanta acqua bevi?</span></div>
+      <div class="cu-cell many"><span class="cu-ex" data-tw="How many students are there?"></span><span class="cu-it">Quanti studenti ci sono?</span></div>
+      <div class="cu-cell much"><span class="cu-ex" data-tw="How much pasta is there?"></span><span class="cu-it">Quanta pasta c'è?</span></div>
+      <div class="cu-cell many"><span class="cu-ex" data-tw="How many books do you have?"></span><span class="cu-it">Quanti libri hai?</span></div>
+      <div class="cu-cell much"><span class="cu-ex" data-tw="How much water do you drink?"></span><span class="cu-it">Quanta acqua bevi?</span></div>
     </div>
     <div class="warn">🔑 Il <strong>nome</strong> dopo how much/how many decide quale usare:<br>
     plurale numerabile → <span class="hl-many">how many</span> &nbsp;·&nbsp; massa non numerabile → <span class="hl-much">how much</span></div>
@@ -256,6 +255,9 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
   <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
 </div>
 <script>
+// FIX FOUC: svuota subito tutti i data-tw appena lo script parte
+document.querySelectorAll('[data-tw]').forEach(el => el.textContent = '');
+
 const TOTAL=5;let cur=0,busy=false;
 const dotsEl=document.getElementById('dots');
 for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
@@ -264,11 +266,23 @@ function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.repla
 function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
 async function animateSlide(idx){
   const slide=document.getElementById('s'+idx);
+  // FIX FOUC: svuota subito i data-tw prima di qualsiasi animazione
+  slide.querySelectorAll('[data-tw]').forEach(el => el.textContent = '');
   const title=slide.querySelector('.slide-title');
   if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
   await new Promise(r=>setTimeout(r,400));
   if(idx===0){
-    for(const cell of slide.querySelectorAll('.cu-cell[data-tw]')){await twHL(cell,cell.dataset.tw,40);await new Promise(r=>setTimeout(r,90));}
+    // 1. Animare le 6 celle di descrizione (data-tw diretto)
+    const descCells = [...slide.querySelectorAll('.cu-cell[data-tw]')];
+    for(const cell of descCells){await twHL(cell,cell.dataset.tw,40);await new Promise(r=>setTimeout(r,90));}
+    // 2. Animare le 4 celle di esempio (.cu-ex con data-tw)
+    const exCells = [...slide.querySelectorAll('.cu-ex[data-tw]')];
+    for(const ex of exCells){
+      await tw(ex, ex.dataset.tw, 40);
+      const it = ex.parentElement.querySelector('.cu-it');
+      if(it) fi(it);
+      await new Promise(r=>setTimeout(r,150));
+    }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,250));warn.classList.add('show');}
   } else if(idx===1){
     for(const row of slide.querySelectorAll('.use-row')){
@@ -303,7 +317,7 @@ function go(dir){
   const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
   oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
   oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
-  oldSlide.querySelectorAll('.use-it,.cont-it,.ans-it,.err-it,.err-note').forEach(n=>n.style.opacity='0');
+  oldSlide.querySelectorAll('.use-it,.cont-it,.ans-it,.err-it,.err-note,.cu-it').forEach(n=>n.style.opacity='0');
   oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
   setTimeout(()=>{
     oldSlide.style.cssText='';oldSlide.classList.remove('active');
