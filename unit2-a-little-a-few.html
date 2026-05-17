@@ -66,7 +66,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 .err-note{font-size:clamp(0.63rem,1.8vw,0.77rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
 
 .hl{font-weight:900;color:#cc0000;font-style:normal;}
-.hl-g{font-weight:900;color:#007733;font-style:normal;}
 .warn{background:#fff5f5;border-left:5px solid #cc0000;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.78rem,2.4vw,0.94rem);color:#111;font-weight:600;line-height:1.7;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:8px;}
 .warn.show{opacity:1;}
 .warn strong{color:#cc0000;}
@@ -289,7 +288,12 @@ function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.repla
 function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
 async function animateSlide(idx){
   const slide=document.getElementById('s'+idx);
+  // ── RESET COMPLETO ──────────────────────────────────────────────────
   slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+  slide.querySelectorAll('.use-it,.con-it,.err-it,.err-note,.cu-it').forEach(el=>el.style.opacity='0');
+  slide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  slide.querySelectorAll('.sec-label').forEach(l=>l.classList.remove('show'));
+  // ────────────────────────────────────────────────────────────────────
   const title=slide.querySelector('.slide-title');
   if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
   await new Promise(r=>setTimeout(r,400));
@@ -326,9 +330,6 @@ async function animateSlide(idx){
 function go(dir){
   if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
   const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
-  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
-  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
-  oldSlide.querySelectorAll('.use-it,.con-it,.err-it,.err-note,.cu-it').forEach(n=>n.style.opacity='0');
   oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
   setTimeout(()=>{
     oldSlide.style.cssText='';oldSlide.classList.remove('active');
