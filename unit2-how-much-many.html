@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How much / How many</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #cc0000;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.85rem,3vw,1.5rem);letter-spacing:3px;color:#cc0000;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.65rem,2vw,0.85rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:7px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#cc0000;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#cc0000;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+
+/* tabella confronto */
+.cu-table{display:grid;grid-template-columns:1fr 1fr;border-radius:10px;overflow:hidden;flex-shrink:0;margin-bottom:10px;border:2px solid #eee;}
+.cu-head{font-family:'Orbitron',monospace;font-size:clamp(0.6rem,1.8vw,0.78rem);letter-spacing:2px;font-weight:700;padding:10px 12px;text-align:center;color:#fff;}
+.cu-head.many{background:#007733;}
+.cu-head.much{background:#cc0000;}
+.cu-cell{padding:9px 14px;font-size:clamp(0.78rem,2.4vw,0.95rem);border-bottom:1px solid #f0f0f0;line-height:1.5;}
+.cu-cell.many{background:#f0fff5;border-right:1px solid #eee;}
+.cu-cell.much{background:#fff5f5;}
+.cu-cell:last-of-type,.cu-cell:nth-last-of-type(2){border-bottom:none;}
+.cu-ex{font-weight:700;color:#111;}
+.cu-it{display:block;font-size:0.78em;color:#888;font-style:italic;margin-top:2px;}
+.hl-many{color:#007733;font-weight:900;}
+.hl-much{color:#cc0000;font-weight:900;}
+
+/* Q&A esempi */
+.use-row{padding:7px 0;border-bottom:1px solid #f0f0f0;}
+.use-row:last-child{border-bottom:none;}
+.use-q{font-size:clamp(0.85rem,2.8vw,1.02rem);font-weight:700;color:#111;display:block;}
+.use-a{font-size:clamp(0.8rem,2.55vw,0.97rem);color:#444;display:block;margin-top:2px;padding-left:14px;}
+.use-it{font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;display:block;opacity:0;transition:opacity 0.4s;margin-top:2px;padding-left:14px;}
+.use-tag{font-family:'Orbitron',monospace;font-size:clamp(0.5rem,1.4vw,0.62rem);letter-spacing:1.5px;font-weight:700;padding:2px 7px;border-radius:4px;margin-right:7px;vertical-align:middle;}
+.tag-many{background:#007733;color:#fff;}
+.tag-much{background:#cc0000;color:#fff;}
+
+/* domande con contenitori */
+.cont-row{padding:6px 0;border-bottom:1px solid #f0f0f0;}
+.cont-row:last-child{border-bottom:none;}
+.cont-ex{font-size:clamp(0.85rem,2.7vw,1.02rem);color:#111;font-weight:600;display:block;}
+.cont-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;display:block;margin-top:2px;}
+.hl{font-weight:900;color:#cc0000;font-style:normal;}
+.hl2{font-weight:900;color:#007733;font-style:normal;}
+
+/* risposte tipiche */
+.ans-row{padding:6px 0;border-bottom:1px solid #f0f0f0;display:flex;gap:14px;flex-wrap:wrap;align-items:baseline;}
+.ans-row:last-child{border-bottom:none;}
+.ans-q{flex:1;font-size:clamp(0.82rem,2.6vw,1rem);font-weight:600;color:#111;min-width:160px;}
+.ans-a{flex:1;font-size:clamp(0.82rem,2.6vw,1rem);font-weight:700;color:#cc0000;min-width:140px;}
+.ans-it{flex-basis:100%;font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;}
+
+/* errori */
+.err-pair{padding:6px 0;border-bottom:1px solid #f0f0f0;}
+.err-pair:last-child{border-bottom:none;}
+.err-wrong{font-size:clamp(0.82rem,2.6vw,0.99rem);color:#c00;}
+.err-ok{font-size:clamp(0.82rem,2.6vw,0.99rem);font-weight:700;color:#007733;}
+.err-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;margin-top:1px;}
+.err-note{font-size:clamp(0.63rem,1.8vw,0.77rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
+
+.warn{background:#fff5f5;border-left:5px solid #cc0000;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.78rem,2.4vw,0.94rem);color:#111;font-weight:600;line-height:1.7;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:8px;}
+.warn.show{opacity:1;}
+.warn strong{color:#cc0000;}
+.cursor{display:inline-block;width:2px;height:1em;background:#cc0000;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.55rem,1.8vw,0.72rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #cc0000;background:#fff;color:#cc0000;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#cc0000;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="title">❓ HOW MUCH / HOW MANY</div><div class="prog" id="prog">1 / 5</div></div>
+<div class="dots" id="dots"></div>
+<div class="slides">
+
+  <!-- ══ SLIDE 0: regola base ══ -->
+  <div class="slide active" id="s0">
+    <div class="slide-title">📋 LA REGOLA FONDAMENTALE</div>
+    <div class="cu-table">
+      <div class="cu-head many">HOW MANY</div>
+      <div class="cu-head much">HOW MUCH</div>
+      <div class="cu-cell many" data-tw="✓ con sostantivi ❮COUNTABLE PLURALI❯"></div>
+      <div class="cu-cell much" data-tw="✓ con sostantivi ❮UNCOUNTABLE❯"></div>
+      <div class="cu-cell many" data-tw="✓ significa ❮quanti / quante❯"></div>
+      <div class="cu-cell much" data-tw="✓ significa ❮quanto / quanta❯"></div>
+      <div class="cu-cell many"><span class="cu-ex">How many students are there?</span><span class="cu-it">Quanti studenti ci sono?</span></div>
+      <div class="cu-cell much"><span class="cu-ex">How much pasta is there?</span><span class="cu-it">Quanta pasta c'è?</span></div>
+      <div class="cu-cell many"><span class="cu-ex">How many books do you have?</span><span class="cu-it">Quanti libri hai?</span></div>
+      <div class="cu-cell much"><span class="cu-ex">How much water do you drink?</span><span class="cu-it">Quanta acqua bevi?</span></div>
+    </div>
+    <div class="warn">🔑 Il <strong>nome</strong> dopo how much/how many decide quale usare:<br>
+    plurale numerabile → <span class="hl-many">how many</span> &nbsp;·&nbsp; massa non numerabile → <span class="hl-much">how much</span></div>
+  </div>
+
+  <!-- ══ SLIDE 1: domande in contesto ══ -->
+  <div class="slide" id="s1">
+    <div class="slide-title">💬 DOMANDE TIPICHE IN CONTESTO</div>
+    <div class="use-row">
+      <span class="use-q"><span class="use-tag tag-many">MANY</span><span data-tw="How many ❮brothers and sisters❯ have you got?"></span></span>
+      <span class="use-a" data-tw="— I've got one sister and two brothers."></span>
+      <span class="use-it">Quanti fratelli e sorelle hai?  (brothers/sisters = countable plurale)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-q"><span class="use-tag tag-much">MUCH</span><span data-tw="How much ❮homework❯ do you have tonight?"></span></span>
+      <span class="use-a" data-tw="— Too much! I have three subjects."></span>
+      <span class="use-it">Quanti compiti hai stasera?  (homework = uncountable)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-q"><span class="use-tag tag-many">MANY</span><span data-tw="How many ❮hours❯ do you study a day?"></span></span>
+      <span class="use-a" data-tw="— About two hours."></span>
+      <span class="use-it">Quante ore studi al giorno?</span>
+    </div>
+    <div class="use-row">
+      <span class="use-q"><span class="use-tag tag-much">MUCH</span><span data-tw="How much ❮time❯ do we have before the lesson?"></span></span>
+      <span class="use-a" data-tw="— Only ten minutes."></span>
+      <span class="use-it">Quanto tempo abbiamo prima della lezione?  (time = uncountable)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-q"><span class="use-tag tag-many">MANY</span><span data-tw="How many ❮people❯ are there in your class?"></span></span>
+      <span class="use-a" data-tw="— There are twenty-two of us."></span>
+      <span class="use-it">Quante persone ci sono nella tua classe?  (people = countable plurale)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-q"><span class="use-tag tag-much">MUCH</span><span data-tw="How much ❮money❯ do you spend on apps?"></span></span>
+      <span class="use-a" data-tw="— Nothing — I only use free ones!"></span>
+      <span class="use-it">Quanti soldi spendi in app?  (money = uncountable)</span>
+    </div>
+    <div class="warn">🚨 Attento alle trappole italiane! <strong>homework, money, news, information, advice</strong> → sempre <span class="hl-much">how much</span></div>
+  </div>
+
+  <!-- ══ SLIDE 2: how much + contenitori ══ -->
+  <div class="slide" id="s2">
+    <div class="slide-title">🥛 HOW MUCH / HOW MANY + CONTENITORI</div>
+    <div class="cont-row">
+      <span class="cont-ex" data-tw="How ❮many bottles of water❯ do we need?"></span>
+      <span class="cont-it">Quante bottiglie d'acqua ci servono?  (bottles è plurale → many)</span>
+    </div>
+    <div class="cont-row">
+      <span class="cont-ex" data-tw="How ❮much water❯ is there in the bottle?"></span>
+      <span class="cont-it">Quanta acqua c'è nella bottiglia?  (water è uncountable → much)</span>
+    </div>
+    <div class="cont-row">
+      <span class="cont-ex" data-tw="How ❮many cups of coffee❯ do you drink a day?"></span>
+      <span class="cont-it">Quante tazze di caffè bevi al giorno?</span>
+    </div>
+    <div class="cont-row">
+      <span class="cont-ex" data-tw="How ❮much coffee❯ do you drink?"></span>
+      <span class="cont-it">Quanto caffè bevi?</span>
+    </div>
+    <div class="cont-row">
+      <span class="cont-ex" data-tw="How ❮many slices of pizza❯ did you eat?"></span>
+      <span class="cont-it">Quante fette di pizza hai mangiato?</span>
+    </div>
+    <div class="cont-row">
+      <span class="cont-ex" data-tw="How ❮much pizza❯ is left?"></span>
+      <span class="cont-it">Quanta pizza è rimasta?</span>
+    </div>
+    <div class="cont-row">
+      <span class="cont-ex" data-tw="How ❮many kilos of sugar❯ do you need?"></span>
+      <span class="cont-it">Quanti chili di zucchero ti servono?</span>
+    </div>
+    <div class="cont-row">
+      <span class="cont-ex" data-tw="How ❮much sugar❯ do you put in your tea?"></span>
+      <span class="cont-it">Quanto zucchero metti nel tè?</span>
+    </div>
+    <div class="warn">🔑 Lo stesso "cibo" può diventare countable con un <strong>contenitore</strong>!<br>
+    coffee (U) → a cup of coffee (C) &nbsp;·&nbsp; pizza (U) → a slice of pizza (C)</div>
+  </div>
+
+  <!-- ══ SLIDE 3: risposte tipiche ══ -->
+  <div class="slide" id="s3">
+    <div class="slide-title">💡 RISPOSTE TIPICHE A HOW MUCH / HOW MANY</div>
+    <div class="ans-row">
+      <span class="ans-q" data-tw="How many friends?"></span>
+      <span class="ans-a" data-tw="A lot. / Lots. / A few. / Not many. / None."></span>
+      <span class="ans-it">Tanti. / Pochi. / Non molti. / Nessuno.</span>
+    </div>
+    <div class="ans-row">
+      <span class="ans-q" data-tw="How much sugar?"></span>
+      <span class="ans-a" data-tw="A lot. / A little. / Not much. / None."></span>
+      <span class="ans-it">Tanto. / Un po'. / Non molto. / Niente.</span>
+    </div>
+    <div class="ans-row">
+      <span class="ans-q" data-tw="How many books?"></span>
+      <span class="ans-a" data-tw="Five. / A few. / Too many!"></span>
+      <span class="ans-it">Cinque. / Alcuni. / Troppi!</span>
+    </div>
+    <div class="ans-row">
+      <span class="ans-q" data-tw="How much water?"></span>
+      <span class="ans-a" data-tw="Two litres. / A little. / Too much."></span>
+      <span class="ans-it">Due litri. / Un po'. / Troppa.</span>
+    </div>
+    <div class="ans-row">
+      <span class="ans-q" data-tw="How much homework?"></span>
+      <span class="ans-a" data-tw="A lot! / Not much. / None today."></span>
+      <span class="ans-it">Tanti! / Non molti. / Nessuno oggi.</span>
+    </div>
+    <div class="ans-row">
+      <span class="ans-q" data-tw="How many people?"></span>
+      <span class="ans-a" data-tw="Twenty-two. / A lot. / Just a few."></span>
+      <span class="ans-it">Ventidue. / Tante. / Solo poche.</span>
+    </div>
+    <div class="warn">🔑 Le risposte cambiano in base a countable/uncountable: <strong>a few / many</strong> (C) &nbsp;·&nbsp; <strong>a little / much</strong> (U) &nbsp;·&nbsp; <strong>a lot / none</strong> (entrambi)</div>
+  </div>
+
+  <!-- ══ SLIDE 4: errori ══ -->
+  <div class="slide" id="s4">
+    <div class="slide-title">🚨 ERRORI TIPICI DA EVITARE</div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  How many homework do you have?"></div>
+      <div class="err-ok"    data-tw="✅  How much homework do you have?"></div>
+      <div class="err-it">Quanti compiti hai?</div>
+      <div class="err-note">homework = uncountable → how much (mai how many)</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  How much money do you have? — I have a few."></div>
+      <div class="err-ok"    data-tw="✅  How much money do you have? — I have a little / not much."></div>
+      <div class="err-it">Quanti soldi hai? — Pochi / Non molti.</div>
+      <div class="err-note">money è uncountable → a little / not much (non a few)</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  How many people is there in your class?"></div>
+      <div class="err-ok"    data-tw="✅  How many people are there in your class?"></div>
+      <div class="err-it">Quante persone ci sono nella tua classe?</div>
+      <div class="err-note">people è countable plurale → verbo plurale (are)</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  How much informations do you need?"></div>
+      <div class="err-ok"    data-tw="✅  How much information do you need?"></div>
+      <div class="err-it">Quante informazioni ti servono?</div>
+      <div class="err-note">information è uncountable: no plurale + how much</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  How many time do we have?"></div>
+      <div class="err-ok"    data-tw="✅  How much time do we have?"></div>
+      <div class="err-it">Quanto tempo abbiamo?</div>
+      <div class="err-note">time (tempo) è uncountable → how much. Ma "How many times?" = quante volte! ⚠️</div>
+    </div>
+  </div>
+
+</div>
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+<script>
+const TOTAL=5;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await new Promise(r=>setTimeout(r,400));
+  if(idx===0){
+    for(const cell of slide.querySelectorAll('.cu-cell[data-tw]')){await twHL(cell,cell.dataset.tw,40);await new Promise(r=>setTimeout(r,90));}
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,250));warn.classList.add('show');}
+  } else if(idx===1){
+    for(const row of slide.querySelectorAll('.use-row')){
+      const q=row.querySelector('.use-q [data-tw]'),a=row.querySelector('.use-a'),it=row.querySelector('.use-it');
+      if(q)await twHL(q,q.dataset.tw,40);await new Promise(r=>setTimeout(r,80));
+      if(a)await tw(a,a.dataset.tw,38);fi(it);await new Promise(r=>setTimeout(r,200));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  } else if(idx===2){
+    for(const row of slide.querySelectorAll('.cont-row')){
+      const ex=row.querySelector('.cont-ex'),it=row.querySelector('.cont-it');
+      if(ex)await twHL(ex,ex.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,180));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  } else if(idx===3){
+    for(const row of slide.querySelectorAll('.ans-row')){
+      const q=row.querySelector('.ans-q'),a=row.querySelector('.ans-a'),it=row.querySelector('.ans-it');
+      if(q)await tw(q,q.dataset.tw,40);await new Promise(r=>setTimeout(r,100));
+      if(a)await tw(a,a.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,200));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  } else if(idx===4){
+    for(const pair of slide.querySelectorAll('.err-pair')){
+      const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
+      if(wrong)await tw(wrong,wrong.dataset.tw,42);await new Promise(r=>setTimeout(r,100));
+      if(ok)await tw(ok,ok.dataset.tw,42);fi(it);if(note)setTimeout(()=>note.style.opacity='1',220);await new Promise(r=>setTimeout(r,280));
+    }
+  }
+}
+function go(dir){
+  if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
+  const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.querySelectorAll('.use-it,.cont-it,.ans-it,.err-it,.err-note').forEach(n=>n.style.opacity='0');
+  oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
+  setTimeout(()=>{
+    oldSlide.style.cssText='';oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);}));
+    animateSlide(cur);dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+TOTAL;
+    document.getElementById('prevBtn').disabled=cur===0;document.getElementById('nextBtn').disabled=cur===TOTAL-1;
+  },260);
+}
+let tx=0;const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+animateSlide(0);
+</script>
+</body>
+</html>
