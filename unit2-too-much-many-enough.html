@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Too much / Too many / (Not) enough</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #0077cc;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.72rem,2.3vw,1.1rem);letter-spacing:2px;color:#0077cc;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.7rem,2vw,0.9rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:8px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#0077cc;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.7rem,2.2vw,0.9rem);letter-spacing:2px;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+.t-blue{color:#0077cc;}.t-green{color:#007700;}.t-red{color:#cc0000;}
+
+.row{display:grid;grid-template-columns:auto 1fr;gap:0 20px;padding:10px 0;border-bottom:1px solid #f0f0f0;align-items:start;}
+.row:last-of-type{border-bottom:none;}
+.lbl{font-size:clamp(0.82rem,2.5vw,1rem);font-weight:700;padding-top:2px;white-space:nowrap;}
+.lbl.r{color:#cc0000;}.lbl.g{color:#007700;}.lbl.b{color:#0077cc;}
+.en{font-size:clamp(1rem,3.2vw,1.25rem);font-weight:400;color:#111;line-height:1.4;}
+.en .kwr{font-weight:900;color:#cc0000;}
+.en .kwg{font-weight:900;color:#007700;}
+.it{font-size:clamp(0.68rem,1.9vw,0.8rem);color:#aaa;font-style:italic;margin-top:3px;opacity:0;transition:opacity 0.4s;}
+
+.warn{margin-top:10px;border-radius:0 8px 8px 0;padding:11px 15px;font-size:clamp(0.85rem,2.6vw,1rem);color:#111;font-weight:600;line-height:1.75;opacity:0;transition:opacity 0.5s;}
+.warn.show{opacity:1;}
+.warn-blue{background:#e8f4ff;border-left:5px solid #0077cc;}
+.warn-red{background:#fff5f5;border-left:5px solid #cc0000;}
+.warn-green{background:#f0fff0;border-left:5px solid #007700;}
+.warn strong{font-weight:900;}
+.ok{color:#007700;font-weight:700;}.no{color:#cc0000;text-decoration:line-through;}
+
+.cursor{display:inline-block;width:2px;height:1em;background:#0077cc;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.6rem,2vw,0.75rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #0077cc;background:#fff;color:#0077cc;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#0077cc;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="title">⚖️ TOO MUCH · TOO MANY · ENOUGH</div>
+  <div class="prog" id="prog">1 / 4</div>
+</div>
+<div class="dots" id="dots"></div>
+<div class="slides">
+
+<!-- SLIDE 0: Too much -->
+<div class="slide active" id="s0">
+  <div class="slide-title t-red">🔴 TOO MUCH — troppo (con U)</div>
+  <div class="row">
+    <span class="lbl r">too much</span>
+    <div><div class="en">Don't use <span class="kwr" data-tw="too much"></span> oil.</div><div class="it">Non usare troppo olio. (oil = U)</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl r">too much</span>
+    <div><div class="en">There is <span class="kwr" data-tw="too much"></span> sugar in this drink.</div><div class="it">C'è troppo zucchero in questa bevanda.</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl r">too much</span>
+    <div><div class="en">I ate <span class="kwr" data-tw="too much"></span> pasta last night.</div><div class="it">Ho mangiato troppa pasta ieri sera.</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl b">da solo</span>
+    <div><div class="en">I can't eat any more. I've had <span class="kwr" data-tw="too much."></span></div><div class="it">Non riesco a mangiare altro. Ho mangiato troppo.</div></div>
+  </div>
+  <div class="warn warn-red">⚠️ <strong>Too much</strong> ≠ "molto" — significa sempre <em>più del necessario</em>, c'è un problema!<br><span class="ok">There's too much salt. The food is inedible.</span></div>
+</div>
+
+<!-- SLIDE 1: Too many -->
+<div class="slide" id="s1">
+  <div class="slide-title t-red">🔴 TOO MANY — troppi/e (con C)</div>
+  <div class="row">
+    <span class="lbl r">too many</span>
+    <div><div class="en">There are <span class="kwr" data-tw="too many"></span> cars in the city.</div><div class="it">Ci sono troppe macchine in città. (cars = C)</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl r">too many</span>
+    <div><div class="en">She put <span class="kwr" data-tw="too many"></span> tomatoes in the sauce.</div><div class="it">Ha messo troppi pomodori nel sugo.</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl r">too many</span>
+    <div><div class="en">We bought <span class="kwr" data-tw="too many"></span> biscuits. We can't eat them all.</div><div class="it">Abbiamo comprato troppi biscotti. Non riusciamo a mangiarli tutti.</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl b">da solo</span>
+    <div><div class="en">Ten pizzas for four people? That's <span class="kwr" data-tw="too many!"></span></div><div class="it">Dieci pizze per quattro? Sono troppe!</div></div>
+  </div>
+  <div class="warn warn-red">⚠️ <strong>Too many</strong> → C → nome al plurale:<br><span class="ok">too many eggs</span> ✓ &nbsp;·&nbsp; <span class="no">too many sugar</span> ✗ &nbsp;·&nbsp; <span class="no">too much eggs</span> ✗</div>
+</div>
+
+<!-- SLIDE 2: Enough / Not enough -->
+<div class="slide" id="s2">
+  <div class="slide-title t-green">✅ ENOUGH / NOT ENOUGH</div>
+  <div class="row">
+    <span class="lbl g">enough + C</span>
+    <div><div class="en">Are there <span class="kwg" data-tw="enough"></span> chairs for everyone?</div><div class="it">Ci sono abbastanza sedie per tutti?</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl g">enough + U</span>
+    <div><div class="en">I haven't got <span class="kwg" data-tw="enough"></span> money.</div><div class="it">Non ho abbastanza soldi. (money = U)</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl r">not enough</span>
+    <div><div class="en">There isn't <span class="kwg" data-tw="enough"></span> bread. We can't make sandwiches.</div><div class="it">Non c'è abbastanza pane. Non possiamo fare panini.</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl r">not enough</span>
+    <div><div class="en">We don't have <span class="kwg" data-tw="enough"></span> eggs for the cake.</div><div class="it">Non abbiamo abbastanza uova per la torta.</div></div>
+  </div>
+  <div class="warn warn-green">💡 <strong>Enough</strong> va <strong>PRIMA del nome</strong>: <span class="ok">enough money</span> ✓ &nbsp;·&nbsp; <span class="no">money enough</span> ✗<br>Funziona con <strong>C e U</strong>. Dopo aggettivo va <em>dopo</em>: <em>He isn't tall enough.</em></div>
+</div>
+
+<!-- SLIDE 3: Riassunto -->
+<div class="slide" id="s3">
+  <div class="slide-title t-blue">🔄 RIASSUNTO — ECCESSO e INSUFFICIENZA</div>
+  <div class="row">
+    <span class="lbl r">too much</span>
+    <div><div class="en"><span class="kwr">too much</span> salt &nbsp;·&nbsp; <span class="kwr">too much</span> sugar &nbsp;·&nbsp; <span class="kwr">too much</span> oil</div><div class="it">eccesso + U → troppo/a</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl r">too many</span>
+    <div><div class="en"><span class="kwr">too many</span> cars &nbsp;·&nbsp; <span class="kwr">too many</span> eggs &nbsp;·&nbsp; <span class="kwr">too many</span> people</div><div class="it">eccesso + C → troppi/e</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl g">enough</span>
+    <div><div class="en"><span class="kwg">enough</span> time &nbsp;·&nbsp; <span class="kwg">enough</span> money &nbsp;·&nbsp; <span class="kwg">enough</span> eggs</div><div class="it">sufficiente + C o U → abbastanza</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl r">not enough</span>
+    <div><div class="en">not <span class="kwg">enough</span> bread &nbsp;·&nbsp; not <span class="kwg">enough</span> chairs</div><div class="it">insufficiente + C o U → non abbastanza</div></div>
+  </div>
+  <div class="warn warn-blue">💡 Schema mentale:<br><strong>too much / too many</strong> = di più del dovuto 😤<br><strong>enough</strong> = la giusta quantità ✅<br><strong>not enough</strong> = meno del necessario 😕<br><strong>too much → U</strong> · <strong>too many → C</strong> · <strong>enough → C e U</strong></div>
+</div>
+
+</div>
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+<script>
+const total=4;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<total;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+function typewrite(el,text,speed){
+  return new Promise(resolve=>{
+    el.textContent='';const cursor=document.createElement('span');cursor.className='cursor';el.appendChild(cursor);
+    let i=0;function tick(){if(i>=text.length){cursor.remove();resolve();return;}cursor.insertAdjacentText('beforebegin',text[i]);i++;setTimeout(tick,speed);}tick();
+  });
+}
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await new Promise(r=>setTimeout(r,400));
+  for(const row of slide.querySelectorAll('.row')){
+    for(const el of row.querySelectorAll('[data-tw]')){await typewrite(el,el.dataset.tw,100);await new Promise(r=>setTimeout(r,60));}
+    const it=row.querySelector('.it');
+    if(it){await new Promise(r=>setTimeout(r,80));it.style.opacity='1';}
+    await new Promise(r=>setTimeout(r,200));
+  }
+  const warn=slide.querySelector('.warn');
+  if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+}
+function resetSlide(idx){
+  const s=document.getElementById('s'+idx);
+  s.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  s.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  s.querySelectorAll('.it').forEach(e=>e.style.opacity='0');
+}
+function go(dir){
+  if(busy)return;
+  const prev=cur;cur=Math.max(0,Math.min(total-1,cur+dir));if(cur===prev)return;
+  busy=true;
+  const oldSlide=document.getElementById('s'+prev);
+  const newSlide=document.getElementById('s'+cur);
+  resetSlide(prev);
+  oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
+  setTimeout(()=>{
+    oldSlide.style.cssText='';oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';
+      setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===total-1;
+  },260);
+}
+let tx=0;const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+animateSlide(0);
+</script>
+</body>
+</html>

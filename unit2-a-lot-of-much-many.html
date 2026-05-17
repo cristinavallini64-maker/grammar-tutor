@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A lot of / Lots of</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #0077cc;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.8rem,2.8vw,1.3rem);letter-spacing:2px;color:#0077cc;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.7rem,2vw,0.9rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:8px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#0077cc;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.7rem,2.2vw,0.9rem);letter-spacing:2px;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+.t-blue{color:#0077cc;}.t-green{color:#007700;}
+
+.row{display:grid;grid-template-columns:auto 1fr;gap:0 20px;padding:10px 0;border-bottom:1px solid #f0f0f0;align-items:start;}
+.row:last-of-type{border-bottom:none;}
+.lbl{font-size:clamp(0.85rem,2.6vw,1.05rem);font-weight:700;color:#0077cc;padding-top:2px;white-space:nowrap;}
+.en{font-size:clamp(1rem,3.2vw,1.25rem);font-weight:400;color:#111;line-height:1.4;}
+.en .kw{font-weight:900;color:#0077cc;}
+.it{font-size:clamp(0.68rem,1.9vw,0.8rem);color:#aaa;font-style:italic;margin-top:3px;opacity:0;transition:opacity 0.4s;}
+
+.warn{margin-top:10px;border-radius:0 8px 8px 0;padding:11px 15px;font-size:clamp(0.85rem,2.6vw,1rem);color:#111;font-weight:600;line-height:1.75;opacity:0;transition:opacity 0.5s;}
+.warn.show{opacity:1;}
+.warn-blue{background:#e8f4ff;border-left:5px solid #0077cc;}
+.warn-green{background:#f0fff0;border-left:5px solid #007700;}
+.warn strong{font-weight:900;}
+.ok{color:#007700;font-weight:700;}
+
+.cursor{display:inline-block;width:2px;height:1em;background:#0077cc;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.6rem,2vw,0.75rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #0077cc;background:#fff;color:#0077cc;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#0077cc;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="title">📊 A LOT OF / LOTS OF</div>
+  <div class="prog" id="prog">1 / 2</div>
+</div>
+<div class="dots" id="dots"></div>
+<div class="slides">
+
+<!-- SLIDE 0: A lot of / Lots of -->
+<div class="slide active" id="s0">
+  <div class="slide-title t-blue">✅ A LOT OF / LOTS OF — grandi quantità</div>
+  <div class="row">
+    <span class="lbl">+ U</span>
+    <div><div class="en">There's <span class="kw" data-tw="a lot of"></span> salt in this pasta.</div><div class="it">C'è molto sale in questa pasta.</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl">+ C</span>
+    <div><div class="en">She eats <span class="kw" data-tw="a lot of"></span> vegetables.</div><div class="it">Lei mangia molte verdure.</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl">+ U</span>
+    <div><div class="en">We've got <span class="kw" data-tw="lots of"></span> homework today.</div><div class="it">Abbiamo molti compiti oggi.</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl">+ C</span>
+    <div><div class="en">There are <span class="kw" data-tw="lots of"></span> restaurants here.</div><div class="it">Ci sono molti ristoranti qui.</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl">neg/int</span>
+    <div><div class="en">Has he got <span class="kw" data-tw="a lot of"></span> problems? <span style="color:#aaa;font-size:0.85em">(parlato ✓)</span></div><div class="it">Ha molti problemi? — nel parlato a lot of va ovunque</div></div>
+  </div>
+  <div class="warn warn-blue"><strong>A lot of = lots of</strong> — stesso significato, intercambiabili.<br>Funzionano con <strong>C e U</strong>, in qualsiasi tipo di frase nel parlato.</div>
+</div>
+
+<!-- SLIDE 1: Da solo + recap -->
+<div class="slide" id="s1">
+  <div class="slide-title t-green">🔄 A LOT OF / LOTS OF — riassunto</div>
+  <div class="row">
+    <span class="lbl">da solo</span>
+    <div><div class="en">How much do you eat? — <span class="kw" data-tw="A lot."></span></div><div class="it">Quanto mangi? — Molto. (senza nome dopo: solo "a lot")</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl">da solo</span>
+    <div><div class="en">Thanks <span class="kw" data-tw="a lot"></span>!</div><div class="it">Grazie mille! — a lot anche in espressioni fisse</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl">a lot of</span>
+    <div><div class="en"><span class="kw" data-tw="a lot of"></span> sugar (U) &nbsp;·&nbsp; <span class="kw" data-tw="a lot of"></span> eggs (C)</div><div class="it">Con il nome → a lot of (con "of")</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl">lots of</span>
+    <div><div class="en"><span class="kw" data-tw="lots of"></span> time (U) &nbsp;·&nbsp; <span class="kw" data-tw="lots of"></span> friends (C)</div><div class="it">Uguale ad a lot of — leggermente più informale</div></div>
+  </div>
+  <div class="warn warn-green">💡 Parlato quotidiano → <strong>a lot of</strong> con tutto, C e U.<br>Per neg/int nello scritto formale → vedi <em>(not) much / many</em>.</div>
+</div>
+
+</div>
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+<script>
+const total=2;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<total;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+function typewrite(el,text,speed){
+  return new Promise(resolve=>{
+    el.textContent='';const cursor=document.createElement('span');cursor.className='cursor';el.appendChild(cursor);
+    let i=0;function tick(){if(i>=text.length){cursor.remove();resolve();return;}cursor.insertAdjacentText('beforebegin',text[i]);i++;setTimeout(tick,speed);}tick();
+  });
+}
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await new Promise(r=>setTimeout(r,400));
+  for(const row of slide.querySelectorAll('.row')){
+    for(const el of row.querySelectorAll('[data-tw]')){await typewrite(el,el.dataset.tw,100);await new Promise(r=>setTimeout(r,60));}
+    const it=row.querySelector('.it');
+    if(it){await new Promise(r=>setTimeout(r,80));it.style.opacity='1';}
+    await new Promise(r=>setTimeout(r,200));
+  }
+  const warn=slide.querySelector('.warn');
+  if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+}
+function resetSlide(idx){
+  const s=document.getElementById('s'+idx);
+  s.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  s.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  s.querySelectorAll('.it').forEach(e=>e.style.opacity='0');
+}
+function go(dir){
+  if(busy)return;
+  const prev=cur;cur=Math.max(0,Math.min(total-1,cur+dir));if(cur===prev)return;
+  busy=true;
+  const oldSlide=document.getElementById('s'+prev);
+  const newSlide=document.getElementById('s'+cur);
+  resetSlide(prev);
+  oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
+  setTimeout(()=>{
+    oldSlide.style.cssText='';oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';
+      setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===total-1;
+  },260);
+}
+let tx=0;const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+animateSlide(0);
+</script>
+</body>
+</html>

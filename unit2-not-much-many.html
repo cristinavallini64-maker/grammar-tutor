@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>(Not) much / many</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #0077cc;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.8rem,2.8vw,1.3rem);letter-spacing:2px;color:#0077cc;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.7rem,2vw,0.9rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:8px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#0077cc;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.7rem,2.2vw,0.9rem);letter-spacing:2px;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+.t-blue{color:#0077cc;}.t-green{color:#007700;}.t-orange{color:#cc6600;}.t-purple{color:#7700cc;}
+
+.row{display:grid;grid-template-columns:auto 1fr;gap:0 20px;padding:10px 0;border-bottom:1px solid #f0f0f0;align-items:start;}
+.row:last-of-type{border-bottom:none;}
+.lbl{font-size:clamp(0.85rem,2.6vw,1.05rem);font-weight:700;padding-top:2px;white-space:nowrap;}
+.lbl.p{color:#7700cc;}.lbl.g{color:#007700;}.lbl.b{color:#0077cc;}
+.en{font-size:clamp(1rem,3.2vw,1.25rem);font-weight:400;color:#111;line-height:1.4;}
+.en .kwp{font-weight:900;color:#7700cc;}
+.en .kwg{font-weight:900;color:#007700;}
+.it{font-size:clamp(0.68rem,1.9vw,0.8rem);color:#aaa;font-style:italic;margin-top:3px;opacity:0;transition:opacity 0.4s;}
+
+.warn{margin-top:10px;border-radius:0 8px 8px 0;padding:11px 15px;font-size:clamp(0.85rem,2.6vw,1rem);color:#111;font-weight:600;line-height:1.75;opacity:0;transition:opacity 0.5s;}
+.warn.show{opacity:1;}
+.warn-blue{background:#e8f4ff;border-left:5px solid #0077cc;}
+.warn-purple{background:#f5eeff;border-left:5px solid #7700cc;}
+.warn-green{background:#f0fff0;border-left:5px solid #007700;}
+.warn-orange{background:#fff8e8;border-left:5px solid #cc6600;}
+.warn strong{font-weight:900;}
+.ok{color:#007700;font-weight:700;}.no{color:#cc0000;text-decoration:line-through;}
+
+.cursor{display:inline-block;width:2px;height:1em;background:#0077cc;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.6rem,2vw,0.75rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #0077cc;background:#fff;color:#0077cc;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#0077cc;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="title">📉 (NOT) MUCH / MANY</div>
+  <div class="prog" id="prog">1 / 4</div>
+</div>
+<div class="dots" id="dots"></div>
+<div class="slides">
+
+<!-- SLIDE 0: MUCH affermativa -->
+<div class="slide active" id="s0">
+  <div class="slide-title t-purple">MUCH — con UNCOUNTABLE (U)</div>
+  <div class="row">
+    <span class="lbl p">much ✅</span>
+    <div><div class="en"><span class="kwp" data-tw="Much"></span> time has passed.</div><div class="it">È passato molto tempo. — affermativa formale/scritto</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl p">much ✅</span>
+    <div><div class="en"><span class="kwp" data-tw="Much"></span> research is needed on this topic.</div><div class="it">Ci vuole molta ricerca. — scritto/accademico</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl p">not much ✗</span>
+    <div><div class="en">There isn't <span class="kwp" data-tw="much"></span> traffic today.</div><div class="it">Non c'è molto traffico oggi.</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl p">much ❓</span>
+    <div><div class="en">Is there <span class="kwp" data-tw="much"></span> sugar in that cake?</div><div class="it">C'è molto zucchero in quella torta?</div></div>
+  </div>
+  <div class="warn warn-purple"><strong>Much</strong> in affermativa è corretto ma suona <strong>formale/scritto</strong>.<br>Nel parlato quotidiano → <span class="ok">There's a lot of traffic.</span> è più naturale.</div>
+</div>
+
+<!-- SLIDE 1: MANY affermativa -->
+<div class="slide" id="s1">
+  <div class="slide-title t-green">MANY — con COUNTABLE (C)</div>
+  <div class="row">
+    <span class="lbl g">many ✅</span>
+    <div><div class="en"><span class="kwg" data-tw="Many"></span> countries have this problem.</div><div class="it">Molti paesi hanno questo problema. — formale/scritto</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl g">many ✅</span>
+    <div><div class="en"><span class="kwg" data-tw="Many"></span> people agree with this idea.</div><div class="it">Molte persone sono d'accordo. — notizie/scritto</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl g">not many ✗</span>
+    <div><div class="en">There aren't <span class="kwg" data-tw="many"></span> shops where I live.</div><div class="it">Ci sono pochi negozi dove abito.</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl g">many ❓</span>
+    <div><div class="en">Are there <span class="kwg" data-tw="many"></span> students in your class?</div><div class="it">Ci sono molti studenti nella tua classe?</div></div>
+  </div>
+  <div class="warn warn-green"><strong>Many</strong> in affermativa è corretto ma <strong>formale</strong>.<br>Nel parlato → <span class="ok">There are a lot of students.</span> è più naturale.</div>
+</div>
+
+<!-- SLIDE 2: NOT MUCH / NOT MANY neg e int -->
+<div class="slide" id="s2">
+  <div class="slide-title t-orange">❌❓ NOT MUCH / NOT MANY — neg. e interrogative</div>
+  <div class="row">
+    <span class="lbl p">not much ✗</span>
+    <div><div class="en">There isn't <span class="kwp" data-tw="much"></span> milk left.</div><div class="it">Non è rimasto molto latte. (milk = U)</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl p">much ❓</span>
+    <div><div class="en">Is there <span class="kwp" data-tw="much"></span> salt in this?</div><div class="it">C'è molto sale in questo? (salt = U)</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl g">not many ✗</span>
+    <div><div class="en">I don't have <span class="kwg" data-tw="many"></span> friends here.</div><div class="it">Non ho molti amici qui. (friends = C)</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl g">many ❓</span>
+    <div><div class="en">Are there <span class="kwg" data-tw="many"></span> eggs in the fridge?</div><div class="it">Ci sono molte uova nel frigo? (eggs = C)</div></div>
+  </div>
+  <div class="warn warn-orange">⚠️ <span class="no">There isn't many milk.</span> ✗ → <span class="ok">There isn't much milk.</span> ✓<br><span class="no">There aren't much eggs.</span> ✗ → <span class="ok">There aren't many eggs.</span> ✓</div>
+</div>
+
+<!-- SLIDE 3: Riassunto -->
+<div class="slide" id="s3">
+  <div class="slide-title t-blue">🔄 MUCH / MANY — RIASSUNTO</div>
+  <div class="row">
+    <span class="lbl p">much (U)</span>
+    <div><div class="en"><span class="kwp">Much</span> time passed. &nbsp;·&nbsp; not <span class="kwp">much</span> milk &nbsp;·&nbsp; Is there <span class="kwp">much</span> sugar?</div><div class="it">aff. formale · negativa · interrogativa</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl g">many (C)</span>
+    <div><div class="en"><span class="kwg">Many</span> people agree. &nbsp;·&nbsp; not <span class="kwg">many</span> eggs &nbsp;·&nbsp; Are there <span class="kwg">many</span> shops?</div><div class="it">aff. formale · negativa · interrogativa</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl b">parlato</span>
+    <div><div class="en">a lot of milk &nbsp;·&nbsp; a lot of eggs &nbsp;·&nbsp; Is there a lot of traffic?</div><div class="it">nel parlato → a lot of sostituisce much/many ovunque</div></div>
+  </div>
+  <div class="row">
+    <span class="lbl b">da soli</span>
+    <div><div class="en">Not <span class="kwp">much.</span> (U) &nbsp;·&nbsp; Not <span class="kwg">many.</span> (C) &nbsp;·&nbsp; A lot. (C+U)</div><div class="it">risposte brevi senza nome dopo</div></div>
+  </div>
+  <div class="warn warn-blue">💡 Trick: <strong>much → U</strong> (non si conta) · <strong>many → C</strong> (si conta)<br>Neg/int → much e many vanno benissimo in entrambi i registri.</div>
+</div>
+
+</div>
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+<script>
+const total=4;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<total;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+function typewrite(el,text,speed){
+  return new Promise(resolve=>{
+    el.textContent='';const cursor=document.createElement('span');cursor.className='cursor';el.appendChild(cursor);
+    let i=0;function tick(){if(i>=text.length){cursor.remove();resolve();return;}cursor.insertAdjacentText('beforebegin',text[i]);i++;setTimeout(tick,speed);}tick();
+  });
+}
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await new Promise(r=>setTimeout(r,400));
+  for(const row of slide.querySelectorAll('.row')){
+    for(const el of row.querySelectorAll('[data-tw]')){await typewrite(el,el.dataset.tw,100);await new Promise(r=>setTimeout(r,60));}
+    const it=row.querySelector('.it');
+    if(it){await new Promise(r=>setTimeout(r,80));it.style.opacity='1';}
+    await new Promise(r=>setTimeout(r,200));
+  }
+  const warn=slide.querySelector('.warn');
+  if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+}
+function resetSlide(idx){
+  const s=document.getElementById('s'+idx);
+  s.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  s.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  s.querySelectorAll('.it').forEach(e=>e.style.opacity='0');
+}
+function go(dir){
+  if(busy)return;
+  const prev=cur;cur=Math.max(0,Math.min(total-1,cur+dir));if(cur===prev)return;
+  busy=true;
+  const oldSlide=document.getElementById('s'+prev);
+  const newSlide=document.getElementById('s'+cur);
+  resetSlide(prev);
+  oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
+  setTimeout(()=>{
+    oldSlide.style.cssText='';oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';
+      setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===total-1;
+  },260);
+}
+let tx=0;const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+animateSlide(0);
+</script>
+</body>
+</html>
