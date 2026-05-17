@@ -165,19 +165,21 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 
   <div class="slide" id="s3">
     <div class="slide-title">⚠️ CON "a" vs SENZA "a" — CAMBIA TUTTO!</div>
+    
     <div class="con-row">
       <div class="con-pos">
         <span class="con-tag tag-pos">CON "a" → positivo</span>
         <span class="con-ex" data-tw="There's ❮a little❯ water."></span>
-        <span class="con-sub">un po' → abbastanza</span>
+        <span class="con-sub">un po' di → abbastanza</span>
       </div>
       <div class="con-neg">
         <span class="con-tag tag-neg-con">SENZA "a" → negativo</span>
         <span class="con-ex" data-tw="There's ❮little❯ water."></span>
         <span class="con-sub">pochissima → non abbastanza</span>
       </div>
-      <span class="con-it">Un po' d'acqua (ok) &nbsp;↔&nbsp; Pochissima acqua (problema!)</span>
+      <span class="con-it">C'è un po' d'acqua (quantità sufficiente) &nbsp;↔&nbsp; C'è pochissima acqua (problema!)</span>
     </div>
+
     <div class="con-row">
       <div class="con-pos">
         <span class="con-tag tag-pos">CON "a" → positivo</span>
@@ -189,34 +191,37 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
         <span class="con-ex" data-tw="I have ❮few❯ friends."></span>
         <span class="con-sub">pochissimi → quasi nessuno</span>
       </div>
-      <span class="con-it">Ho alcuni amici (ok) &nbsp;↔&nbsp; Ho pochissimi amici (triste!)</span>
+      <span class="con-it">Ho alcuni amici (sono felice) &nbsp;↔&nbsp; Ho pochissimi amici (sono solo)</span>
     </div>
+
     <div class="con-row">
       <div class="con-pos">
         <span class="con-tag tag-pos">CON "a" → positivo</span>
         <span class="con-ex" data-tw="There's ❮a little❯ time left."></span>
-        <span class="con-sub">un po' → possiamo farcela</span>
+        <span class="con-sub">un po' di tempo → possiamo farcela</span>
       </div>
       <div class="con-neg">
         <span class="con-tag tag-neg-con">SENZA "a" → negativo</span>
         <span class="con-ex" data-tw="There's ❮little❯ time left."></span>
-        <span class="con-sub">pochissimo → siamo nei guai</span>
+        <span class="con-sub">pochissimo tempo → siamo di fretta</span>
       </div>
-      <span class="con-it">C'è ancora un po' di tempo &nbsp;↔&nbsp; C'è pochissimo tempo</span>
+      <span class="con-it">Abbiamo ancora un po' di tempo &nbsp;↔&nbsp; C'è rimasto pochissimo tempo</span>
     </div>
+
     <div class="con-row">
       <div class="con-pos">
         <span class="con-tag tag-pos">CON "a" → positivo</span>
         <span class="con-ex" data-tw="❮A few❯ students understood."></span>
-        <span class="con-sub">alcuni → almeno qualcuno</span>
+        <span class="con-sub">alcuni studenti → qualcuno ha capito</span>
       </div>
       <div class="con-neg">
         <span class="con-tag tag-neg-con">SENZA "a" → negativo</span>
         <span class="con-ex" data-tw="❮Few❯ students understood."></span>
-        <span class="con-sub">pochissimi → quasi nessuno</span>
+        <span class="con-sub">pochissimi studenti → quasi nessuno</span>
       </div>
       <span class="con-it">Alcuni studenti hanno capito &nbsp;↔&nbsp; Pochissimi studenti hanno capito</span>
     </div>
+
     <div class="warn">🔑 <strong>Very little / very few</strong> = pochissimo/a, pochissimi/e:<br>
     There are <strong>very few</strong> mistakes. → Ci sono pochissimi errori.<br>
     There's <strong>very little</strong> time. → C'è pochissimo tempo.</div>
@@ -271,13 +276,11 @@ for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'
 function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
 function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
 
-// fi() gestisce TUTTA la transizione inline: nessuna transition nel CSS
 function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
 function showWarn(el){if(el){el.style.transition='opacity 0.5s';setTimeout(()=>el.style.opacity='1',50);}}
 
 function resetSlide(slide){
   slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
-  // opacity:0 ISTANTANEO — nessuna transition nel CSS, quindi niente flash
   slide.querySelectorAll('.use-it,.con-it,.err-it,.err-note,.cu-it').forEach(el=>{el.style.transition='none';el.style.opacity='0';});
   slide.querySelectorAll('.warn').forEach(el=>{el.style.transition='none';el.style.opacity='0';});
 }
@@ -309,7 +312,7 @@ async function animateSlide(idx){
     for(const row of slide.querySelectorAll('.con-row')){
       const pos=row.querySelector('.con-pos .con-ex'),neg=row.querySelector('.con-neg .con-ex'),it=row.querySelector('.con-it');
       if(pos)await twHL(pos,pos.dataset.tw,42);await new Promise(r=>setTimeout(r,120));
-      if(neg)await twHL(neg,neg.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,240));
+      if(neg)await twHL(neg,neg.dataset.tw,42);if(it)fi(it);await new Promise(r=>setTimeout(r,240));
     }
     showWarn(slide.querySelector('.warn'));
   } else if(idx===4){
