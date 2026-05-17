@@ -18,10 +18,7 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 .slides{flex:1;position:relative;overflow:hidden;}
 .slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
 .slide.active{visibility:visible;}
-.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#cc0000;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
-.slide-title.show{opacity:1;}
-
-/* tabella A LITTLE vs A FEW */
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#cc0000;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;}
 .cu-table{display:grid;grid-template-columns:1fr 1fr;border-radius:10px;overflow:hidden;flex-shrink:0;margin-bottom:10px;border:2px solid #eee;}
 .cu-head{font-family:'Orbitron',monospace;font-size:clamp(0.6rem,1.8vw,0.78rem);letter-spacing:2px;font-weight:700;padding:10px 12px;text-align:center;color:#fff;}
 .cu-head.al{background:#cc0000;}
@@ -31,19 +28,15 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 .cu-cell.af{background:#f0fff5;}
 .cu-cell:nth-last-child(-n+2){border-bottom:none;}
 .cu-ex{font-weight:700;color:#111;display:block;}
-.cu-it{display:block;font-size:0.78em;color:#888;font-style:italic;margin-top:2px;opacity:0;transition:opacity 0.4s;}
-
-/* esempi in contesto */
+.cu-it{display:block;font-size:0.78em;color:#888;font-style:italic;margin-top:2px;opacity:0;}
 .use-row{padding:7px 0;border-bottom:1px solid #f0f0f0;}
 .use-row:last-child{border-bottom:none;}
 .use-ex{font-size:clamp(0.88rem,2.9vw,1.06rem);font-weight:600;color:#111;display:block;}
-.use-it{font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;display:block;opacity:0;transition:opacity 0.4s;margin-top:2px;}
+.use-it{font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;display:block;opacity:0;margin-top:2px;}
 .use-tag{font-family:'Orbitron',monospace;font-size:clamp(0.5rem,1.4vw,0.62rem);letter-spacing:1.5px;font-weight:700;padding:2px 7px;border-radius:4px;margin-right:7px;vertical-align:middle;}
 .tag-al{background:#cc0000;color:#fff;}
 .tag-af{background:#007733;color:#fff;}
 .tag-bit{background:#994400;color:#fff;}
-
-/* contrasto CON "a" vs SENZA "a" */
 .con-row{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid #f0f0f0;flex-wrap:wrap;}
 .con-row:last-child{border-bottom:none;}
 .con-pos{flex:1;background:#f0fff5;border-radius:7px;padding:8px 11px;min-width:140px;}
@@ -55,19 +48,15 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 .con-sub{font-size:clamp(0.6rem,1.75vw,0.74rem);display:block;margin-top:3px;font-style:italic;}
 .con-pos .con-sub{color:#007733;}
 .con-neg .con-sub{color:#994400;}
-.con-it{flex-basis:100%;font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;padding-top:2px;}
-
-/* errori */
+.con-it{flex-basis:100%;font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;opacity:0;padding-top:2px;}
 .err-pair{padding:6px 0;border-bottom:1px solid #f0f0f0;}
 .err-pair:last-child{border-bottom:none;}
 .err-wrong{font-size:clamp(0.82rem,2.6vw,0.99rem);color:#c00;}
 .err-ok{font-size:clamp(0.82rem,2.6vw,0.99rem);font-weight:700;color:#007733;}
-.err-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;margin-top:1px;}
-.err-note{font-size:clamp(0.63rem,1.8vw,0.77rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
-
+.err-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;margin-top:1px;}
+.err-note{font-size:clamp(0.63rem,1.8vw,0.77rem);color:#bbb;margin-top:1px;opacity:0;}
 .hl{font-weight:900;color:#cc0000;font-style:normal;}
-.warn{background:#fff5f5;border-left:5px solid #cc0000;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.78rem,2.4vw,0.94rem);color:#111;font-weight:600;line-height:1.7;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:8px;}
-.warn.show{opacity:1;}
+.warn{background:#fff5f5;border-left:5px solid #cc0000;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.78rem,2.4vw,0.94rem);color:#111;font-weight:600;line-height:1.7;flex-shrink:0;opacity:0;margin-top:8px;}
 .warn strong{color:#cc0000;}
 .cursor{display:inline-block;width:2px;height:1em;background:#cc0000;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
@@ -83,7 +72,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 <div class="dots" id="dots"></div>
 <div class="slides">
 
-  <!-- ══ SLIDE 0: regola base ══ -->
   <div class="slide active" id="s0">
     <div class="slide-title">📋 LA REGOLA BASE</div>
     <div class="cu-table">
@@ -98,11 +86,9 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
       <div class="cu-cell al"><span class="cu-ex" data-tw="There's ❮a little❯ milk left."></span><span class="cu-it">C'è ancora un po' di latte.</span></div>
       <div class="cu-cell af"><span class="cu-ex" data-tw="I have ❮a few❯ friends here."></span><span class="cu-it">Ho alcuni amici qui.</span></div>
     </div>
-    <div class="warn">🔑 Sia <strong>a little</strong> che <strong>a few</strong> hanno <strong>senso positivo o neutro</strong>: indicano una piccola quantità, ma <em>sufficiente</em>.<br>
-    Senza l'articolo <strong>a</strong> il senso diventa negativo → vedi slide 4.</div>
+    <div class="warn">🔑 Sia <strong>a little</strong> che <strong>a few</strong> hanno <strong>senso positivo o neutro</strong>: indicano una piccola quantità, ma <em>sufficiente</em>.<br>Senza l'articolo <strong>a</strong> il senso diventa negativo → vedi slide 4.</div>
   </div>
 
-  <!-- ══ SLIDE 1: A LITTLE ══ -->
   <div class="slide" id="s1">
     <div class="slide-title">🔴 A LITTLE — USO E ESEMPI  (con U)</div>
     <div class="use-row">
@@ -140,7 +126,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">🔑 <strong>A little bit of</strong> è la versione ancora più informale di <strong>a little</strong> — molto usata nel parlato quotidiano.</div>
   </div>
 
-  <!-- ══ SLIDE 2: A FEW ══ -->
   <div class="slide" id="s2">
     <div class="slide-title">🟢 A FEW — USO E ESEMPI  (con C plurale)</div>
     <div class="use-row">
@@ -178,7 +163,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">🔑 <strong>A few</strong> suggerisce sempre un numero piccolo ma <em>sufficiente o positivo</em>: "alcuni/e" — non pochissimi.</div>
   </div>
 
-  <!-- ══ SLIDE 3: LITTLE vs FEW (senza "a") ══ -->
   <div class="slide" id="s3">
     <div class="slide-title">⚠️ CON "a" vs SENZA "a" — CAMBIA TUTTO!</div>
     <div class="con-row">
@@ -233,12 +217,11 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
       </div>
       <span class="con-it">Alcuni studenti hanno capito &nbsp;↔&nbsp; Pochissimi studenti hanno capito</span>
     </div>
-    <div class="warn">🔑 <strong>Very little / very few</strong> = pochissimo/a, pochissimi/e (enfatizza ulteriormente la scarsità):<br>
-    There are <strong>very few</strong> mistakes in this essay. → Ci sono pochissimi errori.<br>
+    <div class="warn">🔑 <strong>Very little / very few</strong> = pochissimo/a, pochissimi/e:<br>
+    There are <strong>very few</strong> mistakes. → Ci sono pochissimi errori.<br>
     There's <strong>very little</strong> time. → C'è pochissimo tempo.</div>
   </div>
 
-  <!-- ══ SLIDE 4: errori ══ -->
   <div class="slide" id="s4">
     <div class="slide-title">🚨 ERRORI TIPICI DA EVITARE</div>
     <div class="err-pair">
@@ -280,53 +263,67 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 </div>
 <script>
 document.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+
 const TOTAL=5;let cur=0,busy=false;
 const dotsEl=document.getElementById('dots');
 for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
 function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
 function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+
+// fi() gestisce TUTTA la transizione inline: nessuna transition nel CSS
 function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+function showWarn(el){if(el){el.style.transition='opacity 0.5s';setTimeout(()=>el.style.opacity='1',50);}}
+
+function resetSlide(slide){
+  slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+  // opacity:0 ISTANTANEO — nessuna transition nel CSS, quindi niente flash
+  slide.querySelectorAll('.use-it,.con-it,.err-it,.err-note,.cu-it').forEach(el=>{el.style.transition='none';el.style.opacity='0';});
+  slide.querySelectorAll('.warn').forEach(el=>{el.style.transition='none';el.style.opacity='0';});
+}
+
 async function animateSlide(idx){
   const slide=document.getElementById('s'+idx);
-  // ── RESET COMPLETO ──────────────────────────────────────────────────
-  slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
-  slide.querySelectorAll('.use-it,.con-it,.err-it,.err-note,.cu-it').forEach(el=>el.style.opacity='0');
-  slide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
-  slide.querySelectorAll('.sec-label').forEach(l=>l.classList.remove('show'));
-  // ────────────────────────────────────────────────────────────────────
+  resetSlide(slide);
   const title=slide.querySelector('.slide-title');
-  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  if(title){
+    title.style.transition='none';title.style.opacity='0';
+    setTimeout(()=>{title.style.transition='opacity 0.4s';title.style.opacity='1';},100);
+  }
   await new Promise(r=>setTimeout(r,400));
   if(idx===0){
-    const descCells=[...slide.querySelectorAll('.cu-cell[data-tw]')];
-    for(const cell of descCells){await twHL(cell,cell.dataset.tw,38);await new Promise(r=>setTimeout(r,80));}
+    for(const cell of slide.querySelectorAll('.cu-cell[data-tw]')){await twHL(cell,cell.dataset.tw,38);await new Promise(r=>setTimeout(r,80));}
     for(const ex of slide.querySelectorAll('.cu-ex[data-tw]')){
       await twHL(ex,ex.dataset.tw,42);
-      const it=ex.nextElementSibling;if(it)fi(it);
+      fi(ex.nextElementSibling);
       await new Promise(r=>setTimeout(r,150));
     }
-    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,250));warn.classList.add('show');}
+    showWarn(slide.querySelector('.warn'));
   } else if(idx===1||idx===2){
     for(const row of slide.querySelectorAll('.use-row')){
       const ex=row.querySelector('[data-tw]'),it=row.querySelector('.use-it');
       if(ex)await twHL(ex,ex.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,200));
     }
-    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+    showWarn(slide.querySelector('.warn'));
   } else if(idx===3){
     for(const row of slide.querySelectorAll('.con-row')){
       const pos=row.querySelector('.con-pos .con-ex'),neg=row.querySelector('.con-neg .con-ex'),it=row.querySelector('.con-it');
       if(pos)await twHL(pos,pos.dataset.tw,42);await new Promise(r=>setTimeout(r,120));
       if(neg)await twHL(neg,neg.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,240));
     }
-    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+    showWarn(slide.querySelector('.warn'));
   } else if(idx===4){
     for(const pair of slide.querySelectorAll('.err-pair')){
       const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
       if(wrong)await tw(wrong,wrong.dataset.tw,42);await new Promise(r=>setTimeout(r,100));
-      if(ok)await tw(ok,ok.dataset.tw,42);fi(it);if(note)setTimeout(()=>note.style.opacity='1',220);await new Promise(r=>setTimeout(r,280));
+      if(ok)await tw(ok,ok.dataset.tw,42);
+      fi(it);
+      if(note){note.style.transition='opacity 0.4s';setTimeout(()=>note.style.opacity='1',220);}
+      await new Promise(r=>setTimeout(r,280));
     }
   }
 }
+
 function go(dir){
   if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
   const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
@@ -334,8 +331,12 @@ function go(dir){
   setTimeout(()=>{
     oldSlide.style.cssText='';oldSlide.classList.remove('active');
     newSlide.style.opacity='0';newSlide.classList.add('active');
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);}));
-    animateSlide(cur);dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';
+      setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
     document.getElementById('prog').textContent=(cur+1)+' / '+TOTAL;
     document.getElementById('prevBtn').disabled=cur===0;document.getElementById('nextBtn').disabled=cur===TOTAL-1;
   },260);
