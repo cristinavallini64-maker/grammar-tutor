@@ -31,7 +31,7 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 .cu-cell.u{background:#fff5f5;}
 .cu-cell:last-of-type,.cu-cell:nth-last-of-type(2){border-bottom:none;}
 .cu-ex{font-weight:700;color:#111;}
-.cu-it{display:block;font-size:0.78em;color:#888;font-style:italic;margin-top:2px;}
+.cu-it{display:block;font-size:0.78em;color:#888;font-style:italic;margin-top:2px;opacity:0;transition:opacity 0.4s;}
 .hl-c{color:#007733;font-weight:900;}
 .hl-u{color:#cc0000;font-weight:900;}
 
@@ -85,7 +85,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 <div class="dots" id="dots"></div>
 <div class="slides">
 
-  <!-- ══ SLIDE 0: tabella confronto ══ -->
   <div class="slide active" id="s0">
     <div class="slide-title">📋 DUE TIPI DI SOSTANTIVI</div>
     <div class="cu-table">
@@ -97,13 +96,12 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
       <div class="cu-cell u" data-tw="✗ solo una forma (singolare)"></div>
       <div class="cu-cell c" data-tw="✓ articolo ❮a / an❯ al singolare"></div>
       <div class="cu-cell u" data-tw="✗ niente ❮a / an❯, verbo singolare"></div>
-      <div class="cu-cell c"><span class="cu-ex">a banana &nbsp;·&nbsp; two biscuits</span><span class="cu-it">una banana · due biscotti</span></div>
-      <div class="cu-cell u"><span class="cu-ex">rice &nbsp;·&nbsp; water &nbsp;·&nbsp; juice</span><span class="cu-it">riso · acqua · succo</span></div>
+      <div class="cu-cell c"><span class="cu-ex" data-tw="a banana  ·  two biscuits"></span><span class="cu-it">una banana · due biscotti</span></div>
+      <div class="cu-cell u"><span class="cu-ex" data-tw="rice  ·  water  ·  juice"></span><span class="cu-it">riso · acqua · succo</span></div>
     </div>
-    <div class="warn">🔑 Test rapido: <strong>"Two ___ ?"</strong> &nbsp;→&nbsp; se ha senso (two apples ✓) è <span class="hl-c">countable</span>. Se non ha senso (two rice ✗) è <span class="hl-u">uncountable</span>.</div>
+    <div class="warn">🔑 Test rapido: <strong>"Two ___ ?"</strong>  →  se ha senso (two apples ✓) è <span class="hl-c">countable</span>. Se non ha senso (two rice ✗) è <span class="hl-u">uncountable</span>.</div>
   </div>
 
-  <!-- ══ SLIDE 1: uso in frase ══ -->
   <div class="slide" id="s1">
     <div class="slide-title">💬 COME SI USANO IN FRASE</div>
     <div class="use-row">
@@ -133,7 +131,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">⚠️ Con gli <strong>uncountable</strong>: niente <strong>a/an</strong>, niente plurale, verbo <strong>singolare</strong>.</div>
   </div>
 
-  <!-- ══ SLIDE 2: containers ══ -->
   <div class="slide" id="s2">
     <div class="slide-title">🥛 QUANTIFICARE GLI UNCOUNTABLE</div>
     <div class="cont-row"><span class="cont-ex" data-tw="❮a glass of❯ milk / water / juice"></span><span class="cont-it">un bicchiere di…</span></div>
@@ -148,28 +145,27 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">🔑 Per "contare" un uncountable usi un <strong>contenitore</strong> o una <strong>misura</strong> + <strong>of</strong> + sostantivo.</div>
   </div>
 
-  <!-- ══ SLIDE 3: parole speciali ══ -->
   <div class="slide" id="s3">
     <div class="slide-title">🎭 PAROLE "DOPPIE" E TRAPPOLE ITALIANE</div>
     <div class="both-row">
       <div class="both-word">CHICKEN</div>
       <div class="both-pair">
-        <span class="both-side"><span class="both-label tag-c">C</span><span data-tw="a chicken (un pollo intero)"></span></span>
-        <span class="both-side"><span class="both-label tag-u">U</span><span data-tw="chicken (del pollo, la carne)"></span></span>
+        <span class="both-side"><span class="both-label tag-c">C</span><span data-tw="a ❮chicken❯ (un pollo intero)"></span><span class="both-it">Un pollo intero</span></span>
+        <span class="both-side"><span class="both-label tag-u">U</span><span data-tw="❮chicken❯ (la carne di pollo)"></span><span class="both-it">La carne di pollo</span></span>
       </div>
     </div>
     <div class="both-row">
       <div class="both-word">COFFEE / TEA</div>
       <div class="both-pair">
-        <span class="both-side"><span class="both-label tag-c">C</span><span data-tw="a coffee (una tazza di caffè)"></span></span>
-        <span class="both-side"><span class="both-label tag-u">U</span><span data-tw="coffee (il caffè in generale)"></span></span>
+        <span class="both-side"><span class="both-label tag-c">C</span><span data-tw="a ❮coffee❯ (una tazza)"></span><span class="both-it">Una tazza di caffè</span></span>
+        <span class="both-side"><span class="both-label tag-u">U</span><span data-tw="❮coffee❯ (la sostanza)"></span><span class="both-it">Il caffè in generale</span></span>
       </div>
     </div>
     <div class="both-row">
       <div class="both-word">FISH</div>
       <div class="both-pair">
-        <span class="both-side"><span class="both-label tag-c">C</span><span data-tw="a fish (un pesce vivo)"></span></span>
-        <span class="both-side"><span class="both-label tag-u">U</span><span data-tw="fish (del pesce, la carne)"></span></span>
+        <span class="both-side"><span class="both-label tag-c">C</span><span data-tw="a ❮fish❯ (animale vivo)"></span><span class="both-it">Un pesce vivo</span></span>
+        <span class="both-side"><span class="both-label tag-u">U</span><span data-tw="❮fish❯ (il cibo)"></span><span class="both-it">Il pesce come alimento</span></span>
       </div>
     </div>
     <div class="warn">🚨 <strong>Trappole italiane!</strong> In italiano sono numerabili, in inglese <strong>NO</strong>:<br>
@@ -177,7 +173,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     👉 <em>My hair <span class="hl">is</span> long</em> = I miei capelli <em>sono</em> lunghi.</div>
   </div>
 
-  <!-- ══ SLIDE 4: errori ══ -->
   <div class="slide" id="s4">
     <div class="slide-title">🚨 ERRORI TIPICI DA EVITARE</div>
     <div class="err-pair">
@@ -218,53 +213,77 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
   <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
 </div>
 <script>
+document.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
 const TOTAL=5;let cur=0,busy=false;
 const dotsEl=document.getElementById('dots');
 for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
 function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
 function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
 function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+
 async function animateSlide(idx){
   const slide=document.getElementById('s'+idx);
+  slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+  slide.querySelectorAll('.use-it,.cont-it,.both-it,.err-it,.err-note,.cu-it').forEach(n=>n.style.opacity='0');
   const title=slide.querySelector('.slide-title');
   if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
   await new Promise(r=>setTimeout(r,400));
+  
   if(idx===0){
-    for(const cell of slide.querySelectorAll('.cu-cell[data-tw]')){await twHL(cell,cell.dataset.tw,40);await new Promise(r=>setTimeout(r,90));}
+    for(const cell of slide.querySelectorAll('.cu-cell')){
+      const ex=cell.querySelector('[data-tw]');
+      if(ex){
+        const txt=ex.dataset.tw;
+        if(txt.includes('❮')) await twHL(ex,txt,80);
+        else await tw(ex,txt,75);
+      } else if(cell.dataset.tw){
+        await twHL(cell,cell.dataset.tw,80);
+      }
+      const it=cell.querySelector('.cu-it');if(it)fi(it);
+      await new Promise(r=>setTimeout(r,280));
+    }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,250));warn.classList.add('show');}
   } else if(idx===1){
     for(const row of slide.querySelectorAll('.use-row')){
       const span=row.querySelector('[data-tw]'),it=row.querySelector('.use-it');
-      if(span)await twHL(span,span.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,230));
+      if(span)await twHL(span,span.dataset.tw,82);fi(it);await new Promise(r=>setTimeout(r,350));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
   } else if(idx===2){
     for(const row of slide.querySelectorAll('.cont-row')){
       const ex=row.querySelector('.cont-ex'),it=row.querySelector('.cont-it');
-      if(ex)await twHL(ex,ex.dataset.tw,40);fi(it);await new Promise(r=>setTimeout(r,170));
+      if(ex)await twHL(ex,ex.dataset.tw,80);fi(it);await new Promise(r=>setTimeout(r,300));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
   } else if(idx===3){
     for(const row of slide.querySelectorAll('.both-row')){
-      const sides=row.querySelectorAll('.both-side [data-tw]');
-      for(const s of sides){await tw(s,s.dataset.tw,38);await new Promise(r=>setTimeout(r,120));}
-      await new Promise(r=>setTimeout(r,150));
+      const sides=row.querySelectorAll('.both-side');
+      for(const s of sides){
+        const twTarget=s.querySelector('[data-tw]'),it=s.querySelector('.both-it');
+        if(twTarget){
+          if(twTarget.dataset.tw.includes('❮')) await twHL(twTarget,twTarget.dataset.tw,78);
+          else await tw(twTarget,twTarget.dataset.tw,75);
+        }
+        if(it)fi(it);
+        await new Promise(r=>setTimeout(r,280));
+      }
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
   } else if(idx===4){
     for(const pair of slide.querySelectorAll('.err-pair')){
       const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
-      if(wrong)await tw(wrong,wrong.dataset.tw,42);await new Promise(r=>setTimeout(r,100));
-      if(ok)await tw(ok,ok.dataset.tw,42);fi(it);if(note)setTimeout(()=>note.style.opacity='1',220);await new Promise(r=>setTimeout(r,280));
+      if(wrong)await tw(wrong,wrong.dataset.tw,80);await new Promise(r=>setTimeout(r,200));
+      if(ok)await tw(ok,ok.dataset.tw,80);fi(it);if(note)setTimeout(()=>note.style.opacity='1',250);await new Promise(r=>setTimeout(r,380));
     }
   }
 }
+
 function go(dir){
   if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
   const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
   oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
   oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
-  oldSlide.querySelectorAll('.use-it,.cont-it,.both-it,.err-it,.err-note').forEach(n=>n.style.opacity='0');
+  oldSlide.querySelectorAll('.use-it,.cont-it,.both-it,.err-it,.err-note,.cu-it').forEach(n=>n.style.opacity='0');
   oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
   setTimeout(()=>{
     oldSlide.style.cssText='';oldSlide.classList.remove('active');
