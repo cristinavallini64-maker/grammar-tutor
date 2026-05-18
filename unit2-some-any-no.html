@@ -51,7 +51,7 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 .eq-row:last-child{border-bottom:none;}
 .eq-no{flex:1;font-size:clamp(0.85rem,2.7vw,1.03rem);font-weight:700;color:#5500bb;min-width:140px;}
 .eq-sep{font-family:'Orbitron',monospace;font-size:clamp(0.52rem,1.5vw,0.65rem);color:#aaa;font-weight:700;white-space:nowrap;}
-.eq-any{flex:1;font-size:clamp(0.82rem,2.6vw,1rem);color:#666;min-width:140px;}
+.eq-any{flex:1;font-size:clamp(0.82rem,2.6vw,1rem);color:#444;min-width:140px;}
 .eq-it{flex-basis:100%;font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;}
 
 /* errori */
@@ -83,57 +83,50 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 <div class="dots" id="dots"></div>
 <div class="slides">
 
-  <!-- ══ SLIDE 0: matrice ══ -->
   <div class="slide active" id="s0">
     <div class="slide-title">📋 PANORAMICA — QUANDO SI USA QUALE?</div>
     <div class="mx-table">
       <div class="mx-head t0"></div>
-      <div class="mx-
-        head ts">SOME</div>
+      <div class="mx-head ts">SOME</div>
       <div class="mx-head ta">ANY</div>
       <div class="mx-head tn">NO</div>
-      <!-- row 1 -->
       <div class="mx-rl" data-tw="✅ AFFERMATIVA"></div>
       <div class="mx-cell s" data-tw="✓ SÌ"></div>
       <div class="mx-cell a" data-tw="✗ NO"></div>
-      <div class="mx-cell n" data-tw="✗ (usa not any)"></div>
-      <!-- row 2 -->
+      <div class="mx-cell n" data-tw="✗ ❮not any❯"></div>
       <div class="mx-rl" data-tw="❌ NEGATIVA"></div>
       <div class="mx-cell s" data-tw="✗ NO"></div>
       <div class="mx-cell a" data-tw="✓ SÌ"></div>
-      <div class="mx-cell n" data-tw="✓ SÌ (= not any)"></div>
-      <!-- row 3 -->
+      <div class="mx-cell n" data-tw="✓ ❮verbo AFF.❯"></div>
       <div class="mx-rl" data-tw="❓ INTERROGATIVA"></div>
-      <div class="mx-cell s" data-tw="✓ offerta / richiesta"></div>
+      <div class="mx-cell s" data-tw="✓ ❮offerte❯"></div>
       <div class="mx-cell a" data-tw="✓ SÌ"></div>
       <div class="mx-cell n" data-tw="✗ NO"></div>
-      <!-- row 4 -->
       <div class="mx-rl" data-tw="📦 CON CHE NOMI?"></div>
-      <div class="mx-cell s" data-tw="C plurale + U"></div>
-      <div class="mx-cell a" data-tw="C plurale + U"></div>
-      <div class="mx-cell n" data-tw="C plurale + U"></div>
+      <div class="mx-cell s" data-tw="Plur. + U"></div>
+      <div class="mx-cell a" data-tw="Plur. + U"></div>
+      <div class="mx-cell n" data-tw="Plur. + U"></div>
     </div>
     <div class="warn">🔑 <strong>some</strong> = frasi affermative &nbsp;·&nbsp; <strong>any</strong> = negative e interrogative &nbsp;·&nbsp; <strong>no</strong> = aggettivo davanti al nome, equivale a "not any"</div>
   </div>
 
-  <!-- ══ SLIDE 1: SOME ══ -->
   <div class="slide" id="s1">
     <div class="slide-title">🟢 SOME — USO E ESEMPI</div>
     <div class="use-row">
       <span class="use-ex"><span class="use-tag tag-s">AFF.</span><span data-tw="There's ❮some❯ cheese in the fridge."></span></span>
-      <span class="use-it">C'è del formaggio in frigo.  (U)</span>
+      <span class="use-it">C'è del formaggio in frigo.  (Uncountable)</span>
     </div>
     <div class="use-row">
       <span class="use-ex"><span class="use-tag tag-s">AFF.</span><span data-tw="There are ❮some❯ eggs in the fridge."></span></span>
-      <span class="use-it">Ci sono delle uova in frigo.  (C plurale)</span>
+      <span class="use-it">Ci sono delle uova in frigo.  (Countable plurale)</span>
     </div>
     <div class="use-row">
       <span class="use-ex"><span class="use-tag tag-s">AFF.</span><span data-tw="I need ❮some❯ information about the project."></span></span>
-      <span class="use-it">Ho bisogno di alcune informazioni sul progetto.  (U)</span>
+      <span class="use-it">Ho bisogno di alcune informazioni sul progetto.  (Uncountable)</span>
     </div>
     <div class="use-row">
       <span class="use-ex"><span class="use-tag tag-s">AFF.</span><span data-tw="I have ❮some❯ good news for you!"></span></span>
-      <span class="use-it">Ho una buona notizia per te!  (news = U)</span>
+      <span class="use-it">Ho una buona notizia per te!  (news = Uncountable)</span>
     </div>
     <div class="use-row">
       <span class="use-ex"><span class="use-tag tag-off">OFFERTA</span><span data-tw="Would you like ❮some❯ cake?"></span></span>
@@ -150,41 +143,39 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">⚠️ <strong>Some</strong> nelle domande si usa solo per <strong>offerte</strong> e <strong>richieste</strong> — quando ci si aspetta risposta "sì". Nelle domande normali → <strong>any</strong>.</div>
   </div>
 
-  <!-- ══ SLIDE 2: ANY ══ -->
   <div class="slide" id="s2">
     <div class="slide-title">🔴 ANY — USO E ESEMPI</div>
     <div class="use-row">
       <span class="use-ex"><span class="use-tag tag-a">NEG.</span><span data-tw="There aren't ❮any❯ carrots."></span></span>
-      <span class="use-it">Non ci sono carote.  (C plurale)</span>
+      <span class="use-it">Non ci sono carote.  (Countable plurale)</span>
     </div>
     <div class="use-row">
       <span class="use-ex"><span class="use-tag tag-a">NEG.</span><span data-tw="There isn't ❮any❯ milk in the fridge."></span></span>
-      <span class="use-it">Non c'è latte in frigo.  (U)</span>
+      <span class="use-it">Non c'è latte in frigo.  (Uncountable)</span>
     </div>
     <div class="use-row">
       <span class="use-ex"><span class="use-tag tag-a">NEG.</span><span data-tw="I don't have ❮any❯ money."></span></span>
-      <span class="use-it">Non ho soldi.  (money = U)</span>
+      <span class="use-it">Non ho soldi.  (money = Uncountable)</span>
     </div>
     <div class="use-row">
       <span class="use-ex"><span class="use-tag tag-a">NEG.</span><span data-tw="She doesn't need ❮any❯ help."></span></span>
-      <span class="use-it">Lei non ha bisogno di aiuto.  (U)</span>
+      <span class="use-it">Lei non ha bisogno di aiuto.  (Uncountable)</span>
     </div>
     <div class="use-row">
       <span class="use-ex"><span class="use-tag tag-a">INTERR.</span><span data-tw="Are there ❮any❯ tomatoes?"></span></span>
-      <span class="use-it">Ci sono dei pomodori?  (C plurale)</span>
+      <span class="use-it">Ci sono dei pomodori?  (Countable plurale)</span>
     </div>
     <div class="use-row">
       <span class="use-ex"><span class="use-tag tag-a">INTERR.</span><span data-tw="Is there ❮any❯ pizza left?"></span></span>
-      <span class="use-it">È rimasta della pizza?  (U)</span>
+      <span class="use-it">È rimasta della pizza?  (Uncountable)</span>
     </div>
     <div class="use-row">
       <span class="use-ex"><span class="use-tag tag-a">INTERR.</span><span data-tw="Do you have ❮any❯ brothers or sisters?"></span></span>
-      <span class="use-it">Hai fratelli o sorelle?  (C plurale)</span>
+      <span class="use-it">Hai fratelli o sorelle?  (Countable plurale)</span>
     </div>
     <div class="warn">🔑 <strong>Any</strong> = frasi <strong>negative</strong> e <strong>interrogative</strong> normali. Il significato è lo stesso di some: "del / della / dei / delle / un po' di".</div>
   </div>
 
-  <!-- ══ SLIDE 3: NO vs NOT ANY ══ -->
   <div class="slide" id="s3">
     <div class="slide-title">🟣 NO — UGUALE A "NOT ANY" MA PIÙ ENFATICO</div>
     <div class="eq-row">
@@ -220,14 +211,13 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="eq-row">
       <span class="eq-no" data-tw="❮No❯ problem!"></span>
       <span class="eq-sep">→</span>
-      <span class="eq-any" data-tw="uso idiomatico fisso"></span>
+      <span class="eq-any" data-tw="Uso idiomatico fisso"></span>
       <span class="eq-it">Nessun problema!</span>
     </div>
     <div class="warn">⚠️ <strong>No</strong> è un <strong>aggettivo</strong>: va sempre <strong>davanti al nome</strong> e il verbo resta <strong>affermativo</strong>.<br>
     ✅ There <strong>is</strong> no bread. &nbsp;·&nbsp; ❌ There <strong>isn't</strong> no bread.  (doppia negazione = errore!)</div>
   </div>
 
-  <!-- ══ SLIDE 4: errori ══ -->
   <div class="slide" id="s4">
     <div class="slide-title">🚨 ERRORI TIPICI DA EVITARE</div>
     <div class="err-pair">
@@ -268,50 +258,67 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
   <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
 </div>
 <script>
-// FIX FOUC
 document.querySelectorAll('[data-tw]').forEach(el => el.textContent = '');
 
 const TOTAL=5;let cur=0,busy=false;
 const dotsEl=document.getElementById('dots');
 for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
 function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
-function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+
+function twHL(el,text,speed,customClass='hl'){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,`<em class="${customClass}">$1</em>`);resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+
 function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+
 async function animateSlide(idx){
   const slide=document.getElementById('s'+idx);
-  // FIX FOUC
   slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+  slide.querySelectorAll('.use-it,.eq-it,.err-it,.err-note').forEach(n=>n.style.opacity='0');
   const title=slide.querySelector('.slide-title');
   if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
   await new Promise(r=>setTimeout(r,400));
+  
   if(idx===0){
-    const cells=[...slide.querySelectorAll('.mx-rl[data-tw],.mx-cell[data-tw]')];
+    const cells=[...slide.querySelectorAll('.mx-rl, .mx-cell')];
     for(let i=0;i<cells.length;i++){
-      await tw(cells[i],cells[i].dataset.tw,22);
-      await new Promise(r=>setTimeout(r,i%4===3?160:35));
+      const cell=cells[i];
+      let hClass='hl';
+      if(cell.classList.contains('s')) hClass='hl-s';
+      if(cell.classList.contains('a')) hClass='hl';
+      if(cell.classList.contains('n')) hClass='hl-n';
+      
+      await twHL(cell,cell.dataset.tw,25,hClass);
+      await new Promise(r=>setTimeout(r,i%4===3?320:45));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,250));warn.classList.add('show');}
-  } else if(idx===1||idx===2){
+  } else if(idx===1){
     for(const row of slide.querySelectorAll('.use-row')){
       const ex=row.querySelector('[data-tw]'),it=row.querySelector('.use-it');
-      if(ex)await twHL(ex,ex.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,220));
+      if(ex) await twHL(ex,ex.dataset.tw,78,'hl-s'); fi(it); await new Promise(r=>setTimeout(r,320));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  } else if(idx===2){
+    for(const row of slide.querySelectorAll('.use-row')){
+      const ex=row.querySelector('[data-tw]'),it=row.querySelector('.use-it');
+      if(ex) await twHL(ex,ex.dataset.tw,78,'hl'); fi(it); await new Promise(r=>setTimeout(r,320));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
   } else if(idx===3){
     for(const row of slide.querySelectorAll('.eq-row')){
       const no=row.querySelector('.eq-no'),any=row.querySelector('.eq-any'),it=row.querySelector('.eq-it');
-      if(no)await twHL(no,no.dataset.tw,42);await new Promise(r=>setTimeout(r,100));
-      if(any)await twHL(any,any.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,220));
+      if(no) await twHL(no,no.dataset.tw,80,'hl-n'); await new Promise(r=>setTimeout(r,180));
+      if(any) await twHL(any,any.dataset.tw,78,'hl'); fi(it); await new Promise(r=>setTimeout(r,350));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
   } else if(idx===4){
     for(const pair of slide.querySelectorAll('.err-pair')){
       const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
-      if(wrong)await tw(wrong,wrong.dataset.tw,42);await new Promise(r=>setTimeout(r,100));
-      if(ok)await tw(ok,ok.dataset.tw,42);fi(it);if(note)setTimeout(()=>note.style.opacity='1',220);await new Promise(r=>setTimeout(r,280));
+      if(wrong) await tw(wrong,wrong.dataset.tw,78); await new Promise(r=>setTimeout(r,220));
+      if(ok) await tw(ok,ok.dataset.tw,80); fi(it); if(note) setTimeout(()=>note.style.opacity='1',220); await new Promise(r=>setTimeout(r,380));
     }
   }
 }
+
 function go(dir){
   if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
   const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
