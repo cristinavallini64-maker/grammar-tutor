@@ -63,7 +63,7 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 .err-wrong{font-size:clamp(0.82rem,2.55vw,0.98rem);color:#c00;}
 .err-ok{font-size:clamp(0.82rem,2.55vw,0.98rem);font-weight:700;color:#007733;}
 .err-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;margin-top:1px;}
-.err-note{font-size:clamp(0.63rem,1.8vw,0.77rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
+.err-note{font-size:clamp(0.63rem,1.8vw,0.777rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
 
 .hl{font-weight:900;color:#cc0000;font-style:normal;}
 
@@ -84,7 +84,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 <div class="dots" id="dots"></div>
 <div class="slides">
 
-  <!-- ══ SLIDE 0: FORM ══ -->
   <div class="slide active" id="s0">
     <div class="slide-title">📋 FORMA — subject + BE + verb-ING</div>
     <div class="form-table">
@@ -107,7 +106,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">🔑 Risposte brevi: <strong>Yes, she is.</strong> / <strong>No, she isn't.</strong><br>Nelle risposte affermative <strong>NON</strong> si usa la forma contratta: ❌ <em>Yes, she's.</em></div>
   </div>
 
-  <!-- ══ SLIDE 1: USI ══ -->
   <div class="slide" id="s1">
     <div class="slide-title">🎯 QUANDO USARE IL PRESENT CONTINUOUS</div>
     <div class="use-row">
@@ -141,7 +139,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">⏰ Espressioni di tempo: <strong>now, right now, at the moment, today, this week/month, these days, nowadays, tonight, tomorrow, next week</strong>.</div>
   </div>
 
-  <!-- ══ SLIDE 2: SPELLING -ING ══ -->
   <div class="slide" id="s2">
     <div class="slide-title">✏️ REGOLE ORTOGRAFICHE: FORMA IN -ING</div>
     <div class="rule-row">
@@ -176,7 +173,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     </div>
   </div>
 
-  <!-- ══ SLIDE 3: STATE VERBS ══ -->
   <div class="slide" id="s3">
     <div class="slide-title">🚫 STATE VERBS — NON SI USANO AL CONTINUOUS</div>
     <div class="sv-group">
@@ -202,7 +198,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">💡 Gli <strong>state verbs</strong> (verbi di stato) descrivono <strong>stati</strong>, non <strong>azioni</strong>: usali sempre al <strong>Present Simple</strong>, mai al Continuous.</div>
   </div>
 
-  <!-- ══ SLIDE 4: ERRORI TIPICI ══ -->
   <div class="slide" id="s4">
     <div class="slide-title">🚨 ERRORI TIPICI DA EVITARE</div>
     <div class="err-pair">
@@ -243,7 +238,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
   <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
 </div>
 <script>
-// FIX FOUC
 document.querySelectorAll('[data-tw]').forEach(el => el.textContent = '');
 
 const TOTAL=5;let cur=0,busy=false;
@@ -252,51 +246,55 @@ for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'
 function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
 function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
 function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+
 async function animateSlide(idx){
   const slide=document.getElementById('s'+idx);
   slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+  slide.querySelectorAll('.use-it,.rule-it,.sv-ex,.err-it,.err-note').forEach(n=>n.style.opacity='0');
   const title=slide.querySelector('.slide-title');
   if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
   await new Promise(r=>setTimeout(r,400));
+
   if(idx===0){
     const cells=[...slide.querySelectorAll('.fm-rl[data-tw],.fm-cell[data-tw]')];
     for(let i=0;i<cells.length;i++){
       const txt=cells[i].dataset.tw;
-      if(txt.includes('❮'))await twHL(cells[i],txt,28);
-      else await tw(cells[i],txt,22);
-      await new Promise(r=>setTimeout(r,i%3===2?180:40));
+      if(txt.includes('❮'))await twHL(cells[i],txt,80);
+      else await tw(cells[i],txt,75);
+      await new Promise(r=>setTimeout(r,i%3===2?350:150));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,250));warn.classList.add('show');}
   } else if(idx===1){
     for(const row of slide.querySelectorAll('.use-row')){
       const ex=row.querySelector('[data-tw]'),it=row.querySelector('.use-it');
-      if(ex)await twHL(ex,ex.dataset.tw,40);fi(it);await new Promise(r=>setTimeout(r,220));
+      if(ex)await twHL(ex,ex.dataset.tw,85);fi(it);await new Promise(r=>setTimeout(r,350));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
   } else if(idx===2){
     for(const row of slide.querySelectorAll('.rule-row')){
       const name=row.querySelector('.rule-name'),ex=row.querySelector('.rule-ex'),it=row.querySelector('.rule-it');
-      if(name)await tw(name,name.dataset.tw,28);
-      if(ex)await twHL(ex,ex.dataset.tw,38);
-      fi(it);await new Promise(r=>setTimeout(r,200));
+      if(name)await tw(name,name.dataset.tw,75);
+      if(ex)await twHL(ex,ex.dataset.tw,85);
+      fi(it);await new Promise(r=>setTimeout(r,350));
     }
   } else if(idx===3){
     for(const grp of slide.querySelectorAll('.sv-group')){
       const cat=grp.querySelector('.sv-cat'),lst=grp.querySelector('.sv-list'),ex=grp.querySelector('.sv-ex');
-      if(cat)await tw(cat,cat.dataset.tw,28);
-      if(lst)await tw(lst,lst.dataset.tw,22);
+      if(cat)await tw(cat,cat.dataset.tw,75);
+      if(lst)await tw(lst,lst.dataset.tw,70);
       if(ex){ex.innerHTML=ex.innerHTML.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');fi(ex);}
-      await new Promise(r=>setTimeout(r,220));
+      await new Promise(r=>setTimeout(r,350));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
   } else if(idx===4){
     for(const pair of slide.querySelectorAll('.err-pair')){
       const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
-      if(wrong)await tw(wrong,wrong.dataset.tw,42);await new Promise(r=>setTimeout(r,100));
-      if(ok)await tw(ok,ok.dataset.tw,42);fi(it);if(note)setTimeout(()=>note.style.opacity='1',220);await new Promise(r=>setTimeout(r,280));
+      if(wrong)await tw(wrong,wrong.dataset.tw,80);await new Promise(r=>setTimeout(r,200));
+      if(ok)await tw(ok,ok.dataset.tw,80);fi(it);if(note)setTimeout(()=>note.style.opacity='1',250);await new Promise(r=>setTimeout(r,380));
     }
   }
 }
+
 function go(dir){
   if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
   const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
