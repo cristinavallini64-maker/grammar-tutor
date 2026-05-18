@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prepositions of Movement</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #007a33;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.85rem,3vw,1.5rem);letter-spacing:3px;color:#007a33;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.65rem,2vw,0.85rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:7px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#007a33;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#007a33;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+
+.intro{background:#f0fff5;border-left:5px solid #007a33;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.74rem,2.2vw,0.88rem);color:#111;line-height:1.6;margin-bottom:10px;opacity:0;transition:opacity 0.5s;}
+.intro.show{opacity:1;}
+.intro strong{color:#007a33;}
+
+/* tabella panoramica */
+.form-table{display:grid;grid-template-columns:0.7fr 0.6fr 1.8fr;border-radius:10px;overflow:hidden;border:2px solid #eee;margin-bottom:10px;}
+.fm-head{font-family:'Orbitron',monospace;font-size:clamp(0.5rem,1.5vw,0.7rem);letter-spacing:1.5px;font-weight:700;padding:8px 6px;text-align:center;color:#fff;background:#007a33;}
+.fm-rl{padding:9px 8px;font-size:clamp(0.7rem,2vw,0.85rem);font-weight:700;background:#fafafa;border-bottom:1px solid #f0f0f0;border-right:2px solid #eee;letter-spacing:1px;color:#007a33;}
+.fm-cell{padding:9px 8px;font-size:clamp(0.66rem,1.9vw,0.8rem);border-bottom:1px solid #f0f0f0;border-right:1px solid #f0f0f0;line-height:1.35;}
+.fm-cell:last-child{border-right:none;}
+.fm-cell.it{color:#888;font-style:italic;font-size:clamp(0.6rem,1.7vw,0.74rem);opacity:0;transition:opacity 0.4s;}
+/* colori per gruppo */
+.c1{background:#f0fff5;}
+.c2{background:#f0f5ff;}
+.c3{background:#fff8e6;}
+.c4{background:#fdf0ff;}
+
+.use-row{padding:7px 0;border-bottom:1px solid #f0f0f0;}
+.use-row:last-child{border-bottom:none;}
+.use-ex{font-size:clamp(0.84rem,2.7vw,1rem);font-weight:600;color:#111;display:block;}
+.use-it{font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;display:block;opacity:0;transition:opacity 0.4s;margin-top:2px;}
+.use-tag{font-family:'Orbitron',monospace;font-size:clamp(0.48rem,1.4vw,0.62rem);letter-spacing:1.5px;font-weight:700;padding:2px 7px;border-radius:4px;margin-right:7px;vertical-align:middle;color:#fff;display:inline-block;}
+.t-across{background:#007a33;}
+.t-along{background:#1144aa;}
+.t-around{background:#cc7700;}
+.t-from{background:#880044;}
+.t-over{background:#444;}
+.t-past{background:#666;}
+.t-through{background:#226677;}
+.t-towards{background:#445500;}
+.t-under{background:#773300;}
+.t-updown{background:#444488;}
+
+.err-pair{padding:6px 0;border-bottom:1px solid #f0f0f0;}
+.err-pair:last-child{border-bottom:none;}
+.err-wrong{font-size:clamp(0.8rem,2.5vw,0.96rem);color:#c00;}
+.err-ok{font-size:clamp(0.8rem,2.5vw,0.96rem);font-weight:700;color:#007733;}
+.err-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;margin-top:1px;}
+.err-note{font-size:clamp(0.63rem,1.8vw,0.77rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
+
+.hl{font-weight:900;color:#007a33;font-style:normal;}
+.warn{background:#fff5f0;border-left:5px solid #cc6600;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.74rem,2.3vw,0.9rem);color:#111;font-weight:600;line-height:1.65;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:8px;}
+.warn.show{opacity:1;}
+.warn strong{color:#cc6600;}
+.cursor{display:inline-block;width:2px;height:1em;background:#007a33;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.55rem,1.8vw,0.72rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #007a33;background:#fff;color:#007a33;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#007a33;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="title">🟢 PREPOSITIONS OF MOVEMENT</div><div class="prog" id="prog">1 / 5</div></div>
+<div class="dots" id="dots"></div>
+<div class="slides">
+
+  <!-- SLIDE 0: PANORAMICA -->
+  <div class="slide active" id="s0">
+    <div class="slide-title">📋 LE PREPOSIZIONI DI MOTO — panoramica</div>
+    <div class="intro" id="intro0">
+      Le <strong>prepositions of movement</strong> si usano con i verbi che esprimono moto: <strong>go, come, walk, drive, run, travel...</strong> Indicano la <strong>direzione</strong> o il <strong>percorso</strong> di un'azione.
+    </div>
+    <div class="form-table">
+      <div class="fm-head">PREPOSIZIONE</div>
+      <div class="fm-head">SIGNIFICATO</div>
+      <div class="fm-head">ESEMPIO</div>
+
+      <div class="fm-rl c1" data-tw="across"></div>
+      <div class="fm-cell c1" data-tw="attraverso (superficie)"></div>
+      <div class="fm-cell c1" data-tw="They travelled ❮across❯ the USA."></div>
+
+      <div class="fm-rl c2" data-tw="along"></div>
+      <div class="fm-cell c2" data-tw="lungo (linea)"></div>
+      <div class="fm-cell c2" data-tw="There are villas ❮along❯ the river."></div>
+
+      <div class="fm-rl c3" data-tw="around"></div>
+      <div class="fm-cell c3" data-tw="intorno a, in giro per"></div>
+      <div class="fm-cell c3" data-tw="I ran ❮around❯ the lake."></div>
+
+      <div class="fm-rl c4" data-tw="through"></div>
+      <div class="fm-cell c4" data-tw="attraverso (3D)"></div>
+      <div class="fm-cell c4" data-tw="He walked ❮through❯ the crowd."></div>
+
+      <div class="fm-rl c1" data-tw="towards"></div>
+      <div class="fm-cell c1" data-tw="verso"></div>
+      <div class="fm-cell c1" data-tw="They rushed ❮towards❯ the exit."></div>
+
+      <div class="fm-rl c2" data-tw="past"></div>
+      <div class="fm-cell c2" data-tw="davanti a (superando)"></div>
+      <div class="fm-cell c2" data-tw="Go ❮past❯ the cinema and turn left."></div>
+
+      <div class="fm-rl c3" data-tw="over"></div>
+      <div class="fm-cell c3" data-tw="sopra (passando al di sopra)"></div>
+      <div class="fm-cell c3" data-tw="The dog jumped ❮over❯ the fence."></div>
+
+      <div class="fm-rl c4" data-tw="under"></div>
+      <div class="fm-cell c4" data-tw="sotto (passando sotto)"></div>
+      <div class="fm-cell c4" data-tw="A mole can pass ❮under❯ a ladder."></div>
+
+      <div class="fm-rl c1" data-tw="up / down"></div>
+      <div class="fm-cell c1" data-tw="su / giù, lungo"></div>
+      <div class="fm-cell c1" data-tw="We walked ❮down❯ the hill."></div>
+
+      <div class="fm-rl c2" data-tw="from … to …"></div>
+      <div class="fm-cell c2" data-tw="da … a …"></div>
+      <div class="fm-cell c2" data-tw="The train goes ❮from❯ Florence ❮to❯ Bologna."></div>
+    </div>
+    <div class="warn">🔑 Ricorda: queste preposizioni si usano <strong>con verbi di moto</strong> (go, walk, drive, travel, run, rush, jump…)</div>
+  </div>
+
+  <!-- SLIDE 1: across · along · around -->
+  <div class="slide" id="s1">
+    <div class="slide-title">🟢 ACROSS · ALONG · AROUND</div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag t-across">ACROSS</span><span data-tw="They travelled ❮across❯ the USA."></span></span>
+      <span class="use-it">attraverso (una linea o superficie, da una parte all'altra) — Hanno viaggiato attraverso gli USA.</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag t-along">ALONG</span><span data-tw="There are beautiful villas ❮along❯ the river."></span></span>
+      <span class="use-it">lungo (seguendo una linea) — Ci sono bellissime ville lungo il fiume.</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag t-around">AROUND</span><span data-tw="I ran ❮around❯ the lake."></span></span>
+      <span class="use-it">intorno a, in giro per — Ho corso intorno al lago.</span>
+    </div>
+    <div class="warn">💡 <strong>across</strong> = taglia da un lato all'altro · <strong>along</strong> = segue il percorso · <strong>around</strong> = fa il giro completo</div>
+  </div>
+
+  <!-- SLIDE 2: through · towards · past -->
+  <div class="slide" id="s2">
+    <div class="slide-title">🟢 THROUGH · TOWARDS · PAST</div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag t-through">THROUGH</span><span data-tw="He walked ❮through❯ the crowd."></span></span>
+      <span class="use-it">attraverso, per (da una parte all'altra in 3D, dentro qualcosa) — Camminava attraverso la folla.</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag t-towards">TOWARDS</span><span data-tw="They rushed ❮towards❯ the exit."></span></span>
+      <span class="use-it">verso (in direzione di) — Si sono affrettati verso l'uscita.</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag t-past">PAST</span><span data-tw="Go ❮past❯ the cinema and turn left."></span></span>
+      <span class="use-it">davanti a (superando, andando oltre) — Supera il cinema e gira a sinistra.</span>
+    </div>
+    <div class="warn">💡 <strong>through</strong> = entra e attraversa · <strong>towards</strong> = in direzione di (senza necessariamente arrivare) · <strong>past</strong> = supera e continua</div>
+  </div>
+
+  <!-- SLIDE 3: over · under · up · down · from…to -->
+  <div class="slide" id="s3">
+    <div class="slide-title">🟢 OVER · UNDER · UP · DOWN · FROM…TO</div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag t-over">OVER</span><span data-tw="The dog jumped ❮over❯ the fence."></span></span>
+      <span class="use-it">sopra (passando al di sopra di) — Il cane ha saltato la recinzione.</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag t-under">UNDER</span><span data-tw="A mole can pass ❮under❯ a ladder."></span></span>
+      <span class="use-it">sotto (passando sotto) — Una talpa può passare sotto una scala.</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag t-updown">UP / DOWN</span><span data-tw="We walked ❮down❯ the hill."></span></span>
+      <span class="use-it">su / giù, lungo — Abbiamo camminato giù per la collina.</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag t-from">FROM … TO …</span><span data-tw="The train goes ❮from❯ Florence ❮to❯ Bologna."></span></span>
+      <span class="use-it">da … a … (punto di partenza e arrivo) — Il treno da Firenze per Bologna è in ritardo.</span>
+    </div>
+    <div class="warn">💡 <strong>up the hill</strong> = salire · <strong>down the hill</strong> = scendere · <strong>from … to …</strong> = sempre in coppia</div>
+  </div>
+
+  <!-- SLIDE 4: ERRORI COMUNI -->
+  <div class="slide" id="s4">
+    <div class="slide-title">⚠️ ATTENZIONE — errori comuni</div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  We drove through Italy from north to south.  (across?)"></div>
+      <div class="err-ok"    data-tw="✅  We drove across Italy from north to south."></div>
+      <div class="err-it">Abbiamo guidato attraverso l'Italia da nord a sud.</div>
+      <div class="err-note">across = attraversare una superficie/territorio — through = passare dentro qualcosa (foresta, folla, tunnel)</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  She walked to the park.  (verso il parco?)"></div>
+      <div class="err-ok"    data-tw="✅  She walked towards the park."></div>
+      <div class="err-it">Camminava verso il parco (senza necessariamente entrarci).</div>
+      <div class="err-note">towards = in direzione di (non implica arrivo) — to = fino a destinazione</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  The cat jumped above the wall."></div>
+      <div class="err-ok"    data-tw="✅  The cat jumped over the wall."></div>
+      <div class="err-it">Il gatto è saltato oltre il muro.</div>
+      <div class="err-note">over = movimento che passa al di sopra — above = posizione statica, non movimento</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  Walk along the bridge to cross the river."></div>
+      <div class="err-ok"    data-tw="✅  Walk across the bridge to cross the river."></div>
+      <div class="err-it">Cammina attraverso il ponte per attraversare il fiume.</div>
+      <div class="err-note">across = da un lato all'altro — along = seguire il percorso (non tagliarlo)</div>
+    </div>
+  </div>
+
+</div>
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+<script>
+document.querySelectorAll('[data-tw]').forEach(el => el.textContent = '');
+
+const TOTAL=5;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
+function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+  slide.querySelectorAll('.use-it,.err-it,.err-note,.fm-cell.it').forEach(n=>n.style.opacity='0');
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await new Promise(r=>setTimeout(r,400));
+
+  if(idx===0){
+    const intro=document.getElementById('intro0');
+    if(intro){intro.classList.add('show');}
+    await new Promise(r=>setTimeout(r,300));
+    const rows=[...slide.querySelectorAll('.fm-rl[data-tw]')];
+    for(let i=0;i<rows.length;i++){
+      const rl=rows[i];
+      const next1=rl.nextElementSibling;
+      const next2=next1?next1.nextElementSibling:null;
+      await tw(rl,rl.dataset.tw,70);
+      if(next1&&next1.dataset.tw){
+        if(next1.dataset.tw.includes('❮'))await twHL(next1,next1.dataset.tw,75);
+        else await tw(next1,next1.dataset.tw,70);
+      }
+      if(next2&&next2.dataset.tw){
+        if(next2.dataset.tw.includes('❮'))await twHL(next2,next2.dataset.tw,75);
+        else await tw(next2,next2.dataset.tw,70);
+      }
+      await new Promise(r=>setTimeout(r,280));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,250));warn.classList.add('show');}
+  } else if(idx===1||idx===2||idx===3){
+    for(const row of slide.querySelectorAll('.use-row')){
+      const ex=row.querySelector('[data-tw]'),it=row.querySelector('.use-it');
+      if(ex)await twHL(ex,ex.dataset.tw,80);fi(it);await new Promise(r=>setTimeout(r,300));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  } else if(idx===4){
+    for(const pair of slide.querySelectorAll('.err-pair')){
+      const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
+      if(wrong)await tw(wrong,wrong.dataset.tw,70);await new Promise(r=>setTimeout(r,180));
+      if(ok)await tw(ok,ok.dataset.tw,70);fi(it);if(note)setTimeout(()=>note.style.opacity='1',250);await new Promise(r=>setTimeout(r,350));
+    }
+  }
+}
+
+function go(dir){
+  if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
+  const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.querySelectorAll('.use-it,.err-it,.err-note,.fm-cell.it').forEach(n=>n.style.opacity='0');
+  const intro=document.getElementById('intro0');if(intro&&prev===0)intro.classList.remove('show');
+  oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
+  setTimeout(()=>{
+    oldSlide.style.cssText='';oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);}));
+    animateSlide(cur);dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+TOTAL;
+    document.getElementById('prevBtn').disabled=cur===0;document.getElementById('nextBtn').disabled=cur===TOTAL-1;
+  },260);
+}
+let tx=0;const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+animateSlide(0);
+</script>
+</body>
+</html>
