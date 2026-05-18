@@ -24,6 +24,7 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 /* banner equivalenza */
 .eq-banner{display:flex;align-items:center;justify-content:center;gap:14px;background:#fafafa;border:2px solid #eee;border-radius:10px;padding:12px 18px;margin-bottom:12px;flex-shrink:0;flex-wrap:wrap;}
 .eq-b-word{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.9rem,3vw,1.4rem);letter-spacing:2px;color:#cc0000;}
+.eq-b-word.c{color:#007733;}
 .eq-b-sep{font-family:'Orbitron',monospace;font-size:clamp(0.8rem,2.5vw,1.1rem);color:#bbb;font-weight:700;}
 .eq-b-sub{font-size:clamp(0.7rem,2vw,0.85rem);color:#888;font-style:italic;flex-basis:100%;text-align:center;}
 
@@ -68,6 +69,8 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 .err-note{font-size:clamp(0.63rem,1.8vw,0.77rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
 
 .hl{font-weight:900;color:#cc0000;font-style:normal;}
+.hl-s{font-weight:900;color:#007733;font-style:normal;}
+
 .warn{background:#fff5f5;border-left:5px solid #cc0000;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.78rem,2.4vw,0.94rem);color:#111;font-weight:600;line-height:1.7;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:8px;}
 .warn.show{opacity:1;}
 .warn strong{color:#cc0000;}
@@ -85,18 +88,17 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 <div class="dots" id="dots"></div>
 <div class="slides">
 
-  <!-- ══ SLIDE 0: regola base ══ -->
   <div class="slide active" id="s0">
     <div class="slide-title">📋 LA REGOLA BASE</div>
     <div class="eq-banner">
-      <span class="eq-b-word">A FEW</span>
+      <span class="eq-b-word c">A FEW</span>
       <span class="eq-b-sep">≈</span>
       <span class="eq-b-word">A LITTLE</span>
       <span class="eq-b-sub">stesso significato ("un po' di / alcuni") · ma cambia il sostantivo che segue!</span>
     </div>
     <div class="cu-table">
-      <div class="cu-head c">A FEW + C PLURALE</div>
-      <div class="cu-head u">A LITTLE + U</div>
+      <div class="cu-head c">A FEW + COUNTABLE PLURALE</div>
+      <div class="cu-head u">A LITTLE + UNCOUNTABLE</div>
       <div class="cu-cell c"><span class="cu-ex" data-tw="a few ❮tomatoes❯"></span><span class="cu-it">alcuni pomodori</span></div>
       <div class="cu-cell u"><span class="cu-ex" data-tw="a little ❮milk❯"></span><span class="cu-it">un po' di latte</span></div>
       <div class="cu-cell c"><span class="cu-ex" data-tw="a few ❮friends❯"></span><span class="cu-it">alcuni amici</span></div>
@@ -107,7 +109,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">🔑 La scelta dipende dal sostantivo: <strong>A FEW</strong> → si conta (plurale) · <strong>A LITTLE</strong> → non si conta (singolare).</div>
   </div>
 
-  <!-- ══ SLIDE 1: esempi in frasi complete ══ -->
   <div class="slide" id="s1">
     <div class="slide-title">💬 ESEMPI IN FRASI COMPLETE</div>
     <div class="use-row">
@@ -141,14 +142,13 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">🔑 <strong>A few</strong> e <strong>a little</strong> hanno un significato <strong>positivo</strong>: "un po', ma sufficiente" 👍</div>
   </div>
 
-  <!-- ══ SLIDE 2: a little bit of ══ -->
   <div class="slide" id="s2">
     <div class="slide-title">✨ VARIANTE: A LITTLE BIT OF</div>
     <div class="eq-banner">
       <span class="eq-b-word">A LITTLE</span>
       <span class="eq-b-sep">=</span>
       <span class="eq-b-word">A LITTLE BIT OF</span>
-      <span class="eq-b-sub">forma più colloquiale, usata nel parlato · solo con U</span>
+      <span class="eq-b-sub">forma più colloquiale, usata nel parlato · solo con Uncountable</span>
     </div>
     <div class="use-row">
       <span class="use-ex"><span class="use-tag tag-u">U</span><span data-tw="Can I have a little bit of ❮pizza❯?"></span></span>
@@ -173,7 +173,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">🔑 ⚠️ <strong>A little bit of</strong> esiste, ma <strong>"a few bit of"</strong> NON esiste! Solo con uncountable.</div>
   </div>
 
-  <!-- ══ SLIDE 3: (very) little / (very) few ══ -->
   <div class="slide" id="s3">
     <div class="slide-title">⚖️ A FEW / A LITTLE  vs  (VERY) FEW / (VERY) LITTLE</div>
     <div class="cmp-header">
@@ -205,7 +204,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     ⚠️ <strong>(very) few / (very) little</strong> = "ce n'è quasi niente" (negativo)</div>
   </div>
 
-  <!-- ══ SLIDE 4: errori ══ -->
   <div class="slide" id="s4">
     <div class="slide-title">🚨 ERRORI TIPICI DA EVITARE</div>
     <div class="err-pair">
@@ -230,7 +228,7 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
       <div class="err-wrong" data-tw="❌  Can I have a few bit of pizza?"></div>
       <div class="err-ok"    data-tw="✅  Can I have a little bit of pizza?"></div>
       <div class="err-it">Posso avere un po' di pizza?</div>
-      <div class="err-note">solo "a little bit of" + U (pizza qui è U = cibo)</div>
+      <div class="err-note">solo "a little bit of" + U (pizza qui è usato come U = cibo in generale)</div>
     </div>
     <div class="err-pair">
       <div class="err-wrong" data-tw="❌  There are a little students in class."></div>
@@ -250,49 +248,58 @@ document.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
 const TOTAL=5;let cur=0,busy=false;
 const dotsEl=document.getElementById('dots');
 for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
 function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
-function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+
+function twHL(el,text,speed,customClass='hl'){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,`<em class="${customClass}">$1</em>`);resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+
 function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+
 async function animateSlide(idx){
   const slide=document.getElementById('s'+idx);
   slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+  slide.querySelectorAll('.use-it,.cmp-it,.err-it,.err-note,.cu-it').forEach(n=>n.style.opacity='0');
   const title=slide.querySelector('.slide-title');
   if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
   await new Promise(r=>setTimeout(r,400));
+  
   if(idx===0){
     for(const ex of slide.querySelectorAll('.cu-ex[data-tw]')){
-      await twHL(ex,ex.dataset.tw,42);
+      const isCountable=ex.closest('.cu-cell').classList.contains('c');
+      const hClass=isCountable?'hl-s':'hl';
+      await twHL(ex,ex.dataset.tw,75,hClass);
       const it=ex.nextElementSibling;if(it)fi(it);
-      await new Promise(r=>setTimeout(r,150));
+      await new Promise(r=>setTimeout(r,280));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,250));warn.classList.add('show');}
-  } else if(idx===1){
+  } else if(idx===1||idx===2){
     for(const row of slide.querySelectorAll('.use-row')){
       const ex=row.querySelector('[data-tw]'),it=row.querySelector('.use-it');
-      if(ex)await twHL(ex,ex.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,220));
-    }
-    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
-  } else if(idx===2){
-    for(const row of slide.querySelectorAll('.use-row')){
-      const ex=row.querySelector('[data-tw]'),it=row.querySelector('.use-it');
-      if(ex)await twHL(ex,ex.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,220));
+      const tag=row.querySelector('.use-tag');
+      const isCountable=tag?tag.classList.contains('tag-c'):false;
+      const hClass=isCountable?'hl-s':'hl';
+      if(ex)await twHL(ex,ex.dataset.tw,78,hClass);fi(it);await new Promise(r=>setTimeout(r,320));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
   } else if(idx===3){
     for(const row of slide.querySelectorAll('.cmp-row')){
       const inf=row.querySelector('.cmp-inf'),form=row.querySelector('.cmp-for'),it=row.querySelector('.cmp-it');
-      if(inf)await twHL(inf,inf.dataset.tw,42);await new Promise(r=>setTimeout(r,100));
-      if(form)await twHL(form,form.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,220));
+      const textToCheck=inf.dataset.tw||'';
+      const isCountable=textToCheck.includes('friends')||textToCheck.includes('mistakes');
+      const hClass=isCountable?'hl-s':'hl';
+      if(inf)await twHL(inf,inf.dataset.tw,78,hClass);await new Promise(r=>setTimeout(r,120));
+      if(form)await twHL(form,form.dataset.tw,78,hClass);fi(it);await new Promise(r=>setTimeout(r,350));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
   } else if(idx===4){
     for(const pair of slide.querySelectorAll('.err-pair')){
       const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
-      if(wrong)await tw(wrong,wrong.dataset.tw,42);await new Promise(r=>setTimeout(r,100));
-      if(ok)await tw(ok,ok.dataset.tw,42);fi(it);if(note)setTimeout(()=>note.style.opacity='1',220);await new Promise(r=>setTimeout(r,280));
+      if(wrong)await tw(wrong,wrong.dataset.tw,78);await new Promise(r=>setTimeout(r,150));
+      if(ok)await tw(ok,ok.dataset.tw,80);fi(it);if(note)setTimeout(()=>note.style.opacity='1',220);await new Promise(r=>setTimeout(r,380));
     }
   }
 }
+
 function go(dir){
   if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
   const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
