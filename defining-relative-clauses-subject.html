@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defining Relative Clauses – Subject</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #cc0000;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.85rem,3vw,1.5rem);letter-spacing:3px;color:#cc0000;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.65rem,2vw,0.85rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:7px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#cc0000;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#cc0000;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+
+.intro{background:#f0f5ff;border-left:5px solid #5500bb;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.74rem,2.2vw,0.88rem);color:#111;line-height:1.6;margin-bottom:10px;opacity:0;transition:opacity 0.5s;}
+.intro.show{opacity:1;}
+.intro strong{color:#5500bb;}
+
+/* tabella: 4 colonne — pronome | usa per | esempio EN | traduzione IT */
+.form-table{display:grid;grid-template-columns:0.45fr 0.6fr 1.4fr 1fr;border-radius:10px;overflow:hidden;border:2px solid #eee;margin-bottom:8px;}
+.fm-head{font-family:'Orbitron',monospace;font-size:clamp(0.5rem,1.5vw,0.7rem);letter-spacing:1.5px;font-weight:700;padding:8px 6px;text-align:center;color:#fff;background:#cc0000;}
+.fm-rl{padding:9px 8px;font-size:clamp(0.66rem,1.95vw,0.8rem);font-weight:700;background:#fafafa;border-bottom:1px solid #f0f0f0;border-right:2px solid #eee;letter-spacing:1px;color:#444;}
+.fm-cell{padding:9px 8px;font-size:clamp(0.68rem,1.95vw,0.84rem);border-bottom:1px solid #f0f0f0;border-right:1px solid #f0f0f0;line-height:1.35;}
+.fm-cell:last-child{border-right:none;}
+.fm-cell.who{background:#f0fff5;}
+.fm-cell.which{background:#fff8e6;}
+.fm-cell.that{background:#f0f5ff;}
+.fm-cell.it{color:#888;font-style:italic;font-size:clamp(0.62rem,1.75vw,0.76rem);opacity:0;transition:opacity 0.4s;}
+.fm-rl:nth-last-child(4),.fm-cell:nth-last-child(1),.fm-cell:nth-last-child(2),.fm-cell:nth-last-child(3){border-bottom:none;}
+
+.use-row{padding:7px 0;border-bottom:1px solid #f0f0f0;}
+.use-row:last-child{border-bottom:none;}
+.use-ex{font-size:clamp(0.86rem,2.8vw,1.04rem);font-weight:600;color:#111;display:block;}
+.use-it{font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;display:block;opacity:0;transition:opacity 0.4s;margin-top:2px;}
+.use-tag{font-family:'Orbitron',monospace;font-size:clamp(0.5rem,1.4vw,0.62rem);letter-spacing:1.5px;font-weight:700;padding:2px 7px;border-radius:4px;margin-right:7px;vertical-align:middle;color:#fff;display:inline-block;}
+.tag-who{background:#007733;}
+.tag-which{background:#cc7700;}
+.tag-that{background:#5500bb;}
+
+.rule-row{display:grid;grid-template-columns:1.3fr 1.4fr;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0;align-items:start;}
+.rule-row:last-child{border-bottom:none;}
+.rule-name{font-size:clamp(0.7rem,2vw,0.85rem);font-weight:700;color:#777;line-height:1.4;}
+.rule-ex{font-size:clamp(0.82rem,2.55vw,0.98rem);color:#111;font-weight:600;}
+.rule-it{grid-column:1/-1;font-size:clamp(0.62rem,1.8vw,0.76rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;}
+
+.err-pair{padding:6px 0;border-bottom:1px solid #f0f0f0;}
+.err-pair:last-child{border-bottom:none;}
+.err-wrong{font-size:clamp(0.82rem,2.55vw,0.98rem);color:#c00;}
+.err-ok{font-size:clamp(0.82rem,2.55vw,0.98rem);font-weight:700;color:#007733;}
+.err-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;margin-top:1px;}
+.err-note{font-size:clamp(0.63rem,1.8vw,0.777rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
+
+.hl{font-weight:900;color:#cc0000;font-style:normal;}
+.warn{background:#fff5f5;border-left:5px solid #cc0000;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.76rem,2.35vw,0.92rem);color:#111;font-weight:600;line-height:1.65;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:8px;}
+.warn.show{opacity:1;}
+.warn strong{color:#cc0000;}
+.cursor{display:inline-block;width:2px;height:1em;background:#cc0000;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.55rem,1.8vw,0.72rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #cc0000;background:#fff;color:#cc0000;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#cc0000;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="title">🔴 DEFINING RELATIVE CLAUSES</div><div class="prog" id="prog">1 / 4</div></div>
+<div class="dots" id="dots"></div>
+<div class="slides">
+
+  <!-- SLIDE 0: PRONOMI -->
+  <div class="slide active" id="s0">
+    <div class="slide-title">📋 I PRONOMI RELATIVI — who · which · that</div>
+    <div class="intro" id="intro0">
+      Le <strong>defining relative clauses</strong> specificano di quale persona o cosa si sta parlando. In italiano corrispondono alle frasi con <strong>"che"</strong>. Si collocano subito dopo il nome a cui si riferiscono.
+    </div>
+    <div class="form-table">
+      <div class="fm-head">PRONOME</div>
+      <div class="fm-head">SI USA PER</div>
+      <div class="fm-head" style="grid-column:3/5">ESEMPIO</div>
+
+      <div class="fm-rl" data-tw="WHO"></div>
+      <div class="fm-cell who" data-tw="persone"></div>
+      <div class="fm-cell who" data-tw="He is the singer ❮who❯ won the show."></div>
+      <div class="fm-cell who it">È il cantante <strong>che</strong> ha vinto il talent show.</div>
+
+      <div class="fm-rl" data-tw="WHICH"></div>
+      <div class="fm-cell which" data-tw="cose · animali"></div>
+      <div class="fm-cell which" data-tw="Is that the train ❮which❯ goes to London?"></div>
+      <div class="fm-cell which it">È quello il treno <strong>che</strong> va a Londra?</div>
+
+      <div class="fm-rl" data-tw="THAT"></div>
+      <div class="fm-cell that" data-tw="persone · cose · animali"></div>
+      <div class="fm-cell that" data-tw="She is the woman ❮that❯ wrote this novel."></div>
+      <div class="fm-cell that it">È la donna <strong>che</strong> ha scritto questo romanzo.</div>
+    </div>
+    <div class="warn">🔑 In italiano usiamo sempre <strong>"che"</strong>. In inglese cambia: <strong>who</strong> per persone, <strong>which</strong> per cose, <strong>that</strong> per entrambi.</div>
+  </div>
+
+  <!-- SLIDE 1: ESEMPI -->
+  <div class="slide" id="s1">
+    <div class="slide-title">🔧 COME SI COSTRUISCE — "che" come soggetto</div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-who">WHO</span><span data-tw="He is the actor ❮who❯ ❮played❯ Harry Potter."></span></span>
+      <span class="use-it">È l'attore che ha interpretato Harry Potter. (who = soggetto di played)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-who">WHO</span><span data-tw="She is the singer ❮who❯ ❮won❯ the talent show."></span></span>
+      <span class="use-it">È la cantante che ha vinto il talent show. (who = soggetto di won)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-which">WHICH</span><span data-tw="Is that the train ❮which❯ ❮goes❯ to London?"></span></span>
+      <span class="use-it">È quello il treno che va a Londra? (which = soggetto di goes)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-which">WHICH</span><span data-tw="I read a book ❮which❯ ❮changed❯ my life."></span></span>
+      <span class="use-it">Ho letto un libro che ha cambiato la mia vita.</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-that">THAT</span><span data-tw="This is the film ❮that❯ ❮won❯ three Oscars."></span></span>
+      <span class="use-it">Questo è il film che ha vinto tre Oscar.</span>
+    </div>
+    <div class="warn">💡 Il pronome relativo è il <strong>soggetto</strong> della frase relativa — non si omette mai in inglese.</div>
+  </div>
+
+  <!-- SLIDE 2: UNIRE DUE FRASI -->
+  <div class="slide" id="s2">
+    <div class="slide-title">✂️ COME UNIRE DUE FRASI IN UNA</div>
+    <div class="rule-row">
+      <div class="rule-name" data-tw="The man won the prize. · He is my uncle."></div>
+      <div class="rule-ex" data-tw="The man ❮who❯ won the prize is my uncle."></div>
+      <div class="rule-it">L'uomo che ha vinto il premio è mio zio.</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-name" data-tw="I bought a car. · It goes very fast."></div>
+      <div class="rule-ex" data-tw="I bought a car ❮which❯ goes very fast."></div>
+      <div class="rule-it">Ho comprato una macchina che va molto veloce.</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-name" data-tw="She is a teacher. · She inspires her students."></div>
+      <div class="rule-ex" data-tw="She is a teacher ❮who❯ inspires her students."></div>
+      <div class="rule-it">È un'insegnante che ispira i suoi studenti.</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-name" data-tw="This is the film. · It won three Oscars."></div>
+      <div class="rule-ex" data-tw="This is the film ❮that❯ won three Oscars."></div>
+      <div class="rule-it">Questo è il film che ha vinto tre Oscar.</div>
+    </div>
+    <div class="warn">💡 Si elimina il pronome personale (<strong>he / she / it</strong>) e lo si sostituisce con <strong>who / which / that</strong> — come in italiano si usa <strong>"che"</strong>.</div>
+  </div>
+
+  <!-- SLIDE 3: ERRORI -->
+  <div class="slide" id="s3">
+    <div class="slide-title">🚨 ERRORI TIPICI DA EVITARE</div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  She is the woman which won the prize."></div>
+      <div class="err-ok"    data-tw="✅  She is the woman who won the prize."></div>
+      <div class="err-it">È la donna che ha vinto il premio.</div>
+      <div class="err-note">per le persone → who (non which)</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  Is that the train who goes to London?"></div>
+      <div class="err-ok"    data-tw="✅  Is that the train which goes to London?"></div>
+      <div class="err-it">È quello il treno che va a Londra?</div>
+      <div class="err-note">per le cose → which o that (non who)</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  He is the actor who he played Harry Potter."></div>
+      <div class="err-ok"    data-tw="✅  He is the actor who played Harry Potter."></div>
+      <div class="err-it">È l'attore che ha interpretato Harry Potter.</div>
+      <div class="err-note">who è già il soggetto — non aggiungere he/she/it</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  I know a girl, who speaks five languages."></div>
+      <div class="err-ok"    data-tw="✅  I know a girl who speaks five languages."></div>
+      <div class="err-it">Conosco una ragazza che parla cinque lingue.</div>
+      <div class="err-note">defining relative clause → niente virgole</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  This is the book which it changed my life."></div>
+      <div class="err-ok"    data-tw="✅  This is the book which changed my life."></div>
+      <div class="err-it">Questo è il libro che ha cambiato la mia vita.</div>
+      <div class="err-note">which è già il soggetto — non aggiungere it</div>
+    </div>
+  </div>
+
+</div>
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+<script>
+document.querySelectorAll('[data-tw]').forEach(el => el.textContent = '');
+
+const TOTAL=4;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
+function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  // resetta solo i data-tw, NON le celle .it (traduzioni fisse)
+  slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+  slide.querySelectorAll('.use-it,.rule-it,.err-it,.err-note,.fm-cell.it').forEach(n=>n.style.opacity='0');
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await new Promise(r=>setTimeout(r,400));
+
+  if(idx===0){
+    const intro=document.getElementById('intro0');
+    if(intro){intro.classList.add('show');}
+    await new Promise(r=>setTimeout(r,300));
+    // anima riga per riga: fm-rl + 2 data-tw + fade .it
+    const rows=[...slide.querySelectorAll('.fm-rl[data-tw]')];
+    for(let i=0;i<rows.length;i++){
+      const rl=rows[i];
+      const next1=rl.nextElementSibling; // prima fm-cell data-tw
+      const next2=next1?next1.nextElementSibling:null; // seconda fm-cell data-tw
+      const next3=next2?next2.nextElementSibling:null; // fm-cell.it
+      await tw(rl,rl.dataset.tw,75);
+      if(next1&&next1.dataset.tw){
+        if(next1.dataset.tw.includes('❮'))await twHL(next1,next1.dataset.tw,80);
+        else await tw(next1,next1.dataset.tw,75);
+      }
+      if(next2&&next2.dataset.tw){
+        if(next2.dataset.tw.includes('❮'))await twHL(next2,next2.dataset.tw,80);
+        else await tw(next2,next2.dataset.tw,75);
+      }
+      if(next3&&next3.classList.contains('it')){fi(next3);}
+      await new Promise(r=>setTimeout(r,350));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,250));warn.classList.add('show');}
+  } else if(idx===1){
+    for(const row of slide.querySelectorAll('.use-row')){
+      const ex=row.querySelector('[data-tw]'),it=row.querySelector('.use-it');
+      if(ex)await twHL(ex,ex.dataset.tw,85);fi(it);await new Promise(r=>setTimeout(r,350));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  } else if(idx===2){
+    for(const row of slide.querySelectorAll('.rule-row')){
+      const name=row.querySelector('.rule-name'),ex=row.querySelector('.rule-ex'),it=row.querySelector('.rule-it');
+      if(name)await tw(name,name.dataset.tw,75);
+      if(ex)await twHL(ex,ex.dataset.tw,85);
+      fi(it);await new Promise(r=>setTimeout(r,350));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  } else if(idx===3){
+    for(const pair of slide.querySelectorAll('.err-pair')){
+      const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
+      if(wrong)await tw(wrong,wrong.dataset.tw,80);await new Promise(r=>setTimeout(r,200));
+      if(ok)await tw(ok,ok.dataset.tw,80);fi(it);if(note)setTimeout(()=>note.style.opacity='1',250);await new Promise(r=>setTimeout(r,380));
+    }
+  }
+}
+
+function go(dir){
+  if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
+  const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.querySelectorAll('.use-it,.rule-it,.err-it,.err-note,.fm-cell.it').forEach(n=>n.style.opacity='0');
+  const intro=document.getElementById('intro0');if(intro&&prev===0)intro.classList.remove('show');
+  oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
+  setTimeout(()=>{
+    oldSlide.style.cssText='';oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);}));
+    animateSlide(cur);dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+TOTAL;
+    document.getElementById('prevBtn').disabled=cur===0;document.getElementById('nextBtn').disabled=cur===TOTAL-1;
+  },260);
+}
+let tx=0;const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+animateSlide(0);
+</script>
+</body>
+</html>
