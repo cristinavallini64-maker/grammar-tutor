@@ -61,6 +61,9 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 .err-note{font-size:clamp(0.63rem,1.8vw,0.77rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
 
 .hl{font-weight:900;color:#cc0000;font-style:normal;}
+.hl-s{font-weight:900;color:#883300;font-style:normal;}
+.hl-e{font-weight:900;color:#007733;font-style:normal;}
+
 .warn{background:#fff5f5;border-left:5px solid #cc0000;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.78rem,2.4vw,0.94rem);color:#111;font-weight:600;line-height:1.7;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:8px;}
 .warn.show{opacity:1;}
 .warn strong{color:#cc0000;}
@@ -78,7 +81,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 <div class="dots" id="dots"></div>
 <div class="slides">
 
-  <!-- ══ SLIDE 0: panoramica ══ -->
   <div class="slide active" id="s0">
     <div class="slide-title">📋 PANORAMICA — TRE QUANTIFICATORI</div>
     <div class="mx-table">
@@ -108,7 +110,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <strong>Enough</strong> va <em>prima</em> del nome ma <em>dopo</em> l'aggettivo: <strong>enough time</strong> · <strong>warm enough</strong>.</div>
   </div>
 
-  <!-- ══ SLIDE 1: TOO MUCH ══ -->
   <div class="slide" id="s1">
     <div class="slide-title">🔴 TOO MUCH — USO E ESEMPI  (con U)</div>
     <div class="use-row">
@@ -146,7 +147,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">🔑 <strong>Too much</strong> con <strong>U</strong> → indica sempre qualcosa di <strong>eccessivo e negativo</strong>.</div>
   </div>
 
-  <!-- ══ SLIDE 2: TOO MANY ══ -->
   <div class="slide" id="s2">
     <div class="slide-title">🟠 TOO MANY — USO E ESEMPI  (con C plurale)</div>
     <div class="use-row">
@@ -184,7 +184,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">🔑 <strong>Too many</strong> con <strong>C plurale</strong> → indica sempre un numero <strong>eccessivo e problematico</strong>.</div>
   </div>
 
-  <!-- ══ SLIDE 3: ENOUGH / NOT ENOUGH ══ -->
   <div class="slide" id="s3">
     <div class="slide-title">🟢 ENOUGH / NOT ENOUGH — USO E POSIZIONE</div>
     <div class="sec-label" id="s3-a">✓ ENOUGH + NOME — quantità sufficiente</div>
@@ -231,7 +230,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     ❌ <em>enough warm</em> · ❌ <em>time enough</em></div>
   </div>
 
-  <!-- ══ SLIDE 4: errori ══ -->
   <div class="slide" id="s4">
     <div class="slide-title">🚨 ERRORI TIPICI DA EVITARE</div>
     <div class="err-pair">
@@ -276,12 +274,16 @@ document.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
 const TOTAL=5;let cur=0,busy=false;
 const dotsEl=document.getElementById('dots');
 for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
 function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
-function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+
+function twHL(el,text,speed,customClass='hl'){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,`<em class="${customClass}">$1</em>`);resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+
 function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+
 async function animateSlide(idx){
   const slide=document.getElementById('s'+idx);
-  // ── RESET COMPLETO ──────────────────────────────────────────────────
+  // ── RESET COMPLETO DEGLI STATI VISIVI ─────────────────────────────────
   slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
   slide.querySelectorAll('.use-it,.err-it,.err-note,.cu-it').forEach(el=>el.style.opacity='0');
   slide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
@@ -290,6 +292,7 @@ async function animateSlide(idx){
   const title=slide.querySelector('.slide-title');
   if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
   await new Promise(r=>setTimeout(r,400));
+  
   if(idx===0){
     const allCells=[...slide.querySelectorAll('.mx-rl[data-tw],.mx-cell[data-tw]')];
     for(let i=0;i<allCells.length;i++){
@@ -298,9 +301,10 @@ async function animateSlide(idx){
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,250));warn.classList.add('show');}
   } else if(idx===1||idx===2){
+    const hClass=idx===1?'hl':'hl-s';
     for(const row of slide.querySelectorAll('.use-row')){
       const ex=row.querySelector('[data-tw]'),it=row.querySelector('.use-it');
-      if(ex)await twHL(ex,ex.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,200));
+      if(ex)await twHL(ex,ex.dataset.tw,78,hClass);fi(it);await new Promise(r=>setTimeout(r,240));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
   } else if(idx===3){
@@ -313,22 +317,26 @@ async function animateSlide(idx){
       if(sec.lbl){sec.lbl.classList.add('show');await new Promise(r=>setTimeout(r,220));}
       for(const row of sec.rows){
         const ex=row.querySelector('[data-tw]'),it=row.querySelector('.use-it');
-        if(ex)await twHL(ex,ex.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,200));
+        if(ex)await twHL(ex,ex.dataset.tw,78,'hl-e');fi(it);await new Promise(r=>setTimeout(r,240));
       }
-      await new Promise(r=>setTimeout(r,120));
+      await new Promise(r=>setTimeout(r,150));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
   } else if(idx===4){
     for(const pair of slide.querySelectorAll('.err-pair')){
       const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
-      if(wrong)await tw(wrong,wrong.dataset.tw,42);await new Promise(r=>setTimeout(r,100));
-      if(ok)await tw(ok,ok.dataset.tw,42);fi(it);if(note)setTimeout(()=>note.style.opacity='1',220);await new Promise(r=>setTimeout(r,280));
+      if(wrong)await tw(wrong,wrong.dataset.tw,75);await new Promise(r=>setTimeout(r,120));
+      if(ok)await tw(ok,ok.dataset.tw,78);fi(it);if(note)setTimeout(()=>note.style.opacity='1',220);await new Promise(r=>setTimeout(r,350));
     }
   }
 }
+
 function go(dir){
   if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
   const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.querySelectorAll('.use-it,.cmp-it,.err-it,.err-note,.cu-it').forEach(n=>n.style.opacity='0');
   oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
   setTimeout(()=>{
     oldSlide.style.cssText='';oldSlide.classList.remove('active');
