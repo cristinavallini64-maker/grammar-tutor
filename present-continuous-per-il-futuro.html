@@ -87,7 +87,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 <div class="dots" id="dots"></div>
 <div class="slides">
 
-  <!-- ══ SLIDE 0: FORM ══ -->
   <div class="slide active" id="s0">
     <div class="slide-title">📋 FORMA — stessa del Present Continuous</div>
     <div class="form-table">
@@ -110,7 +109,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">🔑 La <strong>forma è identica</strong> al Present Continuous "normale". A indicare il futuro è il <strong>contesto</strong> o l'<strong>espressione di tempo</strong> (later, tomorrow, tonight…).</div>
   </div>
 
-  <!-- ══ SLIDE 1: USI ══ -->
   <div class="slide" id="s1">
     <div class="slide-title">🎯 QUANDO USARE IL PRESENT CONTINUOUS PER IL FUTURO</div>
     <div class="use-row">
@@ -136,7 +134,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">💡 Si usa per <strong>azioni future già pianificate</strong>: appuntamenti, accordi presi con altre persone, programmi stabiliti. C'è già una <strong>decisione concreta</strong>.</div>
   </div>
 
-  <!-- ══ SLIDE 2: ESPRESSIONI DI TEMPO ══ -->
   <div class="slide" id="s2">
     <div class="slide-title">⏰ ESPRESSIONI DI TEMPO PER IL FUTURO</div>
     <div class="time-grid">
@@ -152,7 +149,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">📝 Esempio: <strong>"I'm flying to London <em>next week</em>."</strong> → Volo a Londra la prossima settimana. (biglietto già prenotato)</div>
   </div>
 
-  <!-- ══ SLIDE 3: PRESENT CONTINUOUS vs PRESENT SIMPLE ══ -->
   <div class="slide" id="s3">
     <div class="slide-title">⚖️ FUTURO: PRESENT CONTINUOUS vs PRESENT SIMPLE</div>
     <div class="cmp-row">
@@ -194,7 +190,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">🎯 <strong>CONTINUOUS</strong> → piani <strong>personali</strong> stabiliti. &nbsp;|&nbsp; <strong>SIMPLE</strong> → orari <strong>ufficiali</strong> (treni, voli, cinema, eventi).</div>
   </div>
 
-  <!-- ══ SLIDE 4: ERRORI TIPICI ══ -->
   <div class="slide" id="s4">
     <div class="slide-title">🚨 ERRORI TIPICI DA EVITARE</div>
     <div class="err-pair">
@@ -254,21 +249,23 @@ async function animateSlide(idx){
     const cells=[...slide.querySelectorAll('.fm-rl[data-tw],.fm-cell[data-tw]')];
     for(let i=0;i<cells.length;i++){
       const txt=cells[i].dataset.tw;
-      if(txt.includes('❮'))await twHL(cells[i],txt,28);
-      else await tw(cells[i],txt,22);
-      await new Promise(r=>setTimeout(r,i%3===2?180:40));
+      if(txt.includes('❮'))await twHL(cells[i],txt,55); // Rallentato da 28 a 55
+      else await tw(cells[i],txt,50); // Rallentato da 22 a 50
+      await new Promise(r=>setTimeout(r,i%3===2?300:80));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,250));warn.classList.add('show');}
   } else if(idx===1){
     for(const row of slide.querySelectorAll('.use-row')){
       const ex=row.querySelector('[data-tw]'),it=row.querySelector('.use-it');
-      if(ex)await twHL(ex,ex.dataset.tw,38);fi(it);await new Promise(r=>setTimeout(r,220));
+      if(ex)await twHL(ex,ex.dataset.tw,60); // Rallentato da 38 a 60
+      fi(it);await new Promise(r=>setTimeout(r,300));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
   } else if(idx===2){
     for(const card of slide.querySelectorAll('.time-card')){
       const en=card.querySelector('.time-en'),it=card.querySelector('.time-it');
-      if(en)await tw(en,en.dataset.tw,32);fi(it);await new Promise(r=>setTimeout(r,140));
+      if(en)await tw(en,en.dataset.tw,55); // Rallentato da 32 a 55
+      fi(it);await new Promise(r=>setTimeout(r,200));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
   } else if(idx===3){
@@ -276,15 +273,18 @@ async function animateSlide(idx){
       const boxes=row.querySelectorAll('.cmp-box');
       for(const box of boxes){
         const ex=box.querySelector('.cmp-ex'),it=box.querySelector('.cmp-it');
-        if(ex)await twHL(ex,ex.dataset.tw,36);fi(it);await new Promise(r=>setTimeout(r,150));
+        if(ex)await twHL(ex,ex.dataset.tw,60); // Rallentato da 36 a 60
+        fi(it);await new Promise(r=>setTimeout(r,250));
       }
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
   } else if(idx===4){
     for(const pair of slide.querySelectorAll('.err-pair')){
       const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
-      if(wrong)await tw(wrong,wrong.dataset.tw,40);await new Promise(r=>setTimeout(r,100));
-      if(ok)await tw(ok,ok.dataset.tw,40);fi(it);if(note)setTimeout(()=>note.style.opacity='1',220);await new Promise(r=>setTimeout(r,260));
+      if(wrong)await tw(wrong,wrong.dataset.tw,60); // Rallentato da 40 a 60
+      await new Promise(r=>setTimeout(r,150));
+      if(ok)await tw(ok,ok.dataset.tw,60); // Rallentato da 40 a 60
+      fi(it);if(note)setTimeout(()=>note.style.opacity='1',300);await new Promise(r=>setTimeout(r,350));
     }
   }
 }
