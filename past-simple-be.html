@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Past Simple – verb BE</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #cc0000;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.85rem,3vw,1.5rem);letter-spacing:3px;color:#cc0000;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.65rem,2vw,0.85rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:7px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#cc0000;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#cc0000;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+
+/* FORM table */
+.form-table{display:grid;grid-template-columns:1fr 1.1fr 1.6fr;border-radius:10px;overflow:hidden;border:2px solid #eee;margin-bottom:10px;}
+.fm-head{font-family:'Orbitron',monospace;font-size:clamp(0.56rem,1.7vw,0.78rem);letter-spacing:2px;font-weight:700;padding:9px 8px;text-align:center;color:#fff;background:#cc0000;}
+.fm-rl{padding:9px 10px;font-size:clamp(0.66rem,1.95vw,0.8rem);font-weight:700;background:#fafafa;border-bottom:1px solid #f0f0f0;border-right:2px solid #eee;letter-spacing:1px;color:#444;}
+.fm-cell{padding:9px 10px;font-size:clamp(0.72rem,2.05vw,0.88rem);border-bottom:1px solid #f0f0f0;border-right:1px solid #f0f0f0;line-height:1.35;}
+.fm-cell:nth-child(3n){border-right:none;}
+.fm-cell.pos{background:#f0fff5;}
+.fm-cell.neg{background:#fff5f5;}
+.fm-cell.que{background:#fff8e6;}
+.fm-cell.sho{background:#f0f5ff;}
+.fm-rl:nth-last-of-type(1),.fm-cell:nth-last-of-type(1),.fm-cell:nth-last-of-type(2){border-bottom:none;}
+
+/* usi */
+.use-row{padding:7px 0;border-bottom:1px solid #f0f0f0;}
+.use-row:last-child{border-bottom:none;}
+.use-ex{font-size:clamp(0.86rem,2.8vw,1.04rem);font-weight:600;color:#111;display:block;}
+.use-it{font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;display:block;opacity:0;transition:opacity 0.4s;margin-top:2px;}
+.use-tag{font-family:'Orbitron',monospace;font-size:clamp(0.5rem,1.4vw,0.62rem);letter-spacing:1.5px;font-weight:700;padding:2px 7px;border-radius:4px;margin-right:7px;vertical-align:middle;color:#fff;display:inline-block;}
+.tag-pross{background:#cc0000;}
+.tag-imp{background:#cc7700;}
+.tag-rem{background:#007733;}
+
+/* time expressions */
+.rule-row{display:grid;grid-template-columns:1.3fr 1.4fr;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0;align-items:center;}
+.rule-row:last-child{border-bottom:none;}
+.rule-name{font-size:clamp(0.7rem,2vw,0.85rem);font-weight:700;color:#cc0000;line-height:1.3;}
+.rule-ex{font-size:clamp(0.82rem,2.55vw,0.98rem);color:#111;font-weight:600;}
+.rule-it{grid-column:1/-1;font-size:clamp(0.62rem,1.8vw,0.76rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;}
+
+/* errori */
+.err-pair{padding:6px 0;border-bottom:1px solid #f0f0f0;}
+.err-pair:last-child{border-bottom:none;}
+.err-wrong{font-size:clamp(0.82rem,2.55vw,0.98rem);color:#c00;}
+.err-ok{font-size:clamp(0.82rem,2.55vw,0.98rem);font-weight:700;color:#007733;}
+.err-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;margin-top:1px;}
+.err-note{font-size:clamp(0.63rem,1.8vw,0.777rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
+
+.hl{font-weight:900;color:#cc0000;font-style:normal;}
+.warn{background:#fff5f5;border-left:5px solid #cc0000;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.76rem,2.35vw,0.92rem);color:#111;font-weight:600;line-height:1.65;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:8px;}
+.warn.show{opacity:1;}
+.warn strong{color:#cc0000;}
+.cursor{display:inline-block;width:2px;height:1em;background:#cc0000;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.55rem,1.8vw,0.72rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #cc0000;background:#fff;color:#cc0000;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#cc0000;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="title">🔴 PAST SIMPLE · VERB BE</div><div class="prog" id="prog">1 / 4</div></div>
+<div class="dots" id="dots"></div>
+<div class="slides">
+
+  <!-- SLIDE 0: FORMA -->
+  <div class="slide active" id="s0">
+    <div class="slide-title">📋 FORMA — was / were</div>
+    <div class="form-table">
+      <div class="fm-head" style="background:#888;"></div>
+      <div class="fm-head">STRUTTURA</div>
+      <div class="fm-head">ESEMPIO</div>
+
+      <div class="fm-rl" data-tw="✅ POSITIVA"></div>
+      <div class="fm-cell pos" data-tw="I / He / She / It → ❮was❯ · You / We / They → ❮were❯"></div>
+      <div class="fm-cell pos" data-tw="She ❮was❯ at school. · They ❮were❯ late."></div>
+
+      <div class="fm-rl" data-tw="❌ NEGATIVA"></div>
+      <div class="fm-cell neg" data-tw="was not (❮wasn't❯) · were not (❮weren't❯)"></div>
+      <div class="fm-cell neg" data-tw="He ❮wasn't❯ home. · We ❮weren't❯ tired."></div>
+
+      <div class="fm-rl" data-tw="❓ DOMANDA"></div>
+      <div class="fm-cell que" data-tw="❮Was❯ / ❮Were❯ + subject + … ?"></div>
+      <div class="fm-cell que" data-tw="❮Was❯ she at the park? · ❮Were❯ they happy?"></div>
+
+      <div class="fm-rl" data-tw="💬 RISPOSTA"></div>
+      <div class="fm-cell sho" data-tw="Yes, I/he/she/it ❮was❯. · Yes, you/we/they ❮were❯."></div>
+      <div class="fm-cell sho" data-tw="No, I/he/she/it ❮wasn't❯. · No, you/we/they ❮weren't❯."></div>
+    </div>
+    <div class="warn">🔑 <strong>was</strong> → I · he · she · it &nbsp;|&nbsp; <strong>were</strong> → you · we · they<br>Nelle risposte brevi <strong>NON</strong> si usa la forma contratta: ❌ <em>Yes, she's.</em></div>
+  </div>
+
+  <!-- SLIDE 1: USI -->
+  <div class="slide" id="s1">
+    <div class="slide-title">🎯 QUANDO USARE IL PAST SIMPLE DI BE</div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-pross">PASSATO PROSSIMO</span><span data-tw="The show ❮was❯ really amazing."></span></span>
+      <span class="use-it">Lo spettacolo era davvero fantastico. (fatto recente, passato prossimo)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-imp">IMPERFETTO</span><span data-tw="We ❮were❯ on a school trip yesterday."></span></span>
+      <span class="use-it">Eravamo in gita ieri. (situazione nel passato)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-rem">PASSATO REMOTO</span><span data-tw="John Keats ❮was❯ an English poet."></span></span>
+      <span class="use-it">John Keats era un poeta inglese. (fatto storico lontano)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-imp">IMPERFETTO</span><span data-tw="Marie Curie ❮was❯ born in Warsaw in 1867."></span></span>
+      <span class="use-it">Marie Curie è nata a Varsavia nel 1867. (nascita: born → was born)</span>
+    </div>
+    <div class="warn">💡 In italiano il <strong>Past Simple di be</strong> corrisponde a <strong>era / erano</strong> (imperfetto) oppure a <strong>fu / furono</strong> (passato remoto) a seconda del contesto.</div>
+  </div>
+
+  <!-- SLIDE 2: TIME EXPRESSIONS -->
+  <div class="slide" id="s2">
+    <div class="slide-title">⏰ ESPRESSIONI DI TEMPO</div>
+    <div class="rule-row">
+      <div class="rule-name" data-tw="yesterday"></div>
+      <div class="rule-ex" data-tw="She ❮was❯ ill yesterday."></div>
+      <div class="rule-it">Era malata ieri.</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-name" data-tw="last night / week / month / year"></div>
+      <div class="rule-ex" data-tw="They ❮were❯ at the cinema last night."></div>
+      <div class="rule-it">Erano al cinema ieri sera.</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-name" data-tw="… ago"></div>
+      <div class="rule-ex" data-tw="I ❮was❯ in London two years ago."></div>
+      <div class="rule-it">Ero a Londra due anni fa.</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-name" data-tw="in + year"></div>
+      <div class="rule-ex" data-tw="She ❮was❯ born in 1990."></div>
+      <div class="rule-it">È nata nel 1990.</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-name" data-tw="on + day/date"></div>
+      <div class="rule-ex" data-tw="We ❮were❯ at home on Saturday."></div>
+      <div class="rule-it">Eravamo a casa sabato.</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-name" data-tw="at + time"></div>
+      <div class="rule-ex" data-tw="❮Was❯ he at school at 8 o'clock?"></div>
+      <div class="rule-it">Era a scuola alle 8?</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: ERRORI TIPICI -->
+  <div class="slide" id="s3">
+    <div class="slide-title">🚨 ERRORI TIPICI DA EVITARE</div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  She were happy."></div>
+      <div class="err-ok"    data-tw="✅  She was happy."></div>
+      <div class="err-it">Era felice.</div>
+      <div class="err-note">I / he / she / it → was (non were)</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  They was at school."></div>
+      <div class="err-ok"    data-tw="✅  They were at school."></div>
+      <div class="err-it">Erano a scuola.</div>
+      <div class="err-note">you / we / they → were (non was)</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  Was they late?"></div>
+      <div class="err-ok"    data-tw="✅  Were they late?"></div>
+      <div class="err-it">Erano in ritardo?</div>
+      <div class="err-note">domanda con they → Were (non Was)</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  Yes, she's."></div>
+      <div class="err-ok"    data-tw="✅  Yes, she was."></div>
+      <div class="err-it">Sì, lo era.</div>
+      <div class="err-note">risposta breve affermativa: mai forma contratta</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  He not was at home."></div>
+      <div class="err-ok"    data-tw="✅  He wasn't at home."></div>
+      <div class="err-it">Non era a casa.</div>
+      <div class="err-note">negativo: was/were + not (o forma contratta wasn't/weren't)</div>
+    </div>
+  </div>
+
+</div>
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+<script>
+document.querySelectorAll('[data-tw]').forEach(el => el.textContent = '');
+
+const TOTAL=4;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
+function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+  slide.querySelectorAll('.use-it,.rule-it,.err-it,.err-note').forEach(n=>n.style.opacity='0');
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await new Promise(r=>setTimeout(r,400));
+
+  if(idx===0){
+    const cells=[...slide.querySelectorAll('.fm-rl[data-tw],.fm-cell[data-tw]')];
+    for(let i=0;i<cells.length;i++){
+      const txt=cells[i].dataset.tw;
+      if(txt.includes('❮'))await twHL(cells[i],txt,80);
+      else await tw(cells[i],txt,75);
+      await new Promise(r=>setTimeout(r,i%3===2?350:150));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,250));warn.classList.add('show');}
+  } else if(idx===1){
+    for(const row of slide.querySelectorAll('.use-row')){
+      const ex=row.querySelector('[data-tw]'),it=row.querySelector('.use-it');
+      if(ex)await twHL(ex,ex.dataset.tw,85);fi(it);await new Promise(r=>setTimeout(r,350));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  } else if(idx===2){
+    for(const row of slide.querySelectorAll('.rule-row')){
+      const name=row.querySelector('.rule-name'),ex=row.querySelector('.rule-ex'),it=row.querySelector('.rule-it');
+      if(name)await tw(name,name.dataset.tw,75);
+      if(ex)await twHL(ex,ex.dataset.tw,85);
+      fi(it);await new Promise(r=>setTimeout(r,350));
+    }
+  } else if(idx===3){
+    for(const pair of slide.querySelectorAll('.err-pair')){
+      const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
+      if(wrong)await tw(wrong,wrong.dataset.tw,80);await new Promise(r=>setTimeout(r,200));
+      if(ok)await tw(ok,ok.dataset.tw,80);fi(it);if(note)setTimeout(()=>note.style.opacity='1',250);await new Promise(r=>setTimeout(r,380));
+    }
+  }
+}
+
+function go(dir){
+  if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
+  const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.querySelectorAll('.use-it,.rule-it,.err-it,.err-note').forEach(n=>n.style.opacity='0');
+  oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
+  setTimeout(()=>{
+    oldSlide.style.cssText='';oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);}));
+    animateSlide(cur);dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+TOTAL;
+    document.getElementById('prevBtn').disabled=cur===0;document.getElementById('nextBtn').disabled=cur===TOTAL-1;
+  },260);
+}
+let tx=0;const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+animateSlide(0);
+</script>
+</body>
+</html>
