@@ -84,7 +84,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 <div class="dots" id="dots"></div>
 <div class="slides">
 
-  <!-- ══ SLIDE 0: regola base ══ -->
   <div class="slide active" id="s0">
     <div class="slide-title">📋 LA REGOLA FONDAMENTALE</div>
     <div class="cu-table">
@@ -100,10 +99,9 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
       <div class="cu-cell much"><span class="cu-ex" data-tw="How much water do you drink?"></span><span class="cu-it">Quanta acqua bevi?</span></div>
     </div>
     <div class="warn">🔑 Il <strong>nome</strong> dopo how much/how many decide quale usare:<br>
-    plurale numerabile → <span class="hl-many">how many</span> &nbsp;·&nbsp; massa non numerabile → <span class="hl-much">how much</span></div>
+    plurale numerabile → <span class="hl-many">how many</span> · massa non numerabile → <span class="hl-much">how much</span></div>
   </div>
 
-  <!-- ══ SLIDE 1: domande in contesto ══ -->
   <div class="slide" id="s1">
     <div class="slide-title">💬 DOMANDE TIPICHE IN CONTESTO</div>
     <div class="use-row">
@@ -139,7 +137,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">🚨 Attento alle trappole italiane! <strong>homework, money, news, information, advice</strong> → sempre <span class="hl-much">how much</span></div>
   </div>
 
-  <!-- ══ SLIDE 2: how much + contenitori ══ -->
   <div class="slide" id="s2">
     <div class="slide-title">🥛 HOW MUCH / HOW MANY + CONTENITORI</div>
     <div class="cont-row">
@@ -175,10 +172,9 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
       <span class="cont-it">Quanto zucchero metti nel tè?</span>
     </div>
     <div class="warn">🔑 Lo stesso "cibo" può diventare countable con un <strong>contenitore</strong>!<br>
-    coffee (U) → a cup of coffee (C) &nbsp;·&nbsp; pizza (U) → a slice of pizza (C)</div>
+    coffee (U) → a cup of coffee (C) · pizza (U) → a slice of pizza (C)</div>
   </div>
 
-  <!-- ══ SLIDE 3: risposte tipiche ══ -->
   <div class="slide" id="s3">
     <div class="slide-title">💡 RISPOSTE TIPICHE A HOW MUCH / HOW MANY</div>
     <div class="ans-row">
@@ -211,10 +207,9 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
       <span class="ans-a" data-tw="Twenty-two. / A lot. / Just a few."></span>
       <span class="ans-it">Ventidue. / Tante. / Solo poche.</span>
     </div>
-    <div class="warn">🔑 Le risposte cambiano in base a countable/uncountable: <strong>a few / many</strong> (C) &nbsp;·&nbsp; <strong>a little / much</strong> (U) &nbsp;·&nbsp; <strong>a lot / none</strong> (entrambi)</div>
+    <div class="warn">🔑 Le risposte cambiano in base a countable/uncountable: <strong>a few / many</strong> (C) · <strong>a little / much</strong> (U) · <strong>a lot / none</strong> (entrambi)</div>
   </div>
 
-  <!-- ══ SLIDE 4: errori ══ -->
   <div class="slide" id="s4">
     <div class="slide-title">🚨 ERRORI TIPICI DA EVITARE</div>
     <div class="err-pair">
@@ -255,7 +250,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
   <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
 </div>
 <script>
-// FIX FOUC: svuota subito tutti i data-tw appena lo script parte
 document.querySelectorAll('[data-tw]').forEach(el => el.textContent = '');
 
 const TOTAL=5;let cur=0,busy=false;
@@ -264,54 +258,58 @@ for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'
 function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
 function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
 function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+
 async function animateSlide(idx){
   const slide=document.getElementById('s'+idx);
-  // FIX FOUC: svuota subito i data-tw prima di qualsiasi animazione
   slide.querySelectorAll('[data-tw]').forEach(el => el.textContent = '');
+  slide.querySelectorAll('.use-it,.cont-it,.ans-it,.err-it,.err-note,.cu-it').forEach(n=>n.style.opacity='0');
   const title=slide.querySelector('.slide-title');
   if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
   await new Promise(r=>setTimeout(r,400));
+  
   if(idx===0){
-    // 1. Animare le 6 celle di descrizione (data-tw diretto)
-    const descCells = [...slide.querySelectorAll('.cu-cell[data-tw]')];
-    for(const cell of descCells){await twHL(cell,cell.dataset.tw,40);await new Promise(r=>setTimeout(r,90));}
-    // 2. Animare le 4 celle di esempio (.cu-ex con data-tw)
-    const exCells = [...slide.querySelectorAll('.cu-ex[data-tw]')];
-    for(const ex of exCells){
-      await tw(ex, ex.dataset.tw, 40);
-      const it = ex.parentElement.querySelector('.cu-it');
-      if(it) fi(it);
-      await new Promise(r=>setTimeout(r,150));
+    const descCells = [...slide.querySelectorAll('.cu-cell')];
+    for(const cell of descCells){
+      const ex = cell.querySelector('.cu-ex');
+      if(ex){
+        await tw(ex, ex.dataset.tw, 75);
+        const it = cell.querySelector('.cu-it'); if(it) fi(it);
+        await new Promise(r=>setTimeout(r,320));
+      } else if(cell.dataset.tw){
+        await twHL(cell, cell.dataset.tw, 80);
+        await new Promise(r=>setTimeout(r,280));
+      }
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,250));warn.classList.add('show');}
   } else if(idx===1){
     for(const row of slide.querySelectorAll('.use-row')){
       const q=row.querySelector('.use-q [data-tw]'),a=row.querySelector('.use-a'),it=row.querySelector('.use-it');
-      if(q)await twHL(q,q.dataset.tw,40);await new Promise(r=>setTimeout(r,80));
-      if(a)await tw(a,a.dataset.tw,38);fi(it);await new Promise(r=>setTimeout(r,200));
+      if(q) await twHL(q,q.dataset.tw,82); await new Promise(r=>setTimeout(r,200));
+      if(a) await tw(a,a.dataset.tw,78); fi(it); await new Promise(r=>setTimeout(r,350));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
   } else if(idx===2){
     for(const row of slide.querySelectorAll('.cont-row')){
       const ex=row.querySelector('.cont-ex'),it=row.querySelector('.cont-it');
-      if(ex)await twHL(ex,ex.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,180));
+      if(ex) await twHL(ex,ex.dataset.tw,80); fi(it); await new Promise(r=>setTimeout(r,320));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
   } else if(idx===3){
     for(const row of slide.querySelectorAll('.ans-row')){
       const q=row.querySelector('.ans-q'),a=row.querySelector('.ans-a'),it=row.querySelector('.ans-it');
-      if(q)await tw(q,q.dataset.tw,40);await new Promise(r=>setTimeout(r,100));
-      if(a)await tw(a,a.dataset.tw,42);fi(it);await new Promise(r=>setTimeout(r,200));
+      if(q) await tw(q,q.dataset.tw,75); await new Promise(r=>setTimeout(r,180));
+      if(a) await tw(a,a.dataset.tw,78); fi(it); await new Promise(r=>setTimeout(r,300));
     }
     const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
   } else if(idx===4){
     for(const pair of slide.querySelectorAll('.err-pair')){
       const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
-      if(wrong)await tw(wrong,wrong.dataset.tw,42);await new Promise(r=>setTimeout(r,100));
-      if(ok)await tw(ok,ok.dataset.tw,42);fi(it);if(note)setTimeout(()=>note.style.opacity='1',220);await new Promise(r=>setTimeout(r,280));
+      if(wrong) await tw(wrong,wrong.dataset.tw,80); await new Promise(r=>setTimeout(r,220));
+      if(ok) await tw(ok,ok.dataset.tw,80); fi(it); if(note) setTimeout(()=>note.style.opacity='1',250); await new Promise(r=>setTimeout(r,380));
     }
   }
 }
+
 function go(dir){
   if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
   const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
