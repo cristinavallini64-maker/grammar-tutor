@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subject & Object Questions</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #007a33;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.75rem,2.4vw,1.2rem);letter-spacing:3px;color:#007a33;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.65rem,2vw,0.85rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:7px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#007a33;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#007a33;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+.intro{background:#f0fff5;border-left:5px solid #007a33;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.74rem,2.2vw,0.88rem);color:#111;line-height:1.6;margin-bottom:10px;opacity:0;transition:opacity 0.5s;}
+.intro.show{opacity:1;}
+.intro strong{color:#007a33;}
+
+/* tabella slide 0 */
+.cmp-table{display:grid;grid-template-columns:1fr 1fr;border-radius:10px;overflow:hidden;border:2px solid #eee;margin-bottom:10px;}
+.cmp-head{font-family:'Orbitron',monospace;font-size:clamp(0.5rem,1.5vw,0.7rem);letter-spacing:1.5px;font-weight:700;padding:9px 8px;text-align:center;color:#fff;}
+.cmp-head.subj{background:#007a33;}
+.cmp-head.obj{background:#cc3300;}
+.cmp-cell{padding:9px 10px;font-size:clamp(0.7rem,2vw,0.84rem);border-bottom:1px solid #f0f0f0;line-height:1.5;opacity:0;transition:opacity 0.4s;}
+.cmp-cell.s{background:#f0fff5;border-right:1px solid #eee;}
+.cmp-cell.o{background:#fff5f3;}
+.lbl{display:block;font-size:clamp(0.55rem,1.5vw,0.66rem);font-family:'Orbitron',monospace;letter-spacing:1px;font-weight:700;margin-bottom:3px;opacity:0;transition:opacity 0.3s;}
+.cmp-cell.s .lbl{color:#007a33;}
+.cmp-cell.o .lbl{color:#cc3300;}
+.lbl.show{opacity:1;}
+.tw{display:block;}
+.cmp-cell.it{color:#888;font-style:italic;font-size:clamp(0.6rem,1.7vw,0.74rem);}
+
+/* use-row slide 1 e 2 */
+.use-row{padding:7px 0;border-bottom:1px solid #f0f0f0;}
+.use-row:last-child{border-bottom:none;}
+.use-ex{font-size:clamp(0.84rem,2.7vw,1rem);font-weight:600;color:#111;display:block;}
+.use-it{font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;display:block;opacity:0;transition:opacity 0.4s;margin-top:2px;}
+.use-tag{font-family:'Orbitron',monospace;font-size:clamp(0.48rem,1.4vw,0.62rem);letter-spacing:1.5px;font-weight:700;padding:2px 7px;border-radius:4px;margin-right:7px;vertical-align:middle;color:#fff;display:inline-block;opacity:0;transition:opacity 0.3s;}
+.use-tag.show{opacity:1;}
+.t-subj{background:#007a33;}
+.t-obj{background:#cc3300;}
+
+/* formula slide 3 */
+.formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.formula-box{border-radius:10px;padding:12px 14px;text-align:center;opacity:0;transition:opacity 0.5s;}
+.formula-box.show{opacity:1;}
+.formula-box.subj{background:#f0fff5;border:2px solid #007a33;}
+.formula-box.obj{background:#fff5f3;border:2px solid #cc3300;}
+.formula-label{font-family:'Orbitron',monospace;font-size:clamp(0.52rem,1.6vw,0.72rem);letter-spacing:2px;font-weight:700;margin-bottom:6px;}
+.formula-label.subj{color:#007a33;}
+.formula-label.obj{color:#cc3300;}
+.formula-line{font-size:clamp(0.7rem,2vw,0.88rem);font-weight:700;color:#111;line-height:1.5;}
+
+/* griglia confronto slide 3 */
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.cmp-pair{border-radius:8px;padding:9px 12px;opacity:0;transition:opacity 0.4s;}
+.cmp-pair.s{background:#f0fff5;border:2px solid #007a33;}
+.cmp-pair.o{background:#fff5f3;border:2px solid #cc3300;}
+.cmp-pair .ex{display:block;font-size:clamp(0.78rem,2.4vw,0.94rem);font-weight:700;color:#111;margin:4px 0 2px;}
+.cmp-pair .it{display:block;font-size:clamp(0.6rem,1.7vw,0.74rem);color:#888;font-style:italic;}
+.cmp-tag{font-family:'Orbitron',monospace;font-size:clamp(0.48rem,1.4vw,0.62rem);letter-spacing:1.5px;font-weight:700;padding:2px 7px;border-radius:4px;margin-right:6px;color:#fff;display:inline-block;opacity:0;transition:opacity 0.3s;}
+.cmp-tag.show{opacity:1;}
+.cmp-tag.s{background:#007a33;}
+.cmp-tag.o{background:#cc3300;}
+
+/* errori slide 4 */
+.err-pair{padding:6px 0;border-bottom:1px solid #f0f0f0;}
+.err-pair:last-child{border-bottom:none;}
+.err-wrong{font-size:clamp(0.8rem,2.5vw,0.96rem);color:#c00;}
+.err-ok{font-size:clamp(0.8rem,2.5vw,0.96rem);font-weight:700;color:#007733;}
+.err-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;margin-top:1px;}
+.err-note{font-size:clamp(0.63rem,1.8vw,0.77rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
+
+.hl{font-weight:900;color:#007a33;font-style:normal;}
+.warn{background:#fff5f0;border-left:5px solid #cc6600;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.74rem,2.3vw,0.9rem);color:#111;font-weight:600;line-height:1.65;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:8px;}
+.warn.show{opacity:1;}
+.warn strong{color:#cc6600;}
+.cursor{display:inline-block;width:2px;height:1em;background:#007a33;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.55rem,1.8vw,0.72rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #007a33;background:#fff;color:#007a33;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#007a33;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="title">🟢 SUBJECT / OBJECT QUESTIONS</div><div class="prog" id="prog">1 / 5</div></div>
+<div class="dots" id="dots"></div>
+<div class="slides">
+
+  <!-- SLIDE 0 -->
+  <div class="slide active" id="s0">
+    <div class="slide-title">📋 SOGGETTO vs OGGETTO — la differenza chiave</div>
+    <div class="intro" id="intro0">Con i pronomi interrogativi <strong>who, what, which, how many</strong> bisogna capire se svolgono la funzione di <strong>soggetto</strong> o di <strong>oggetto</strong>: cambia la struttura della domanda!</div>
+    <div class="cmp-table">
+      <div class="cmp-head subj">SUBJECT QUESTION</div>
+      <div class="cmp-head obj">OBJECT QUESTION</div>
+      <div class="cmp-cell s" id="r0s"><span class="lbl" id="r0sl">CHI/COSA FA L'AZIONE</span><span class="tw" id="r0st"></span></div>
+      <div class="cmp-cell o" id="r0o"><span class="lbl" id="r0ol">CHI/COSA RICEVE L'AZIONE</span><span class="tw" id="r0ot"></span></div>
+      <div class="cmp-cell it s" id="r1s"><span class="tw" id="r1st"></span></div>
+      <div class="cmp-cell it o" id="r1o"><span class="tw" id="r1ot"></span></div>
+      <div class="cmp-cell s" id="r2s"><span class="lbl" id="r2sl">STRUTTURA</span><span class="tw" id="r2st"></span></div>
+      <div class="cmp-cell o" id="r2o"><span class="lbl" id="r2ol">STRUTTURA</span><span class="tw" id="r2ot"></span></div>
+    </div>
+    <div class="warn">🔑 Chiediti: il pronome interrogativo <strong>fa</strong> l'azione (soggetto) oppure <strong>la riceve</strong> (oggetto)?</div>
+  </div>
+
+  <!-- SLIDE 1 -->
+  <div class="slide" id="s1">
+    <div class="slide-title">🟢 SUBJECT QUESTIONS — senza do/does/did</div>
+    <div class="intro" id="intro1">Quando <strong>who, what, which, how many</strong> svolgono la funzione di <strong>soggetto</strong>, la domanda si costruisce <strong>senza</strong> gli ausiliari do/does/did — ordine normale.</div>
+    <div class="use-row"><span class="use-ex"><span class="use-tag t-subj">WHO</span><span data-tw="❮Who❯ called you?"></span></span><span class="use-it">Chi ti ha chiamato? → who = soggetto (fa l'azione di chiamare)</span></div>
+    <div class="use-row"><span class="use-ex"><span class="use-tag t-subj">WHAT</span><span data-tw="❮What❯ happened at school?"></span></span><span class="use-it">Cosa è successo a scuola? → what = soggetto</span></div>
+    <div class="use-row"><span class="use-ex"><span class="use-tag t-subj">HOW MANY</span><span data-tw="❮How many❯ people came to the party?"></span></span><span class="use-it">Quante persone sono venute alla festa? → how many people = soggetto</span></div>
+    <div class="use-row"><span class="use-ex"><span class="use-tag t-subj">WHICH</span><span data-tw="❮Which❯ team won the match?"></span></span><span class="use-it">Quale squadra ha vinto la partita? → which team = soggetto</span></div>
+    <div class="warn">💡 Formula: <strong>Who/What + verbo + ?</strong> — nessun ausiliare, ordine normale!</div>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="slide" id="s2">
+    <div class="slide-title">🔴 OBJECT QUESTIONS — con do/does/did</div>
+    <div class="intro" id="intro2">Quando <strong>who, what, which, how many</strong> svolgono la funzione di <strong>oggetto</strong>, la domanda si costruisce <strong>con</strong> gli ausiliari do/does/did — struttura invertita.</div>
+    <div class="use-row"><span class="use-ex"><span class="use-tag t-obj">WHO</span><span data-tw="Who ❮did❯ you call?"></span></span><span class="use-it">Chi hai chiamato? → who = oggetto (tu fai l'azione)</span></div>
+    <div class="use-row"><span class="use-ex"><span class="use-tag t-obj">WHAT</span><span data-tw="What ❮did❯ you buy?"></span></span><span class="use-it">Cosa hai comprato? → what = oggetto</span></div>
+    <div class="use-row"><span class="use-ex"><span class="use-tag t-obj">HOW MANY</span><span data-tw="How many books ❮does❯ she read a month?"></span></span><span class="use-it">Quanti libri legge al mese? → how many books = oggetto</span></div>
+    <div class="use-row"><span class="use-ex"><span class="use-tag t-obj">WHICH</span><span data-tw="Which film ❮did❯ they watch?"></span></span><span class="use-it">Quale film hanno guardato? → which film = oggetto</span></div>
+    <div class="warn">💡 Formula: <strong>Who/What + did/does/do + soggetto + verbo base?</strong> — ausiliare obbligatorio!</div>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="slide" id="s3">
+    <div class="slide-title">🔍 CONFRONTO DIRETTO — coppie a confronto</div>
+    <div class="formula-grid">
+      <div class="formula-box subj" id="fg0"><div class="formula-label subj">SUBJECT</div><div class="formula-line">Who/What + V + ?</div></div>
+      <div class="formula-box obj" id="fg1"><div class="formula-label obj">OBJECT</div><div class="formula-line">Who/What + did/does/do + S + V?</div></div>
+    </div>
+    <div class="cmp-grid">
+      <div class="cmp-pair s" id="cp0s"><span class="cmp-tag s">SUBJ</span><span class="ex" id="cp0st"></span><span class="it" id="cp0si"></span></div>
+      <div class="cmp-pair o" id="cp0o"><span class="cmp-tag o">OBJ</span><span class="ex" id="cp0ot"></span><span class="it" id="cp0oi"></span></div>
+      <div class="cmp-pair s" id="cp1s"><span class="cmp-tag s">SUBJ</span><span class="ex" id="cp1st"></span><span class="it" id="cp1si"></span></div>
+      <div class="cmp-pair o" id="cp1o"><span class="cmp-tag o">OBJ</span><span class="ex" id="cp1ot"></span><span class="it" id="cp1oi"></span></div>
+      <div class="cmp-pair s" id="cp2s"><span class="cmp-tag s">SUBJ</span><span class="ex" id="cp2st"></span><span class="it" id="cp2si"></span></div>
+      <div class="cmp-pair o" id="cp2o"><span class="cmp-tag o">OBJ</span><span class="ex" id="cp2ot"></span><span class="it" id="cp2oi"></span></div>
+    </div>
+    <div class="warn">💡 <em>"Who loves Maria?"</em> e <em>"Who does Maria love?"</em> — stessa traduzione, struttura diversa!</div>
+  </div>
+
+  <!-- SLIDE 4 -->
+  <div class="slide" id="s4">
+    <div class="slide-title">⚠️ ATTENZIONE — errori comuni</div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  Who did win the race?"></div>
+      <div class="err-ok"    data-tw="✅  Who won the race?"></div>
+      <div class="err-it">Chi ha vinto la gara?</div>
+      <div class="err-note">who = soggetto → NO ausiliare did</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  Who you called yesterday?"></div>
+      <div class="err-ok"    data-tw="✅  Who did you call yesterday?"></div>
+      <div class="err-it">Chi hai chiamato ieri?</div>
+      <div class="err-note">who = oggetto → did obbligatorio</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  What did happen at the party?"></div>
+      <div class="err-ok"    data-tw="✅  What happened at the party?"></div>
+      <div class="err-it">Cosa è successo alla festa?</div>
+      <div class="err-note">what = soggetto → NO did</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  Who did you talk to who?"></div>
+      <div class="err-ok"    data-tw="✅  Who did you talk to?"></div>
+      <div class="err-it">Con chi hai parlato?</div>
+      <div class="err-note">il pronome interrogativo va solo all'inizio — non si ripete</div>
+    </div>
+  </div>
+
+</div>
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+<script>
+const TOTAL=5; let cur=0, busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
+function wait(ms){return new Promise(r=>setTimeout(r,ms));}
+function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+
+function tw(el,text,speed){
+  return new Promise(resolve=>{
+    el.textContent='';
+    const c=document.createElement('span');c.className='cursor';el.appendChild(c);
+    const plain=text.replace(/❮|❯/g,'');
+    let i=0;
+    function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}
+    tick();
+  });
+}
+function twHL(el,text,speed){
+  return new Promise(resolve=>{
+    const plain=text.replace(/❮|❯/g,'');
+    el.textContent='';
+    const c=document.createElement('span');c.className='cursor';el.appendChild(c);
+    let i=0;
+    function tick(){
+      if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}
+      c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);
+    }
+    tick();
+  });
+}
+
+function g(id){return document.getElementById(id);}
+
+function resetSlide(slide){
+  // data-tw spans
+  slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+  // tabella slide 0
+  ['r0s','r0o','r1s','r1o','r2s','r2o'].forEach(id=>{if(g(id))g(id).style.opacity='0';});
+  ['r0sl','r0ol','r2sl','r2ol'].forEach(id=>{if(g(id))g(id).classList.remove('show');});
+  ['r0st','r0ot','r1st','r1ot','r2st','r2ot'].forEach(id=>{if(g(id))g(id).textContent='';});
+  // intro
+  slide.querySelectorAll('.intro').forEach(n=>n.classList.remove('show'));
+  // use-row
+  slide.querySelectorAll('.use-it').forEach(n=>n.style.opacity='0');
+  slide.querySelectorAll('.use-tag').forEach(n=>n.classList.remove('show'));
+  // formula boxes
+  slide.querySelectorAll('.formula-box').forEach(n=>n.classList.remove('show'));
+  // cmp-grid
+  ['cp0s','cp0o','cp1s','cp1o','cp2s','cp2o'].forEach(id=>{if(g(id))g(id).style.opacity='0';});
+  ['cp0st','cp0ot','cp1st','cp1ot','cp2st','cp2ot','cp0si','cp0oi','cp1si','cp1oi','cp2si','cp2oi'].forEach(id=>{if(g(id))g(id).textContent='';});
+  slide.querySelectorAll('.cmp-tag').forEach(n=>n.classList.remove('show'));
+  // errori
+  slide.querySelectorAll('.err-it,.err-note').forEach(n=>n.style.opacity='0');
+  // warn
+  slide.querySelectorAll('.warn').forEach(n=>n.classList.remove('show'));
+  // slide-title
+  const t=slide.querySelector('.slide-title');if(t)t.classList.remove('show');
+}
+
+async function animateSlide(idx){
+  const slide=g('s'+idx);
+  resetSlide(slide);
+  const title=slide.querySelector('.slide-title');
+  if(title)setTimeout(()=>title.classList.add('show'),100);
+  await wait(400);
+
+  if(idx===0){
+    g('intro0').classList.add('show');
+    await wait(350);
+    // riga 1
+    g('r0s').style.opacity='1'; g('r0sl').classList.add('show');
+    await tw(g('r0st'),'Who called you?',75);
+    await wait(150);
+    g('r0o').style.opacity='1'; g('r0ol').classList.add('show');
+    await tw(g('r0ot'),'Who did you call?',75);
+    await wait(250);
+    // riga 2
+    g('r1s').style.opacity='1';
+    await tw(g('r1st'),'Chi ti ha chiamato?',70);
+    await wait(100);
+    g('r1o').style.opacity='1';
+    await tw(g('r1ot'),'Chi hai chiamato?',70);
+    await wait(250);
+    // riga 3
+    g('r2s').style.opacity='1'; g('r2sl').classList.add('show');
+    await tw(g('r2st'),'senza do/does/did',70);
+    await wait(100);
+    g('r2o').style.opacity='1'; g('r2ol').classList.add('show');
+    await tw(g('r2ot'),'con do/does/did',70);
+    await wait(200);
+    slide.querySelector('.warn').classList.add('show');
+
+  } else if(idx===1||idx===2){
+    slide.querySelector('.intro').classList.add('show');
+    await wait(300);
+    for(const row of slide.querySelectorAll('.use-row')){
+      const ex=row.querySelector('[data-tw]');
+      const it=row.querySelector('.use-it');
+      const tag=row.querySelector('.use-tag');
+      if(tag)tag.classList.add('show');
+      if(ex)await twHL(ex,ex.dataset.tw,80);
+      fi(it);
+      await wait(300);
+    }
+    slide.querySelector('.warn').classList.add('show');
+
+  } else if(idx===3){
+    g('fg0').classList.add('show');
+    g('fg1').classList.add('show');
+    await wait(350);
+    const coppie=[
+      ['cp0','❮Who❯ loves Maria?','Who ❮does❯ Maria love?','Chi ama Maria? (who = soggetto)','Chi ama Maria? (who = oggetto)'],
+      ['cp1','❮What❯ woke you up?','What ❮did❯ you say?','Cosa ti ha svegliato?','Cosa hai detto?'],
+      ['cp2','❮How many❯ people came?','How many ❮did❯ you invite?','Quante persone sono venute?','Quante ne hai invitate?'],
+    ];
+    for(const [pre,st,ot,si,oi] of coppie){
+      // SUBJ prima
+      const sc=g(pre+'s');
+      sc.style.opacity='1';
+      sc.querySelector('.cmp-tag').classList.add('show');
+      await wait(80);
+      await twHL(g(pre+'st'),st,80);
+      g(pre+'si').textContent=si;
+      await wait(300);
+      // OBJ dopo
+      const oc=g(pre+'o');
+      oc.style.opacity='1';
+      oc.querySelector('.cmp-tag').classList.add('show');
+      await wait(80);
+      await twHL(g(pre+'ot'),ot,80);
+      g(pre+'oi').textContent=oi;
+      await wait(350);
+    }
+    slide.querySelector('.warn').classList.add('show');
+
+  } else if(idx===4){
+    for(const pair of slide.querySelectorAll('.err-pair')){
+      const wrong=pair.querySelector('.err-wrong');
+      const ok=pair.querySelector('.err-ok');
+      const it=pair.querySelector('.err-it');
+      const note=pair.querySelector('.err-note');
+      if(wrong)await tw(wrong,wrong.dataset.tw,70);
+      await wait(180);
+      if(ok)await tw(ok,ok.dataset.tw,70);
+      fi(it);
+      if(note)setTimeout(()=>note.style.opacity='1',250);
+      await wait(380);
+    }
+  }
+}
+
+function go(dir){
+  if(busy)return;
+  const prev=cur;
+  cur=Math.max(0,Math.min(TOTAL-1,cur+dir));
+  if(cur===prev)return;
+  busy=true;
+  const oldSlide=g('s'+prev);
+  const newSlide=g('s'+cur);
+  resetSlide(oldSlide);
+  oldSlide.style.transition='opacity 0.25s ease';
+  oldSlide.style.opacity='0';
+  setTimeout(()=>{
+    oldSlide.style.cssText='';
+    oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';
+    newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';
+      newSlide.style.opacity='1';
+      setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');
+    dotsEl.children[cur].classList.add('active');
+    g('prog').textContent=(cur+1)+' / '+TOTAL;
+    g('prevBtn').disabled=cur===0;
+    g('nextBtn').disabled=cur===TOTAL-1;
+  },260);
+}
+
+let tx=0;
+const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+animateSlide(0);
+</script>
+</body>
+</html>
