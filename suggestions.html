@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suggestions – Unit 6</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #00CC44;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.75rem,2.5vw,1.1rem);letter-spacing:2px;color:#00AA33;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.65rem,2vw,0.85rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:7px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#00CC44;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#00AA33;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+.intro{background:#f0fff4;border-left:5px solid #00AA33;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.74rem,2.2vw,0.88rem);color:#111;line-height:1.6;margin-bottom:10px;opacity:0;transition:opacity 0.5s;}
+.intro.show{opacity:1;}
+.intro strong{color:#007a22;}
+.form-table{display:grid;grid-template-columns:0.65fr 1.1fr 1.25fr;border-radius:10px;overflow:hidden;border:2px solid #eee;margin-bottom:8px;}
+.fm-head{font-family:'Orbitron',monospace;font-size:clamp(0.48rem,1.4vw,0.65rem);letter-spacing:1.5px;font-weight:700;padding:7px 5px;text-align:center;color:#fff;background:#00AA33;}
+.fm-rl{padding:8px 8px;font-size:clamp(0.63rem,1.8vw,0.8rem);font-weight:700;background:#fafafa;border-bottom:1px solid #f0f0f0;border-right:2px solid #eee;letter-spacing:0.5px;color:#444;}
+.fm-cell{padding:8px 7px;font-size:clamp(0.65rem,1.8vw,0.82rem);border-bottom:1px solid #f0f0f0;border-right:1px solid #f0f0f0;line-height:1.35;}
+.fm-cell:last-child{border-right:none;}
+.fm-cell.green{background:#f0fff4;}
+.fm-cell.blue{background:#f0f5ff;}
+.fm-cell.yellow{background:#fffbf0;}
+.fm-cell.pink{background:#fff0f5;}
+.fm-cell.it{color:#888;font-style:italic;font-size:clamp(0.6rem,1.7vw,0.74rem);opacity:0;transition:opacity 0.4s;}
+.use-row{padding:7px 0;border-bottom:1px solid #f0f0f0;}
+.use-row:last-child{border-bottom:none;}
+.use-ex{font-size:clamp(0.86rem,2.8vw,1.02rem);font-weight:600;color:#111;display:block;}
+.use-it{font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;display:block;opacity:0;transition:opacity 0.4s;margin-top:2px;}
+.use-tag{font-family:'Orbitron',monospace;font-size:clamp(0.45rem,1.2vw,0.58rem);letter-spacing:1px;font-weight:700;padding:2px 6px;border-radius:4px;margin-right:6px;vertical-align:middle;color:#fff;display:inline-block;opacity:0;transition:opacity 0.3s;}
+.tag-shall{background:#007a22;}
+.tag-why{background:#0055aa;}
+.tag-lets{background:#aa5500;}
+.tag-what{background:#880088;}
+.tag-rather{background:#cc3300;}
+.err-pair{padding:6px 0;border-bottom:1px solid #f0f0f0;}
+.err-pair:last-child{border-bottom:none;}
+.err-wrong{font-size:clamp(0.82rem,2.55vw,0.98rem);color:#c00;}
+.err-ok{font-size:clamp(0.82rem,2.55vw,0.98rem);font-weight:700;color:#007733;}
+.err-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;margin-top:1px;}
+.err-note{font-size:clamp(0.63rem,1.8vw,0.77rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
+.hl{font-weight:900;color:#00AA33;font-style:normal;}
+.warn{background:#f0fff4;border-left:5px solid #00AA33;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.76rem,2.35vw,0.9rem);color:#111;font-weight:600;line-height:1.65;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:8px;}
+.warn.show{opacity:1;}
+.warn strong{color:#007a22;}
+.cursor{display:inline-block;width:2px;height:1em;background:#00AA33;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.55rem,1.8vw,0.72rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #00AA33;background:#fff;color:#00AA33;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#00AA33;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="title">🟢 SUGGESTIONS</div><div class="prog" id="prog">1 / 4</div></div>
+<div class="dots" id="dots"></div>
+<div class="slides">
+
+<div class="slide active" id="s0">
+  <div class="slide-title">📋 COME SI FA UNA PROPOSTA IN INGLESE</div>
+  <div class="intro" id="intro0">
+    Per fare una <strong>proposta o un suggerimento</strong> si usano strutture fisse. <strong>Shall we / Why don't we / Let's</strong> vogliono la <strong>base form</strong>. <strong>What/How about</strong> vuole il verbo in <strong>-ing</strong>.
+  </div>
+  <div class="form-table">
+    <div class="fm-head">STRUTTURA</div>
+    <div class="fm-head">FORMULA</div>
+    <div class="fm-head">ESEMPIO + TRADUZIONE</div>
+    <div class="fm-rl" data-tw="Shall we…?"></div>
+    <div class="fm-cell green" data-tw="Shall we + base form ?"></div>
+    <div class="fm-cell green it">❮Shall we❯ go to the cinema? → Andiamo al cinema?</div>
+    <div class="fm-rl" data-tw="Why don't we…?"></div>
+    <div class="fm-cell blue" data-tw="Why don't we + base form ?"></div>
+    <div class="fm-cell blue it">❮Why don't we❯ go out? → Perché non usciamo?</div>
+    <div class="fm-rl" data-tw="Let's…"></div>
+    <div class="fm-cell yellow" data-tw="Let's + base form"></div>
+    <div class="fm-cell yellow it">❮Let's❯ meet at the bus stop. → Vediamoci alla fermata.</div>
+    <div class="fm-rl" data-tw="What/How about…?"></div>
+    <div class="fm-cell pink" data-tw="What/How about + -ing ?"></div>
+    <div class="fm-cell pink it">❮What about❯ staying in? → E se restassimo a casa?</div>
+  </div>
+  <div class="warn" id="warn0">🔑 <strong>Shall we / Why don't we / Let's</strong> → base form (senza to!) &nbsp;·&nbsp; <strong>What/How about</strong> → verbo in <strong>-ing</strong></div>
+</div>
+
+<div class="slide" id="s1">
+  <div class="slide-title">🔄 PROPOSTA ALTERNATIVA — WOULD PREFER / WOULD RATHER</div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-rather">WOULD PREFER</span><span data-tw="❮would prefer (not) to❯ + base form"></span></span>
+    <span class="use-it">We would prefer to watch a film. / Preferiremmo guardare un film.</span>
+  </div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-rather">WOULD RATHER</span><span data-tw="❮would rather (not)❯ + base form (senza to!)"></span></span>
+    <span class="use-it">I would rather go on holiday in June. / Preferirei andare in vacanza a giugno.</span>
+  </div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-rather">I'D PREFER</span><span data-tw="I ❮would (I'd) prefer not to❯ invite her to the party."></span></span>
+    <span class="use-it">Preferirei non invitarla alla festa.</span>
+  </div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-rather">I'D RATHER</span><span data-tw="I ❮would (I'd) rather❯ go on holiday in June."></span></span>
+    <span class="use-it">Preferirei andare in vacanza a giugno.</span>
+  </div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-rather">WE'D RATHER NOT</span><span data-tw="We ❮would / 'd rather not❯ go out tonight."></span></span>
+    <span class="use-it">Preferiremmo non uscire stasera.</span>
+  </div>
+  <div class="warn">🔑 <strong>Would prefer to</strong> + base form &nbsp;·&nbsp; <strong>Would rather</strong> + base form (senza "to"!)</div>
+</div>
+
+<div class="slide" id="s2">
+  <div class="slide-title">🎬 ESEMPI IN CONTESTO</div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-shall">SHALL WE</span><span data-tw="❮Shall we❯ go to the cinema? Where shall we meet?"></span></span>
+    <span class="use-it">Andiamo al cinema? Dove ci vediamo?</span>
+  </div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-why">WHY DON'T WE</span><span data-tw="❮Why don't we❯ go out tonight?"></span></span>
+    <span class="use-it">Perché non usciamo stasera?</span>
+  </div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-lets">LET'S</span><span data-tw="❮Let's❯ meet at the bus stop."></span></span>
+    <span class="use-it">Vediamoci alla fermata dell'autobus.</span>
+  </div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-what">WHAT ABOUT</span><span data-tw="❮What about staying❯ in tonight?"></span></span>
+    <span class="use-it">E se restassimo a casa stasera?</span>
+  </div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-what">HOW ABOUT</span><span data-tw="❮How about going❯ to that new restaurant?"></span></span>
+    <span class="use-it">Che ne dici di andare a quel nuovo ristorante?</span>
+  </div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-rather">RATHER</span><span data-tw="We ❮would rather❯ not go out tonight."></span></span>
+    <span class="use-it">Preferiremmo non uscire stasera.</span>
+  </div>
+</div>
+
+<div class="slide" id="s3">
+  <div class="slide-title">⚠️ ERRORI COMUNI</div>
+  <div class="err-pair">
+    <div class="err-wrong" data-tw="❌  What about to go to the cinema?"></div>
+    <div class="err-ok"    data-tw="✅  What about going to the cinema?"></div>
+    <div class="err-it">Che ne dici di andare al cinema?</div>
+    <div class="err-note">What/How about → verbo in -ing (non base form)</div>
+  </div>
+  <div class="err-pair">
+    <div class="err-wrong" data-tw="❌  Let's to go out tonight."></div>
+    <div class="err-ok"    data-tw="✅  Let's go out tonight."></div>
+    <div class="err-it">Usciamo stasera.</div>
+    <div class="err-note">Let's → base form (senza "to")</div>
+  </div>
+  <div class="err-pair">
+    <div class="err-wrong" data-tw="❌  Shall we to meet at the bus stop?"></div>
+    <div class="err-ok"    data-tw="✅  Shall we meet at the bus stop?"></div>
+    <div class="err-it">Ci incontriamo alla fermata dell'autobus?</div>
+    <div class="err-note">Shall we → base form (senza "to")</div>
+  </div>
+  <div class="err-pair">
+    <div class="err-wrong" data-tw="❌  I would rather to stay at home."></div>
+    <div class="err-ok"    data-tw="✅  I would rather stay at home."></div>
+    <div class="err-it">Preferirei restare a casa.</div>
+    <div class="err-note">would rather → base form (senza "to"!)</div>
+  </div>
+  <div class="err-pair">
+    <div class="err-wrong" data-tw="❌  Why don't we to go to the park?"></div>
+    <div class="err-ok"    data-tw="✅  Why don't we go to the park?"></div>
+    <div class="err-it">Perché non andiamo al parco?</div>
+    <div class="err-note">Why don't we → base form (senza "to")</div>
+  </div>
+</div>
+
+</div>
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+<script>
+document.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+const TOTAL=4;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+
+function resetSlide(slide){
+  slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+  slide.querySelectorAll('.use-it,.err-it,.err-note,.fm-cell.it').forEach(n=>n.style.opacity='0');
+  slide.querySelectorAll('.use-tag').forEach(n=>n.style.opacity='0');
+  slide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  const intro=slide.querySelector('.intro');if(intro)intro.classList.remove('show');
+}
+
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  resetSlide(slide);
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await new Promise(r=>setTimeout(r,400));
+
+  if(idx===0){
+    const intro=document.getElementById('intro0');if(intro)intro.classList.add('show');
+    await new Promise(r=>setTimeout(r,300));
+    const rows=[...slide.querySelectorAll('.fm-rl[data-tw]')];
+    for(let i=0;i<rows.length;i++){
+      const rl=rows[i];
+      const next1=rl.nextElementSibling;
+      const next2=next1?next1.nextElementSibling:null;
+      await tw(rl,rl.dataset.tw,70);
+      if(next1&&next1.dataset.tw)await twHL(next1,next1.dataset.tw,65);
+      if(next2&&next2.classList.contains('it'))fi(next2);
+      await new Promise(r=>setTimeout(r,280));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  } else if(idx===1||idx===2){
+    for(const row of slide.querySelectorAll('.use-row')){
+      const tag=row.querySelector('.use-tag');
+      const ex=row.querySelector('[data-tw]');
+      const it=row.querySelector('.use-it');
+      fi(tag);
+      await new Promise(r=>setTimeout(r,120));
+      if(ex)await twHL(ex,ex.dataset.tw,80);
+      fi(it);
+      await new Promise(r=>setTimeout(r,300));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  } else if(idx===3){
+    for(const pair of slide.querySelectorAll('.err-pair')){
+      const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
+      if(wrong)await tw(wrong,wrong.dataset.tw,75);
+      await new Promise(r=>setTimeout(r,180));
+      if(ok)await tw(ok,ok.dataset.tw,75);
+      fi(it);
+      if(note)setTimeout(()=>note.style.opacity='1',250);
+      await new Promise(r=>setTimeout(r,350));
+    }
+  }
+}
+
+function go(dir){
+  if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
+  const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
+  resetSlide(oldSlide);
+  oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
+  setTimeout(()=>{
+    oldSlide.style.cssText='';oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);}));
+    animateSlide(cur);dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+TOTAL;
+    document.getElementById('prevBtn').disabled=cur===0;document.getElementById('nextBtn').disabled=cur===TOTAL-1;
+  },260);
+}
+let tx=0;const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+animateSlide(0);
+</script>
+</body>
+</html>

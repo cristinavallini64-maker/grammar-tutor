@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparatives – Unit 6</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #00CC44;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.85rem,3vw,1.4rem);letter-spacing:3px;color:#00AA33;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.65rem,2vw,0.85rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:7px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#00CC44;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:block;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#00AA33;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+.intro{background:#f0fff4;border-left:5px solid #00AA33;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.74rem,2.2vw,0.88rem);color:#111;line-height:1.6;margin-bottom:10px;opacity:0;transition:opacity 0.5s;}
+.intro.show{opacity:1;}
+.intro strong{color:#007a22;}
+.form-table{display:grid;grid-template-columns:0.65fr 0.85fr 1.3fr 1.1fr;border-radius:10px;overflow:hidden;border:2px solid #eee;margin-bottom:8px;}
+.fm-head{font-family:'Orbitron',monospace;font-size:clamp(0.48rem,1.4vw,0.65rem);letter-spacing:1.5px;font-weight:700;padding:7px 5px;text-align:center;color:#fff;background:#00AA33;}
+.fm-rl{padding:8px 8px;font-size:clamp(0.63rem,1.8vw,0.78rem);font-weight:700;background:#fafafa;border-bottom:1px solid #f0f0f0;border-right:2px solid #eee;letter-spacing:0.5px;color:#444;}
+.fm-cell{padding:8px 7px;font-size:clamp(0.65rem,1.8vw,0.82rem);border-bottom:1px solid #f0f0f0;border-right:1px solid #f0f0f0;line-height:1.3;}
+.fm-cell:last-child{border-right:none;}
+.fm-cell.green{background:#f0fff4;}
+.fm-cell.blue{background:#f0f5ff;}
+.fm-cell.yellow{background:#fffbf0;}
+.fm-cell.it{color:#888;font-style:italic;font-size:clamp(0.6rem,1.7vw,0.74rem);opacity:0;transition:opacity 0.4s;}
+.use-row{padding:7px 0;border-bottom:1px solid #f0f0f0;}
+.use-row:last-child{border-bottom:none;}
+.use-ex{font-size:clamp(0.86rem,2.8vw,1.02rem);font-weight:600;color:#111;display:block;}
+.use-it{font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;display:block;opacity:0;transition:opacity 0.4s;margin-top:2px;}
+.use-tag{font-family:'Orbitron',monospace;font-size:clamp(0.48rem,1.3vw,0.6rem);letter-spacing:1.5px;font-weight:700;padding:2px 7px;border-radius:4px;margin-right:7px;vertical-align:middle;color:#fff;display:inline-block;opacity:0;transition:opacity 0.3s;}
+.tag-er{background:#007a22;}
+.tag-more{background:#0055aa;}
+.tag-irr{background:#aa5500;}
+.tag-less{background:#880088;}
+.tag-as{background:#007799;}
+.irr-table{display:grid;grid-template-columns:0.5fr 0.75fr 1.25fr;border-radius:10px;overflow:hidden;border:2px solid #eee;margin-bottom:10px;}
+.irr-head{font-family:'Orbitron',monospace;font-size:clamp(0.44rem,1.3vw,0.6rem);letter-spacing:1px;font-weight:700;padding:6px 4px;text-align:center;color:#fff;background:#aa5500;}
+.irr-rl{padding:6px 6px;font-size:clamp(0.66rem,1.9vw,0.8rem);font-weight:900;background:#fff8f0;border-bottom:1px solid #f0f0f0;border-right:2px solid #eee;color:#aa5500;}
+.irr-cell{padding:6px 6px;font-size:clamp(0.62rem,1.75vw,0.78rem);border-bottom:1px solid #f0f0f0;border-right:1px solid #f0f0f0;line-height:1.3;}
+.irr-cell:last-child{border-right:none;}
+.irr-cell.it{color:#888;font-style:italic;font-size:clamp(0.56rem,1.6vw,0.7rem);opacity:0;transition:opacity 0.4s;}
+.err-pair:last-child{border-bottom:none;}
+.err-wrong{font-size:clamp(0.82rem,2.55vw,0.98rem);color:#c00;}
+.err-ok{font-size:clamp(0.82rem,2.55vw,0.98rem);font-weight:700;color:#007733;}
+.err-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;margin-top:1px;}
+.err-note{font-size:clamp(0.63rem,1.8vw,0.77rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
+.hl{font-weight:900;color:#00AA33;font-style:normal;}
+.warn{background:#f0fff4;border-left:5px solid #00AA33;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.76rem,2.35vw,0.9rem);color:#111;font-weight:600;line-height:1.65;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:8px;}
+.warn.show{opacity:1;}
+.warn strong{color:#007a22;}
+.cursor{display:inline-block;width:2px;height:1em;background:#00AA33;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.55rem,1.8vw,0.72rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #00AA33;background:#fff;color:#00AA33;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#00AA33;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="title">🟢 COMPARATIVES</div><div class="prog" id="prog">1 / 4</div></div>
+<div class="dots" id="dots"></div>
+<div class="slides">
+
+<div class="slide active" id="s0">
+  <div class="slide-title">📋 COME SI FORMA IL COMPARATIVO</div>
+  <div class="intro" id="intro0">
+    Il <strong>comparativo di maggioranza</strong> si usa per confrontare due cose, luoghi o persone. Si traduce con <strong>"più … di"</strong>. Il secondo termine è introdotto da <strong>than</strong>.
+  </div>
+  <div class="form-table">
+    <div class="fm-head">TIPO</div>
+    <div class="fm-head">AGGETTIVO</div>
+    <div class="fm-head">COMPARATIVO</div>
+    <div class="fm-head">ESEMPIO</div>
+    <div class="fm-rl" data-tw="monosillabi"></div>
+    <div class="fm-cell green" data-tw="old · tall · fast"></div>
+    <div class="fm-cell green" data-tw="older · taller · faster (+er)"></div>
+    <div class="fm-cell green it">You're ❮older❯ than me.</div>
+    <div class="fm-rl" data-tw="-e finale"></div>
+    <div class="fm-cell blue" data-tw="large · nice"></div>
+    <div class="fm-cell blue" data-tw="larger · nicer (solo +r)"></div>
+    <div class="fm-cell blue it">This is ❮larger❯ than mine.</div>
+    <div class="fm-rl" data-tw="c+v+c raddoppia"></div>
+    <div class="fm-cell yellow" data-tw="big · hot · thin"></div>
+    <div class="fm-cell yellow" data-tw="bigger · hotter · thinner"></div>
+    <div class="fm-cell yellow it">It's ❮hotter❯ than yesterday.</div>
+    <div class="fm-rl" data-tw="2+ sillabe"></div>
+    <div class="fm-cell green" data-tw="interesting · boring"></div>
+    <div class="fm-cell green" data-tw="more interesting · more boring"></div>
+    <div class="fm-cell green it">❮More exciting❯ than musicals.</div>
+    <div class="fm-rl" data-tw="-y → -ier"></div>
+    <div class="fm-cell blue" data-tw="scary · busy · funny"></div>
+    <div class="fm-cell blue" data-tw="scarier · busier · funnier"></div>
+    <div class="fm-cell blue it">❮Scarier❯ than the other film.</div>
+  </div>
+  <div class="warn" id="warn0">🔑 Usa <strong>a bit</strong> o <strong>a lot</strong> prima del comparativo: <em>It's <strong>a lot</strong> colder today.</em></div>
+</div>
+
+<div class="slide" id="s1">
+  <div class="slide-title">⚡ IRREGOLARI · MINORANZA · UGUAGLIANZA</div>
+  <div class="irr-table">
+    <div class="irr-head">AGGETTIVO</div>
+    <div class="irr-head">COMPARATIVO</div>
+    <div class="irr-head">ESEMPIO</div>
+    <div class="irr-rl" data-tw="good"></div>
+    <div class="irr-cell" data-tw="❮better❯"></div>
+    <div class="irr-cell it">The sequel is ❮better❯ than the first film.</div>
+    <div class="irr-rl" data-tw="bad"></div>
+    <div class="irr-cell" data-tw="❮worse❯"></div>
+    <div class="irr-cell it">The weather is ❮worse❯ than yesterday.</div>
+    <div class="irr-rl" data-tw="far"></div>
+    <div class="irr-cell" data-tw="❮farther / further❯"></div>
+    <div class="irr-cell it">The station is ❮further❯ than I thought.</div>
+    <div class="irr-rl" data-tw="fun"></div>
+    <div class="irr-cell" data-tw="❮more fun❯  (NON funner!)"></div>
+    <div class="irr-cell it">Holidays are ❮more fun❯ than school.</div>
+    <div class="irr-rl" data-tw="little"></div>
+    <div class="irr-cell" data-tw="❮less❯"></div>
+    <div class="irr-cell it">She eats ❮less❯ than her brother.</div>
+    <div class="irr-rl" data-tw="much / many"></div>
+    <div class="irr-cell" data-tw="❮more❯"></div>
+    <div class="irr-cell it">He has ❮more❯ experience than me.</div>
+  </div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-less">MINORANZA</span><span data-tw="❮less❯ + aggettivo + than"></span></span>
+    <span class="use-it">Thrillers are less funny than comedies. / I thriller sono meno divertenti delle commedie.</span>
+  </div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-as">UGUAGLIANZA +</span><span data-tw="My room is ❮as big as❯ my sister's."></span></span>
+    <span class="use-it">La mia stanza è grande quanto quella di mia sorella.</span>
+  </div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-as">UGUAGLIANZA −</span><span data-tw="The film isn't ❮as good as❯ the book."></span></span>
+    <span class="use-it">Il film non è bello quanto il libro.</span>
+  </div>
+  <div class="warn">🔑 Per confrontare due <strong>attività</strong> usa <strong>-ing</strong>: <em>Listening to music is <strong>more relaxing</strong> than watching TV.</em></div>
+</div>
+
+<div class="slide" id="s2">
+  <div class="slide-title">🎬 ESEMPI IN CONTESTO</div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-er">+ER</span><span data-tw="Action films are ❮faster❯ than romantic comedies."></span></span>
+    <span class="use-it">I film d'azione sono più veloci delle commedie romantiche.</span>
+  </div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-more">MORE</span><span data-tw="Sci-fi films are ❮more imaginative❯ than biopics."></span></span>
+    <span class="use-it">I film di fantascienza sono più fantasiosi dei biopic.</span>
+  </div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-irr">IRREGOLARE</span><span data-tw="The acting in this film is ❮better❯ than in the sequel."></span></span>
+    <span class="use-it">La recitazione in questo film è migliore che nel sequel.</span>
+  </div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-less">MINORANZA</span><span data-tw="War films are ❮less entertaining❯ than superhero films."></span></span>
+    <span class="use-it">I film di guerra sono meno divertenti dei film di supereroi.</span>
+  </div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-as">AS…AS</span><span data-tw="The book is ❮as good as❯ the film — I loved both!"></span></span>
+    <span class="use-it">Il libro è bello quanto il film — li ho amati entrambi!</span>
+  </div>
+  <div class="use-row">
+    <span class="use-ex"><span class="use-tag tag-er">A BIT</span><span data-tw="My brother is ❮a bit taller❯ than me."></span></span>
+    <span class="use-it">Mio fratello è un po' più alto di me.</span>
+  </div>
+</div>
+
+<div class="slide" id="s3">
+  <div class="slide-title">⚠️ ERRORI COMUNI</div>
+  <div class="err-pair">
+    <div class="err-wrong" data-tw="❌  This film is more better than the other one."></div>
+    <div class="err-ok"    data-tw="✅  This film is better than the other one."></div>
+    <div class="err-it">Questo film è migliore dell'altro.</div>
+    <div class="err-note">better è già comparativo — non aggiungere more</div>
+  </div>
+  <div class="err-pair">
+    <div class="err-wrong" data-tw="❌  She is more tall than her brother."></div>
+    <div class="err-ok"    data-tw="✅  She is taller than her brother."></div>
+    <div class="err-it">Lei è più alta di suo fratello.</div>
+    <div class="err-note">monosillabi → +er (non more)</div>
+  </div>
+  <div class="err-pair">
+    <div class="err-wrong" data-tw="❌  He is older then me."></div>
+    <div class="err-ok"    data-tw="✅  He is older than me."></div>
+    <div class="err-it">Lui è più vecchio di me.</div>
+    <div class="err-note">than (non then!) introduce il secondo termine</div>
+  </div>
+  <div class="err-pair">
+    <div class="err-wrong" data-tw="❌  This book is as good than the film."></div>
+    <div class="err-ok"    data-tw="✅  This book is as good as the film."></div>
+    <div class="err-it">Questo libro è bello quanto il film.</div>
+    <div class="err-note">uguaglianza → as … as (non as … than)</div>
+  </div>
+  <div class="err-pair">
+    <div class="err-wrong" data-tw="❌  Holidays are funner than school."></div>
+    <div class="err-ok"    data-tw="✅  Holidays are more fun than school."></div>
+    <div class="err-it">Le vacanze sono più divertenti della scuola.</div>
+    <div class="err-note">fun → more fun (non funner)</div>
+  </div>
+</div>
+
+</div>
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+<script>
+document.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+const TOTAL=4;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+
+function resetSlide(slide){
+  slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+  slide.querySelectorAll('.use-it,.err-it,.err-note,.fm-cell.it,.irr-cell.it').forEach(n=>n.style.opacity='0');
+  slide.querySelectorAll('.use-tag').forEach(n=>n.style.opacity='0');
+  slide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  const intro=slide.querySelector('.intro');if(intro)intro.classList.remove('show');
+}
+
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  resetSlide(slide);
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await new Promise(r=>setTimeout(r,400));
+
+  if(idx===0){
+    const intro=document.getElementById('intro0');if(intro)intro.classList.add('show');
+    await new Promise(r=>setTimeout(r,300));
+    const rows=[...slide.querySelectorAll('.fm-rl[data-tw]')];
+    for(let i=0;i<rows.length;i++){
+      const rl=rows[i];
+      const next1=rl.nextElementSibling;
+      const next2=next1?next1.nextElementSibling:null;
+      const next3=next2?next2.nextElementSibling:null;
+      await tw(rl,rl.dataset.tw,70);
+      if(next1&&next1.dataset.tw)await twHL(next1,next1.dataset.tw,65);
+      if(next2&&next2.dataset.tw)await twHL(next2,next2.dataset.tw,65);
+      if(next3&&next3.classList.contains('it'))fi(next3);
+      await new Promise(r=>setTimeout(r,280));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  } else if(idx===1){
+    // anima tabella irregolari riga per riga
+    const irrRows=[...slide.querySelectorAll('.irr-rl[data-tw]')];
+    for(const rl of irrRows){
+      const next1=rl.nextElementSibling;
+      const next2=next1?next1.nextElementSibling:null;
+      await tw(rl,rl.dataset.tw,80);
+      if(next1&&next1.dataset.tw)await twHL(next1,next1.dataset.tw,70);
+      if(next2&&next2.classList.contains('it'))fi(next2);
+      await new Promise(r=>setTimeout(r,280));
+    }
+    // poi le use-row rimanenti
+    for(const row of slide.querySelectorAll('.use-row')){
+      const tag=row.querySelector('.use-tag');
+      const ex=row.querySelector('[data-tw]');
+      const it=row.querySelector('.use-it');
+      fi(tag);
+      await new Promise(r=>setTimeout(r,120));
+      if(ex)await twHL(ex,ex.dataset.tw,80);
+      fi(it);
+      await new Promise(r=>setTimeout(r,300));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  } else if(idx===2){
+    for(const row of slide.querySelectorAll('.use-row')){
+      const tag=row.querySelector('.use-tag');
+      const ex=row.querySelector('[data-tw]');
+      const it=row.querySelector('.use-it');
+      fi(tag);
+      await new Promise(r=>setTimeout(r,120));
+      if(ex)await twHL(ex,ex.dataset.tw,80);
+      fi(it);
+      await new Promise(r=>setTimeout(r,300));
+    }
+  } else if(idx===3){
+    for(const pair of slide.querySelectorAll('.err-pair')){
+      const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
+      if(wrong)await tw(wrong,wrong.dataset.tw,75);
+      await new Promise(r=>setTimeout(r,180));
+      if(ok)await tw(ok,ok.dataset.tw,75);
+      fi(it);
+      if(note)setTimeout(()=>note.style.opacity='1',250);
+      await new Promise(r=>setTimeout(r,350));
+    }
+  }
+}
+
+function go(dir){
+  if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
+  const oldSlide=document.getElementById('s'+prev);const newSlide=document.getElementById('s'+cur);
+  resetSlide(oldSlide);
+  oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
+  setTimeout(()=>{
+    oldSlide.style.cssText='';oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);}));
+    animateSlide(cur);dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+TOTAL;
+    document.getElementById('prevBtn').disabled=cur===0;document.getElementById('nextBtn').disabled=cur===TOTAL-1;
+  },260);
+}
+let tx=0;const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+animateSlide(0);
+</script>
+</body>
+</html>
