@@ -42,6 +42,16 @@
   .tag:hover { background: rgba(0,0,0,0.45); }
   .tag.soon { opacity: 0.5; cursor: not-allowed; }
 
+  /* Stile speciale per il blocco del ripasso finale */
+  .final-revision-box { grid-column: 1 / -1; margin-top: 10px; padding: 15px; border-radius: 10px; background: rgba(255, 0, 0, 0.1); border: 2px dashed #FF0000; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+  .final-revision-text { font-weight: 900; font-size: 1.1rem; color: #FF0000; font-family: 'Nunito', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+  .final-revision-box .tag-final { background: #FF0000; color: #000; font-weight: 900; border-radius: 20px; padding: 8px 24px; font-size: 0.9rem; text-decoration: none; transition: all 0.2s; }
+  .final-revision-box .tag-final:hover { background: #fff; color: #000; box-shadow: 0 0 15px #FF0000; }
+
+  @media (max-width: 600px) {
+    .final-revision-box { flex-direction: column; text-align: center; }
+  }
+
   .divider { height: 4px; border-radius: 4px; margin: 8px 0 36px; background: linear-gradient(90deg, #00CFCF, #FF0000, #00CC44); }
 </style>
 </head>
@@ -58,7 +68,6 @@
 <div class="main">
   <a href="javascript:window.close()" class="back">✕ Chiudi questa scheda</a>
 
-  <!-- REVISION A2 -->
   <div class="year-block">
     <div class="year-title rev">📝 Revision A2 — Starter</div>
     <div class="topics">
@@ -90,7 +99,6 @@
 
   <div class="divider"></div>
 
-  <!-- PRIMO ANNO -->
   <div class="year-block">
     <div class="year-title y1">🏗️ Primo Anno</div>
     <div class="topics">
@@ -150,12 +158,16 @@
         </div>
       </div>
 
+      <div class="final-revision-box">
+        <div class="final-revision-text">🏁 RIPASSO FINALE — PRIMO ANNO</div>
+        <a href="https://cristinavallini64-maker.github.io/grammar-tutor/final-revision-y1.html" class="tag-final">🎯 Avvia Revisione Generale</a>
+      </div>
+
     </div>
   </div>
 
   <div class="divider"></div>
 
-  <!-- SECONDO ANNO -->
   <div class="year-block">
     <div class="year-title y2">🏗️ Secondo Anno</div>
     <div class="topics">
