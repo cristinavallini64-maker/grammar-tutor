@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Present Perfect: for / since</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #00CC44;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.65rem,2vw,1rem);letter-spacing:2px;color:#009933;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.65rem,2vw,0.85rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:7px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#00CC44;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#009933;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+.intro{background:#f0fff4;border-left:5px solid #009933;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.74rem,2.2vw,0.88rem);color:#111;line-height:1.6;margin-bottom:10px;opacity:0;transition:opacity 0.5s;}
+.intro.show{opacity:1;}
+.intro strong{color:#007722;}
+/* tabella standard 4 colonne */
+.form-table{display:grid;grid-template-columns:0.7fr 0.9fr 1.5fr 1.1fr;border-radius:10px;overflow:hidden;border:2px solid #eee;margin-bottom:8px;}
+.fm-head{font-family:'Orbitron',monospace;font-size:clamp(0.5rem,1.5vw,0.7rem);letter-spacing:1.5px;font-weight:700;padding:8px 6px;text-align:center;color:#fff;background:#009933;}
+.fm-rl{padding:9px 8px;font-size:clamp(0.72rem,2vw,0.88rem);font-weight:900;background:#f6fdf8;border-bottom:1px solid #e8f5ec;border-right:2px solid #eee;letter-spacing:1px;color:#009933;opacity:0;}
+.fm-cell{padding:9px 8px;font-size:clamp(0.68rem,1.95vw,0.84rem);border-bottom:1px solid #f0f0f0;border-right:1px solid #f0f0f0;line-height:1.35;opacity:0;}
+.fm-cell:last-child{border-right:none;}
+.fm-cell.for{background:#f0fff4;}
+.fm-cell.sin{background:#f0f8ff;}
+.fm-cell.it{color:#888;font-style:italic;font-size:clamp(0.62rem,1.75vw,0.76rem);background:#fafafa;transition:opacity 0.4s;}
+.fm-rl:nth-last-child(4),.fm-cell:nth-last-child(1),.fm-cell:nth-last-child(2),.fm-cell:nth-last-child(3){border-bottom:none;}
+/* box italiano evidenziato */
+.it-box{background:#fff3cd;border-left:5px solid #cc8800;border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:8px;font-size:clamp(0.76rem,2.2vw,0.9rem);color:#111;line-height:1.65;opacity:0;transition:opacity 0.5s;}
+.it-box.show{opacity:1;}
+.it-box strong{color:#995500;}
+/* slide traduzione */
+.tr-alert{background:#fff0c0;border-left:5px solid #cc8800;border-radius:0 10px 10px 0;padding:11px 16px;font-size:clamp(0.78rem,2.3vw,0.94rem);color:#333;font-weight:700;line-height:1.6;margin-bottom:10px;opacity:0;transition:opacity 0.5s;}
+.tr-alert.show{opacity:1;}
+.tr-alert strong{color:#995500;}
+.tr-pair{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #f0f0f0;opacity:0;transition:opacity 0.3s;}
+.tr-pair:last-of-type{border-bottom:none;}
+.tr-it{background:#fff3e0;border-radius:8px;padding:8px 12px;font-size:clamp(0.8rem,2.3vw,0.95rem);font-weight:700;color:#7a4000;min-height:36px;display:flex;align-items:center;gap:6px;}
+.tr-flag{font-size:1.1em;flex-shrink:0;}
+.tr-arrow{font-size:1.4rem;color:#aaa;text-align:center;font-weight:900;}
+.tr-en{background:#e8f5e9;border-radius:8px;padding:8px 12px;font-size:clamp(0.8rem,2.3vw,0.95rem);font-weight:700;color:#1a5c00;min-height:36px;display:flex;align-items:center;gap:6px;}
+.tr-en .hl{color:#009933;font-weight:900;font-style:normal;text-decoration:underline;}
+/* slide FOR confronto */
+.cmp-block{border-radius:12px;overflow:hidden;border:3px solid;margin-bottom:12px;opacity:0;transition:opacity 0.5s;}
+.cmp-block.show{opacity:1;}
+.cmp-block.past{border-color:#cc4400;}
+.cmp-block.perf{border-color:#009933;}
+.cmp-head-big{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.7rem,2.2vw,0.95rem);letter-spacing:2px;padding:10px 16px;color:#fff;display:flex;align-items:center;gap:8px;}
+.cmp-block.past .cmp-head-big{background:#cc4400;}
+.cmp-block.perf .cmp-head-big{background:#009933;}
+.cmp-body{padding:12px 16px;}
+.cmp-rule{font-size:clamp(0.78rem,2.2vw,0.9rem);font-weight:700;color:#333;margin-bottom:8px;line-height:1.5;}
+.cmp-rule em{font-style:normal;}
+.cmp-block.past .cmp-rule em{color:#cc4400;font-weight:900;}
+.cmp-block.perf .cmp-rule em{color:#009933;font-weight:900;}
+.cmp-ex{font-size:clamp(0.9rem,2.6vw,1.05rem);font-weight:700;margin-bottom:4px;padding:8px 12px;border-radius:6px;}
+.cmp-block.past .cmp-ex{background:#fff3f0;color:#7a1500;}
+.cmp-block.perf .cmp-ex{background:#f0fff4;color:#1a5c00;}
+.cmp-ex .hl{font-weight:900;font-style:normal;}
+.cmp-block.past .cmp-ex .hl{color:#cc4400;text-decoration:underline;}
+.cmp-block.perf .cmp-ex .hl{color:#009933;text-decoration:underline;}
+.cmp-trad{font-size:clamp(0.7rem,2vw,0.82rem);color:#888;font-style:italic;padding:0 12px 4px;}
+/* use-row e resto */
+.use-row{padding:7px 0;border-bottom:1px solid #f0f0f0;opacity:0;transition:opacity 0.3s;}
+.use-row:last-child{border-bottom:none;}
+.use-ex{font-size:clamp(0.86rem,2.8vw,1.04rem);font-weight:600;color:#111;display:block;}
+.use-it{font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;display:block;opacity:0;transition:opacity 0.4s;margin-top:2px;}
+.use-tag{font-family:'Orbitron',monospace;font-size:clamp(0.5rem,1.4vw,0.62rem);letter-spacing:1.5px;font-weight:700;padding:2px 7px;border-radius:4px;margin-right:7px;vertical-align:middle;color:#fff;display:inline-block;}
+.tag-for{background:#009933;}
+.tag-sin{background:#0066cc;}
+.tag-how{background:#7700cc;}
+.rule-row{display:grid;grid-template-columns:1.2fr 1.5fr;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0;align-items:start;}
+.rule-row:last-child{border-bottom:none;}
+.rule-name{font-size:clamp(0.7rem,2vw,0.85rem);font-weight:700;color:#777;line-height:1.4;}
+.rule-ex{font-size:clamp(0.82rem,2.55vw,0.98rem);color:#111;font-weight:600;}
+.rule-it{grid-column:1/-1;font-size:clamp(0.62rem,1.8vw,0.76rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;}
+.err-pair{padding:6px 0;border-bottom:1px solid #f0f0f0;}
+.err-pair:last-child{border-bottom:none;}
+.err-wrong{font-size:clamp(0.82rem,2.55vw,0.98rem);color:#c00;}
+.err-ok{font-size:clamp(0.82rem,2.55vw,0.98rem);font-weight:700;color:#007733;}
+.err-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;margin-top:1px;}
+.err-note{font-size:clamp(0.63rem,1.8vw,0.777rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
+.hl{font-weight:900;color:#009933;font-style:normal;}
+.warn{background:#f0fff4;border-left:5px solid #00CC44;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.76rem,2.35vw,0.92rem);color:#111;font-weight:600;line-height:1.65;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:8px;}
+.warn.show{opacity:1;}
+.warn strong{color:#009933;}
+.cursor{display:inline-block;width:2px;height:1em;background:#009933;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.55rem,1.8vw,0.72rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #00CC44;background:#fff;color:#009933;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#00CC44;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="title">🟢 PRESENT PERFECT: FOR / SINCE</div><div class="prog" id="prog">1 / 6</div></div>
+<div class="dots" id="dots"></div>
+<div class="slides">
+
+  <!-- SLIDE 0: tabella for/since -->
+  <div class="slide active" id="s0">
+    <div class="slide-title">📋 FOR e SINCE — la differenza fondamentale</div>
+    <div class="intro" id="intro0">
+      Il <strong>Present Perfect + for / since</strong> si usa per dire da quanto tempo o da quando dura una situazione ancora in corso. <strong>For</strong> = durata. <strong>Since</strong> = momento di inizio. Mai con il Past Simple.
+    </div>
+    <div class="form-table">
+      <div class="fm-head">AVVERBIO</div>
+      <div class="fm-head">RISPONDE A</div>
+      <div class="fm-head">ESEMPI DI ESPRESSIONI</div>
+      <div class="fm-head">TRADUZIONE</div>
+      <div class="fm-rl" data-tw="FOR"></div>
+      <div class="fm-cell for" data-tw="Per quanto tempo? (durata)"></div>
+      <div class="fm-cell for" data-tw="three years · two weeks · a long time · ages · ten minutes"></div>
+      <div class="fm-cell it">da (+ periodo di tempo)</div>
+      <div class="fm-rl" data-tw="SINCE"></div>
+      <div class="fm-cell sin" data-tw="Da quando? (punto di inizio)"></div>
+      <div class="fm-cell sin" data-tw="2009 · last autumn · Friday · midday · I was born"></div>
+      <div class="fm-cell it">da (+ momento specifico)</div>
+    </div>
+    <div class="it-box" id="itbox0">
+      ⚠️ <strong>Attenzione all'italiano!</strong> Dove l'italiano usa il <strong>presente</strong>, l'inglese usa il <strong>Present Perfect</strong>:<br>
+      🇮🇹 <strong>Vivo</strong> qui da 5 anni → 🇬🇧 I <strong>have lived</strong> here <strong>for</strong> five years.<br>
+      🇮🇹 <strong>Insegna</strong> qui dal 2009 → 🇬🇧 She <strong>has taught</strong> here <strong>since</strong> 2009.
+    </div>
+    <div class="warn">⚡ <strong>Since</strong> NON si usa con il Past Simple. <strong>How long…?</strong> vuole sempre il Present Perfect.</div>
+  </div>
+
+  <!-- SLIDE 1: esempi -->
+  <div class="slide" id="s1">
+    <div class="slide-title">🔧 ESEMPI — for e since in azione</div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-for">FOR</span><span data-tw="I've ❮had❯ this phone ❮for❯ three years."></span></span>
+      <span class="use-it">🇮🇹 Ho questo telefono da tre anni.</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-sin">SINCE</span><span data-tw="Mrs Wilson ❮has taught❯ in this school ❮since❯ 2009."></span></span>
+      <span class="use-it">🇮🇹 La signora Wilson insegna in questa scuola dal 2009.</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-for">FOR neg.</span><span data-tw="We ❮haven't been❯ to the coast ❮for❯ ages."></span></span>
+      <span class="use-it">🇮🇹 Non andiamo in costa da tantissimo tempo.</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-sin">SINCE neg.</span><span data-tw="I ❮haven't seen❯ him ❮since❯ last August."></span></span>
+      <span class="use-it">🇮🇹 Non lo vedo dall'agosto scorso.</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-how">HOW LONG?</span><span data-tw="❮How long have❯ you ❮known❯ her?"></span></span>
+      <span class="use-it">🇮🇹 Da quanto tempo la conosci?</span>
+    </div>
+    <div class="warn">⚠️ How long? → sempre Present Perfect. Risposta: <em>for</em> + durata oppure <em>since</em> + momento.</div>
+  </div>
+
+  <!-- SLIDE 2: italiano→inglese traduzione -->
+  <div class="slide" id="s2">
+    <div class="slide-title">🇮🇹 → 🇬🇧 PRESENTE ITALIANO = PRESENT PERFECT!</div>
+    <div class="tr-alert" id="tralert2">
+      ⚠️ In italiano usi il <strong>PRESENTE</strong> con "da" — in inglese devi usare il <strong>PRESENT PERFECT</strong>
+    </div>
+    <div class="tr-pair">
+      <div class="tr-it"><span class="tr-flag">🇮🇹</span><span data-tw="Vivo qui da cinque anni."></span></div>
+      <div class="tr-arrow">→</div>
+      <div class="tr-en"><span class="tr-flag">🇬🇧</span><span data-tw="I ❮have lived❯ here ❮for❯ five years."></span></div>
+    </div>
+    <div class="tr-pair">
+      <div class="tr-it"><span class="tr-flag">🇮🇹</span><span data-tw="Conosco Marco da quando eravamo bambini."></span></div>
+      <div class="tr-arrow">→</div>
+      <div class="tr-en"><span class="tr-flag">🇬🇧</span><span data-tw="I ❮have known❯ Marco ❮since❯ we were children."></span></div>
+    </div>
+    <div class="tr-pair">
+      <div class="tr-it"><span class="tr-flag">🇮🇹</span><span data-tw="Studia inglese da tre anni."></span></div>
+      <div class="tr-arrow">→</div>
+      <div class="tr-en"><span class="tr-flag">🇬🇧</span><span data-tw="She ❮has studied❯ English ❮for❯ three years."></span></div>
+    </div>
+    <div class="tr-pair">
+      <div class="tr-it"><span class="tr-flag">🇮🇹</span><span data-tw="Non lo vedo dal 2020."></span></div>
+      <div class="tr-arrow">→</div>
+      <div class="tr-en"><span class="tr-flag">🇬🇧</span><span data-tw="I ❮haven't seen❯ him ❮since❯ 2020."></span></div>
+    </div>
+    <div class="tr-pair">
+      <div class="tr-it"><span class="tr-flag">🇮🇹</span><span data-tw="Da quanto tempo abiti qui?"></span></div>
+      <div class="tr-arrow">→</div>
+      <div class="tr-en"><span class="tr-flag">🇬🇧</span><span data-tw="❮How long have❯ you ❮lived❯ here?"></span></div>
+    </div>
+    <div class="warn">⚡ Regola d'oro: <strong>presente italiano + "da"</strong> → <strong>Present Perfect + for/since</strong>. Mai il presente semplice!</div>
+  </div>
+
+  <!-- SLIDE 3: FOR + Past Simple vs Present Perfect -->
+  <div class="slide" id="s3">
+    <div class="slide-title">⚡ FOR + PAST SIMPLE vs FOR + PRESENT PERFECT</div>
+
+    <div class="cmp-block past" id="cmpA">
+      <div class="cmp-head-big">🔴 FOR + PAST SIMPLE — azione FINITA</div>
+      <div class="cmp-body">
+        <div class="cmp-rule">La situazione <em>non esiste più</em>. È finita nel passato.</div>
+        <div class="cmp-ex"><span data-tw="I ❮worked❯ in that shop ❮for❯ two years."></span></div>
+        <div class="cmp-trad">🇮🇹 Ho lavorato in quel negozio per due anni. (non ci lavoro più)</div>
+        <div class="cmp-ex" style="margin-top:6px"><span data-tw="She ❮studied❯ French ❮for❯ three years."></span></div>
+        <div class="cmp-trad">🇮🇹 Ha studiato il francese per tre anni. (ha smesso)</div>
+      </div>
+    </div>
+
+    <div class="cmp-block perf" id="cmpB">
+      <div class="cmp-head-big">🟢 FOR + PRESENT PERFECT — situazione ANCORA IN CORSO</div>
+      <div class="cmp-body">
+        <div class="cmp-rule">La situazione <em>dura ancora adesso</em>. Continua nel presente.</div>
+        <div class="cmp-ex"><span data-tw="I ❮have worked❯ here ❮for❯ two years."></span></div>
+        <div class="cmp-trad">🇮🇹 Lavoro qui da due anni. (ci lavoro ancora)</div>
+        <div class="cmp-ex" style="margin-top:6px"><span data-tw="She ❮has studied❯ French ❮for❯ three years."></span></div>
+        <div class="cmp-trad">🇮🇹 Studia il francese da tre anni. (studia ancora)</div>
+      </div>
+    </div>
+
+    <div class="warn">⚡ La chiave è questa: la situazione <strong>è ancora in corso?</strong> → Present Perfect + for. <strong>È finita?</strong> → Past Simple + for.</div>
+  </div>
+
+  <!-- SLIDE 4: struttura How long -->
+  <div class="slide" id="s4">
+    <div class="slide-title">✂️ LA STRUTTURA — How long…?</div>
+    <div class="rule-row">
+      <div class="rule-name" data-tw="How long + Present Perfect?"></div>
+      <div class="rule-ex" data-tw="❮How long❯ have you ❮had❯ this bike?"></div>
+      <div class="rule-it">🇮🇹 Da quanto tempo hai questa bici?</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-name" data-tw="Risposta con for (durata)"></div>
+      <div class="rule-ex" data-tw="I've ❮known❯ her ❮for❯ two years."></div>
+      <div class="rule-it">🇮🇹 La conosco da due anni. (NON: I know her for two years)</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-name" data-tw="Risposta con since (momento)"></div>
+      <div class="rule-ex" data-tw="I've ❮known❯ her ❮since❯ we were at school."></div>
+      <div class="rule-it">🇮🇹 La conosco da quando eravamo a scuola.</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-name" data-tw="Negativa con for/since"></div>
+      <div class="rule-ex" data-tw="We ❮haven't seen❯ them ❮since❯ Christmas."></div>
+      <div class="rule-it">🇮🇹 Non li vediamo da Natale.</div>
+    </div>
+    <div class="warn">⚡ In italiano usi il <strong>presente</strong> → in inglese usa il <strong>Present Perfect</strong>: <em>Vivo qui da 5 anni</em> = <em>I've lived here for 5 years.</em></div>
+  </div>
+
+  <!-- SLIDE 5: errori -->
+  <div class="slide" id="s5">
+    <div class="slide-title">🚨 ERRORI TIPICI DA EVITARE</div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  I live here since 2018."></div>
+      <div class="err-ok"    data-tw="✅  I've lived here since 2018."></div>
+      <div class="err-it">🇮🇹 Vivo qui dal 2018.</div>
+      <div class="err-note">in italiano "presente" → in inglese Present Perfect + since</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  She has taught here since three years."></div>
+      <div class="err-ok"    data-tw="✅  She has taught here for three years."></div>
+      <div class="err-it">🇮🇹 Insegna qui da tre anni.</div>
+      <div class="err-note">durata (three years) → for · momento specifico (2009) → since</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  How long do you know her?"></div>
+      <div class="err-ok"    data-tw="✅  How long have you known her?"></div>
+      <div class="err-it">🇮🇹 Da quanto tempo la conosci?</div>
+      <div class="err-note">How long? con situazione in corso → Present Perfect</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  I've had this phone since two years."></div>
+      <div class="err-ok"    data-tw="✅  I've had this phone for two years."></div>
+      <div class="err-it">🇮🇹 Ho questo telefono da due anni.</div>
+      <div class="err-note">two years = durata → for (non since)</div>
+    </div>
+  </div>
+
+</div>
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◄ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ►</button>
+</div>
+<script>
+document.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+const TOTAL=6;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/\u276e|\u276f/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/\u276e|\u276f/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/\u276e([^\u276f]+)\u276f/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+function fi(el){if(el){el.style.transition='opacity 0.4s';setTimeout(()=>el.style.opacity='1',80);}}
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  slide.querySelectorAll('[data-tw]').forEach(el=>el.textContent='');
+  slide.querySelectorAll('.use-it,.rule-it,.err-it,.err-note,.fm-cell.it').forEach(n=>n.style.opacity='0');
+  slide.querySelectorAll('.use-row').forEach(n=>n.style.opacity='0');
+  slide.querySelectorAll('.fm-rl,.fm-cell:not(.it)').forEach(n=>n.style.opacity='0');
+  slide.querySelectorAll('.tr-pair').forEach(n=>n.style.opacity='0');
+  slide.querySelectorAll('.tr-alert').forEach(n=>n.classList.remove('show'));
+  slide.querySelectorAll('.cmp-block').forEach(n=>n.classList.remove('show'));
+  const itbox=document.getElementById('itbox0');if(itbox)itbox.classList.remove('show');
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await new Promise(r=>setTimeout(r,400));
+  if(idx===0){
+    const intro=document.getElementById('intro0');if(intro)intro.classList.add('show');
+    await new Promise(r=>setTimeout(r,350));
+    const rows=[...slide.querySelectorAll('.fm-rl[data-tw]')];
+    for(let i=0;i<rows.length;i++){
+      const rl=rows[i],next1=rl.nextElementSibling,next2=next1?next1.nextElementSibling:null,next3=next2?next2.nextElementSibling:null;
+      rl.style.opacity='1'; await tw(rl,rl.dataset.tw,75);
+      if(next1&&next1.dataset.tw){next1.style.opacity='1';await tw(next1,next1.dataset.tw,70);}
+      if(next2&&next2.dataset.tw){next2.style.opacity='1';await tw(next2,next2.dataset.tw,55);}
+      if(next3&&next3.classList.contains('it'))fi(next3);
+      await new Promise(r=>setTimeout(r,320));
+    }
+    if(itbox){await new Promise(r=>setTimeout(r,200));itbox.classList.add('show');}
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,300));warn.classList.add('show');}
+  }else if(idx===1){
+    for(const row of slide.querySelectorAll('.use-row')){
+      const ex=row.querySelector('[data-tw]'),it=row.querySelector('.use-it');
+      fi(row);await new Promise(r=>setTimeout(r,120));
+      if(ex)await twHL(ex,ex.dataset.tw,80);fi(it);await new Promise(r=>setTimeout(r,280));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  }else if(idx===2){
+    const alert=slide.querySelector('.tr-alert');
+    if(alert){await new Promise(r=>setTimeout(r,100));alert.classList.add('show');}
+    await new Promise(r=>setTimeout(r,450));
+    for(const pair of slide.querySelectorAll('.tr-pair')){
+      fi(pair);await new Promise(r=>setTimeout(r,100));
+      const itSpan=pair.querySelector('.tr-it [data-tw]');
+      const enSpan=pair.querySelector('.tr-en [data-tw]');
+      if(itSpan)await tw(itSpan,itSpan.dataset.tw,58);
+      await new Promise(r=>setTimeout(r,150));
+      if(enSpan)await twHL(enSpan,enSpan.dataset.tw,58);
+      await new Promise(r=>setTimeout(r,300));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  }else if(idx===3){
+    // slide FOR Past Simple vs Present Perfect
+    const cmpA=document.getElementById('cmpA');
+    const cmpB=document.getElementById('cmpB');
+    if(cmpA){
+      cmpA.classList.add('show');
+      await new Promise(r=>setTimeout(r,300));
+      const spans=cmpA.querySelectorAll('[data-tw]');
+      for(const sp of spans){await twHL(sp,sp.dataset.tw,70);await new Promise(r=>setTimeout(r,200));}
+    }
+    await new Promise(r=>setTimeout(r,400));
+    if(cmpB){
+      cmpB.classList.add('show');
+      await new Promise(r=>setTimeout(r,300));
+      const spans=cmpB.querySelectorAll('[data-tw]');
+      for(const sp of spans){await twHL(sp,sp.dataset.tw,70);await new Promise(r=>setTimeout(r,200));}
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,300));warn.classList.add('show');}
+  }else if(idx===4){
+    for(const row of slide.querySelectorAll('.rule-row')){
+      const name=row.querySelector('.rule-name'),ex=row.querySelector('.rule-ex'),it=row.querySelector('.rule-it');
+      if(name)await tw(name,name.dataset.tw,70);
+      if(ex)await twHL(ex,ex.dataset.tw,85);
+      fi(it);await new Promise(r=>setTimeout(r,350));
+    }
+    const warn=slide.querySelector('.warn');if(warn){await new Promise(r=>setTimeout(r,200));warn.classList.add('show');}
+  }else if(idx===5){
+    for(const pair of slide.querySelectorAll('.err-pair')){
+      const wrong=pair.querySelector('.err-wrong'),ok=pair.querySelector('.err-ok'),it=pair.querySelector('.err-it'),note=pair.querySelector('.err-note');
+      if(wrong)await tw(wrong,wrong.dataset.tw,80);await new Promise(r=>setTimeout(r,200));
+      if(ok)await tw(ok,ok.dataset.tw,80);fi(it);if(note)setTimeout(()=>note.style.opacity='1',250);await new Promise(r=>setTimeout(r,380));
+    }
+  }
+}
+function go(dir){
+  if(busy)return;const prev=cur;cur=Math.max(0,Math.min(TOTAL-1,cur+dir));if(cur===prev)return;busy=true;
+  const oldSlide=document.getElementById('s'+prev),newSlide=document.getElementById('s'+cur);
+  oldSlide.querySelectorAll('.warn').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.querySelectorAll('.use-it,.rule-it,.err-it,.err-note,.fm-cell.it').forEach(n=>n.style.opacity='0');
+  oldSlide.querySelectorAll('.use-row').forEach(n=>n.style.opacity='0');
+  oldSlide.querySelectorAll('.fm-rl,.fm-cell:not(.it)').forEach(n=>n.style.opacity='0');
+  oldSlide.querySelectorAll('.tr-pair').forEach(n=>n.style.opacity='0');
+  oldSlide.querySelectorAll('.tr-alert').forEach(n=>n.classList.remove('show'));
+  oldSlide.querySelectorAll('.cmp-block').forEach(n=>n.classList.remove('show'));
+  const intro=document.getElementById('intro0');if(intro&&prev===0)intro.classList.remove('show');
+  const itbox=document.getElementById('itbox0');if(itbox&&prev===0)itbox.classList.remove('show');
+  oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
+  setTimeout(()=>{
+    oldSlide.style.cssText='';oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);}));
+    animateSlide(cur);dotsEl.children[prev].classList.remove('active');dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+TOTAL;
+    document.getElementById('prevBtn').disabled=cur===0;document.getElementById('nextBtn').disabled=cur===TOTAL-1;
+  },260);
+}
+let tx=0;const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+animateSlide(0);
+</script>
+</body>
+</html>
