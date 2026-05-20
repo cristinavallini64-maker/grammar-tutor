@@ -20,28 +20,26 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 .slide.active{visibility:visible;opacity:1;}
 .slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#009933;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
 .slide-title.show{opacity:1;}
-/* Elementi nascosti all'avvio */
-.cmp-col, .use-row, .err-pair, .warn, .cmp-it, .use-it, .err-it { opacity: 0; transition: opacity 0.5s; }
+/* Struttura base nascosta */
+.cmp-col, .use-row, .err-pair, .warn, .cmp-it, .use-it, .err-it, .err-note { opacity: 0; transition: opacity 0.5s; }
 .cmp-table{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
 .cmp-col{border-radius:10px;overflow:hidden;border:2px solid #eee;}
-.cmp-head{font-family:'Orbitron',monospace;font-size:clamp(0.6rem,1.8vw,0.8rem);letter-spacing:1.5px;font-weight:700;padding:9px 8px;text-align:center;color:#fff;background:#009933;}
-.cmp-body{padding:10px 12px;}
-.cmp-form{font-family:'Orbitron',monospace;font-size:clamp(0.6rem,1.75vw,0.75rem);color:#111;font-weight:700;background:#fafafa;padding:6px 8px;border-radius:5px;margin-bottom:8px;}
-.cmp-ex{font-size:clamp(0.74rem,2.2vw,0.9rem);font-weight:600;color:#111;margin-bottom:5px;}
-.cmp-it{font-size:clamp(0.62rem,1.8vw,0.75rem);color:#999;font-style:italic;line-height:1.3;}
+.cmp-head{font-family:'Orbitron',monospace;font-size:0.8rem;padding:9px;text-align:center;color:#fff;background:#009933;}
+.cmp-body{padding:10px;}
+.cmp-form{font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;background:#fafafa;padding:6px;border-radius:5px;}
+.cmp-ex{font-size:0.9rem;font-weight:600;margin:5px 0;}
+.cmp-it{font-size:0.75rem;color:#999;font-style:italic;}
 .use-row{padding:8px 0;border-bottom:1px solid #f0f0f0;}
-.use-ex{font-size:clamp(0.84rem,2.7vw,1rem);font-weight:600;display:block;}
-.use-it{font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;display:block;margin-top:3px;}
-.use-tag{font-family:'Orbitron',monospace;font-size:clamp(0.5rem,1.4vw,0.62rem);padding:2px 7px;border-radius:4px;margin-right:7px;color:#fff;background:#009933;}
-.err-pair{padding:6px 0;border-bottom:1px solid #f0f0f0;}
-.err-wrong{font-size:clamp(0.8rem,2.5vw,0.95rem);color:#c00;}
-.err-ok{font-size:clamp(0.8rem,2.5vw,0.95rem);font-weight:700;color:#007733;}
-.err-it{font-size:clamp(0.65rem,1.9vw,0.78rem);color:#999;font-style:italic;}
-.warn{background:#f0fff4;border-left:5px solid #009933;padding:9px 14px;font-size:clamp(0.72rem,2.2vw,0.88rem);font-weight:600;margin-top:8px;}
-.hl{font-weight:900;color:#009933;font-style:normal;}
-.cursor{display:inline-block;width:2px;height:1em;background:#009933;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+.use-ex{font-weight:600;display:block;}
+.use-it{color:#999;font-style:italic;display:block;margin-top:2px;}
+.use-tag{font-family:'Orbitron',monospace;font-size:0.6rem;padding:2px 7px;border-radius:4px;margin-right:7px;color:#fff;background:#009933;}
+.err-wrong{color:#c00;font-size:0.9rem;}
+.err-ok{color:#007733;font-weight:700;font-size:0.9rem;}
+.warn{background:#f0fff4;border-left:5px solid #009933;padding:9px;font-size:0.85rem;margin-top:8px;}
+.hl{color:#009933;font-weight:900;}
+.cursor{display:inline-block;width:2px;height:1em;background:#009933;margin-left:1px;animation:blink 0.6s step-end infinite;}
 @keyframes blink{50%{opacity:0;}}
-.btn-nav{font-family:'Orbitron',monospace;font-weight:700;padding:10px 24px;border-radius:8px;border:2px solid #009933;background:#fff;color:#009933;cursor:pointer;}
+.btn-nav{font-family:'Orbitron',monospace;font-weight:700;padding:10px 24px;border:2px solid #009933;background:#fff;color:#009933;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -56,13 +54,42 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     </div>
     <div class="warn">💡 La <strong>differenza</strong>: aggettivo = stato, verbo = azione.</div>
   </div>
+  <div class="slide" id="s1">
+    <div class="slide-title">😊 INFLUENZARE LO STATO D'ANIMO</div>
+    <div class="use-row"><span class="use-ex"><span class="use-tag">HAPPY</span><span data-tw="This sunshine ❮makes me happy❯."></span></span><span class="use-it">Questo sole mi rende felice.</span></div>
+    <div class="use-row"><span class="use-ex"><span class="use-tag">ANGRY</span><span data-tw="Late trains ❮make him angry❯."></span></span><span class="use-it">I treni in ritardo lo fanno arrabbiare.</span></div>
+    <div class="use-row"><span class="use-ex"><span class="use-tag">SAD</span><span data-tw="That movie ❮made her sad❯."></span></span><span class="use-it">Quel film l'ha resa triste.</span></div>
+    <div class="warn">⚠️ L'aggettivo va <strong>sempre dopo</strong> l'oggetto.</div>
   </div>
+  <div class="slide" id="s2">
+    <div class="slide-title">🎒 IMPORRE UN'AZIONE</div>
+    <div class="use-row"><span class="use-ex"><span class="use-tag">STUDY</span><span data-tw="The exam ❮makes us study❯."></span></span><span class="use-it">L'esame ci costringe a studiare.</span></div>
+    <div class="use-row"><span class="use-ex"><span class="use-tag">LAUGH</span><span data-tw="He ❮makes me laugh❯."></span></span><span class="use-it">Lui mi fa ridere.</span></div>
+    <div class="use-row"><span class="use-ex"><span class="use-tag">CLEAN</span><span data-tw="They ❮made me clean❯ my room."></span></span><span class="use-it">Mi hanno fatto pulire la camera.</span></div>
+    <div class="warn">⚡ Il verbo che segue deve essere all'<strong>infinito base</strong> (senza TO).</div>
+  </div>
+  <div class="slide" id="s3">
+    <div class="slide-title">🚫 LA REGOLA DELL'INFINITO</div>
+    <div class="use-row"><span class="use-ex"><span class="use-tag">CORRETTO</span><span data-tw="They made me ❮wash❯ the dishes."></span></span><span class="use-it">Mi hanno fatto lavare i piatti.</span></div>
+    <div class="use-row"><span class="use-ex"><span class="use-tag" style="background:#cc0000;">ERRORE</span><span data-tw="They made me ❮to wash❯ the dishes."></span></span><span class="use-it">❌ MAI usare "TO" dopo make + oggetto.</span></div>
+    <div class="warn">🎯 Ricorda: <strong>MAKE + PERSONA + VERBO</strong> (nudo e crudo).</div>
+  </div>
+  <div class="slide" id="s4">
+    <div class="slide-title">🚨 ERRORI DA EVITARE</div>
+    <div class="err-pair"><div class="err-wrong" data-tw="Non tradurre 'rendere' con 'render'"></div><div class="err-ok" data-tw="You ❮make me❯ happy."></div><div class="err-it">Si usa solo MAKE.</div></div>
+    <div class="err-pair"><div class="err-wrong" data-tw="Non invertire oggetto e aggettivo"></div><div class="err-ok" data-tw="It makes ❮him angry❯."></div><div class="err-note">Mai dire "It makes angry him".</div></div>
+    <div class="warn">🚀 Sei pronto! La struttura causale è semplice se rispetti l'ordine degli elementi.</div>
+  </div>
+</div>
 <div class="nav" style="display:flex;justify-content:center;gap:20px;padding:10px;">
   <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
   <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
 </div>
 <script>
-// Logica "Present Simple vs Continuous" (Scrittura sequenziale rigida)
+const TOTAL=5;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
+
 async function tw(el, text, speed=80) {
     el.textContent = '';
     const cursor = document.createElement('span'); cursor.className = 'cursor';
@@ -73,33 +100,38 @@ async function tw(el, text, speed=80) {
         await new Promise(r=>setTimeout(r, speed));
     }
     cursor.remove();
-    // Se c'è un tag di formattazione (❮...❯)
-    if(text.includes('❮')) {
-        el.innerHTML = text.replace(/❮([^❯]+)❯/g, '<em class="hl">$1</em>');
-    }
+    if(text.includes('❮')) el.innerHTML = text.replace(/❮([^❯]+)❯/g, '<em class="hl">$1</em>');
 }
 
 async function animateSlide(idx) {
     const s = document.getElementById('s'+idx);
     s.querySelector('.slide-title').classList.add('show');
-    await new Promise(r=>setTimeout(r, 500));
-    
-    // Seleziona tutti gli elementi che devono apparire in ordine
+    await new Promise(r=>setTimeout(r, 400));
     const elements = s.querySelectorAll('.cmp-col, .use-row, .err-pair, .warn');
     for(let el of elements) {
         el.style.opacity = '1';
-        const textElements = el.querySelectorAll('[data-tw]');
-        for(let t of textElements) {
-            await tw(t, t.dataset.tw);
-        }
-        const desc = el.querySelector('.cmp-it, .use-it, .err-it');
-        if(desc) desc.style.opacity = '1';
+        const t = el.querySelector('[data-tw]');
+        if(t) await tw(t, t.dataset.tw);
+        const desc = el.querySelector('.cmp-it, .use-it, .err-it, .err-note');
+        if(desc) { await new Promise(r=>setTimeout(r, 200)); desc.style.opacity = '1'; }
     }
 }
 
-function go(d){
-    // ... stessa logica di transizione (senza mostrare nulla prima della fine della transizione)
-    animateSlide(cur);
+function go(d) {
+    if(busy) return; busy=true;
+    const old = document.getElementById('s'+cur);
+    cur += d;
+    const next = document.getElementById('s'+cur);
+    old.style.opacity = '0';
+    setTimeout(()=>{
+        old.classList.remove('active'); next.classList.add('active');
+        next.style.opacity = '1';
+        dotsEl.children[cur-d].classList.remove('active'); dotsEl.children[cur].classList.add('active');
+        document.getElementById('prog').textContent = (cur+1)+' / '+TOTAL;
+        document.getElementById('prevBtn').disabled = cur===0;
+        document.getElementById('nextBtn').disabled = cur===TOTAL-1;
+        animateSlide(cur); busy=false;
+    }, 300);
 }
 animateSlide(0);
 </script>
