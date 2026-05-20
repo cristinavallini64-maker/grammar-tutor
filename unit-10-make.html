@@ -70,7 +70,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 <div class="dots" id="dots"></div>
 <div class="slides">
 
-  <!-- SLIDE 0: INTRO -->
   <div class="slide active" id="s0">
     <div class="slide-title">📋 CAUSE & EFFECT WITH "MAKE"</div>
     <div class="intro" id="intro0">
@@ -89,7 +88,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">⚡ Fai attenzione: quando usi un verbo dopo l'oggetto, questo deve essere sempre all'infinito nudo (senza il TO!).</div>
   </div>
 
-  <!-- SLIDE 1: MAKE + OBJECT + ADJECTIVE -->
   <div class="slide" id="s1">
     <div class="slide-title">😊 INFLUENZARE LO STATO D'ANIMO</div>
     <div class="use-row">
@@ -107,7 +105,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">💡 Ricorda la struttura: <strong>Soggetto + MAKE + Persona + Aggettivo</strong>. Non inserire verbi di collegamento intermedi!</div>
   </div>
 
-  <!-- SLIDE 2: MAKE + OBJECT + VERB -->
   <div class="slide" id="s2">
     <div class="slide-title">🎒 IMPORRE UN OBBLIGO O AZIONE</div>
     <div class="rule-row">
@@ -128,7 +125,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">⚠️ Nota come il verbo "make" possa essere coniugato al passato (made) o al presente (makes), mentre il secondo verbo resta invariato.</div>
   </div>
 
-  <!-- SLIDE 3: BARE INFINITIVE RULE -->
   <div class="slide" id="s3">
     <div class="slide-title">🚫 LA REGOLA DELL'INFINITO SENZA "TO"</div>
     <div class="use-row">
@@ -142,7 +138,6 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
     <div class="warn">❗ Questo è uno degli errori più diffusi nei test d'esame. Fissalo in mente: <strong>MAKE + PERSONA + VERBO BASE</strong>.</div>
   </div>
 
-  <!-- SLIDE 4: COMMON ERRORS -->
   <div class="slide" id="s4">
     <div class="slide-title">🚨 COMPRENSIONE ED ERRORI DA EVITARE</div>
     <div class="err-pair">
@@ -169,11 +164,14 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 let cur=0;const slides=document.querySelectorAll('.slide');const dotsEl=document.getElementById('dots');const TOTAL=slides.length;let busy=false;let timers=[];
 for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>{if(!busy&&i!==cur)go(i-cur);};dotsEl.appendChild(d);}
 function clearTimers(){timers.forEach(t=>clearTimeout(t));timers=[];}
-function typeEffect(el,text,speed=25,cb){el.innerHTML='';let i=0;let currentHTML='';
+
+// MODIFICA QUI: ho cambiato 25 a 70 per rendere il typewriter più lento
+function typeEffect(el,text,speed=70,cb){el.innerHTML='';let i=0;let currentHTML='';
 function type(){if(i<text.length){let char=text[i];if(char==='❮'){currentHTML+='<span class="hl">';i++;}else if(char==='❯'){currentHTML+='</span>';i++;}else{currentHTML+=text[i];i++;}el.innerHTML=currentHTML+'<span class="cursor"></span>';let t=setTimeout(type,speed);timers.push(t);}else{el.innerHTML=currentHTML;if(cb)cb();}}type();}
+
 function animateSlide(idx){clearTimers();const s=slides[idx];const title=s.querySelector('.slide-title');if(title)title.classList.add('show');const intro=s.querySelector('.intro');if(intro)setTimeout(()=>intro.classList.add('show'),200);const rows=s.querySelectorAll('.use-row,.rule-row,.err-pair');let delay=intro?600:300;
 rows.forEach((row,rIdx)=>{let t=setTimeout(()=>{row.style.opacity='1';const twSpans=row.querySelectorAll('[data-tw]');let chain=Promise.resolve();
-twSpans.forEach(span=>{const text=span.getAttribute('data-tw');chain=chain.then(()=>new Promise(res=>typeEffect(span,text,20,res)));});
+twSpans.forEach(span=>{const text=span.getAttribute('data-tw');chain=chain.then(()=>new Promise(res=>typeEffect(span,text,70,res)));});
 chain.then(()=>{row.querySelectorAll('.use-it,.rule-it,.err-it,.err-note').forEach(tr=>{tr.style.opacity='1';tr.style.transition='opacity 0.4s ease';});});},delay);timers.push(t);delay+=700;});
 const warn=s.querySelector('.warn');if(warn){let t=setTimeout(()=>warn.classList.add('show'),delay+200);timers.push(t);}}
 function go(dir){if(busy)return;const next=cur+dir;if(next<0||next>=TOTAL)return;busy=true;const oldSlide=slides[cur];const newSlide=slides[next];cur=next;
