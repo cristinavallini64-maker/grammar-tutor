@@ -93,27 +93,37 @@ body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;fl
 const TOTAL=5;let cur=0,busy=false;
 const dotsEl=document.getElementById('dots');
 for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');dotsEl.appendChild(d);}
-function tw(el,text,speed){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
-function twHL(el,text,speed){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'').replace(/<[^>]+>/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+
+// Velocità rallentata a 70ms per un effetto scrittura più lento e umano
+async function tw(el,text,speed=70){return new Promise(resolve=>{el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);const plain=text.replace(/❮|❯/g,'');let i=0;function tick(){if(i>=plain.length){c.remove();resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+async function twHL(el,text,speed=70){return new Promise(resolve=>{const plain=text.replace(/❮|❯/g,'').replace(/<[^>]+>/g,'');el.textContent='';const c=document.createElement('span');c.className='cursor';el.appendChild(c);let i=0;function tick(){if(i>=plain.length){c.remove();el.innerHTML=text.replace(/❮([^❯]+)❯/g,'<em class="hl">$1</em>');resolve();return;}c.insertAdjacentText('beforebegin',plain[i++]);setTimeout(tick,speed);}tick();});}
+
 async function animateSlide(idx){
   const slide=document.getElementById('s'+idx);
   const title=slide.querySelector('.slide-title');
   title.classList.add('show');
+  
+  // Pausa iniziale prima di iniziare a scrivere le righe
+  await new Promise(r=>setTimeout(r, 400));
+
   if(idx===0){
     for(const col of slide.querySelectorAll('.cmp-col')){
-      await tw(col.querySelector('.cmp-form'),col.querySelector('.cmp-form').dataset.tw,30);
-      await twHL(col.querySelector('.cmp-ex'),col.querySelector('.cmp-ex').dataset.tw,30);
+      await tw(col.querySelector('.cmp-form'),col.querySelector('.cmp-form').dataset.tw, 70);
+      await twHL(col.querySelector('.cmp-ex'),col.querySelector('.cmp-ex').dataset.tw, 70);
+      await new Promise(r=>setTimeout(r, 300));
       col.querySelector('.cmp-it').style.opacity='1';
     }
   } else if(idx===4){
     for(const p of slide.querySelectorAll('.err-pair')){
-      await tw(p.querySelector('.err-wrong'),p.querySelector('.err-wrong').dataset.tw,30);
-      await twHL(p.querySelector('.err-ok'),p.querySelector('.err-ok').dataset.tw,30);
-      const it=p.querySelector('.err-it')||p.querySelector('.err-note');if(it)it.style.opacity='1';
+      await tw(p.querySelector('.err-wrong'),p.querySelector('.err-wrong').dataset.tw, 70);
+      await twHL(p.querySelector('.err-ok'),p.querySelector('.err-ok').dataset.tw, 70);
+      const it=p.querySelector('.err-it')||p.querySelector('.err-note');
+      if(it) { await new Promise(r=>setTimeout(r, 300)); it.style.opacity='1'; }
     }
   } else {
     for(const r of slide.querySelectorAll('.use-row')){
-      await twHL(r.querySelector('[data-tw]'),r.querySelector('[data-tw]').dataset.tw,30);
+      await twHL(r.querySelector('[data-tw]'),r.querySelector('[data-tw]').dataset.tw, 70);
+      await new Promise(r=>setTimeout(r, 300));
       r.querySelector('.use-it').style.opacity='1';
     }
   }
