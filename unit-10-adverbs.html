@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 10 · Just, Already, Yet, Still</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #00CC44;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.65rem,2vw,1rem);letter-spacing:2px;color:#009933;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.65rem,2vw,0.85rem);color:#999;letter-spacing:2px;}
+.dots{display:flex;gap:10px;justify-content:center;padding:7px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;cursor:pointer;}
+.dot.active{background:#00CC44;}
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;opacity:0;}
+.slide.active{visibility:visible;opacity:1;}
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#009933;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+.intro{background:#f0fff4;border-left:5px solid #009933;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.74rem,2.2vw,0.88rem);color:#111;line-height:1.6;margin-bottom:10px;opacity:0;transition:opacity 0.5s;}
+.intro.show{opacity:1;}
+.intro strong{color:#007722;}
+.cmp-table{display:grid;grid-template-columns:1fr 1fr;border-radius:10px;overflow:hidden;border:2px solid #eee;margin-bottom:10px;}
+.cmp-head{font-family:'Orbitron',monospace;font-size:clamp(0.5rem,1.5vw,0.68rem);letter-spacing:1.5px;font-weight:700;padding:8px 10px;text-align:center;color:#fff;}
+.cmp-head.pp{background:#009933;}
+.cmp-head.ps{background:#0066cc;}
+.cmp-cell{padding:9px 10px;font-size:clamp(0.68rem,1.95vw,0.84rem);border-bottom:1px solid #f0f0f0;border-right:1px solid #f0f0f0;line-height:1.4;}
+.cmp-cell:nth-child(even){border-right:none;}
+.cmp-cell.pp{background:#f0fff4;}
+.cmp-cell.ps{background:#f0f8ff;}
+.cmp-cell:nth-last-child(1),.cmp-cell:nth-last-child(2){border-bottom:none;}
+.cmp-cell.it{color:#888;font-style:italic;font-size:clamp(0.6rem,1.7vw,0.74rem);}
+.use-row{padding:7px 0;border-bottom:1px solid #f0f0f0;opacity:0;transition:opacity 0.3s;}
+.use-row:last-child{border-bottom:none;}
+.use-ex{font-size:clamp(0.86rem,2.8vw,1.04rem);font-weight:600;color:#111;display:block;}
+.use-it{font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;display:block;opacity:0;transition:opacity 0.4s;margin-top:2px;}
+.use-tag{font-family:'Orbitron',monospace;font-size:clamp(0.5rem,1.4vw,0.62rem);letter-spacing:1.5px;font-weight:700;padding:2px 7px;border-radius:4px;margin-right:7px;vertical-align:middle;color:#fff;display:inline-block;}
+.tag-pp{background:#009933;}
+.tag-ps{background:#0066cc;}
+.rule-row{display:grid;grid-template-columns:1.2fr 1.5fr;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0;align-items:start;}
+.rule-row:last-child{border-bottom:none;}
+.rule-name{font-size:clamp(0.7rem,2vw,0.85rem);font-weight:700;color:#777;line-height:1.4;}
+.rule-ex{font-size:clamp(0.82rem,2.55vw,0.98rem);color:#111;font-weight:600;}
+.rule-it{grid-column:1/-1;font-size:clamp(0.62rem,1.8vw,0.76rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;}
+.err-pair{padding:6px 0;border-bottom:1px solid #f0f0f0;}
+.err-pair:last-child{border-bottom:none;}
+.err-wrong{font-size:clamp(0.82rem,2.55vw,0.98rem);color:#c00;}
+.err-ok{font-size:clamp(0.82rem,2.55vw,0.98rem);font-weight:700;color:#007733;}
+.err-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;margin-top:1px;}
+.err-note{font-size:clamp(0.63rem,1.8vw,0.777rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
+.hl{font-weight:900;color:#009933;font-style:normal;}
+.hl-ps{font-weight:900;color:#0066cc;font-style:normal;}
+.warn{background:#f0fff4;border-left:5px solid #00CC44;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.76rem,2.35vw,0.92rem);color:#111;font-weight:600;line-height:1.65;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:8px;}
+.warn.show{opacity:1;}
+.warn strong{color:#009933;}
+.cursor{display:inline-block;width:2px;height:1em;background:#009933;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.55rem,1.8vw,0.72rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #00CC44;background:#fff;color:#009933;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#00CC44;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="title">🟢 UNIT 10 · TIME ADVERBS WITH PRESENT PERFECT</div><div class="prog" id="prog">1 / 5</div></div>
+<div class="dots" id="dots"></div>
+<div class="slides">
+
+  <!-- SLIDE 0: INTRO -->
+  <div class="slide active" id="s0">
+    <div class="slide-title">📋 GLI AVVERBI DEL PRESENT PERFECT</div>
+    <div class="intro" id="intro0">
+      Gli avverbi di tempo <strong>just, already, yet, still</strong> sono fondamentali per precisare *quando* e *come* si è svolta un'azione rispetto al presente. Ciascuno di essi richiede una precisa collocazione sintattica all'interno della frase.
+    </div>
+    <div class="cmp-table">
+      <div class="cmp-head pp">JUST (Appena) & ALREADY (Già)</div>
+      <div class="cmp-head ps">YET (Già / Ancora) & STILL (Ancora)</div>
+      <div class="cmp-cell pp">Azioni appena completate o già fatte prima del previsto.</div>
+      <div class="cmp-cell ps">Azioni attese o sorprese per ritardi.</div>
+      <div class="cmp-cell pp it">I've just eaten. / I've already done it.</div>
+      <div class="cmp-cell ps it">Have you eaten yet? / He still hasn't eaten.</div>
+      <div class="cmp-cell pp">Vanno posizionati tra HAVE e il participio passato.</div>
+      <div class="cmp-cell ps">Posizionati a fine frase (yet) o prima di haven't (still).</div>
+    </div>
+    <div class="warn">⚡ Molti studenti confondono il significato e la posizione di questi quattro elementi: analizziamoli uno per uno per non sbagliare!</div>
+  </div>
+
+  <!-- SLIDE 1: JUST & ALREADY -->
+  <div class="slide" id="s1">
+    <div class="slide-title">⏱️ JUST (APPENA) & ALREADY (GIÀ)</div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-pp">JUST</span><span data-tw="He has ❮just left❯ the office."></span></span>
+      <span class="use-it">Se n'è appena andato dall'ufficio. (Un istante fa)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-pp">ALREADY</span><span data-tw="I have ❮already watched❯ this series."></span></span>
+      <span class="use-it">Ho già guardato questa serie. (Azione conclusa prima del previsto, frasi affermative)</span>
+    </div>
+    <div class="warn">💡 Nota la posizione fissa: <strong>Soggetto + HAVE/HAS + JUST / ALREADY + Participio Passato</strong>.</div>
+  </div>
+
+  <!-- SLIDE 2: YET (GIÀ / ANCORA NON) -->
+  <div class="slide" id="s2">
+    <div class="slide-title">🔍 YET: INTERROGATIVE & NEGATIVE</div>
+    <div class="rule-row">
+      <div class="rule-name" data-tw="YET (Nelle Domande: 'Già')"></div>
+      <div class="rule-ex" data-tw="Have you finished your lunch ❮yet❯?"></div>
+      <div class="rule-it">Hai già finito il pranzo? (Chiede se l'azione è completata)</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-name" data-tw="YET (Nelle Negative: 'Ancora non')"></div>
+      <div class="rule-ex" data-tw="They haven't arrived ❮yet❯."></div>
+      <div class="rule-it">Non sono ancora arrivati. (Azione attesa che non è ancora accaduta)</div>
+    </div>
+    <div class="warn">⚠️ Regola d'oro: <strong>YET</strong> va inserito tassativamente alla **fine della frase**!</div>
+  </div>
+
+  <!-- SLIDE 3: STILL (ANCORA ADESSO) -->
+  <div class="slide" id="s3">
+    <div class="slide-title">⏳ STILL: ESPRIMERE INCREDULITÀ O RITARDO</div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-ps">STILL</span><span data-tw="She ❮still hasn't replied❯ to my email."></span></span>
+      <span class="use-it">Non ha ancora risposto alla mia email. (Indica disappunto o stupore perché l'attesa si prolunga)</span>
+    </div>
+    <div class="use-row">
+      <span class="use-ex"><span class="use-tag tag-ps">CONFRONTO</span><span data-tw="He hasn't called yet vs He ❮still hasn't called❯."></span></span>
+      <span class="use-it">Non ha ancora chiamato (neutro) vs Non ha ancora chiamato (sorpresa/irritazione).</span>
+    </div>
+    <div class="warn">📌 Nota la posizione di <strong>STILL</strong>: nelle frasi negative va posizionato **prima** dell'ausiliare negativo (Soggetto + STILL + haven't/hasn't + participio).</div>
+  </div>
+
+  <!-- SLIDE 4: COMMON POSITION ERRORS -->
+  <div class="slide" id="s4">
+    <div class="slide-title">🚨 ERRORI DI SINTASSI PIÙ COMUNI</div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="ERRORE: Mettere YET in mezzo alla frase"></div>
+      <div class="err-ok"    data-tw="I haven't completed the homework ❮yet❯."></div>
+      <div class="err-it">Non ho ancora completato i compiti. (Non dire <s>I haven't yet completed</s>).</div>
+      <div class="err-note">In inglese, "yet" si sposta categoricamente a fine frase nelle negative.</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="ERRORE: Posizionare STILL dopo l'ausiliare"></div>
+      <div class="err-ok"    data-tw="He ❮still hasn't❯ called me."></div>
+      <div class="err-it">Non mi ha ancora chiamato. (Non dire <s>He hasn't still called me</s>).</div>
+      <div class="err-note">Still si posiziona prima dell'ausiliare negativo (hasn't/haven't).</div>
+    </div>
+    <div class="warn">🎯 Ottimo lavoro! Conoscere l'esatta sintassi di questi avverbi è un passo decisivo per parlare un inglese impeccabile.</div>
+  </div>
+
+</div>
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>PREV</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">NEXT</button>
+</div>
+<script>
+let cur=0;const slides=document.querySelectorAll('.slide');const dotsEl=document.getElementById('dots');const TOTAL=slides.length;let busy=false;let timers=[];
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>{if(!busy&&i!==cur)go(i-cur);};dotsEl.appendChild(d);}
+function clearTimers(){timers.forEach(t=>clearTimeout(t));timers=[];}
+function typeEffect(el,text,speed=25,cb){el.innerHTML='';let i=0;let currentHTML='';
+function type(){if(i<text.length){let char=text[i];if(char==='❮'){currentHTML+='<span class="hl">';i++;}else if(char==='❯'){currentHTML+='</span>';i++;}else{currentHTML+=text[i];i++;}el.innerHTML=currentHTML+'<span class="cursor"></span>';let t=setTimeout(type,speed);timers.push(t);}else{el.innerHTML=currentHTML;if(cb)cb();}}type();}
+function animateSlide(idx){clearTimers();const s=slides[idx];const title=s.querySelector('.slide-title');if(title)title.classList.add('show');const intro=s.querySelector('.intro');if(intro)setTimeout(()=>intro.classList.add('show'),200);const rows=s.querySelectorAll('.use-row,.rule-row,.err-pair');let delay=intro?600:300;
+rows.forEach((row,rIdx)=>{let t=setTimeout(()=>{row.style.opacity='1';const twSpans=row.querySelectorAll('[data-tw]');let chain=Promise.resolve();
+twSpans.forEach(span=>{const text=span.getAttribute('data-tw');chain=chain.then(()=>new Promise(res=>typeEffect(span,text,20,res)));});
+chain.then(()=>{row.querySelectorAll('.use-it,.rule-it,.err-it,.err-note').forEach(tr=>{tr.style.opacity='1';tr.style.transition='opacity 0.4s ease';});});},delay);timers.push(t);delay+=700;});
+const warn=s.querySelector('.warn');if(warn){let t=setTimeout(()=>warn.classList.add('show'),delay+200);timers.push(t);}}
+function go(dir){if(busy)return;const next=cur+dir;if(next<0||next>=TOTAL)return;busy=true;const oldSlide=slides[cur];const newSlide=slides[next];cur=next;
+oldSlide.querySelectorAll('.use-row,.rule-row,.err-pair').forEach(n=>{n.style.opacity='0';n.querySelectorAll('.use-it,.rule-it,.err-it,.err-note').forEach(e=>e.style.opacity='0');});
+const intro=oldSlide.querySelector('.intro');if(intro)intro.classList.remove('show');const warn=oldSlide.querySelector('.warn');if(warn)warn.classList.remove('show');
+oldSlide.style.transition='opacity 0.25s ease';oldSlide.style.opacity='0';
+setTimeout(()=>{oldSlide.style.cssText='';oldSlide.classList.remove('active');newSlide.style.opacity='0';newSlide.classList.add('active');
+requestAnimationFrame(()=>requestAnimationFrame(()=>{newSlide.style.transition='opacity 0.25s ease';newSlide.style.opacity='1';
+setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);}));animateSlide(cur);dotsEl.children[cur-dir].classList.remove('active');dotsEl.children[cur].classList.add('active');
+document.getElementById('prog').textContent=(cur+1)+' / '+TOTAL;document.getElementById('prevBtn').disabled=cur===0;document.getElementById('nextBtn').disabled=cur===TOTAL-1;},260);}
+window.onload=()=>{animateSlide(0);};
+</script>
+</body>
+</html>
