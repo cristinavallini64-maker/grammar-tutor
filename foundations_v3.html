@@ -42,11 +42,22 @@
   .tag:hover { background: rgba(0,0,0,0.45); }
   .tag.soon { opacity: 0.5; cursor: not-allowed; }
 
-  /* Stile speciale per il blocco del ripasso finale */
-  .final-revision-box { grid-column: 1 / -1; margin-top: 10px; padding: 15px; border-radius: 10px; background: rgba(255, 0, 0, 0.1); border: 2px dashed #FF0000; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
-  .final-revision-text { font-weight: 900; font-size: 1.1rem; color: #FF0000; font-family: 'Nunito', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
-  .final-revision-box .tag-final { background: #FF0000; color: #000; font-weight: 900; border-radius: 20px; padding: 8px 24px; font-size: 0.9rem; text-decoration: none; transition: all 0.2s; }
-  .final-revision-box .tag-final:hover { background: #fff; color: #000; box-shadow: 0 0 15px #FF0000; }
+  /* Stile speciale per i blocchi del ripasso finale */
+  .final-revision-box { grid-column: 1 / -1; margin-top: 10px; padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+  
+  /* Varianti di colore per i riquadri di ripasso finali */
+  .final-revision-box.y1-box { background: rgba(255, 0, 0, 0.1); border: 2px dashed #FF0000; }
+  .final-revision-box.y1-box .final-revision-text { color: #FF0000; }
+  .final-revision-box.y1-box .tag-final { background: #FF0000; color: #000; }
+  .final-revision-box.y1-box .tag-final:hover { background: #fff; box-shadow: 0 0 15px #FF0000; }
+
+  .final-revision-box.y2-box { background: rgba(0, 204, 68, 0.1); border: 2px dashed #00CC44; }
+  .final-revision-box.y2-box .final-revision-text { color: #00CC44; }
+  .final-revision-box.y2-box .tag-final { background: #00CC44; color: #000; }
+  .final-revision-box.y2-box .tag-final:hover { background: #fff; box-shadow: 0 0 15px #00CC44; }
+
+  .final-revision-text { font-weight: 900; font-size: 1.1rem; font-family: 'Nunito', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+  .final-revision-box .tag-final { font-weight: 900; border-radius: 20px; padding: 8px 24px; font-size: 0.9rem; text-decoration: none; transition: all 0.2s; }
 
   @media (max-width: 600px) {
     .final-revision-box { flex-direction: column; text-align: center; }
@@ -158,7 +169,7 @@
         </div>
       </div>
 
-      <div class="final-revision-box">
+      <div class="final-revision-box y1-box">
         <div class="final-revision-text">🏁 RIPASSO FINALE — PRIMO ANNO</div>
         <a href="https://cristinavallini64-maker.github.io/grammar-tutor/final-revision-y1.html" class="tag-final">🎯 Avvia Revisione Generale</a>
       </div>
@@ -237,6 +248,11 @@
           <a href="https://cristinavallini64-maker.github.io/grammar-tutor/unit10-index.html"  class="tag">📖 Ripassa</a>
           <a href="https://cristinavallini64-maker.github.io/grammar-tutor/unit10friends.html"  class="tag">✏️ Esercitati</a>
         </div>
+      </div>
+
+      <div class="final-revision-box y2-box">
+        <div class="final-revision-text">🏁 RIPASSO FINALE — SECONDO ANNO</div>
+        <a href="#" class="tag-final">🎯 Avvia Revisione Generale</a>
       </div>
 
     </div>
