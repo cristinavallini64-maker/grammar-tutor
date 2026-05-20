@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar Quest: Year 1 Revision</title>
+<style>
+  :root { --bg:#0a1628; --green:#00ff88; --text:#fff; }
+  body { background:var(--bg); color:var(--text); font-family:sans-serif; padding:20px; }
+  .screen { display:none; } .active { display:block; }
+  .btn { cursor:pointer; padding:15px; background:var(--green); border:none; width:100%; font-weight:900; margin:8px 0; border-radius:5px; text-transform:uppercase; }
+  #prompt { font-size: 1.4rem; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div id="screen-map" class="screen active">
+  <h2>REVISIONE TOTALE (105 Domande)</h2>
+  <input type="text" id="code-input" placeholder="Incolla codice FRY1..." style="width:100%;padding:10px;box-sizing:border-box;">
+  <button class="btn" style="background:#555;" onclick="loadProgress()">CARICA PROGRESSI</button>
+  <div id="map-container"></div>
+</div>
+
+<div id="screen-game" class="screen">
+  <h3 id="lvl-title"></h3>
+  <div id="prompt" style="margin:20px 0;"></div>
+  <input type="text" id="answer-input" style="width:100%;padding:15px;box-sizing:border-box;font-size:1rem;">
+  <button class="btn" onclick="check()">CONTROLLA RISPOSTA</button>
+</div>
+
+<script>
+// DATABASE COMPLETO
+const levels = [
+  {name:"Sintassi e Routine", tasks:[
+    {q:"My brother [take] the dog... he [do] the washing-up. (scrivi: takes, is doing)", a:"takes, is doing"},
+    {q:"Riscrivi: We must help her put [a new dictionary and a textbook] back.", a:"put them back on the shelf"},
+    {q:"Riordina: always / late / for / the / lesson / are / they.", a:"They are always late for the lesson."},
+    {q:"Completa: I ________ (go) to school by bus every day.", a:"go"},
+    {q:"Completa: Look! It ________ (rain) right now.", a:"is raining"},
+    {q:"Negativa: He plays football.", a:"He doesn't play football."},
+    {q:"Domanda: They are studying.", a:"Are they studying?"},
+    {q:"Completa: She ________ (not/like) apples.", a:"doesn't like"},
+    {q:"Completa: We ________ (watch) a movie tonight.", a:"are watching"},
+    {q:"Riordina: often / she / to / go / does / the / gym / ?", a:"Does she often go to the gym?"},
+    {q:"Completa: They ________ (have) breakfast at 8:00.", a:"have"},
+    {q:"Completa: The baby ________ (cry) now.", a:"is crying"},
+    {q:"Negativa: You are listening.", a:"You aren't listening."},
+    {q:"Riordina: never / I / late / am / school / for.", a:"I am never late for school."},
+    {q:"Completa: He ________ (usually/eat) cereal.", a:"usually eats"}
+  ]},
+  {name:"Quantifiers", tasks:[
+    {q:"We don't have ________ money.", a:"enough"},
+    {q:"You put ________ salt in the soup.", a:"too much"},
+    {q:"There are ________ people here.", a:"many"},
+    {q:"We have ________ milk.", a:"a little"},
+    {q:"I have ________ friends.", a:"a few"},
+    {q:"The shirt isn't big ________.", a:"enough"},
+    {q:"How ________ water?", a:"much"},
+    {q:"How ________ books?", a:"many"},
+    {q:"I have ________ homework.", a:"a lot of"},
+    {q:"We need ________ sugar.", a:"some"},
+    {q:"I don't have ________ money.", a:"any"},
+    {q:"There is ________ sugar in my tea!", a:"too much"},
+    {q:"Is this table big ________ for 4 people?", a:"enough"},
+    {q:"He has ________ talent.", a:"a lot of"},
+    {q:"I haven't got ________ time.", a:"any"}
+  ]},
+  {name:"Future & State", tasks:[
+    {q:"I ________ (think) this is right.", a:"think"},
+    {q:"She ________ (listen) to music now.", a:"is listening"},
+    {q:"The train ________ (leave) at 9:00.", a:"leaves"},
+    {q:"I ________ (meet) them at 5:00.", a:"am meeting"},
+    {q:"I ________ (understand) you.", a:"understand"},
+    {q:"We ________ (fly) to Rome tomorrow.", a:"are flying"},
+    {q:"He ________ (seem) tired.", a:"seems"},
+    {q:"The lesson ________ (start) at 8:30.", a:"starts"},
+    {q:"I ________ (have) a car.", a:"have"},
+    {q:"You ________ (look) great!", a:"look"},
+    {q:"They ________ (get) married on Saturday.", a:"are getting"},
+    {q:"This pizza ________ (taste) good.", a:"tastes"},
+    {q:"I ________ (believe) you.", a:"believe"},
+    {q:"The shop ________ (close) at 7:00.", a:"closes"},
+    {q:"We ________ (not/know) the answer.", a:"don't know"}
+  ]},
+  {name:"Past Simple", tasks:[
+    {q:"I ________ (be) at home yesterday.", a:"was"},
+    {q:"They ________ (go) to the park.", a:"went"},
+    {q:"Negativa: I saw him.", a:"I didn't see him."},
+    {q:"Domanda: You liked it.", a:"Did you like it?"},
+    {q:"She ________ (not/be) here.", a:"wasn't"},
+    {q:"We ________ (play) football.", a:"played"},
+    {q:"He ________ (study) hard.", a:"studied"},
+    {q:"They ________ (be) happy.", a:"were"},
+    {q:"Negativa: We ate pizza.", a:"We didn't eat pizza."},
+    {q:"Domanda: He finished work.", a:"Did he finish work?"},
+    {q:"I ________ (have) a cat.", a:"had"},
+    {q:"It ________ (rain) yesterday.", a:"rained"},
+    {q:"Negativa: They were tired.", a:"They weren't tired."},
+    {q:"Domanda: She called you.", a:"Did she call you?"},
+    {q:"We ________ (buy) a house.", a:"bought"}
+  ]},
+  {name:"Irregulars", tasks:[
+    {q:"Past di 'take':", a:"took"},
+    {q:"Past di 'run':", a:"ran"},
+    {q:"Past di 'buy':", a:"bought"},
+    {q:"Past di 'bring':", a:"brought"},
+    {q:"Past di 'see':", a:"saw"},
+    {q:"Past di 'eat':", a:"ate"},
+    {q:"Past di 'drink':", a:"drank"},
+    {q:"Past di 'find':", a:"found"},
+    {q:"Past di 'go':", a:"went"},
+    {q:"Past di 'have':", a:"had"},
+    {q:"Past di 'make':", a:"made"},
+    {q:"Past di 'say':", a:"said"},
+    {q:"Past di 'speak':", a:"spoke"},
+    {q:"Past di 'write':", a:"wrote"},
+    {q:"Past di 'win':", a:"won"}
+  ]},
+  {name:"Relative Clauses", tasks:[
+    {q:"Unisci: The man is my teacher. He lives next door.", a:"The man who lives next door is my teacher."},
+    {q:"Unisci: The book is new. I bought it yesterday.", a:"The book which I bought yesterday is new."},
+    {q:"Completa: This is the house ________ I live in.", a:"where"},
+    {q:"Completa: She is the girl ________ sings well.", a:"who"},
+    {q:"Completa: The car ________ broke down is red.", a:"which"},
+    {q:"Unisci: I like the pizza. You made it.", a:"I like the pizza which you made."},
+    {q:"Completa: The man ________ wife is a doctor.", a:"whose"},
+    {q:"Completa: The day ________ we met was Sunday.", a:"when"},
+    {q:"Unisci: The dog is cute. It has big eyes.", a:"The dog which has big eyes is cute."},
+    {q:"Completa: The boy ________ brother is my friend.", a:"whose"},
+    {q:"Completa: The shop ________ I work is closed.", a:"where"},
+    {q:"Completa: The story ________ he told was sad.", a:"which"},
+    {q:"Completa: The woman ________ helped me is kind.", a:"who"},
+    {q:"Unisci: The bag is old. I use it for school.", a:"The bag which I use for school is old."},
+    {q:"Completa: The time ________ I get up is 7.", a:"when"}
+  ]},
+  {name:"Master Synthesis", tasks:[
+    {q:"Correggi: I am wanting a sandwich.", a:"I want a sandwich."},
+    {q:"Correggi: I have many bread.", a:"I have much bread."},
+    {q:"Correggi: She is always busy.", a:"She is always busy."},
+    {q:"Correggi: The homeworks are easy.", a:"The homework is easy."},
+    {q:"Correggi: He is more tall than me.", a:"He is taller than me."},
+    {q:"Correggi: I have go to school.", a:"I have to go to school."},
+    {q:"Correggi: She like reading.", a:"She likes reading."},
+    {q:"Correggi: They was here.", a:"They were here."},
+    {q:"Correggi: I didn't saw him.", a:"I didn't see him."},
+    {q:"Correggi: This is the house who I live.", a:"This is the house where I live."},
+    {q:"Correggi: How many water?", a:"How much water?"},
+    {q:"Correggi: I'm not enough tall.", a:"I'm not tall enough."},
+    {q:"Correggi: She go to gym.", a:"She goes to the gym."},
+    {q:"Correggi: We are meet at 5.", a:"We are meeting at 5."},
+    {q:"Correggi: It is the book who I read.", a:"It is the book which I read."}
+  ]}
+];
+
+let state = { progress: Array(7).fill(0), currentLvl: 0 };
+let currentTaskIdx = 0;
+
+function loadProgress() {
+  const code = document.getElementById('code-input').value;
+  if(code.startsWith("FRY1.")) {
+    try {
+      state = JSON.parse(atob(code.split('.')[1]));
+      alert("Progresso caricato!"); renderMap();
+    } catch(e) { alert("Codice non valido"); }
+  }
+}
+
+function renderMap() {
+  const cont = document.getElementById('map-container');
+  cont.innerHTML = "";
+  levels.forEach((l,i) => {
+    cont.innerHTML += `<button class="btn" onclick="startLvl(${i})">LIVELLO ${i+1}: ${l.name} (${state.progress[i]}/15)</button>`;
+  });
+}
+
+function check() {
+  const input = document.getElementById('answer-input').value.trim();
+  const correct = levels[state.currentLvl].tasks[currentTaskIdx].a;
+  if(input.toLowerCase() === correct.toLowerCase()) {
+    alert("CORRETTO!");
+    state.progress[state.currentLvl] = currentTaskIdx + 1;
+    nextTask();
+  } else {
+    alert("ERRORE. Risposta corretta: " + correct);
+    nextTask();
+  }
+}
+
+function nextTask() {
+  currentTaskIdx++;
+  if(currentTaskIdx < 15) {
+    document.getElementById('prompt').innerText = levels[state.currentLvl].tasks[currentTaskIdx].q;
+    document.getElementById('answer-input').value = "";
+  } else {
+    alert("LIVELLO FINITO! Copia questo codice per salvare: FRY1." + btoa(JSON.stringify(state)));
+    document.getElementById('screen-game').className = 'screen';
+    document.getElementById('screen-map').className = 'screen active';
+    renderMap();
+  }
+}
+
+function startLvl(i) {
+  state.currentLvl = i; currentTaskIdx = state.progress[i] >= 15 ? 0 : state.progress[i];
+  document.getElementById('lvl-title').innerText = levels[i].name;
+  document.getElementById('prompt').innerText = levels[i].tasks[currentTaskIdx].q;
+  document.getElementById('screen-map').className = 'screen';
+  document.getElementById('screen-game').className = 'screen active';
+}
+
+renderMap();
+</script>
+</body>
+</html>
