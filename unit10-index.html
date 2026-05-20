@@ -1,213 +1,194 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unit 10 · Connections – Intro</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-  <style>
-    /* Reset e stili strutturali speculari ai tuoi esempi */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      background-color: #0d0d0d;
-      font-family: 'Nunito', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      color: #fff;
-      padding: 20px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 10 · Connections – Ripassa</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body { 
+    background: #0d0d0d; 
+    font-family: 'Nunito', sans-serif; 
+    min-height: 100vh; 
+    padding: 32px 16px; 
+  }
 
-    /* Pulsante Chiudi in alto a sinistra, non invasivo */
-    .close-tab {
-      align-self: flex-start;
-      color: #777;
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 700;
-      margin-bottom: 40px;
-      transition: color 0.2s;
-    }
-    .close-tab:hover {
-      color: #fff;
-    }
+  /* Tasto Chiudi centratissimo a pillola verde come nello screenshot */
+  .back-container {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  
+  .back { 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 8px; 
+    color: #000; 
+    font-weight: 800; 
+    text-decoration: none; 
+    font-size: 0.95rem; 
+    background: #00CC44; 
+    padding: 10px 24px; 
+    border-radius: 30px; 
+    transition: all 0.2s;
+  }
+  
+  .back:hover { 
+    opacity: 0.9; 
+    transform: translateY(-1px); 
+  }
 
-    /* Contenitore centrale a larghezza controllata con bordo verde */
-    .container {
-      max-width: 550px;
-      width: 100%;
-      margin: auto;
-      background-color: #141414;
-      border: 3px solid #00CC44;
-      border-radius: 24px;
-      padding: 40px 30px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0, 204, 68, 0.1);
-    }
+  /* Intestazione verde arrotondata come nello screenshot */
+  .header { 
+    max-width: 700px; 
+    margin: 0 auto 24px; 
+    background: #00CC44; 
+    border-radius: 20px; 
+    padding: 24px 32px; 
+  }
+  
+  .header h1 { 
+    font-family: 'Bebas Neue', sans-serif; 
+    font-size: 2.2rem; 
+    letter-spacing: 2px; 
+    color: #000; 
+    text-transform: uppercase;
+    line-height: 1.1;
+  }
+  
+  .header p { 
+    font-size: 1rem; 
+    color: #000; 
+    font-weight: 800; 
+    margin-top: 6px; 
+  }
 
-    /* Intestazione */
-    .unit-label {
-      font-family: 'Orbitron', monospace;
-      font-size: 0.85rem;
-      color: #00CC44;
-      letter-spacing: 4px;
-      font-weight: 900;
-      margin-bottom: 10px;
-    }
-    .main-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 3.5rem;
-      letter-spacing: 3px;
-      line-height: 1;
-      color: #fff;
-      margin-bottom: 5px;
-    }
-    .subtitle {
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: #aaa;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 20px;
-    }
+  /* Lista e card con bordo sinistro verde marcato di 6px */
+  .list { 
+    max-width: 700px; 
+    margin: 0 auto; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 14px; 
+  }
+  
+  .item { 
+    background: #161616; 
+    border-radius: 16px; 
+    padding: 20px 24px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    gap: 20px; 
+    border-left: 6px solid #00CC44; 
+  }
+  
+  .item-name { 
+    font-weight: 800; 
+    font-size: 1.2rem; 
+    color: #fff; 
+  }
+  
+  .item-args { 
+    font-size: 0.88rem; 
+    color: #888; 
+    margin-top: 4px; 
+    font-weight: 700;
+  }
 
-    /* Linea divisoria orizzontale */
-    hr {
-      border: 0;
-      height: 1px;
-      background: #333;
-      margin-bottom: 25px;
-    }
-
-    /* Box di digitazione ad altezza fissa per preservare il layout */
-    .text-box {
-      min-height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 30px;
-    }
-    .typewriter-text {
-      font-size: 1.05rem;
-      line-height: 1.6;
-      color: #dddddd;
-      font-weight: 400;
-    }
-
-    /* Evidenziazione interna al testo animato */
-    .hl {
-      color: #00CC44;
-      font-weight: 700;
-    }
-
-    /* Cursore del testo */
-    .cursor {
-      display: inline-block;
-      width: 2px;
-      height: 1.1em;
-      background-color: #00CC44;
-      vertical-align: middle;
-      margin-left: 2px;
-      animation: blink 0.6s step-end infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
-    /* Bottone d'ingresso che appare solo alla fine della digitazione */
-    .action-btn {
-      display: inline-block;
-      background-color: #00CC44;
-      color: #000;
-      font-family: 'Nunito', sans-serif;
-      font-size: 1rem;
-      font-weight: 900;
-      text-decoration: none;
-      padding: 14px 32px;
-      border-radius: 28px;
-      letter-spacing: 0.5px;
-      transition: all 0.2s ease;
-      opacity: 0;
-      visibility: hidden;
-    }
-    .action-btn.visible {
-      opacity: 1;
-      visibility: visible;
-    }
-    .action-btn:hover {
-      background-color: #00ff55;
-      transform: scale(1.03);
-    }
-  </style>
+  /* Bottone Ripassa verde arrotondato a destra */
+  .btn-group { 
+    display: flex; 
+    align-items: center; 
+    flex-shrink: 0; 
+  }
+  
+  .btn { 
+    border-radius: 30px; 
+    padding: 10px 24px; 
+    font-family: 'Nunito', sans-serif; 
+    font-size: 0.95rem; 
+    font-weight: 900; 
+    text-decoration: none; 
+    white-space: nowrap; 
+    transition: all 0.2s; 
+    border: none; 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 8px; 
+  }
+  
+  .btn.ripassa { 
+    background: #00CC44; 
+    color: #000; 
+    cursor: pointer; 
+  }
+  
+  .btn.ripassa:hover { 
+    opacity: 0.9; 
+    transform: translateY(-1px); 
+  }
+</style>
 </head>
 <body>
 
-  <a href="#" class="close-tab" onclick="window.close(); return false;">✕ Chiudi questa scheda</a>
+<!-- Tasto Chiudi Scheda in alto centrato -->
+<div class="back-container">
+  <a href="javascript:window.close()" class="back">✕ Chiudi questa scheda</a>
+</div>
 
-  <div class="container">
-    <div class="unit-label">DIGITAL HUB</div>
-    <h1 class="main-title">UNIT 10</h1>
-    <div class="subtitle">Connections</div>
-    
-    <hr>
+<!-- Header verde arrotondato -->
+<div class="header">
+  <h1>📖 Unit 10 · Connections</h1>
+  <p>Scegli un argomento da ripassare</p>
+</div>
 
-    <div class="text-box">
-      <p class="typewriter-text" id="targetText" data-src="Benvenuto nel modulo di ripasso dedicato alle ❮connessioni grammaticali❯ e alle strutture verbali fondamentali della Unit 10."></p>
+<!-- Lista degli argomenti stilizzata esattamente come Unit 9 -->
+<div class="list">
+
+  <div class="item">
+    <div>
+      <div class="item-name">Verb get</div>
+      <div class="item-args">get + aggettivo · get + participio · espressioni con get</div>
     </div>
-
-    <a href="unit10_menu.html" class="action-btn" id="startBtn">
-      ENTRA NEL RIPASSO ➔
-    </a>
+    <div class="btn-group">
+      <a href="verb-get.html" class="btn ripassa">📖 Ripassa</a>
+    </div>
   </div>
 
-  <script>
-    const textContainer = document.getElementById('targetText');
-    const actionButton = document.getElementById('startBtn');
-    const sourceString = textContainer.getAttribute('data-src');
+  <div class="item">
+    <div>
+      <div class="item-name">Make + object + verb/adjective</div>
+      <div class="item-args">make someone do something · make someone happy</div>
+    </div>
+    <div class="btn-group">
+      <a href="make-object.html" class="btn ripassa">📖 Ripassa</a>
+    </div>
+  </div>
 
-    // Funzione di digitazione corretta a 70ms (rallentata su tua richiesta)
-    function runTypewriter(element, text, delay = 70, callback) {
-      element.innerHTML = '';
-      let index = 0;
-      let currentHTML = '';
+  <div class="item">
+    <div>
+      <div class="item-name">Present perfect: for / since</div>
+      <div class="item-args">durata con for · punto di partenza con since</div>
+    </div>
+    <div class="btn-group">
+      <a href="present-perfect-duration.html" class="btn ripassa">📖 Ripassa</a>
+    </div>
+  </div>
 
-      function renderNextChar() {
-        if (index < text.length) {
-          let char = text[index];
-          if (char === '❮') {
-            currentHTML += '<span class="hl">';
-            index++;
-          } else if (char === '❯') {
-            currentHTML += '</span>';
-            index++;
-          } else {
-            currentHTML += text[index];
-            index++;
-          }
-          element.innerHTML = currentHTML + '<span class="cursor"></span>';
-          setTimeout(renderNextChar, delay);
-        } else {
-          element.innerHTML = currentHTML; // Rimuove il cursore lampeggiante alla fine
-          if (callback) callback();
-        }
-      }
-      renderNextChar();
-    }
+  <div class="item">
+    <div>
+      <div class="item-name">Present perfect: just / already / yet / still</div>
+      <div class="item-args">appena · già · ancora · tuttora</div>
+    </div>
+    <div class="btn-group">
+      <a href="present-perfect-adverbs.html" class="btn ripassa">📖 Ripassa</a>
+    </div>
+  </div>
 
-    // Esecuzione controllata all'avvio
-    window.onload = () => {
-      setTimeout(() => {
-        runTypewriter(textContainer, sourceString, 70, () => {
-          actionButton.classList.add('visible');
-        });
-      }, 300);
-    };
-  </script>
+</div>
 
 </body>
 </html>
