@@ -1,263 +1,213 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Unit 10 · Connections</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;overflow:hidden;}
-body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #00CC44;flex-shrink:0;}
-.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.65rem,2vw,1rem);letter-spacing:2px;color:#009933;}
-.prog{font-family:'Orbitron',monospace;font-size:clamp(0.65rem,2vw,0.85rem);color:#999;letter-spacing:2px;}
-.dots{display:flex;gap:10px;justify-content:center;padding:7px 0;flex-shrink:0;}
-.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;cursor:pointer;}
-.dot.active{background:#00CC44;}
-.slides{flex:1;position:relative;overflow:hidden;}
-.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;opacity:0;}
-.slide.active{visibility:visible;opacity:1;}
-.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#009933;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
-.slide-title.show{opacity:1;}
-.intro{background:#f0fff4;border-left:5px solid #009933;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.74rem,2.2vw,0.88rem);color:#111;line-height:1.6;margin-bottom:10px;opacity:0;transition:opacity 0.5s;}
-.intro.show{opacity:1;}
-.intro strong{color:#007722;}
-.cmp-table{display:grid;grid-template-columns:1fr 1fr;border-radius:10px;overflow:hidden;border:2px solid #eee;margin-bottom:10px;}
-.cmp-head{font-family:'Orbitron',monospace;font-size:clamp(0.5rem,1.5vw,0.68rem);letter-spacing:1.5px;font-weight:700;padding:8px 10px;text-align:center;color:#fff;}
-.cmp-head.pp{background:#009933;}
-.cmp-head.ps{background:#0066cc;}
-.cmp-cell{padding:9px 10px;font-size:clamp(0.68rem,1.95vw,0.84rem);border-bottom:1px solid #f0f0f0;border-right:1px solid #f0f0f0;line-height:1.4;opacity:0;transition:opacity 0.3s;}
-.cmp-cell:nth-child(even){border-right:none;}
-.cmp-cell.pp{background:#f0fff4;}
-.cmp-cell.ps{background:#f0f8ff;}
-.cmp-cell:nth-last-child(1),.cmp-cell:nth-last-child(2){border-bottom:none;}
-.cmp-cell.it{color:#888;font-style:italic;font-size:clamp(0.6rem,1.7vw,0.74rem);}
-.use-row{padding:7px 0;border-bottom:1px solid #f0f0f0;opacity:0;transition:opacity 0.3s;}
-.use-row:last-child{border-bottom:none;}
-.use-ex{font-size:clamp(0.86rem,2.8vw,1.04rem);font-weight:600;color:#111;display:block;}
-.use-it{font-size:clamp(0.64rem,1.85vw,0.78rem);color:#999;font-style:italic;display:block;opacity:0;transition:opacity 0.4s;margin-top:2px;}
-.use-tag{font-family:'Orbitron',monospace;font-size:clamp(0.5rem,1.4vw,0.62rem);letter-spacing:1.5px;font-weight:700;padding:2px 7px;border-radius:4px;margin-right:7px;vertical-align:middle;color:#fff;display:inline-block;}
-.tag-pp{background:#009933;}
-.tag-ps{background:#0066cc;}
-.rule-row{display:grid;grid-template-columns:1.2fr 1.5fr;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0;align-items:start;opacity:0;transition:opacity 0.3s;}
-.rule-row:last-child{border-bottom:none;}
-.rule-name{font-size:clamp(0.7rem,2vw,0.85rem);font-weight:700;color:#777;line-height:1.4;}
-.rule-ex{font-size:clamp(0.82rem,2.55vw,0.98rem);color:#111;font-weight:600;}
-.rule-it{grid-column:1/-1;font-size:clamp(0.62rem,1.8vw,0.76rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;}
-.err-pair{padding:6px 0;border-bottom:1px solid #f0f0f0;opacity:0;transition:opacity 0.3s;}
-.err-pair:last-child{border-bottom:none;}
-.err-wrong{font-size:clamp(0.82rem,2.55vw,0.98rem);color:#c00;}
-.err-ok{font-size:clamp(0.82rem,2.55vw,0.98rem);font-weight:700;color:#007733;}
-.err-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;margin-top:1px;}
-.err-note{font-size:clamp(0.63rem,1.8vw,0.777rem);color:#999;margin-top:1px;opacity:0;transition:opacity 0.4s;}
-.hl{font-weight:900;color:#009933;font-style:normal;}
-.hl-ps{font-weight:900;color:#0066cc;font-style:normal;}
-.warn{background:#f0fff4;border-left:5px solid #00CC44;border-radius:0 8px 8px 0;padding:9px 14px;font-size:clamp(0.76rem,2.35vw,0.92rem);color:#111;font-weight:600;line-height:1.65;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:8px;}
-.warn.show{opacity:1;}
-.warn strong{color:#009933;}
-.cursor{display:inline-block;width:2px;height:1em;background:#009933;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
-@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
-.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
-.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.55rem,1.8vw,0.72rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #00CC44;background:#fff;color:#009933;cursor:pointer;transition:all 0.2s;}
-.btn-nav:hover{background:#00CC44;color:#fff;}
-.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
-.btn-nav:disabled:hover{background:#fff;color:#ccc;}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 10 · Connections – Intro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    /* Reset e stili strutturali speculari ai tuoi esempi */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #0d0d0d;
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #fff;
+      padding: 20px;
+    }
+
+    /* Pulsante Chiudi in alto a sinistra, non invasivo */
+    .close-tab {
+      align-self: flex-start;
+      color: #777;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 40px;
+      transition: color 0.2s;
+    }
+    .close-tab:hover {
+      color: #fff;
+    }
+
+    /* Contenitore centrale a larghezza controllata con bordo verde */
+    .container {
+      max-width: 550px;
+      width: 100%;
+      margin: auto;
+      background-color: #141414;
+      border: 3px solid #00CC44;
+      border-radius: 24px;
+      padding: 40px 30px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 204, 68, 0.1);
+    }
+
+    /* Intestazione */
+    .unit-label {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.85rem;
+      color: #00CC44;
+      letter-spacing: 4px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+    .main-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      letter-spacing: 3px;
+      line-height: 1;
+      color: #fff;
+      margin-bottom: 5px;
+    }
+    .subtitle {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #aaa;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    /* Linea divisoria orizzontale */
+    hr {
+      border: 0;
+      height: 1px;
+      background: #333;
+      margin-bottom: 25px;
+    }
+
+    /* Box di digitazione ad altezza fissa per preservare il layout */
+    .text-box {
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+    .typewriter-text {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #dddddd;
+      font-weight: 400;
+    }
+
+    /* Evidenziazione interna al testo animato */
+    .hl {
+      color: #00CC44;
+      font-weight: 700;
+    }
+
+    /* Cursore del testo */
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background-color: #00CC44;
+      vertical-align: middle;
+      margin-left: 2px;
+      animation: blink 0.6s step-end infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* Bottone d'ingresso che appare solo alla fine della digitazione */
+    .action-btn {
+      display: inline-block;
+      background-color: #00CC44;
+      color: #000;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 900;
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 28px;
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
+      opacity: 0;
+      visibility: hidden;
+    }
+    .action-btn.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .action-btn:hover {
+      background-color: #00ff55;
+      transform: scale(1.03);
+    }
+  </style>
 </head>
 <body>
-<div class="topbar"><div class="title">🟢 UNIT 10 · CONNECTIONS</div><div class="prog" id="prog">1 / 4</div></div>
-<div class="dots" id="dots"></div>
-<div class="slides">
 
-  <!-- SLIDE 1: THE VERB GET -->
-  <div class="slide active" id="s0">
-    <div class="slide-title">📋 1. THE VERSATILE VERB "GET"</div>
-    <div class="intro" id="intro0">
-      Il verbo <strong>get</strong> è estremamente versatile in inglese. Cambia significato a seconda degli elementi sintattici che lo seguono: può esprimere un <strong>cambiamento di stato</strong> (+ aggettivo), descrivere un'azione riflessiva (+ participio passato) o assumere significati idiomatici se seguito da un sostantivo.
+  <a href="#" class="close-tab" onclick="window.close(); return false;">✕ Chiudi questa scheda</a>
+
+  <div class="container">
+    <div class="unit-label">DIGITAL HUB</div>
+    <h1 class="main-title">UNIT 10</h1>
+    <div class="subtitle">Connections</div>
+    
+    <hr>
+
+    <div class="text-box">
+      <p class="typewriter-text" id="targetText" data-src="Benvenuto nel modulo di ripasso dedicato alle ❮connessioni grammaticali❯ e alle strutture verbali fondamentali della Unit 10."></p>
     </div>
-    <div class="cmp-table">
-      <div class="cmp-head pp">GET + ADJECTIVE (Diventare)</div>
-      <div class="cmp-head ps">GET + PAST PARTICIPLE (Azione)</div>
-      <div class="cmp-cell pp">Indica un mutamento o una transizione di stato.</div>
-      <div class="cmp-cell ps">Corrisponde spesso ai verbi riflessivi in italiano.</div>
-      <div class="cmp-cell pp it">It's getting dark. (Sta diventando buio)</div>
-      <div class="cmp-cell ps it">We got married last year. (Ci siamo sposati l'anno scorso)</div>
-      <div class="cmp-cell pp">Esempi comuni: get hungry, get cold, get tired, get ready.</div>
-      <div class="cmp-cell ps">Esempi comuni: get dressed, get lost, get hurt, get changed.</div>
-    </div>
-    <div class="warn">⚡ Ricorda le tre espressioni base con sostantivi: <strong>Get home</strong> (= arrivare a casa), <strong>Get an email</strong> (= ricevere), <strong>Get it</strong> (= capire).</div>
+
+    <a href="unit10_menu.html" class="action-btn" id="startBtn">
+      ENTRA NEL RIPASSO ➔
+    </a>
   </div>
 
-  <!-- SLIDE 2: MAKE + OBJECT -->
-  <div class="slide" id="s1">
-    <div class="slide-title">🔧 2. MAKE + OBJECT + VERB / ADJECTIVE</div>
-    <div class="use-row">
-      <span class="use-ex"><span class="use-tag tag-pp">MAKE + ADJ</span><span data-tw="This rain ❮makes me sad❯."></span></span>
-      <span class="use-it">Questa pioggia mi rende triste. (Causa una reazione emotiva o stato d'animo)</span>
-    </div>
-    <div class="use-row">
-      <span class="use-ex"><span class="use-tag tag-ps">MAKE + VERB</span><span data-tw="My parents ❮make me study❯ every day."></span></span>
-      <span class="use-it">I miei genitori mi fanno studiare ogni giorno. (Obbligo o causa di un'azione)</span>
-    </div>
-    <div class="use-row">
-      <span class="use-ex"><span class="use-tag tag-pp">MAKE + ADJ</span><span data-tw="You always ❮make me happy❯."></span></span>
-      <span class="use-it">Mi rendi sempre felice. (Soggetto + make + oggetto + aggettivo)</span>
-    </div>
-    <div class="use-row">
-      <span class="use-ex"><span class="use-tag tag-ps">MAKE + VERB</span><span data-tw="Don't ❮make me laugh❯!"></span></span>
-      <span class="use-it">Non farmi ridere! (Infinito senza TO del secondo verbo)</span>
-    </div>
-    <div class="warn">⚠️ <strong>ATTENZIONE:</strong> Non inserire mai il "to" davanti al verbo. Si dice <em>"He made me cry"</em> e non <s>"He made me to cry"</s>.</div>
-  </div>
+  <script>
+    const textContainer = document.getElementById('targetText');
+    const actionButton = document.getElementById('startBtn');
+    const sourceString = textContainer.getAttribute('data-src');
 
-  <!-- SLIDE 3: FOR VS SINCE -->
-  <div class="slide" id="s2">
-    <div class="slide-title">⏱️ 3. PRESENT PERFECT — FOR vs SINCE</div>
-    <div class="rule-row">
-      <div class="rule-name" data-tw="FOR → Durata complessiva del periodo di tempo (da quanto tempo)"></div>
-      <div class="rule-ex" data-tw="I have known her ❮for ten years❯."></div>
-      <div class="rule-it">La conosco da dieci anni. (Periodo totale di tempo continuato)</div>
-    </div>
-    <div class="rule-row">
-      <div class="rule-name" data-tw="SINCE → Punto di inizio preciso dell'azione (da quando)"></div>
-      <div class="rule-ex" data-tw="I've lived here ❮since 2018❯."></div>
-      <div class="rule-it">Vivo qui dal 2018. (Momento esatto di partenza stabilito nel passato)</div>
-    </div>
-    <div class="rule-row">
-      <div class="rule-name" data-tw="Espressioni tipiche con FOR"></div>
-      <div class="rule-ex" data-tw="for ages, for a long time, for hours, for two days"></div>
-      <div class="rule-it">Da un'eternità, da molto tempo, da ore, da due giorni.</div>
-    </div>
-    <div class="rule-row">
-      <div class="rule-name" data-tw="Espressioni tipiche con SINCE"></div>
-      <div class="rule-ex" data-tw="since Monday, since 9 o'clock, since I was a child"></div>
-      <div class="rule-it">Da lunedì, dalle 9, da quando ero un bambino.</div>
-    </div>
-    <div class="warn">⚡ Ricorda: in italiano usiamo il presente semplice ("vivo qui da..."), mentre in inglese richiede obbligatoriamente il <strong>Present Perfect</strong>.</div>
-  </div>
+    // Funzione di digitazione corretta a 70ms (rallentata su tua richiesta)
+    function runTypewriter(element, text, delay = 70, callback) {
+      element.innerHTML = '';
+      let index = 0;
+      let currentHTML = '';
 
-  <!-- SLIDE 4: JUST, ALREADY, YET, STILL -->
-  <div class="slide" id="s3">
-    <div class="slide-title">🚨 4. AVVERBI — JUST, ALREADY, YET, STILL</div>
-    <div class="err-pair">
-      <div class="err-wrong" data-tw="JUST → Azione appena conclusa (tra ausiliare e participio)"></div>
-      <div class="err-ok"    data-tw="I have ❮just finished❯ my lunch."></div>
-      <div class="err-it">Ho appena finito di pranzare. (Avvenuto pochissimi istanti fa)</div>
-    </div>
-    <div class="err-pair">
-      <div class="err-wrong" data-tw="ALREADY → Azione già accaduta prima del previsto (frasi affermative)"></div>
-      <div class="err-ok"    data-tw="We have ❮already done❯ the homework."></div>
-      <div class="err-it">Abbiamo già fatto i compiti. (Tra ausiliare e verbo principale)</div>
-    </div>
-    <div class="err-pair">
-      <div class="err-wrong" data-tw="YET → 'Ancora' nelle negative, 'Già' nelle domande (a fine frase)"></div>
-      <div class="err-ok"    data-tw="Has she arrived ❮yet❯? — No, not ❮yet❯."></div>
-      <div class="err-it">È già arrivata? — No, non ancora. (Sempre posizionato in coda alla frase)</div>
-    </div>
-    <div class="err-pair">
-      <div class="err-wrong" data-tw="STILL → 'Ancora' per sorpresa o ritardo (prima del negativo)"></div>
-      <div class="err-ok"    data-tw="They ❮still haven't❯ called me."></div>
-      <div class="err-it">Non mi hanno ancora chiamato. (Esprime disappunto o stupore)</div>
-    </div>
-    <div class="warn">🎯 Attenzione alla sintassi: <strong>Yet</strong> si colloca solo a fine frase, mentre <strong>Still</strong> si colloca prima di haven't/hasn't.</div>
-  </div>
+      function renderNextChar() {
+        if (index < text.length) {
+          let char = text[index];
+          if (char === '❮') {
+            currentHTML += '<span class="hl">';
+            index++;
+          } else if (char === '❯') {
+            currentHTML += '</span>';
+            index++;
+          } else {
+            currentHTML += text[index];
+            index++;
+          }
+          element.innerHTML = currentHTML + '<span class="cursor"></span>';
+          setTimeout(renderNextChar, delay);
+        } else {
+          element.innerHTML = currentHTML; // Rimuove il cursore lampeggiante alla fine
+          if (callback) callback();
+        }
+      }
+      renderNextChar();
+    }
 
-</div>
-<div class="nav">
-  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>PREV</button>
-  <button class="btn-nav" id="nextBtn" onclick="go(1)">NEXT</button>
-</div>
-<script>
-let cur=0;const slides=document.querySelectorAll('.slide');const dotsEl=document.getElementById('dots');const TOTAL=slides.length;let busy=false;let timers=[];
-for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>{if(!busy&&i!==cur)go(i-cur);};dotsEl.appendChild(d);}
-function clearTimers(){timers.forEach(t=>clearTimeout(t));timers=[];}
-function typeEffect(el,text,speed=25,cb){el.innerHTML='';let i=0;let currentHTML='';
-function type(){if(i<text.length){let char=text[i];if(char==='❮'){currentHTML+='<span class="hl">';i++;}else if(char==='❯'){currentHTML+='</span>';i++;}else{currentHTML+=text[i];i++;}el.innerHTML=currentHTML+'<span class="cursor"></span>';let t=setTimeout(type,speed);timers.push(t);}else{el.innerHTML=currentHTML;if(cb)cb();}}type();}
-function animateSlide(idx){
-  clearTimers();
-  const s=slides[idx];
-  const title=s.querySelector('.slide-title');if(title)title.classList.add('show');
-  const intro=s.querySelector('.intro');if(intro)setTimeout(()=>intro.classList.add('show'),200);
-  
-  const cells=s.querySelectorAll('.cmp-cell');
-  if(cells.length>0){
-    let cellDelay=intro?600:300;
-    cells.forEach((cell,cIdx)=>{
-      let t=setTimeout(()=>{
-        cell.style.opacity='1';
-        cell.style.transition='opacity 0.4s ease';
-      },cellDelay);
-      timers.push(t);
-      cellDelay+=150;
-    });
-  }
-
-  const rows=s.querySelectorAll('.use-row,.rule-row,.err-pair');
-  let delay=intro?600:300;
-  rows.forEach((row,rIdx)=>{
-    let t=setTimeout(()=>{
-      row.style.opacity='1';
-      const twSpans=row.querySelectorAll('[data-tw]');
-      let chain=Promise.resolve();
-      twSpans.forEach(span=>{
-        const text=span.getAttribute('data-tw');
-        chain=chain.then(()=>new Promise(res=>typeEffect(span,text,20,res)));
-      });
-      chain.then(()=>{
-        row.querySelectorAll('.use-it,.rule-it,.err-it,.err-note').forEach(tr=>{
-          tr.style.opacity='1';
-          tr.style.transition='opacity 0.4s ease';
+    // Esecuzione controllata all'avvio
+    window.onload = () => {
+      setTimeout(() => {
+        runTypewriter(textContainer, sourceString, 70, () => {
+          actionButton.classList.add('visible');
         });
-      });
-    },delay);
-    timers.push(t);
-    delay+=700;
-  });
-  const warn=s.querySelector('.warn');
-  if(warn){let t=setTimeout(()=>warn.classList.add('show'),delay+200);timers.push(t);}
-}
-function go(dir){
-  if(busy)return;
-  const next=cur+dir;
-  if(next<0||next>=TOTAL)return;
-  busy=true;
-  const oldSlide=slides[cur];
-  const newSlide=slides[next];
-  const prev=cur;cur=next;
-  
-  oldSlide.querySelectorAll('.use-row,.rule-row,.err-pair').forEach(n=>{
-    n.style.opacity='0';
-    n.querySelectorAll('.use-it,.rule-it,.err-it,.err-note').forEach(e=>e.style.opacity='0');
-  });
-  oldSlide.querySelectorAll('.cmp-cell').forEach(n=>n.style.opacity='0');
-  const intro=oldSlide.querySelector('.intro');if(intro)intro.classList.remove('show');
-  const warn=oldSlide.querySelector('.warn');if(warn)warn.classList.remove('show');
-  
-  oldSlide.style.transition='opacity 0.25s ease';
-  oldSlide.style.opacity='0';
-  setTimeout(()=>{
-    oldSlide.style.cssText='';
-    oldSlide.classList.remove('active');
-    newSlide.style.opacity='0';
-    newSlide.classList.add('active');
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      newSlide.style.transition='opacity 0.25s ease';
-      newSlide.style.opacity='1';
-      setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);
-    }));
-    animateSlide(cur);
-    dotsEl.children[prev].classList.remove('active');
-    dotsEl.children[cur].classList.add('active');
-    document.getElementById('prog').textContent=(cur+1)+' / '+TOTAL;
-    document.getElementById('prevBtn').disabled=cur===0;
-    document.getElementById('nextBtn').disabled=cur===TOTAL-1;
-  },260);
-}
-let tx=0;const sl=document.querySelector('.slides');
-sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
-sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
-window.onload=()=>{animateSlide(0);};
-</script>
+      }, 300);
+    };
+  </script>
+
 </body>
 </html>
