@@ -30,7 +30,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 950px;
             margin: 0 auto;
             background: #ffffff;
             padding: 40px;
@@ -73,6 +73,7 @@
             border-radius: 4px;
             font-size: 14px;
             display: none;
+            font-weight: bold;
         }
 
         .instructions {
@@ -99,7 +100,7 @@
             padding: 15px;
             border-radius: 0 6px 6px 0;
             font-weight: 500;
-            margin-bottom: 15px;
+            margin-bottom: 25px;
             white-space: pre-line;
         }
 
@@ -138,7 +139,26 @@
 
         .option-item input { margin-right: 12px; cursor: pointer; }
 
-        /* Layout Part 2 */
+        /* Layout Opzioni e Profili Part 2 */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        @media (min-width: 768px) {
+            .options-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .option-card-p2 {
+            background: #fdfdfd;
+            border: 1px dashed var(--accent);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .option-card-p2 strong { color: var(--accent); font-size: 16px; }
+
         .matching-container {
             display: grid;
             grid-template-columns: 1fr;
@@ -153,11 +173,14 @@
             border: 1px solid var(--border);
             padding: 15px;
             border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .profile-box h4 { color: var(--primary); margin-bottom: 8px; }
 
         .select-option-wrapper {
-            margin-top: 12px;
+            margin-top: 15px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -344,17 +367,49 @@
             <span>Part 2 - Matching</span>
             <span class="part-score-badge" id="score-part2">Score: 0/5</span>
         </div>
-        <div class="instructions">Choose the correct activity option (A-H) for each person. There are 3 extra options!</div>
+        <div class="instructions">Read the descriptions of the five people below and decide which activity (A-H) would be the most suitable for them.</div>
         
-        <div class="notice-box"><strong>OPTIONS:</strong>
-        <strong>A</strong> - The Green Kitchen | <strong>B</strong> - Modern Cinema Event | <strong>C</strong> - Past and Present Exhibition
-        <strong>D</strong> - The River Park | <strong>E</strong> - Wild Creations | <strong>F</strong> - Active Weekend Club
-        <strong>G</strong> - Tech and Sound | <strong>H</strong> - The Cooking Class</div>
+        <div class="options-grid">
+            <div class="option-card-p2">
+                <strong>A - The Green Kitchen</strong><br>
+                Learn how to prepare tasty dinners focusing heavily on fresh vegetables and different types of local fish. We strictly do not use meat, milk, butter or cheese in our recipes. You can watch our evening broadcasts comfortably live on TV from your living room sofa!
+            </div>
+            <div class="option-card-p2">
+                <strong>B - Modern Cinema Event</strong><br>
+                Come along this Saturday afternoon! We are showing an incredible biographical film about the history of a famous 19th-century oil painter. Before the film starts, join our 4:00 p.m. cafe break inside the main lounge to enjoy free snacks and chat with other students.
+            </div>
+            <div class="option-card-p2">
+                <strong>C - Past and Present Exhibition</strong><br>
+                Are you interested in local history and old traditions? This weekend, the municipal gallery is hosting an interactive exhibition filled with historical photographs, ancient documents and old books. Entry is completely free for all students under 18.
+            </div>
+            <div class="option-card-p2">
+                <strong>D - The River Park</strong><br>
+                A wonderful green space located right next to the water. It is the perfect venue for people who love nature photography or simply sitting down quietly to read a book under a big tree. Very quiet on weekends.
+            </div>
+            <div class="option-card-p2">
+                <strong>E - Wild Creations</strong><br>
+                An artistic exhibition displaying beautifully unique stone sculptures of wild animals like cats, wolves and birds. Don't forget to visit our ground-floor gift shop before leaving, where you can buy very cheap illustrated T-shirts and postcards to remember your day!
+            </div>
+            <div class="option-card-p2">
+                <strong>F - Active Weekend Club</strong><br>
+                Get out of your bedroom and join our energetic outdoor group! Every Saturday morning we organize long walks through forest paths and hold short tennis matches. To promote healthy habits, sweet fizzy drinks are forbidden; we only provide cold mineral water or fresh orange juice.
+            </div>
+            <div class="option-card-p2">
+                <strong>G - Tech and Sound</strong><br>
+                Do you love digital technology and electronic music? Come and test the latest video games on huge screens or participate in our computer programming workshop. Ideal for those who enjoy spending their free time practicing indoor digital hobbies.
+            </div>
+            <div class="option-card-p2">
+                <strong>H - The Cooking Class</strong><br>
+                A fantastic morning course where you can learn the traditional secrets of baking delicious homemade bread, chocolate biscuits and Italian pizza using high-quality flour, milk and dairy products. Perfect for beginners.
+            </div>
+        </div>
 
         <div class="matching-container">
             <div class="profile-box question-group" data-qtype="select" data-ans="C">
-                <h4>1. Marco</h4>
-                <p>Hates playing video games alone. He is very hard-working and loves studying History. This weekend, he wants to go to an exhibition but he hasn't got enough money for an expensive ticket.</p>
+                <div>
+                    <h4>1. Marco</h4>
+                    <p>Hates playing video games alone. He is very hard-working and loves studying History. This weekend, he wants to go to an exhibition but he hasn't got enough money for an expensive ticket.</p>
+                </div>
                 <div class="select-option-wrapper">
                     <select class="app-select">
                         <option value="">-- Choose Option --</option>
@@ -362,12 +417,14 @@
                         <option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option>
                     </select>
                 </div>
-                <div class="explanation-box"><strong>Spiegazione:</strong> L'opzione C offre una mostra storica ("history") ed è gratuita ("completely free"), rispondendo perfettamente al budget di Marco.</div>
+                <div class="explanation-box"><strong>Spiegazione:</strong> L'opzione C offre una mostra storica ("history") ed è gratuita ("completely free"), rispondendo perfettamente alle passioni e al budget limitato di Marco.</div>
             </div>
 
             <div class="profile-box question-group" data-qtype="select" data-ans="F">
-                <h4>2. Elena</h4>
-                <p>Is very active and loves free-time activities outdoors. She enjoys going for a walk and playing tennis. She prefers drinking water or orange juice because she doesn't like fizzy drinks.</p>
+                <div>
+                    <h4>2. Elena</h4>
+                    <p>Is very active and loves free-time activities outdoors. She enjoys going for a walk and playing tennis. She prefers drinking water or orange juice because she doesn't like fizzy drinks.</p>
+                </div>
                 <div class="select-option-wrapper">
                     <select class="app-select">
                         <option value="">-- Choose Option --</option>
@@ -375,12 +432,14 @@
                         <option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option>
                     </select>
                 </div>
-                <div class="explanation-box"><strong>Spiegazione:</strong> L'opzione F propone camminate e tennis all'aperto, e vieta esplicitamente le bevande gassate incoraggiando acqua o succhi.</div>
+                <div class="explanation-box"><strong>Spiegazione:</strong> L'opzione F propone camminate e tennis all'aperto, e vieta le bevande gassate incoraggiando espressamente acqua o succhi d'arancia.</div>
             </div>
 
             <div class="profile-box question-group" data-qtype="select" data-ans="A">
-                <h4>3. Tommaso</h4>
-                <p>Likes cooking and trying new food. He loves eating a lot of vegetables and fish, but he doesn't eat meat or dairy products like cheese. He also loves watching TV in the evening.</p>
+                <div>
+                    <h4>3. Tommaso</h4>
+                    <p>Likes cooking and trying new food. He loves eating a lot of vegetables and fish, but he doesn't eat meat or dairy products like cheese. He also loves watching TV in the evening.</p>
+                </div>
                 <div class="select-option-wrapper">
                     <select class="app-select">
                         <option value="">-- Choose Option --</option>
@@ -388,12 +447,14 @@
                         <option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option>
                     </select>
                 </div>
-                <div class="explanation-box"><strong>Spiegazione:</strong> L'opzione A propone piatti con pesce e verdure escludendo carne e latte, e permette di guardare la lezione in TV la sera.</div>
+                <div class="explanation-box"><strong>Spiegazione:</strong> L'opzione A propone piatti con pesce e verdure escludendo carne e latticini, e permette di seguire la lezione direttamente in TV la sera.</div>
             </div>
 
             <div class="profile-box question-group" data-qtype="select" data-ans="B">
-                <h4>4. Giulia</h4>
-                <p>Is keen on Art and painting. She loves going to the cinema to watch films about famous artists. She always has a break at 4 p.m. to meet her friends for a snack.</p>
+                <div>
+                    <h4>4. Giulia</h4>
+                    <p>Is keen on Art and painting. She loves going to the cinema to watch films about famous artists. She always has a break at 4 p.m. to meet her friends for a snack.</p>
+                </div>
                 <div class="select-option-wrapper">
                     <select class="app-select">
                         <option value="">-- Choose Option --</option>
@@ -401,9 +462,417 @@
                         <option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option>
                     </select>
                 </div>
-                <div class="explanation-box"><strong>Spiegazione:</strong> L'opzione B combina un film su un pittore famoso con una pausa per snack e amici subito prima dello spettacolo ("afternoon cafe break").</div>
+                <div class="explanation-box"><strong>Spiegazione:</strong> L'opzione B combina un film su un pittore famoso con una pausa relax per snack e socializzazione alle 4 del pomeriggio ("4:00 p.m. cafe break").</div>
             </div>
 
             <div class="profile-box question-group" data-qtype="select" data-ans="E">
-                <h4>5. Davide</h4>
-                <p>Loves animals. At home, he always feeds his
+                <div>
+                    <h4>5. Davide</h4>
+                    <p>Loves animals. At home, he always feeds his cat and cleans his room. He is looking for a fun weekend activity where he can see original sculptures of animals and buy a cheap T-shirt as a memory.</p>
+                </div>
+                <div class="select-option-wrapper">
+                    <select class="app-select">
+                        <option value="">-- Choose Option --</option>
+                        <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
+                        <option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option>
+                    </select>
+                </div>
+                <div class="explanation-box"><strong>Spiegazione:</strong> L'opzione E include sculture in pietra di animali e un negozio interno per comprare magliette a basso costo ("very cheap T-shirts").</div>
+            </div>
+        </div>
+
+        <div class="check-btn-container">
+            <button type="button" class="check-btn" onclick="checkSection('section-part2', 'score-part2')">Verifica Part 2</button>
+        </div>
+    </div>
+
+    <div class="part-section" id="section-part3">
+        <div class="part-header">
+            <span>Part 3 - True or False</span>
+            <span class="part-score-badge" id="score-part3">Score: 0/10</span>
+        </div>
+        <div class="instructions">Read the statements below first, then read the text passage to determine if each statement is True (T) or False (F).</div>
+        
+        <div class="text-passage">
+            <strong>A New Experience for Jack</strong><br><br>
+            <p>Jack was a remarkably hard-working student who usually spent the entirety of his weekends inside his family home. He generally loved playing complex video games alone or watching long TV series in his bedroom. He rarely went out into the town centre because he genuinely did not enjoy noisy or crowded places, preferring the quiet comfort of his personal space.</p>
+            <p>However, last weekend, a sudden change occurred. His classmates sent him a message inviting him to a special cultural event. A popular local artist was showing a unique collection of original stone sculptures at the modern art gallery. After the exhibition, the group also planned to walk to the historic theatre to attend a live music concert. Because Jack was incredibly keen on art and history, he decided to break his normal habits and join them for the afternoon.</p>
+            <p>The students all met outside the main entrance of the gallery at exactly 4:30 p.m., taking advantage of their usual afternoon break from studying. The exhibition was fascinating, and before leaving, Jack wanted to buy a small souvenir. He walked into the busy gallery shop and noticed some beautiful black and purple T-shirts. Unfortunately, they were far too expensive, and he realised he did not have enough money in his pocket for clothes. Instead of leaving empty-handed, he just bought a few small postcards of the sculptures to remember the day, which were much cheaper.</p>
+            <p>As the sun went down, the evening began, and the group moved to the town theatre for the highly anticipated concert. At first, Jack felt very uncomfortable and did not like the show at all; the music was far too loud for his taste, and there were too many people shouting around him. However, things changed drastically during the second part of the performance. The band stopped using electric instruments and played some traditional acoustic songs instead. Jack absolutely loved this part.</p>
+            <p>Afterwards, feeling exhausted, they went to a nearby cafeteria. Jack usually hates fast food and avoids it at all costs, but on this occasion, he was absolutely starving. He made a temporary exception to his strict diet and ordered some grilled fish and a glass of fresh orange juice. Meanwhile, his classmates sat at the table eating chocolate biscuits and drinking sweet milkshakes. It was a completely new experience for him. Tomorrow morning, Jack is meeting his friends again at the local sports centre to play a long match of tennis, and he feels exceptionally happy about this active new routine.</p>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="F">
+            <div class="question-text">1. Jack used to divide his weekends equally between outdoor activities and digital entertainment.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s1" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s1" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Spiegazione:</strong> Falso. Il testo specifica che trascorreva l'intera durata ("the entirety") dei fine settimana al chiuso a casa.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="T">
+            <div class="question-text">2. Jack's decision to break his weekend routine was driven by his personal passion rather than peer pressure.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s2" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s2" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Spiegazione:</strong> Vero. Ha interrotto la routine perché attratto dal tema artistico e storico della mostra ("incredibly keen on art and history").</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="F">
+            <div class="question-text">3. The group entered the modern art exhibition immediately after their afternoon break concluded.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s3" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s3" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Spiegazione:</strong> Falso. Si sono visti sfruttando la loro consueta pausa pomeridiana ("taking advantage of their usual afternoon break"), non dopo di essa.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="F">
+            <div class="question-text">4. Jack was unable to buy any clothing items at the gallery because he had forgotten his wallet at home.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s4" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s4" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Spiegazione:</strong> Falso. Aveva i soldi in tasca per le cartoline, ma non erano abbastanza per le magliette che erano troppo costose ("far too expensive").</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="T">
+            <div class="question-text">5. Postcards were the only purchase Jack made during his visit to the art gallery shop.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s5" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s5" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Spiegazione:</strong> Vero. L'avverbio restrittivo "he just bought a few small postcards" conferma che ha preso unicamente quelle.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="T">
+            <div class="question-text">6. Jack's initial discomfort at the theatre was caused by a combination of auditory and environmental factors.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s6" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s6" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Spiegazione:</strong> Vero. Il disagio iniziale sorge dal volume della musica (fattore acustico) e dalle troppe persone che gridavano (fattore ambientale).</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="F">
+            <div class="question-text">7. The band maintained a heavy, energetic musical style throughout the entire duration of the concert.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s7" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s7" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Spiegazione:</strong> Falso. Nella seconda parte della performance la band ha cambiato stile passando a canzoni tradizionali acustiche ("acoustic songs").</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="F">
+            <div class="question-text">8. At the cafeteria, Jack ordered a fast-food meal because he wanted to try something different.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s8" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s8" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Spiegazione:</strong> Falso. Ha ordinato pesce grigliato e succo perché era affamatissimo ("absolutely starving"), nonostante odi il fast food.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="F">
+            <div class="question-text">9. Every single member of the group consumed either sugar or dairy products during their time at the cafeteria.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s9" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s9" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Spiegazione:</strong> Falso. Jack ha consumato solo pesce e succo d'arancia, escludendo zuccheri e latticini che sono stati presi invece dai compagni.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="T">
+            <div class="question-text">10. Jack is already planning to integrate regular sports sessions into his future weekends with his classmates.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s10" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s10" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Spiegazione:</strong> Vero. Il testo termina spiegando che l'indomani giocherà a tennis con loro e che è felicissimo di questa nuova routine attiva ("active new routine").</div>
+        </div>
+
+        <div class="check-btn-container">
+            <button type="button" class="check-btn" onclick="checkSection('section-part3', 'score-part3')">Verifica Part 3</button>
+        </div>
+    </div>
+
+    <div class="part-section" id="section-part4">
+        <div class="part-header">
+            <span>Part 4 - Multiple Choice Passages</span>
+            <span class="part-score-badge" id="score-part4">Score: 0/5</span>
+        </div>
+        <div class="instructions">Read the text and choose the correct option (A, B, C or D) for each question.</div>
+
+        <div class="text-passage">
+            <strong>An honest review of the new town theatre</strong><br>
+            <em>Essay by Alex Green, aged 15</em><br><br>
+            <p>I’ve always been a huge fan of live performances and history, so I was incredibly excited when the town council finally opened the new Millennium Theatre last week. My classmates and I immediately bought tickets for the opening music concert. Before the building was completed, many people complained that it was too expensive to build, but in my opinion, it is a magnificent addition to our town.</p>
+            <p>All the modern theatres I’ve visited recently have felt cold, but this one is different. The architect, who has designed lots of other commercial spaces, made this theatre look like an old 19th-century opera house. Even though the seats are a little small and there isn't enough space for long legs, it’s the most beautiful venue in the area. I did wonder at first whether the sound would be clear enough near the back rows—but the acoustics were absolutely perfect. The young actress who presented the show gave a fantastic performance too, and I loved the traditional costumes she wore.</p>
+            <p>The theatre management probably had a hard job choosing a performance that would please everyone. The show started with an energetic rock band, which provided plenty of excitement right at the beginning, but unfortunately, I found the music a bit too loud and difficult to enjoy in places. It also seemed to be over very quickly—the first part lasted under an hour. I also felt there weren't as many traditional acoustic songs as we expected. However, the second half was much more serious and artistic, and I still really enjoyed the experience overall. Tomorrow, my school group is meeting the director backstage to see how the stage machinery works, and I can't wait.</p>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="C">
+            <div class="question-text">21. What is Alex trying to do in his essay?</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p4-q21" value="A"> A) explain how to get a discount on theatre tickets</li>
+                <li class="option-item"><input type="radio" name="p4-q21" value="B"> B) complain about the amount of money spent on a new building</li>
+                <li class="option-item"><input type="radio" name="p4-q21" value="C"> C) give a balanced view of a new theatre and its first show</li>
+                <li class="option-item"><input type="radio" name="p4-q21" value="D"> D) describe the history of old 19th-century opera houses</li>
+            </ul>
+            <div class="explanation-box"><strong>Spiegazione:</strong> Bilancia gli aspetti strutturali e storici positivi con le critiche costruttive sulla comodità dei sedili e su alcune parti dello show.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="D">
+            <div class="question-text">22. What can a reader find out from Alex's essay?</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p4-q22" value="A"> A) whether the opening concert was his favourite event of the year</li>
+                <li class="option-item"><input type="radio" name="p4-q22" value="B"> B) what other public buildings the architect has designed</li>
+                <li class="option-item"><input type="radio" name="p4-q22" value="C"> C) which local bands performed during the second half of the show</li>
+                <li class="option-item"><input type="radio" name="p4-q22" value="D"> D) whether he thinks the building's appearance is successful</li>
+            </ul>
+            <div class="explanation-box"><strong>Spiegazione:</strong> Il testo evidenzia pienamente l'opinione di Alex sull'estetica dell'edificio, che giudica bellissima ("the most beautiful venue").</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="A">
+            <div class="question-text">23. What does Alex tell us about the design of the theatre?</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p4-q23" value="A"> A) It has a classical style despite being a modern construction.</li>
+                <li class="option-item"><input type="radio" name="p4-q23" value="B"> B) The seats are large enough to be extremely comfortable.</li>
+                <li class="option-item"><input type="radio" name="p4-q23" value="C"> C) He knew from the start that the acoustics would be excellent.</li>
+                <li class="option-item"><input type="radio" name="p4-q23" value="D"> D) It looks exactly like every other modern commercial space.</li>
+            </ul>
+            <div class="explanation-box"><strong>Spiegazione:</strong> Nonostante sia una costruzione modernissima, l'architetto ha ricreato lo stile di un vecchio teatro d'opera dell'800 ("19th-century opera house").</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="B">
+            <div class="question-text">24. What is one problem with the show, according to Alex?</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p4-q24" value="A"> A) It lasted too long and became boring at the end.</li>
+                <li class="option-item"><input type="radio" name="p4-q24" value="B"> B) The initial musical performance was a bit too loud.</li>
+                <li class="option-item"><input type="radio" name="p4-q24" value="C"> C) There was too much technology on the stage.</li>
+                <li class="option-item"><input type="radio" name="p4-q24" value="D"> D) The presenter forgot her traditional costume.</li>
+            </ul>
+            <div class="explanation-box"><strong>Spiegazione:</strong> Alex lamenta espressamente che all'inizio il volume del gruppo rock era un po' eccessivo e difficile da godersi ("a bit too loud").</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="C">
+            <div class="question-text">25. Which of these might appear in a magazine review of the new theatre?</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p4-q25" value="A"> A) <em>The new theatre had a slow start with a quiet, acoustic performance, but the rock music in the second half saved the evening.</em></li>
+                <li class="option-item"><input type="radio" name="p4-q25" value="B"> B) <em>The modern architecture looks cold and identical to other spaces, but the huge, comfortable seats make it worth a visit.</em></li>
+                <li class="option-item"><input type="radio" name="p4-q25" value="C"> C) <em>The building has a wonderful historic atmosphere despite a few comfort issues, and the opening night offered a varied musical selection.</em></li>
+                <li class="option-item"><input type="radio" name="p4-q25" value="D"> D) <em>Alex Green performed well as the main presenter, but the director had a hard job fixing the terrible acoustics of the main room.</em></li>
+            </ul>
+            <div class="explanation-box"><strong>Spiegazione:</strong> L'opzione C riassume alla perfezione tutti gli elementi del testo: l'atmosfera storica dell'edificio, i lievi problemi di spazio per le gambe e la varietà dello spettacolo.</div>
+        </div>
+
+        <div class="check-btn-container">
+            <button type="button" class="check-btn" onclick="checkSection('section-part4', 'score-part4')">Verifica Part 4</button>
+        </div>
+    </div>
+
+    <div class="part-section" id="section-part5">
+        <div class="part-header">
+            <span>Part 5 - Use of English (Cloze)</span>
+            <span class="part-score-badge" id="score-part5">Score: 0/10</span>
+        </div>
+        <div class="instructions">Read the text below and choose the correct word for each space from the dropdown menus.</div>
+        
+        <div class="text-passage" style="max-height: none; line-height: 2.3;">
+            <strong>New Hobbies – New Routine</strong><br>
+            <em>by Thomas Wright, aged 14</em><br><br>
+            
+            Last month, a new family moved into the house next to ours. On Saturday morning, I met a new student <strong>(0) who</strong> lives there with his parents. His name is Sam. He was standing outside in the garden, looking a bit lonely. Later that day, my Mum and Dad 
+            
+            <span class="question-group" data-qtype="inline-select" data-ans="B">
+                <select class="cloze-inline-select">
+                    <option value="">(26)</option><option value="A">chose</option><option value="B">decided</option><option value="C">selected</option><option value="D">picked</option>
+                </select>
+            </span>
+            that I should invite him to our home for lunch because he didn't know anyone in the town yet. <br><br>
+            
+            When Sam arrived, we went up to my bedroom. He 
+            <span class="question-group" data-qtype="inline-select" data-ans="D">
+                <select class="cloze-inline-select">
+                    <option value="">(27)</option><option value="A">said</option><option value="B">spoke</option><option value="C">explained</option><option value="D">told</option>
+                </select>
+            </span>
+            me that he loved playing video games just like me, but he also explained that he didn't want to stay inside all afternoon 
+            <span class="question-group" data-qtype="inline-select" data-ans="A">
+                <select class="cloze-inline-select">
+                    <option value="">(28)</option><option value="A">because</option><option value="B">so</option><option value="C">but</option><option value="D">and</option>
+                </select>
+            </span>
+            it was a beautiful sunny day. He preferred doing something outdoors. <br><br>
+            
+            Anyway, 
+            <span class="question-group" data-qtype="inline-select" data-ans="C">
+                <select class="cloze-inline-select">
+                    <option value="">(29)</option><option value="A">some</option><option value="B">after</option><option value="C">a</option><option value="D">later</option>
+                </select>
+            </span>
+            few minutes later, we took our jackets and decided to walk down to the local sports centre. The football pitch there was much bigger than our old school field, and there were already 
+            <span class="question-group" data-qtype="inline-select" data-ans="B">
+                <select class="cloze-inline-select">
+                    <option value="">(30)</option><option value="A">many</option><option value="B">lots</option><option value="C">much</option><option value="D">few</option>
+                </select>
+            </span>
+            of people from my class playing matches. <br><br>
+            
+            Unfortunately, our group didn't have 
+            <span class="question-group" data-qtype="inline-select" data-ans="D">
+                <select class="cloze-inline-select">
+                    <option value="">(31)</option><option value="A">many</option><option value="B">standard</option><option value="C">lot</option><option value="D">enough</option>
+                </select>
+            </span>
+            players to start a real game on the main pitch, 
+            <span class="question-group" data-qtype="inline-select" data-ans="A">
+                <select class="cloze-inline-select">
+                    <option value="">(32)</option><option value="A">so</option><option value="B">because</option><option value="C">but</option><option value="D">then</option>
+                </select>
+            </span>
+            we decided to find a quiet space to practice together. <br><br>
+            
+            Sam was absolutely great at sports, and I 
+            <span class="question-group" data-qtype="inline-select" data-ans="C">
+                <select class="cloze-inline-select">
+                    <option value="">(33)</option><option value="A">knew</option><option value="B">found</option><option value="C">made</option><option value="D">met</option>
+                </select>
+            </span>
+            friends with him very quickly during the afternoon. I usually hate getting tired and prefer sitting on the sofa, but surprisingly, I didn't mind 
+            <span class="question-group" data-qtype="inline-select" data-ans="D">
+                <select class="cloze-inline-select">
+                    <option value="">(34)</option><option value="A">to be</option><option value="B">been</option><option value="C">be</option><option value="D">being</option>
+                </select>
+            </span>
+            active with Sam. Moving to a new weekend routine isn't that bad, after all! Tomorrow morning, we are 
+            <span class="question-group" data-qtype="inline-select" data-ans="C">
+                <select class="cloze-inline-select">
+                    <option value="">(35)</option><option value="A">played</option><option value="B">play</option><option value="C">playing</option><option value="D">plays</option>
+                </select>
+            </span>
+            tennis at 10 a.m., and I am really looking forward to it.
+        </div>
+
+        <div class="item-card" id="p5-explanations-box" style="display:none; background:#f8fafc; border-left:4px solid var(--border);">
+            <h4 style="color:var(--primary); margin-bottom:10px;">Spiegazioni Linguistiche Part 5:</h4>
+            <p style="margin-bottom:6px;"><strong>26 [B]:</strong> Struttura sintattica fissa: <em>decided (that) + clause</em>.</p>
+            <p style="margin-bottom:6px;"><strong>27 [D]:</strong> Richiede obbligatoriamente la presenza del pronome oggetto (<em>told me</em>).</p>
+            <p style="margin-bottom:6px;"><strong>28 [A]:</strong> Connettore di causa (<em>because</em>) per spiegare la motivazione legata al bel tempo.</p>
+            <p style="margin-bottom:6px;"><strong>29 [C]:</strong> Espressione di tempo indefinita fissa: <em>a few minutes later</em>.</p>
+            <p style="margin-bottom:6px;"><strong>30 [B]:</strong> Unico quantificatore compatibile con la preposizione: <em>lots of</em>.</p>
+            <p style="margin-bottom:6px;"><strong>31 [D]:</strong> Collocazione corretta per indicare quantità sufficiente: <em>enough players</em>.</p>
+            <p style="margin-bottom:6px;"><strong>32 [A]:</strong> Connettore causale-consecutivo (<em>so</em> = quindi, perciò).</p>
+            <p style="margin-bottom:6px;"><strong>33 [C]:</strong> Espressione idiomatica al passato per indicare il fare amicizia: <em>made friends</em>.</p>
+            <p style="margin-bottom:6px;"><strong>34 [D]:</strong> I verbi di preferenza o opinione come <em>don't mind</em> esigono la forma in <em>-ing</em>.</p>
+            <p style="margin-bottom:6px;"><strong>35 [C]:</strong> Present Continuous con valore di futuro programmato stabilito (<em>we are playing</em>).</p>
+        </div>
+
+        <div class="check-btn-container">
+            <button type="button" class="check-btn" onclick="checkSection('section-part5', 'score-part5')">Verifica Part 5</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Gestione clic visivo delle opzioni radio (Part 1, 3, 4)
+    document.querySelectorAll('.option-item').forEach(item => {
+        item.addEventListener('click', function() {
+            if (this.closest('.section-evaluated')) return;
+            const radio = this.querySelector('input[type="radio"]');
+            if (radio) {
+                radio.checked = true;
+                this.closest('.options-list').querySelectorAll('.option-item').forEach(li => li.classList.remove('selected'));
+                this.classList.add('selected');
+            }
+        });
+    });
+
+    // Correzione focalizzata sulla singola sezione cliccata
+    function checkSection(sectionId, scoreBadgeId) {
+        const section = document.getElementById(sectionId);
+        if (section.classList.contains('section-evaluated')) return;
+
+        section.classList.add('section-evaluated');
+        let sectionScore = 0;
+        let totalSectionQuestions = 0;
+        const groups = section.querySelectorAll('.question-group');
+
+        groups.forEach(group => {
+            totalSectionQuestions++;
+            const qType = group.getAttribute('data-qtype');
+            const correctAnswer = group.getAttribute('data-ans');
+
+            if (qType === 'radio') {
+                const checkedRadio = group.querySelector('input[type="radio"]:checked');
+                const userAns = checkedRadio ? checkedRadio.value : null;
+
+                group.querySelectorAll('.option-item').forEach(li => {
+                    const rVal = li.querySelector('input').value;
+                    if (rVal === correctAnswer) {
+                        li.classList.add('correct-target');
+                    }
+                    if (userAns && rVal === userAns && userAns !== correctAnswer) {
+                        li.classList.add('incorrect-chosen');
+                    }
+                });
+
+                if (userAns === correctAnswer) {
+                    sectionScore++;
+                }
+
+                const exp = group.querySelector('.explanation-box');
+                if (exp) exp.style.display = 'block';
+
+            } else if (qType === 'select') {
+                const selectElement = group.querySelector('.app-select');
+                const userAns = selectElement.value;
+
+                if (userAns === correctAnswer) {
+                    sectionScore++;
+                    selectElement.classList.add('correct-select');
+                } else {
+                    selectElement.classList.add('incorrect-select');
+                }
+
+                const exp = group.querySelector('.explanation-box');
+                if (exp) exp.style.display = 'block';
+
+            } else if (qType === 'inline-select') {
+                const selectElement = group.querySelector('.cloze-inline-select');
+                const userAns = selectElement.value;
+
+                if (userAns === correctAnswer) {
+                    sectionScore++;
+                    selectElement.classList.add('correct-select');
+                } else {
+                    selectElement.classList.add('incorrect-select');
+                }
+            }
+        });
+
+        // Caso specifico per mostrare la card riassuntiva di Part 5
+        if (sectionId === 'section-part5') {
+            const p5Box = document.getElementById('p5-explanations-box');
+            if (p5Box) p5Box.style.display = 'block';
+        }
+
+        // Mostra e aggiorna il badge del punteggio nella barra blu della sezione
+        const badge = document.getElementById(scoreBadgeId);
+        if (badge) {
+            badge.innerText = "Score: " + sectionScore + " / " + totalSectionQuestions;
+            badge.style.display = "inline-block";
+        }
+
+        // Disabilita il pulsante di verifica di questa sezione
+        const btn = section.querySelector('.check-btn');
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = "Verificato ✓";
+        }
+    }
+</script>
+
+</body>
+</html>
