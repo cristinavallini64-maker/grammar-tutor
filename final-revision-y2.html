@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B1 Preliminary - Reading & Use of English Mock Test</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #f0f4f8;
+            --accent: #0d9488;
+            --bg: #f8fafc;
+            --text: #334155;
+            --text-dark: #0f172a;
+            --border: #cbd5e1;
+            --correct: #16a34a;
+            --incorrect: #dc2626;
+            --correct-bg: #f0fdf4;
+            --incorrect-bg: #fef2f2;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        header {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        header h1 { color: var(--text-dark); font-size: 28px; margin-bottom: 8px; }
+        header p { color: var(--text); font-size: 16px; }
+
+        .part-section {
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .part-header {
+            background: var(--primary);
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .part-score-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            display: none;
+            font-weight: bold;
+        }
+
+        .instructions {
+            font-style: italic;
+            color: var(--text);
+            margin-bottom: 25px;
+            font-size: 15px;
+            background: var(--primary-light);
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+
+        .item-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .notice-box {
+            background: #f1f5f9;
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            border-radius: 0 6px 6px 0;
+            font-weight: 500;
+            margin-bottom: 25px;
+            white-space: pre-line;
+        }
+
+        .question-text {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .options-list { list-style: none; }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 15px;
+        }
+
+        .option-item:hover {
+            background-color: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        .option-item.selected {
+            background-color: #e0f2fe;
+            border-color: #0284c7;
+            font-weight: 600;
+            color: #0369a1;
+        }
+
+        .option-item input { margin-right: 12px; cursor: pointer; }
+
+        /* Layout Opzioni e Profili Part 2 */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        @media (min-width: 768px) {
+            .options-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .option-card-p2 {
+            background: #fdfdfd;
+            border: 1px dashed var(--accent);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .option-card-p2 strong { color: var(--accent); font-size: 16px; }
+
+        .matching-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        @media (min-width: 768px) {
+            .matching-container { grid-template-columns: 1fr 1fr; }
+        }
+
+        .profile-box {
+            background: #fafafa;
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .profile-box h4 { color: var(--primary); margin-bottom: 8px; }
+
+        .select-option-wrapper {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .app-select {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: white;
+            font-size: 14px;
+            width: 100%;
+            max-width: 250px;
+        }
+
+        /* Layout Testi Lunghi (Part 3 & 4) */
+        .text-passage {
+            background: #fafafa;
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: justify;
+            margin-bottom: 25px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .text-passage p { margin-bottom: 15px; }
+
+        /* Part 5 Select */
+        .cloze-inline-select {
+            padding: 2px 6px;
+            font-size: 15px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: #fff;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 0 4px;
+        }
+
+        /* Spiegazioni e Feedback */
+        .explanation-box {
+            display: none;
+            margin-top: 12px;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: #f8fafc;
+            border-left: 4px solid var(--border);
+        }
+
+        /* Classi di correzione dinamiche per sezione */
+        .section-evaluated .option-item, 
+        .section-evaluated .app-select, 
+        .section-evaluated .cloze-inline-select {
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+
+        .section-evaluated .option-item.correct-target {
+            background-color: var(--correct-bg) !important;
+            border-color: var(--correct) !important;
+            color: var(--correct) !important;
+        }
+
+        .section-evaluated .option-item.incorrect-chosen {
+            background-color: var(--incorrect-bg) !important;
+            border-color: var(--incorrect) !important;
+            color: var(--incorrect) !important;
+        }
+
+        .section-evaluated .correct-select {
+            border-color: var(--correct) !important;
+            background-color: var(--correct-bg) !important;
+            color: var(--correct) !important;
+        }
+
+        .section-evaluated .incorrect-select {
+            border-color: var(--incorrect) !important;
+            background-color: var(--incorrect-bg) !important;
+            color: var(--incorrect) !important;
+        }
+
+        /* Bottoni di Sezione */
+        .check-btn-container {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .check-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .check-btn:hover { background: #0f766e; }
+        .check-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>B1 Preliminary Mock Test &mdash; Secondo Anno</h1>
+        <p>Revisione finale: tutte le strutture e il lessico del Primo e Secondo Anno. Verifica le risposte e leggi le spiegazioni alla fine di ogni parte.</p>
+    </header>
+
+    <div class="part-section" id="section-part1">
+        <div class="part-header">
+            <span>Part 1 &mdash; Short Messages &amp; Notices</span>
+            <span class="part-score-badge" id="score-part1">Score: 0/5</span>
+        </div>
+        <div class="instructions">Look at the text in each question. What does it say? Choose the correct letter A, B or C.</div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="B">
+            <div class="notice-box">SPORTS CENTRE &mdash; TENNIS COURTS
+You can play without booking, but if more than two people are waiting, you must give up the court after 30 minutes.</div>
+            <div class="question-text">1. What does the notice tell players?</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p1-q1" value="A"> A) Players always have to leave the court after half an hour.</li>
+                <li class="option-item"><input type="radio" name="p1-q1" value="B"> B) Players may have to stop playing if other people want the court.</li>
+                <li class="option-item"><input type="radio" name="p1-q1" value="C"> C) Players must book the court in advance if they want to play.</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: B.</strong> L'obbligo (<em>must give up</em>) &egrave; <strong>condizionale</strong>: scatta solo <em>if more than two people are waiting</em>. A &egrave; la trappola: trasforma l'obbligo condizionale in uno assoluto (<em>always</em>) &mdash; falso, perch&eacute; senza fila si pu&ograve; restare. C contraddice <em>You can play without booking</em>.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="A">
+            <div class="notice-box">Hi Tom, I tried to buy the cinema tickets online but the website wasn't working. Could you get them when you arrive? I'll pay you back tonight. Lucy</div>
+            <div class="question-text">2. Why is Lucy writing to Tom?</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p1-q2" value="A"> A) She wants Tom to buy the tickets because she could not.</li>
+                <li class="option-item"><input type="radio" name="p1-q2" value="B"> B) She is telling Tom that she has already bought the tickets.</li>
+                <li class="option-item"><input type="radio" name="p1-q2" value="C"> C) She is asking Tom to lend her some money tonight.</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: A.</strong> <em>I tried to buy &hellip; but the website wasn't working</em> = il tentativo &egrave; fallito, quindi B &egrave; falso (non li ha comprati). C inverte i ruoli: &egrave; <em>Lucy</em> che pagher&agrave; Tom (<em>I'll pay you back</em>), non il contrario.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="C">
+            <div class="notice-box">LIBRARY
+The reading room will stay open during the building work next week. However, you may find it noisier than usual, so the quiet study area has been moved upstairs.</div>
+            <div class="question-text">3. What does the notice say about the library next week?</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p1-q3" value="A"> A) The library will be closed because of the building work.</li>
+                <li class="option-item"><input type="radio" name="p1-q3" value="B"> B) Students will not be able to find anywhere quiet to study.</li>
+                <li class="option-item"><input type="radio" name="p1-q3" value="C"> C) Students who want silence should go to a different floor.</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: C.</strong> La zona silenziosa non sparisce, &egrave; stata spostata di piano (<em>moved upstairs</em>) &mdash; quindi B (&laquo;nessun posto tranquillo&raquo;) &egrave; la trappola. A contraddice <em>will stay open</em>.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="B">
+            <div class="notice-box">Mum, Jake's already left for football, so I've gone to the shopping centre on my own. Don't worry about lunch &mdash; I'll get something there. Back by 4. Sam</div>
+            <div class="question-text">4. What do we learn from Sam's message?</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p1-q4" value="A"> A) Sam has gone to play football with Jake.</li>
+                <li class="option-item"><input type="radio" name="p1-q4" value="B"> B) Sam will not need lunch at home.</li>
+                <li class="option-item"><input type="radio" name="p1-q4" value="C"> C) Sam wants his mother to prepare some food for him.</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: B.</strong> <em>Don't worry about lunch &mdash; I'll get something there</em> significa che manger&agrave; fuori, quindi C &egrave; falsa. A confonde i due soggetti: &egrave; <em>Jake</em> che &egrave; andato a calcio, Sam &egrave; andato al centro commerciale (<em>on my own</em>).</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="A">
+            <div class="notice-box">SCHOOL TRIP &mdash; CHANGE OF PLAN
+The museum is fully booked on Friday, so we will go there on Thursday instead. Friday's visit to the science park will not change.</div>
+            <div class="question-text">5. What has changed about the school trip?</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p1-q5" value="A"> A) the day of the museum visit</li>
+                <li class="option-item"><input type="radio" name="p1-q5" value="B"> B) the day of the science park visit</li>
+                <li class="option-item"><input type="radio" name="p1-q5" value="C"> C) the place the students will visit on Friday</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: A.</strong> Solo il museo si sposta (da venerd&igrave; a gioved&igrave;). B e C sono trappole: il science park resta a venerd&igrave; immutato (<em>will not change</em>), quindi n&eacute; il giorno n&eacute; il luogo del venerd&igrave; cambiano.</div>
+        </div>
+
+        <div class="item-card" style="background:#f8fafc; border-left:4px solid var(--border);">
+            <h4 style="color:var(--primary); margin-bottom:10px;">Riepilogo Part 1 &mdash; Strutture testate:</h4>
+            <p style="margin-bottom:6px;"><strong>1:</strong> Obbligo condizionale (<em>must</em> dentro un <em>if</em>) vs obbligo assoluto.</p>
+            <p style="margin-bottom:6px;"><strong>2:</strong> <em>tried to + infinito</em> (tentativo fallito); inversione soggetto/oggetto come trappola.</p>
+            <p style="margin-bottom:6px;"><strong>3:</strong> Comparativo <em>noisier</em>; present perfect passivo (<em>has been moved</em>).</p>
+            <p style="margin-bottom:6px;"><strong>4:</strong> <em>have gone</em>; confusione tra due soggetti come trappola.</p>
+            <p style="margin-bottom:0;"><strong>5:</strong> Futuro con <em>will</em>; individuare cosa cambia e cosa no.</p>
+        </div>
+
+        <div class="check-btn-container">
+            <button type="button" class="check-btn" onclick="checkSection('section-part1', 'score-part1')">Verifica Part 1</button>
+        </div>
+    </div>
+
+    <div class="part-section" id="section-part2">
+        <div class="part-header">
+            <span>Part 2 &mdash; Matching</span>
+            <span class="part-score-badge" id="score-part2">Score: 0/5</span>
+        </div>
+        <div class="instructions">The young people below all want to spend a free Saturday in town. Read the descriptions of the eight activities (A-H) and decide which one would be the most suitable for each person.</div>
+
+        <div class="options-grid">
+            <div class="option-card-p2">
+                <strong>A &mdash; Riverside Photo Walk</strong><br>
+                Spend the morning walking along the river and through the forest paths. Our guide will show you how to take better photos of animals, trees and the weather. You don't have to bring a professional camera &mdash; a phone is fine. Wear warm clothes if it is cold.
+            </div>
+            <div class="option-card-p2">
+                <strong>B &mdash; The Big Screen</strong><br>
+                Come to the town cinema for a special afternoon showing a science fiction film. After the movie, there is a discussion where you can talk about the plot, the actors and the special effects. Tickets are cheaper than usual for students under 16.
+            </div>
+            <div class="option-card-p2">
+                <strong>C &mdash; Cook It Yourself</strong><br>
+                A morning cookery class where you learn to prepare healthy meals using fresh vegetables and fish. We never use meat. You can take your dish home afterwards. This class is much more relaxing than a busy restaurant kitchen.
+            </div>
+            <div class="option-card-p2">
+                <strong>D &mdash; Fashion Workshop</strong><br>
+                Are you interested in clothes and shopping? Learn how to choose the best outfit and design your own T-shirt. We will also talk about which materials, like cotton and wool, are the most comfortable to wear.
+            </div>
+            <div class="option-card-p2">
+                <strong>E &mdash; Town History Tour</strong><br>
+                A guided walk that has been popular with visitors since 1990. You will see the oldest buildings in the town and hear interesting stories about the people who lived here. Entry is free, but you must book a place online first.
+            </div>
+            <div class="option-card-p2">
+                <strong>F &mdash; Action Sports Centre</strong><br>
+                If you love being active, this is for you! Every Saturday we organize tennis matches and long bike rides. Sweet fizzy drinks aren't allowed; we only provide water. The centre is just opposite the train station.
+            </div>
+            <div class="option-card-p2">
+                <strong>G &mdash; Mystery Theatre</strong><br>
+                Watch a live performance of an exciting thriller. The actress who stars in the play has won several prizes. The show is shorter than a normal film, so it finishes early enough to catch the last bus home.
+            </div>
+            <div class="option-card-p2">
+                <strong>H &mdash; Animal Park Visit</strong><br>
+                Spend the day outdoors learning about wild animals such as wolves, deer and birds. You should wear strong shoes because there is a lot of walking. The park is too far to walk to, so you have to take the bus.
+            </div>
+        </div>
+
+        <div class="matching-container">
+            <div class="profile-box question-group" data-qtype="select" data-ans="B">
+                <div>
+                    <h4>6. Carla</h4>
+                    <p>Loves watching films, especially science fiction. She enjoys talking about the story and the actors with other people after the show. She hasn't got much money, so she would prefer a cheap ticket.</p>
+                </div>
+                <div class="select-option-wrapper">
+                    <select class="app-select">
+                        <option value="">-- Choose Option --</option>
+                        <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
+                        <option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option>
+                    </select>
+                </div>
+                <div class="explanation-box"><strong>Soluzione: B.</strong> L'opzione B unisce un film di fantascienza, una discussione su trama e attori dopo il film, e biglietti scontati per studenti (lessico <em>films &amp; reviews</em>: <em>plot, special effects</em>; comparativo <em>cheaper</em>).</div>
+            </div>
+
+            <div class="profile-box question-group" data-qtype="select" data-ans="F">
+                <div>
+                    <h4>7. Marco</h4>
+                    <p>Is very sporty and active. He likes playing tennis and going on bike rides. He doesn't drink fizzy drinks. He wants somewhere easy to reach because he is arriving by train.</p>
+                </div>
+                <div class="select-option-wrapper">
+                    <select class="app-select">
+                        <option value="">-- Choose Option --</option>
+                        <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
+                        <option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option>
+                    </select>
+                </div>
+                <div class="explanation-box"><strong>Soluzione: F.</strong> L'opzione F offre tennis e gite in bici, vieta le bevande gassate ed &egrave; <em>opposite the train station</em> (preposizioni di luogo, lessico <em>transport &amp; places in town</em>).</div>
+            </div>
+
+            <div class="profile-box question-group" data-qtype="select" data-ans="A">
+                <div>
+                    <h4>8. Sofia</h4>
+                    <p>Is keen on nature and the natural world. She likes spending time outdoors near rivers and forests, and she enjoys taking photographs of animals and the weather. She only has her phone with her.</p>
+                </div>
+                <div class="select-option-wrapper">
+                    <select class="app-select">
+                        <option value="">-- Choose Option --</option>
+                        <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
+                        <option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option>
+                    </select>
+                </div>
+                <div class="explanation-box"><strong>Soluzione: A.</strong> L'opzione A propone una passeggiata fotografica lungo fiume e bosco e precisa <em>you don't have to bring a professional camera &mdash; a phone is fine</em> (lessico <em>natural world / weather</em>; <em>don't have to</em>).</div>
+            </div>
+
+            <div class="profile-box question-group" data-qtype="select" data-ans="D">
+                <div>
+                    <h4>9. Luca</h4>
+                    <p>Is interested in fashion and likes going shopping for clothes. He wants to learn how to put together a good outfit and would love to make something he can wear himself.</p>
+                </div>
+                <div class="select-option-wrapper">
+                    <select class="app-select">
+                        <option value="">-- Choose Option --</option>
+                        <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
+                        <option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option>
+                    </select>
+                </div>
+                <div class="explanation-box"><strong>Soluzione: D.</strong> L'opzione D &egrave; un laboratorio di moda dove si impara a scegliere l'outfit e a disegnare la propria T-shirt (lessico <em>fashion &amp; shopping</em>: <em>outfit, materials, cotton, wool</em>).</div>
+            </div>
+
+            <div class="profile-box question-group" data-qtype="select" data-ans="E">
+                <div>
+                    <h4>10. Anna</h4>
+                    <p>Loves history and old buildings. She enjoys hearing stories about the past and the people who used to live in the town. She hasn't got any money to spend, so she needs a free activity.</p>
+                </div>
+                <div class="select-option-wrapper">
+                    <select class="app-select">
+                        <option value="">-- Choose Option --</option>
+                        <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
+                        <option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option>
+                    </select>
+                </div>
+                <div class="explanation-box"><strong>Soluzione: E.</strong> L'opzione E &egrave; una visita storica agli edifici pi&ugrave; antichi (superlativo <em>the oldest</em>), gratuita (<em>Entry is free</em>) e popolare <em>since 1990</em> (present perfect con <em>since</em>).</div>
+            </div>
+        </div>
+
+        <div class="item-card" style="background:#f8fafc; border-left:4px solid var(--border);">
+            <h4 style="color:var(--primary); margin-bottom:10px;">Riepilogo Part 2 &mdash; Strutture e lessico testati:</h4>
+            <p style="margin-bottom:6px;"><strong>Lessico:</strong> films &amp; reviews, transport &amp; places in town, natural world &amp; weather, fashion &amp; shopping.</p>
+            <p style="margin-bottom:0;"><strong>Strutture:</strong> comparativi e superlativi, <em>don't have to / mustn't</em>, preposizioni di luogo, present perfect con <em>since</em>.</p>
+        </div>
+
+        <div class="check-btn-container">
+            <button type="button" class="check-btn" onclick="checkSection('section-part2', 'score-part2')">Verifica Part 2</button>
+        </div>
+    </div>
+
+    <div class="part-section" id="section-part3">
+        <div class="part-header">
+            <span>Part 3 &mdash; Correct or Incorrect</span>
+            <span class="part-score-badge" id="score-part3">Score: 0/10</span>
+        </div>
+        <div class="instructions">Look at the sentences below about a teenager's first cycling holiday. Read the text to decide if each sentence is correct or incorrect. If it is correct, choose True (T). If it is not correct, choose False (F).</div>
+
+        <div class="text-passage">
+            <strong>My First Cycling Holiday</strong><br>
+            <em>by Emma Foster, aged 15</em><br><br>
+            <p>When my parents first suggested a cycling holiday, I wasn't keen at all. I had imagined long, boring days on quiet country roads, and I almost said no. My older brother Leo, on the other hand, couldn't stop talking about it for weeks. In the end I agreed to go, mostly because all my friends were away that summer and staying at home alone seemed even worse.</p>
+            <p>We didn't choose the destination ourselves. My dad works for a travel company, and one of his colleagues had organised the whole trip as a favour. We were simply told the name of the village &mdash; Greenholme &mdash; the day before we left. I had never heard of it, and to be honest I didn't expect much.</p>
+            <p>The first morning was harder than anything I had imagined. The hills went on forever, and after two hours my legs were aching so badly that I had to stop. Leo, who is two years older and far stronger than me, kept cycling ahead and then waiting at the top with a big smile. I won't pretend I was grateful for that smile. By lunchtime I had decided that the whole week was going to be a disaster.</p>
+            <p>Things changed in the afternoon. We reached the top of a long climb, and suddenly the sea appeared below us. None of the photos my dad's colleague had shown us came close to the real thing. For the first time I understood why Leo had been so excited, and I found myself wanting to go faster rather than slower.</p>
+            <p>On the third day, something happened that I still can't fully explain. We had stopped by a lake to rest when a young woman cycled past, then turned around and came back. She said she had been watching me on the hills the day before and that I had a natural cycling style. I knew she was probably just being kind, but I rode the rest of that day feeling as if I could climb any mountain in the world.</p>
+            <p>We are already planning next summer's trip. My mum keeps reminding me how I complained before we left, and I always change the subject. Some things are better left unsaid &mdash; especially when your family is right and you were wrong.</p>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="F">
+            <div class="question-text">11. Emma was looking forward to the cycling holiday before it began.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s1" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s1" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: F (sbagliato).</strong> Il testo non dice mai &laquo;non vedevo l'ora&raquo;, ma lo si deduce: <em>I wasn't keen at all</em>, <em>I almost said no</em>. L'entusiasmo (<em>couldn't stop talking about it</em>) era di Leo, non suo.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="T">
+            <div class="question-text">12. Emma decided to go partly because she had nothing better to do.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s2" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s2" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: T (corretto).</strong> Inferenza da <em>all my friends were away &hellip; and staying at home alone seemed even worse</em>: ha scelto la vacanza come male minore, non per reale desiderio.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="F">
+            <div class="question-text">13. Emma's family chose Greenholme because they had heard good things about it.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s3" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s3" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: F (sbagliato).</strong> <em>We didn't choose the destination ourselves</em>: la meta &egrave; stata decisa da un collega del padre. Emma <em>had never heard of it</em>, quindi non c'era alcuna buona reputazione che li avesse attratti.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="F">
+            <div class="question-text">14. Emma was pleased that her brother waited for her on the hills.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s4" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s4" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: F (sbagliato).</strong> Trappola: Leo l'aspetta sorridendo, ma <em>I won't pretend I was grateful for that smile</em> &egrave; un modo indiretto per dire che il sorriso la <strong>infastidiva</strong>. L'attesa non &egrave; vissuta come gentilezza.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="T">
+            <div class="question-text">15. At lunchtime on the first day, Emma was sure the holiday would go badly.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s5" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s5" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: T (corretto).</strong> <em>By lunchtime I had decided that the whole week was going to be a disaster</em>: il past perfect + <em>was going to</em> esprime una convinzione gi&agrave; formata in quel momento.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="T">
+            <div class="question-text">16. The view of the sea was even better than the pictures Emma had been shown.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s6" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s6" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: T (corretto).</strong> Inferenza da <em>None of the photos &hellip; came close to the real thing</em>: se nessuna foto si avvicinava alla realt&agrave;, la vista reale era superiore.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="T">
+            <div class="question-text">17. After seeing the sea, Emma's attitude to the cycling changed.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s7" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s7" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: T (corretto).</strong> <em>I found myself wanting to go faster rather than slower</em>: prima voleva fermarsi, ora vuole andare pi&ugrave; veloce &mdash; un cambiamento di atteggiamento, anche se la parola &laquo;changed&raquo; non compare lì.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="F">
+            <div class="question-text">18. Emma was certain that the young woman by the lake really meant what she said.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s8" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s8" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: F (sbagliato).</strong> <em>I knew she was probably just being kind</em>: Emma sospetta che fosse solo una gentilezza, quindi non era affatto certa che il complimento fosse sincero.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="T">
+            <div class="question-text">19. The woman's words had a strong effect on Emma even so.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s9" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s9" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: T (corretto).</strong> Nonostante il dubbio, <em>I rode the rest of that day feeling as if I could climb any mountain in the world</em>: le parole l'hanno comunque resa molto pi&ugrave; sicura.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="T">
+            <div class="question-text">20. Emma now admits that her parents had been right about the holiday.</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p3-s10" value="T"> True (T)</li>
+                <li class="option-item"><input type="radio" name="p3-s10" value="F"> False (F)</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: T (corretto).</strong> Inferenza dalla frase finale <em>especially when your family is right and you were wrong</em>: lo ammette in modo indiretto, anche se cambia argomento quando la mamma la prende in giro.</div>
+        </div>
+
+        <div class="item-card" style="background:#f8fafc; border-left:4px solid var(--border);">
+            <h4 style="color:var(--primary); margin-bottom:10px;">Riepilogo Part 3 &mdash; Come ragionare:</h4>
+            <p style="margin-bottom:6px;">In questa parte la risposta <strong>non &egrave; quasi mai scritta con le stesse parole</strong> della frase: va dedotta. Cerca il senso, non le parole uguali.</p>
+            <p style="margin-bottom:6px;"><strong>Trappole tipiche:</strong> attribuire a Emma sentimenti che erano di Leo (11, 14); litote / negazione indiretta (<em>I won't pretend I was grateful</em> = non era grato, 14); confondere certezza e dubbio (18).</p>
+            <p style="margin-bottom:0;"><strong>Strutture coinvolte:</strong> past perfect, <em>was going to</em>, comparativi, present perfect, <em>tried to</em>, defining relative clauses.</p>
+        </div>
+
+        <div class="check-btn-container">
+            <button type="button" class="check-btn" onclick="checkSection('section-part3', 'score-part3')">Verifica Part 3</button>
+        </div>
+    </div>
+
+    <div class="part-section" id="section-part4">
+        <div class="part-header">
+            <span>Part 4 &mdash; Multiple Choice</span>
+            <span class="part-score-badge" id="score-part4">Score: 0/5</span>
+        </div>
+        <div class="instructions">Read the text and questions below. For each question, choose the correct letter A, B, C or D.</div>
+
+        <div class="text-passage">
+            <strong>A Film Worth Seeing</strong><br>
+            <em>Essay by Daniel Carter, aged 14</em><br><br>
+            <p>I have always been a huge fan of adventure films, so when my friends asked me to go to the cinema last weekend, I immediately said yes. The film we chose was a new science fiction movie called <em>Distant Skies</em>. I had read several reviews before going, and most of them were positive, although a few critics complained that the story was too slow at the start. I wanted to find out for myself whether they were right.</p>
+            <p>The cinema itself has changed a lot since I last went. The company that owns it has spent a lot of money making the seats more comfortable and the screen much bigger than before. You don't have to arrive early to get a good seat any more, although I still think you should, because the best places fill up quickly. I have visited many cinemas in different towns, but this is certainly the most modern one I have ever been to.</p>
+            <p>As for the film, I have to be honest. The first twenty minutes were indeed quite slow, and I began to wonder if the critics had been right. However, once the main character started his journey across the galaxy, the action never stopped. The special effects were the best I have ever seen, and the actress who plays the scientist gives a brilliant performance. I won't tell you how the film ends, because you should discover that yourself.</p>
+            <p>If I had to find a problem, I would say the film is a little too long. It lasts almost three hours, and by the end I was feeling tired. I also felt there weren't as many funny moments as in the director's earlier films. Even so, I enjoyed it far more than I had expected. Tomorrow I am meeting the same friends to see another film, and if it is half as good as this one, we will have a great afternoon.</p>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="C">
+            <div class="question-text">21. What is Daniel trying to do in his essay?</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p4-q21" value="A"> A) explain how cinema tickets have become cheaper</li>
+                <li class="option-item"><input type="radio" name="p4-q21" value="B"> B) complain about the science fiction films of today</li>
+                <li class="option-item"><input type="radio" name="p4-q21" value="C"> C) give a balanced opinion of a film he has seen</li>
+                <li class="option-item"><input type="radio" name="p4-q21" value="D"> D) describe how a film should be made</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: C.</strong> Daniel elenca aspetti positivi (effetti speciali, recitazione) e negativi (inizio lento, durata eccessiva): &egrave; un giudizio equilibrato. Non parla di prezzi (A) n&eacute; critica tutto il genere (B).</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="D">
+            <div class="question-text">22. What can a reader find out from Daniel's essay?</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p4-q22" value="A"> A) what the critics' main complaint about the film was</li>
+                <li class="option-item"><input type="radio" name="p4-q22" value="B"> B) how the film <em>Distant Skies</em> ends</li>
+                <li class="option-item"><input type="radio" name="p4-q22" value="C"> C) why the film has the title <em>Distant Skies</em></li>
+                <li class="option-item"><input type="radio" name="p4-q22" value="D"> D) whether he thinks the cinema is a good one</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: D.</strong> Daniel d&agrave; un giudizio chiaro sul cinema (<em>the most modern one I have ever been to</em>). A &egrave; la trappola: i critici sono citati, ma Daniel non dice qual era la loro lamentela &mdash; dice solo che alcuni la trovavano lenta. B e C: il testo afferma che il finale e il titolo non li riveler&agrave; / non li conosce, quindi il lettore non lo &laquo;scopre&raquo;.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="A">
+            <div class="question-text">23. What does Daniel tell us about the cinema?</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p4-q23" value="A"> A) It has been improved since his last visit.</li>
+                <li class="option-item"><input type="radio" name="p4-q23" value="B"> B) Daniel advises against bothering to arrive early.</li>
+                <li class="option-item"><input type="radio" name="p4-q23" value="C"> C) The screen is smaller than it used to be.</li>
+                <li class="option-item"><input type="radio" name="p4-q23" value="D"> D) It is the only cinema Daniel has ever visited.</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: A.</strong> Present perfect <em>has spent &hellip; making the seats more comfortable</em> = il cinema &egrave; stato migliorato. B &egrave; la trappola: Daniel dice <em>you don't have to arrive early</em>, ma poi <strong>consiglia comunque</strong> di farlo (<em>I still think you should</em>) &mdash; quindi non &laquo;sconsiglia&raquo;. D forza: ne ha visti molti (<em>I have visited many cinemas</em>).</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="B">
+            <div class="question-text">24. What is one problem with the film, according to Daniel?</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p4-q24" value="A"> A) The opening scenes move too quickly.</li>
+                <li class="option-item"><input type="radio" name="p4-q24" value="B"> B) It goes on for too long.</li>
+                <li class="option-item"><input type="radio" name="p4-q24" value="C"> C) The main actress performs badly.</li>
+                <li class="option-item"><input type="radio" name="p4-q24" value="D"> D) It is not as serious as the director's earlier films.</li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: B.</strong> <em>The film is a little too long &hellip; almost three hours</em> (<em>too + adjective</em>). A inverte: l'inizio &egrave; lento, non veloce. D &egrave; vera come fatto (&egrave; meno seria&hellip; anzi pi&ugrave; seria dei precedenti) ma Daniel non la presenta come un <strong>difetto</strong>: la domanda chiede un <em>problema</em>.</div>
+        </div>
+
+        <div class="item-card question-group" data-qtype="radio" data-ans="C">
+            <div class="question-text">25. Which of these might appear in a magazine review of the film?</div>
+            <ul class="options-list">
+                <li class="option-item"><input type="radio" name="p4-q25" value="A"> A) <em>The action never slows down, so be prepared for excitement from the very first minute.</em></li>
+                <li class="option-item"><input type="radio" name="p4-q25" value="B"> B) <em>This is the funniest film the director has ever made, with jokes from start to finish.</em></li>
+                <li class="option-item"><input type="radio" name="p4-q25" value="C"> C) <em>The story takes a while to begin, but once it does, the effects and acting make it well worth watching.</em></li>
+                <li class="option-item"><input type="radio" name="p4-q25" value="D"> D) <em>A short, simple film that you will easily forget by the time you leave the cinema.</em></li>
+            </ul>
+            <div class="explanation-box"><strong>Soluzione: C.</strong> Riassume fedelmente il testo: inizio lento (<em>the first twenty minutes were slow</em>), poi effetti e recitazione eccellenti. A sbaglia (l'inizio &egrave; lento), B sbaglia (meno momenti divertenti dei film precedenti), D sbaglia (il film &egrave; lungo, non corto).</div>
+        </div>
+
+        <div class="item-card" style="background:#f8fafc; border-left:4px solid var(--border);">
+            <h4 style="color:var(--primary); margin-bottom:10px;">Riepilogo Part 4 &mdash; Strutture e lessico testati:</h4>
+            <p style="margin-bottom:6px;"><strong>Lessico:</strong> films &amp; reviews (<em>plot, special effects, performance, critics</em>).</p>
+            <p style="margin-bottom:0;"><strong>Strutture:</strong> present perfect vs past simple, comparativi e superlativi, <em>too + adjective</em> / <em>(not) as &hellip; as</em>, <em>don't have to / should</em>, defining relative clauses.</p>
+        </div>
+
+        <div class="check-btn-container">
+            <button type="button" class="check-btn" onclick="checkSection('section-part4', 'score-part4')">Verifica Part 4</button>
+        </div>
+    </div>
+
+    <div class="part-section" id="section-part5">
+        <div class="part-header">
+            <span>Part 5 &mdash; Use of English (Cloze)</span>
+            <span class="part-score-badge" id="score-part5">Score: 0/10</span>
+        </div>
+        <div class="instructions">Read the text below and choose the correct word for each space from the dropdown menus. For some questions you will need to read the whole sentence carefully.</div>
+
+        <div class="text-passage" style="max-height: none; line-height: 2.3;">
+            <strong>The Photograph on the Wall</strong><br>
+            <em>by Olivia Bennett, aged 14</em><br><br>
+
+            There is an old black-and-white photograph on the wall of my grandmother's kitchen. It shows a young woman standing by the sea, and for years I thought it was just a picture
+            <span class="question-group" data-qtype="inline-select" data-ans="C">
+                <select class="cloze-inline-select">
+                    <option value="">(26)</option><option value="A">who</option><option value="B">where</option><option value="C">that</option><option value="D">whose</option>
+                </select>
+            </span>
+            she had bought somewhere. Last month, however, my grandmother finally told me the truth. The woman in the photograph
+            <span class="question-group" data-qtype="inline-select" data-ans="B">
+                <select class="cloze-inline-select">
+                    <option value="">(27)</option><option value="A">is</option><option value="B">was</option><option value="C">has been</option><option value="D">will be</option>
+                </select>
+            </span>
+            actually her, taken more than fifty years ago. <br><br>
+
+            She explained that, as a teenager, she had wanted
+            <span class="question-group" data-qtype="inline-select" data-ans="A">
+                <select class="cloze-inline-select">
+                    <option value="">(28)</option><option value="A">to become</option><option value="B">becoming</option><option value="C">become</option><option value="D">becomes</option>
+                </select>
+            </span>
+            a swimmer, and that she used to train in the sea every morning before school.
+            <span class="question-group" data-qtype="inline-select" data-ans="D">
+                <select class="cloze-inline-select">
+                    <option value="">(29)</option><option value="A">Because</option><option value="B">So</option><option value="C">Unless</option><option value="D">Although</option>
+                </select>
+            </span>
+            the water was freezing and her family thought she was crazy, she never missed a single day. By the age of sixteen, she
+            <span class="question-group" data-qtype="inline-select" data-ans="B">
+                <select class="cloze-inline-select">
+                    <option value="">(30)</option><option value="A">won</option><option value="B">had won</option><option value="C">has won</option><option value="D">wins</option>
+                </select>
+            </span>
+            several local competitions. <br><br>
+
+            What surprised me most was learning why she stopped. She told me she was much
+            <span class="question-group" data-qtype="inline-select" data-ans="A">
+                <select class="cloze-inline-select">
+                    <option value="">(31)</option><option value="A">faster</option><option value="B">fast</option><option value="C">fastest</option><option value="D">as fast</option>
+                </select>
+            </span>
+            than most of the other swimmers, but there simply weren't
+            <span class="question-group" data-qtype="inline-select" data-ans="C">
+                <select class="cloze-inline-select">
+                    <option value="">(32)</option><option value="A">too much</option><option value="B">a few</option><option value="C">enough</option><option value="D">a lot</option>
+                </select>
+            </span>
+            opportunities for girls in her village at that time. Instead of complaining, she decided
+            <span class="question-group" data-qtype="inline-select" data-ans="D">
+                <select class="cloze-inline-select">
+                    <option value="">(33)</option><option value="A">train</option><option value="B">trained</option><option value="C">training</option><option value="D">to train</option>
+                </select>
+            </span>
+            younger children, and she did that for nearly thirty years. <br><br>
+
+            &ldquo;I
+            <span class="question-group" data-qtype="inline-select" data-ans="A">
+                <select class="cloze-inline-select">
+                    <option value="">(34)</option><option value="A">have never regretted</option><option value="B">never regret</option><option value="C">am never regretting</option><option value="D">was never regretting</option>
+                </select>
+            </span>
+            it,&rdquo; she said, looking at the photograph. &ldquo;If you ever find something you love, you
+            <span class="question-group" data-qtype="inline-select" data-ans="B">
+                <select class="cloze-inline-select">
+                    <option value="">(35)</option><option value="A">must to</option><option value="B">should</option><option value="C">had</option><option value="D">are</option>
+                </select>
+            </span>
+            share it with other people.&rdquo; I have thought about her words ever since.
+        </div>
+
+        <div class="item-card" id="p5-explanations-box" style="display:none; background:#f8fafc; border-left:4px solid var(--border);">
+            <h4 style="color:var(--primary); margin-bottom:10px;">Spiegazioni Part 5:</h4>
+            <p style="margin-bottom:6px;"><strong>26 [C] that:</strong> defining relative clause su una cosa (<em>a picture</em>). <em>That</em> sostituisce <em>which</em>; <em>who</em> e <em>whose</em> non valgono per un oggetto. La trappola &egrave; <em>where</em>, ma il referente &egrave; il quadro, non un luogo.</p>
+            <p style="margin-bottom:6px;"><strong>27 [B] was:</strong> tutta la frase &egrave; al passato (<em>taken more than fifty years ago</em>): la donna nella foto <strong>era</strong> lei. L'indizio &egrave; lontano, alla fine della frase.</p>
+            <p style="margin-bottom:6px;"><strong>28 [A] to become:</strong> dopo <em>want</em> (<em>had wanted</em>) si usa l'infinito con <em>to</em>.</p>
+            <p style="margin-bottom:6px;"><strong>29 [D] Although:</strong> la frase oppone due idee (acqua gelida / non saltava un giorno): serve un connettore di contrasto. <em>Because</em> darebbe una causa, senza senso qui.</p>
+            <p style="margin-bottom:6px;"><strong>30 [B] had won:</strong> past perfect: <em>by the age of sixteen</em> indica un risultato gi&agrave; raggiunto entro un momento del passato.</p>
+            <p style="margin-bottom:6px;"><strong>31 [A] faster:</strong> comparativo + <em>than</em> (l'indizio <em>than</em> arriva dopo lo spazio). <em>Much</em> rinforza il comparativo, non il superlativo.</p>
+            <p style="margin-bottom:6px;"><strong>32 [C] enough:</strong> <em>weren't enough opportunities</em> = non c'erano abbastanza occasioni. <em>Too much</em> e <em>a lot</em> non reggono qui un plurale numerabile con la negazione.</p>
+            <p style="margin-bottom:6px;"><strong>33 [D] to train:</strong> dopo <em>decide</em> si usa l'infinito con <em>to</em>.</p>
+            <p style="margin-bottom:6px;"><strong>34 [A] have never regretted:</strong> present perfect con <em>never</em>: esperienza che dal passato continua a valere nel presente (lo dice oggi guardando la foto).</p>
+            <p style="margin-bottom:0;"><strong>35 [B] should:</strong> consiglio. &Egrave; un first conditional (<em>If you ever find &hellip;</em>): nella principale ci vuole un modale + base form. <em>Must to</em> &egrave; errato (i modali non vogliono <em>to</em>).</p>
+        </div>
+
+        <div class="check-btn-container">
+            <button type="button" class="check-btn" onclick="checkSection('section-part5', 'score-part5')">Verifica Part 5</button>
+        </div>
+    </div>
+</div>
+<script>
+    // Gestione clic visivo delle opzioni radio (Part 1, 3, 4)
+    document.querySelectorAll('.option-item').forEach(item => {
+        item.addEventListener('click', function() {
+            if (this.closest('.section-evaluated')) return;
+            const radio = this.querySelector('input[type="radio"]');
+            if (radio) {
+                radio.checked = true;
+                this.closest('.options-list').querySelectorAll('.option-item').forEach(li => li.classList.remove('selected'));
+                this.classList.add('selected');
+            }
+        });
+    });
+
+    // Correzione focalizzata sulla singola sezione cliccata
+    function checkSection(sectionId, scoreBadgeId) {
+        const section = document.getElementById(sectionId);
+        if (section.classList.contains('section-evaluated')) return;
+
+        section.classList.add('section-evaluated');
+        let sectionScore = 0;
+        let totalSectionQuestions = 0;
+        const groups = section.querySelectorAll('.question-group');
+
+        groups.forEach(group => {
+            totalSectionQuestions++;
+            const qType = group.getAttribute('data-qtype');
+            const correctAnswer = group.getAttribute('data-ans');
+
+            if (qType === 'radio') {
+                const checkedRadio = group.querySelector('input[type="radio"]:checked');
+                const userAns = checkedRadio ? checkedRadio.value : null;
+
+                group.querySelectorAll('.option-item').forEach(li => {
+                    const rVal = li.querySelector('input').value;
+                    if (rVal === correctAnswer) {
+                        li.classList.add('correct-target');
+                    }
+                    if (userAns && rVal === userAns && userAns !== correctAnswer) {
+                        li.classList.add('incorrect-chosen');
+                    }
+                });
+
+                if (userAns === correctAnswer) {
+                    sectionScore++;
+                }
+
+                const exp = group.querySelector('.explanation-box');
+                if (exp) exp.style.display = 'block';
+
+            } else if (qType === 'select') {
+                const selectElement = group.querySelector('.app-select');
+                const userAns = selectElement.value;
+
+                if (userAns === correctAnswer) {
+                    sectionScore++;
+                    selectElement.classList.add('correct-select');
+                } else {
+                    selectElement.classList.add('incorrect-select');
+                }
+
+                const exp = group.querySelector('.explanation-box');
+                if (exp) exp.style.display = 'block';
+
+            } else if (qType === 'inline-select') {
+                const selectElement = group.querySelector('.cloze-inline-select');
+                const userAns = selectElement.value;
+
+                if (userAns === correctAnswer) {
+                    sectionScore++;
+                    selectElement.classList.add('correct-select');
+                } else {
+                    selectElement.classList.add('incorrect-select');
+                }
+            }
+        });
+
+        // Caso specifico per mostrare la card riassuntiva di Part 5
+        if (sectionId === 'section-part5') {
+            const p5Box = document.getElementById('p5-explanations-box');
+            if (p5Box) p5Box.style.display = 'block';
+        }
+
+        // Mostra e aggiorna il badge del punteggio nella barra blu della sezione
+        const badge = document.getElementById(scoreBadgeId);
+        if (badge) {
+            badge.innerText = "Score: " + sectionScore + " / " + totalSectionQuestions;
+            badge.style.display = "inline-block";
+        }
+
+        // Disabilita il pulsante di verifica di questa sezione
+        const btn = section.querySelector('.check-btn');
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = "Verificato ✓";
+        }
+    }
+</script>
+
+</body>
+</html>
