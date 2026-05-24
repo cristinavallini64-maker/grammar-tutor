@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speaking Tutor — Foundations A2+</title>
+<meta name="description" content="Esercitatore di conversazione in inglese — livello A2+ — Foundations">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --blue: #2563eb; --blue-hover: #1d4ed8;
+  --ink: #1e293b; --ink-soft: #475569;
+  --bg: #ffffff; --card: #f8fafc;
+  --border: #cbd5e1; --error: #dc2626;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+       color: var(--ink); background: var(--bg); padding: 20px; line-height: 1.6; 
+       max-width: 600px; margin: 0 auto; }
+header { border-bottom: 2px solid #000; margin-bottom: 25px; padding-bottom: 10px; }
+h2 { font-size: 1.5rem; font-weight: 700; }
+.unit-card { border: 1px solid var(--border); padding: 20px; margin-bottom: 12px; 
+             cursor: pointer; background: var(--card); border-radius: 8px; transition: 0.2s; }
+.unit-card:hover { border-color: var(--blue); background: #f1f5f9; }
+#screen-session { display: none; }
+.thread { display: flex; flex-direction: column; gap: 15px; margin-bottom: 180px; }
+.turn { padding: 15px; border-radius: 8px; border: 1px solid var(--border); }
+.tutor { background: #e0e7ff; }
+.student { background: #f1f5f9; text-align: right; }
+.fb { background: #f0fdf4; border: 1px solid #16a34a; }
+.console { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; 
+           padding: 20px; border-top: 2px solid #000; box-shadow: 0 -4px 12px rgba(0,0,0,0.05); }
+.mic { width: 100%; padding: 15px; background: var(--blue); color: white; border: none; 
+       cursor: pointer; font-weight: 700; border-radius: 6px; font-size: 1rem; }
+.mic.live { background: var(--error); }
+.type-row { display: flex; gap: 10px; margin-top: 15px; }
+.type-in { flex: 1; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; }
+.btn { padding: 10px 20px; cursor: pointer; background: #fff; border: 1px solid var(--border); 
+       border-radius: 6px; font-weight: 600; }
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="mark">
+      Ascolta
+    </div>
+    <div>
+      <h2>Speaking Tutor</h2>
+      <span>Foundations</span>
+    </div>
+  </div>
+  <div class="lvl-tag">Level A2+</div>
+</header>
+
+<!-- ================= MENU ================= -->
+<div id="screen-menu" class="wrap">
+  <div class="hero">
+    <div class="eyebrow">Conversation practice</div>
+    <h1>Allenati a <span class="hl">parlare</span> inglese, davvero.</h1>
+    <p>Scegli un'unit e conversa con il tuo tutor. Ti ascolta, ti risponde e ti aiuta quando ti blocchi.</p>
+  </div>
+
+  <div class="steps">
+    <div class="s"><div class="n">01</div><div class="t">Scegli l'unit</div></div>
+    <div class="s"><div class="n">02</div><div class="t">Ascolta</div></div>
+    <div class="s"><div class="n">03</div><div class="t">Rispondi a voce</div></div>
+  </div>
+
+  <div class="pick-label">Su cosa vuoi conversare?</div>
+  <div class="unit-list" id="unitList"></div>
+
+  <div class="tip-box">
+    Ti serve un <b>microfono</b> — funziona meglio con Chrome o Edge.<br>
+    Puoi sempre rispondere anche scrivendo.
+  </div>
+</div>
+
+<!-- ================= SESSION ================= -->
+<div id="screen-session" class="wrap">
+  <div class="sess-top">
+    <div class="sess-id">
+      <div class="sess-badge" id="sessBadge"></div>
+      <div class="sess-meta">
+        <div class="su" id="sessUnit"></div>
+        <div class="st" id="sessTitle"></div>
+      </div>
+    </div>
+    <button class="btn-exit" onclick="endSession()">Esci</button>
+  </div>
+
+  <div class="tally">
+    <div><div class="tv b" id="tQ">0</div><div class="tl">Battute</div></div>
+    <div><div class="tv g" id="tOk">0</div><div class="tl">Bene</div></div>
+    <div><div class="tv a" id="tErr">0</div><div class="tl">Da rivedere</div></div>
+  </div>
+
+  <div class="thread" id="thread"></div>
+
+  <div class="console">
+    <div class="mic-wrap">
+      <button class="mic" id="micBtn" onclick="toggleMic()" aria-label="Parla">
+        Ascolta
+      </button>
+      <div class="mic-cap" id="micCap">Tocca, parla, tocca di nuovo per fermare.</div>
+    </div>
+    <div class="or-line"><span class="ln"></span><span>oppure</span><span class="ln"></span></div>
+    <div class="type-row">
+      <input class="type-in" id="typeIn" placeholder="Scrivi qui la tua risposta" onkeydown="if(event.key==='Enter')sendText()">
+      <button class="btn" onclick="sendText()">Invia</button>
+    </div>
+    <div class="minor-row">
+      <button class="btn ghost" id="repeatBtn" onclick="repeatLast()">Riascolta</button>
+      <button class="btn ghost" id="hintBtn" onclick="askHint()">Aiuto</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ UNITS — temi/situazioni (prima classe, A2+) ============ */
+const UNITS=[
+  {n:1,key:1,title:"Everyday Life",desc:"Routine, scuola, tempo libero",
+   theme:"la vita di tutti i giorni: la routine quotidiana, la scuola, le attività del tempo libero, e l'esprimere accordo o disaccordo con qualcuno (agreeing and disagreeing)"},
+  {n:2,key:2,title:"Let's Eat!",desc:"Cibo e ristorante",
+   theme:"il cibo: i gusti alimentari, mangiare sano, e soprattutto la situazione di ordinare al ristorante o al bar (ordering food). Il tutor può fare il cameriere o la cameriera"},
+  {n:3,key:3,title:"You Look Great!",desc:"Aspetto e videochiamate",
+   theme:"descrivere l'aspetto e la personalità delle persone, parlare di quello che si sta facendo, e la situazione di fare una videochiamata con un amico (making a video call)"},
+  {n:4,key:4,title:"Creative Minds",desc:"Arte, musica, opinioni",
+   theme:"le arti e l'intrattenimento (musica, film, libri), raccontare cose fatte nel passato, e chiedere e dare opinioni su artisti e gusti (asking for and giving opinions)"},
+];
+
+/* ============ STATE ============ */
+let selUnit=null;
+let history=[], scQ=0, scOk=0, scErr=0;
+let lastTutorSpeech="", waiting=false, awaitingAnswer=false;
+
+const SPK_ICON='Ascolta';
+
+/* ============ MENU ============ */
+function renderMenu(){
+  const list=document.getElementById('unitList');list.innerHTML='';
+  UNITS.forEach(u=>{
+    const c=document.createElement('div');
+    c.className='unit-card uc-'+u.key;
+    c.innerHTML=`<div class="uc-num">${u.n}</div>
+      <div class="uc-body">
+        <div class="uc-kicker">Unit ${u.n}</div>
+        <div class="uc-title">${u.title}</div>
+        <div class="uc-desc">${u.desc}</div>
+      </div>
+      <div class="uc-arrow">Ascolta</div>`;
+    c.onclick=()=>startSession(u);
+    list.appendChild(c);
+  });
+}
+function showScreen(id){
+  document.getElementById('screen-menu').style.display=id==='menu'?'block':'none';
+  document.getElementById('screen-session').style.display=id==='session'?'block':'none';
+}
+
+/* ============ SESSION ============ */
+function startSession(u){
+  selUnit=u;history=[];scQ=0;scOk=0;scErr=0;awaitingAnswer=false;
+  updateTally();
+  const badge=document.getElementById('sessBadge');
+  badge.className='sess-badge sb-'+u.key;badge.textContent=u.n;
+  document.getElementById('sessUnit').textContent='Unit '+u.n;
+  document.getElementById('sessTitle').textContent=u.title;
+  document.getElementById('thread').innerHTML='';
+  showScreen('session');
+  startConversation();
+}
+function endSession(){stopSpeaking();showScreen('menu');}
+function updateTally(){
+  document.getElementById('tQ').textContent=scQ;
+  document.getElementById('tOk').textContent=scOk;
+  document.getElementById('tErr').textContent=scErr;
+}
+
+function addTurn(role,text,opts){
+  opts=opts||{};
+  const thread=document.getElementById('thread');
+  const t=document.createElement('div');
+  let cls='turn '+role;
+  if(role==='fb')cls+=opts.good?' good':' bad';
+  t.className=cls;
+  let whoName;
+  if(role==='tutor')whoName='Tutor';
+  else if(role==='student')whoName='Tu';
+  else whoName=opts.good?'Bene':'Da rivedere';
+  let inner=`<div class="who">${whoName}</div>`;
+  if(role==='fb'){
+    let rev=opts.review?`<div class="review"><span class="rl">Ripassa</span><span>${escapeHtml(opts.review)}</span></div>`:'';
+    inner+=`<div class="card"><div class="say">${escapeHtml(text)}</div>${rev}
+      <button class="listen">${SPK_ICON}ascolta</button></div>`;
+  }else if(role==='tutor'){
+    inner+=`<div class="say">${escapeHtml(text)}</div>
+      <button class="listen">${SPK_ICON}ascolta</button>`;
+  }else{
+    inner+=`<div class="say">${escapeHtml(text)}</div>`;
+  }
+  t.innerHTML=inner;
+  const lb=t.querySelector('.listen');
+  if(lb)lb.onclick=()=>speak(text);
+  thread.appendChild(t);
+  t.scrollIntoView({behavior:'smooth',block:'end'});
+  return t;
+}
+function escapeHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function showDots(){
+  const thread=document.getElementById('thread');
+  const d=document.createElement('div');d.className='dots3';d.id='dots3';
+  d.innerHTML='<i></i><i></i><i></i>';
+  thread.appendChild(d);d.scrollIntoView({behavior:'smooth',block:'end'});
+}
+function hideDots(){const d=document.getElementById('dots3');if(d)d.remove();}
+
+/* ============ CLAUDE API ============ */
+const SYSTEM_PROMPT=`Sei un tutor di CONVERSAZIONE in inglese per studenti italiani della scuola secondaria, livello A2+ (prima classe). Sei caldo, simpatico, paziente e incoraggiante — come un madrelingua amichevole.
+
+IL TUO COMPITO:
+- Tieni una VERA conversazione in inglese con lo studente sul tema dell'unit indicata. NON fare un'interrogazione di grammatica e NON spiegare regole grammaticali.
+- Decidi tu e VARIA: a volte recita una situazione concreta (es. fai il cameriere se il tema è il cibo, fai un amico in videochiamata, ecc.), a volte chiacchiera liberamente sul tema. Cambia approccio per non annoiare.
+- Parla in INGLESE semplice, da livello A2+: frasi brevi, vocabolario comune. Una battuta alla volta.
+- Resta SEMPRE nel ruolo/nella conversazione. Reagisci in modo naturale a quello che dice lo studente, fai domande di follow-up, mostra interesse.
+- Se lo studente fa un errore o si esprime in modo poco naturale, NON interrompere la conversazione con una lezione. Continua la chiacchierata, ma nel campo "feedback" dai un aiutino gentile: come dirlo meglio, e cosa può rivedere (es. "frasi per ordinare al ristorante", "esprimere accordo"). Se invece va bene, incoraggialo.
+- Mantieni TUTTO molto breve: lo studente deve PARLARE, non leggere.
+
+FORMATO: rispondi SEMPRE e SOLO con un oggetto JSON valido, senza testo prima o dopo, senza backtick:
+{
+  "reply": "la tua battuta in inglese che continua la conversazione (la dirai ad alta voce)",
+  "ok": true/false,
+  "feedback": "breve commento in ITALIANO: se ok=true un incoraggiamento; se ok=false un aiutino gentile su come dirlo meglio. (ometti nel primo messaggio)",
+  "review": "argomento comunicativo breve da ripassare, in italiano, SOLO se ok=false. Es: 'Come ordinare al ristorante'."
+}`;
+
+async function callClaude(userMessage){
+  history.push({role:'user',content:userMessage});
+  const res=await fetch("https://api.anthropic.com/v1/messages",{
+    method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,
+      system:SYSTEM_PROMPT,messages:history})
+  });
+  const data=await res.json();
+  const text=(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n');
+  history.push({role:'assistant',content:text});
+  return JSON.parse(text.replace(/```json|```/g,'').trim());
+}
+
+async function startConversation(){
+  if(waiting)return;
+  waiting=true;awaitingAnswer=false;setConsole(false);showDots();
+  try{
+    const r=await callClaude(
+      `Inizia una conversazione con lo studente. Tema dell'unit: ${selUnit.theme}. `+
+      `Saluta in modo amichevole e apri la chiacchierata con una prima battuta o domanda semplice in inglese. `+
+      `Questo è il primo messaggio: rispondi in JSON solo col campo "reply".`
+    );
+    hideDots();
+    lastTutorSpeech=r.reply||"";
+    addTurn('tutor',lastTutorSpeech);
+    speak(lastTutorSpeech);
+    awaitingAnswer=true;
+  }catch(e){
+    hideDots();showErr("Non riesco a contattare il tutor. Controlla la connessione e riprova.");
+  }
+  waiting=false;setConsole(true);
+}
+
+async function submitAnswer(answerText){
+  if(waiting||!awaitingAnswer||!answerText.trim())return;
+  awaitingAnswer=false;
+  addTurn('student',answerText);
+  waiting=true;setConsole(false);showDots();
+  scQ++;updateTally();
+  try{
+    const r=await callClaude(
+      `Lo studente ha detto: "${answerText}". Continua la conversazione in modo naturale con la tua prossima battuta in inglese, `+
+      `e valuta se la sua risposta era adeguata. Rispondi in JSON con "reply", "ok", "feedback" e (se ok=false) "review".`
+    );
+    hideDots();
+    const ok=r.ok!==false;
+    if(ok)scOk++;else scErr++;
+    updateTally();
+    if(r.feedback)
+      addTurn('fb',r.feedback,{good:ok,review:ok?null:(r.review||'')});
+    lastTutorSpeech=r.reply||"";
+    if(lastTutorSpeech){
+      addTurn('tutor',lastTutorSpeech);
+      speak(lastTutorSpeech);
+    }
+    awaitingAnswer=true;
+  }catch(e){
+    hideDots();showErr("Errore di connessione. Riprova a rispondere.");
+    awaitingAnswer=true;
+  }
+  waiting=false;setConsole(true);
+}
+
+async function askHint(){
+  if(waiting||!awaitingAnswer)return;
+  waiting=true;setConsole(false);showDots();
+  try{
+    const r=await callClaude(
+      `Lo studente non sa come rispondere e chiede aiuto. NON valutare nulla. `+
+      `Dai un suggerimento gentile: proponi 1-2 modi semplici in inglese per rispondere all'ultima cosa che hai detto, con la traduzione italiana. `+
+      `Rispondi in JSON: metti il suggerimento (italiano + esempi inglesi) nel campo "feedback", ok=true, e ripeti la tua ultima battuta nel campo "reply".`
+    );
+    hideDots();
+    if(r.feedback)addTurn('fb',r.feedback,{good:true});
+    if(r.reply)lastTutorSpeech=r.reply;
+    awaitingAnswer=true;
+  }catch(e){
+    hideDots();showErr("Errore di connessione. Riprova.");
+    awaitingAnswer=true;
+  }
+  waiting=false;setConsole(true);
+}
+
+function showErr(msg){
+  const thread=document.getElementById('thread');
+  const e=document.createElement('div');e.className='err-line';e.textContent=msg;
+  thread.appendChild(e);e.scrollIntoView({behavior:'smooth',block:'end'});
+}
+function setConsole(on){
+  document.getElementById('micBtn').disabled=!on;
+  document.getElementById('typeIn').disabled=!on;
+  document.getElementById('hintBtn').disabled=!on;
+}
+function repeatLast(){if(lastTutorSpeech)speak(lastTutorSpeech);}
+function sendText(){
+  const inp=document.getElementById('typeIn');const v=inp.value;inp.value='';
+  if(awaitingAnswer)submitAnswer(v);
+}
+
+/* ============ SPEECH SYNTHESIS ============ */
+let synthVoice=null;
+function pickVoice(){
+  const v=speechSynthesis.getVoices();
+  synthVoice=v.find(x=>/en-GB/i.test(x.lang))||v.find(x=>/en/i.test(x.lang))||v[0]||null;
+}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function speak(text){
+  if(!('speechSynthesis' in window)||!text)return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  if(synthVoice)u.voice=synthVoice;
+  u.lang=(synthVoice&&synthVoice.lang)||'en-GB';
+  u.rate=0.93;u.pitch=1.0;
+  speechSynthesis.speak(u);
+}
+function stopSpeaking(){if('speechSynthesis' in window)speechSynthesis.cancel();}
+
+/* ============ SPEECH RECOGNITION ============ */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let recog=null,recognizing=false,finalTranscript="";
+if(SR){
+  recog=new SR();
+  recog.lang='en-GB';recog.interimResults=true;recog.continuous=true;
+  recog.onresult=e=>{
+    let interim="";
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const tr=e.results[i][0].transcript;
+      if(e.results[i].isFinal)finalTranscript+=tr+" ";else interim+=tr;
+    }
+    document.getElementById('micCap').textContent=(finalTranscript+interim).trim()||'Ti sto ascoltando...';
+  };
+  recog.onerror=e=>{
+    recognizing=false;
+    document.getElementById('micBtn').classList.remove('live');
+    document.getElementById('micCap').classList.remove('live');
+    document.getElementById('micCap').textContent=
+      e.error==='not-allowed'?'Accesso al microfono negato. Usa il campo di testo.'
+      :'Problema col microfono. Prova a scrivere la risposta.';
+  };
+  recog.onend=()=>{
+    recognizing=false;
+    document.getElementById('micBtn').classList.remove('live');
+    document.getElementById('micCap').classList.remove('live');
+    const said=finalTranscript.trim();
+    document.getElementById('micCap').textContent='Tocca, parla, tocca di nuovo per fermare.';
+    if(said&&awaitingAnswer)submitAnswer(said);
+  };
+}
+function toggleMic(){
+  if(!SR){
+    document.getElementById('micCap').textContent='Il tuo browser non supporta la voce. Usa il campo di testo.';
+    return;
+  }
+  if(recognizing){recog.stop();return;}
+  if(!awaitingAnswer)return;
+  stopSpeaking();finalTranscript="";
+  try{recog.start();}catch(e){return;}
+  recognizing=true;
+  document.getElementById('micBtn').classList.add('live');
+  document.getElementById('micCap').classList.add('live');
+  document.getElementById('micCap').textContent='Ti sto ascoltando...';
+}
+
+/* ============ INIT ============ */
+renderMenu();
+</script>
+</body>
+</html>
