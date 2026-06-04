@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lessico Unit 10 — Connections</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a1628;--surface:rgba(255,255,255,0.09);--border:rgba(255,255,255,0.18);--text:#ffffff;--text-dim:rgba(255,255,255,0.75);--text-muted:rgba(255,255,255,0.45);--cyan:#00f0ff;--cyan-dim:rgba(0,240,255,0.15);--cyan-glow:rgba(0,240,255,0.6);--green:#00ff88;--green-dim:rgba(0,255,136,0.15);--green-glow:rgba(0,255,136,0.6);--red:#ff4d6d;--gold:#ffcc00;--gold-dim:rgba(255,204,0,0.18);--gold-glow:rgba(255,204,0,0.6);--purple:#cc77ff;--purple-dim:rgba(204,119,255,0.18);--purple-glow:rgba(204,119,255,0.6);--orange:#ff8c42;--radius:12px;--radius-sm:6px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{min-height:100vh;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:16px;overflow-x:hidden;position:relative;background:linear-gradient(160deg,#060d1e 0%,#0e1a3a 35%,#161030 65%,#060d1e 100%);}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 55% 45% at 15% 25%,rgba(0,100,220,0.35) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 85% 75%,rgba(80,20,160,0.3) 0%,transparent 70%),radial-gradient(ellipse 40% 35% at 55% 5%,rgba(0,180,255,0.2) 0%,transparent 65%);pointer-events:none;z-index:0;}
+#starCanvas{position:fixed;inset:0;z-index:1;pointer-events:none;}
+#particleCanvas{position:fixed;inset:0;z-index:3;pointer-events:none;}
+header{position:relative;z-index:10;padding:0 24px;height:62px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,13,30,0.85);border-bottom:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(16px);}
+header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);opacity:0.9;}
+.logo{font-family:'Orbitron',monospace;font-weight:900;font-size:18px;letter-spacing:4px;background:linear-gradient(135deg,#00f0ff,#ffffff,#cc77ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 10px rgba(0,240,255,0.5));}
+.logo-sub{font-size:10px;letter-spacing:2px;color:var(--text-muted);font-family:'Rajdhani',sans-serif;-webkit-text-fill-color:var(--text-muted);display:block;margin-top:-3px;}
+.btn-reset{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:1px;padding:7px 14px;border:1px solid rgba(255,77,109,0.35);background:rgba(255,77,109,0.07);color:rgba(255,255,255,0.45);border-radius:var(--radius-sm);cursor:pointer;transition:all 0.25s;}
+.btn-reset:hover{border-color:var(--red);color:var(--red);background:rgba(255,77,109,0.14);}
+.screen{display:none;position:relative;z-index:2;padding:24px;max-width:860px;margin:0 auto;}
+.screen.active{display:block;}
+.map-hero{text-align:center;padding:28px 0 20px;}
+.map-hero h1{font-family:'Orbitron',monospace;font-weight:900;font-size:28px;letter-spacing:5px;background:linear-gradient(135deg,#00f0ff 0%,#ffffff 50%,#cc77ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:titleGlow 3s ease-in-out infinite;margin-bottom:6px;}
+.map-hero h2{font-family:'Orbitron',monospace;font-weight:600;font-size:11px;letter-spacing:4px;color:var(--cyan);opacity:0.7;margin-bottom:8px;}
+@keyframes titleGlow{0%,100%{filter:drop-shadow(0 0 14px rgba(0,240,255,0.5));}50%{filter:drop-shadow(0 0 32px rgba(0,240,255,0.9));}}
+.map-hero p{color:var(--text-muted);font-size:12px;letter-spacing:2px;text-transform:uppercase;}
+.level-legend{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:18px;}
+.legend-chip{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:1px;padding:5px 12px;border-radius:20px;font-weight:700;}
+.legend-1{background:rgba(0,240,255,0.15);border:1px solid var(--cyan);color:var(--cyan);}
+.legend-2{background:rgba(255,204,0,0.15);border:1px solid var(--gold);color:var(--gold);}
+.legend-3{background:rgba(204,119,255,0.15);border:1px solid var(--purple);color:var(--purple);}
+.xp-panel{background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius);padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;gap:14px;backdrop-filter:blur(10px);}
+.xp-label{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--text-muted);min-width:24px;}
+.xp-track{flex:1;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:4px;height:14px;overflow:hidden;}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--cyan),#8800ff,var(--purple));background-size:200% 100%;border-radius:4px;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);animation:xpShimmer 2.5s linear infinite;box-shadow:0 0 10px var(--cyan-glow);}
+@keyframes xpShimmer{0%{background-position:0% 0%;}100%{background-position:200% 0%;}}
+.xp-num{font-family:'Orbitron',monospace;font-size:12px;color:#fff;white-space:nowrap;font-weight:700;}
+.sections-list{display:flex;flex-direction:column;gap:9px;}
+.section-card{border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;gap:14px;transition:all 0.25s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden;border:2px solid;}
+.section-card::after{content:'';position:absolute;top:0;left:0;right:0;height:42%;background:linear-gradient(180deg,rgba(255,255,255,0.07) 0%,transparent 100%);pointer-events:none;border-radius:10px 10px 0 0;}
+.section-card.locked{background:linear-gradient(135deg,rgba(100,90,130,0.35) 0%,rgba(70,60,100,0.3) 100%);border-color:rgba(180,170,210,0.25);cursor:not-allowed;filter:saturate(0.3) brightness(0.7);}
+.section-card.unlocked{background:linear-gradient(135deg,rgba(0,180,255,0.28) 0%,rgba(60,30,180,0.35) 100%);border-color:var(--cyan);cursor:pointer;animation:unlockBreath 3s ease-in-out infinite;}
+@keyframes unlockBreath{0%,100%{box-shadow:0 4px 20px rgba(0,0,0,0.4),0 0 12px rgba(0,240,255,0.25);}50%{box-shadow:0 4px 24px rgba(0,0,0,0.4),0 0 28px rgba(0,240,255,0.55);}}
+.section-card.unlocked:hover{transform:translateX(7px) scale(1.01);border-color:#55ffff;box-shadow:0 6px 28px rgba(0,0,0,0.5),0 0 42px rgba(0,240,255,0.65)!important;animation:none;}
+.section-card.completed{background:linear-gradient(135deg,rgba(0,140,70,0.55) 0%,rgba(0,80,40,0.45) 100%);border-color:var(--green);opacity:0.8;}
+.section-card.revision{background:linear-gradient(135deg,rgba(200,140,0,0.5) 0%,rgba(120,80,0,0.45) 100%);border-color:var(--gold);cursor:pointer;animation:revPulse 2s ease-in-out infinite;}
+@keyframes revPulse{0%,100%{box-shadow:0 4px 20px rgba(0,0,0,0.4),0 0 14px rgba(255,204,0,0.3);}50%{box-shadow:0 4px 24px rgba(0,0,0,0.4),0 0 32px rgba(255,204,0,0.65);}}
+.section-card.revision:hover{transform:translateX(7px) scale(1.01);border-color:#ffee44;box-shadow:0 6px 28px rgba(0,0,0,0.5),0 0 44px rgba(255,204,0,0.75)!important;animation:none;}
+.section-card.revision-done{background:linear-gradient(135deg,rgba(0,140,70,0.5),rgba(0,80,40,0.4));border-color:var(--green);opacity:0.65;}
+.section-card.difficult{background:linear-gradient(135deg,rgba(150,40,220,0.55) 0%,rgba(90,10,150,0.5) 100%);border-color:var(--purple);cursor:pointer;animation:bossPulse 1.6s ease-in-out infinite;}
+@keyframes bossPulse{0%,100%{box-shadow:0 4px 20px rgba(0,0,0,0.4),0 0 16px rgba(204,119,255,0.3);}50%{box-shadow:0 4px 24px rgba(0,0,0,0.4),0 0 38px rgba(204,119,255,0.7);}}
+.section-card.difficult:hover{transform:translateX(7px) scale(1.01);border-color:#ee88ff;box-shadow:0 6px 28px rgba(0,0,0,0.5),0 0 50px rgba(204,119,255,0.8)!important;animation:none;}
+.section-card.difficult-done{background:linear-gradient(135deg,rgba(0,140,70,0.5),rgba(0,80,40,0.4));border-color:var(--green);opacity:0.65;}
+.sc-icon{font-family:'Orbitron',monospace;font-weight:900;font-size:20px;min-width:46px;text-align:center;flex-shrink:0;}
+.section-card.locked .sc-icon{color:rgba(200,190,220,0.5);}
+.section-card.unlocked .sc-icon{color:#ffffff;text-shadow:0 0 16px var(--cyan-glow);}
+.section-card.completed .sc-icon{color:var(--green);text-shadow:0 0 12px var(--green-glow);}
+.section-card.revision .sc-icon{color:#fff8aa;text-shadow:0 0 16px var(--gold-glow);}
+.section-card.revision-done .sc-icon{color:var(--green);}
+.section-card.difficult .sc-icon{color:#ffffff;text-shadow:0 0 20px var(--purple-glow);font-size:22px;}
+.section-card.difficult-done .sc-icon{color:var(--green);}
+.sc-body{flex:1;min-width:0;}
+.sc-title{font-family:'Orbitron',monospace;font-weight:700;font-size:11px;letter-spacing:1.5px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.section-card.locked .sc-title{color:rgba(200,190,220,0.55);}
+.section-card.unlocked .sc-title{color:#ffffff;}
+.section-card.completed .sc-title{color:#aaffcc;}
+.section-card.revision .sc-title{color:#fff8aa;}
+.section-card.revision-done .sc-title{color:#aaffcc;}
+.section-card.difficult .sc-title{color:#f0ccff;}
+.section-card.difficult-done .sc-title{color:#aaffcc;}
+.sc-desc{font-size:13px;color:rgba(255,255,255,0.45);}
+.section-card.unlocked .sc-desc{color:rgba(255,255,255,0.65);}
+.section-card.revision .sc-desc{color:rgba(255,248,170,0.65);}
+.section-card.difficult .sc-desc{color:rgba(240,204,255,0.65);}
+.sc-badge{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:1px;padding:5px 11px;border-radius:4px;white-space:nowrap;border:1px solid;flex-shrink:0;font-weight:700;}
+.badge-locked{border-color:rgba(200,190,220,0.3);color:rgba(200,190,220,0.45);background:rgba(100,90,130,0.2);}
+.badge-todo{border-color:var(--cyan);color:#ffffff;background:rgba(0,180,255,0.35);}
+.badge-done{border-color:var(--green);color:#aaffcc;background:rgba(0,160,80,0.3);}
+.badge-required{border-color:var(--gold);color:#fff8aa;background:rgba(180,130,0,0.4);}
+.badge-required-purple{border-color:var(--purple);color:#f0ccff;background:rgba(130,40,200,0.4);}
+.ex-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px;}
+.ex-title{font-family:'Orbitron',monospace;font-weight:700;font-size:11px;letter-spacing:2px;color:var(--cyan);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hud{display:flex;align-items:center;gap:10px;margin-bottom:18px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-sm);padding:10px 14px;}
+.hud-track{flex:1;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:3px;height:8px;overflow:hidden;}
+.hud-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:3px;transition:width 0.5s ease;}
+.hud-text{font-family:'Orbitron',monospace;font-size:11px;color:var(--text-muted);white-space:nowrap;}
+.hud-ok{font-family:'Orbitron',monospace;font-size:11px;color:var(--green);white-space:nowrap;}
+.hud-bad{font-family:'Orbitron',monospace;font-size:11px;color:var(--red);white-space:nowrap;}
+.level-badge{display:inline-block;font-family:'Orbitron',monospace;font-size:8px;letter-spacing:1.5px;padding:3px 10px;border-radius:10px;margin-bottom:10px;font-weight:700;}
+.lv1-badge{background:rgba(0,240,255,0.15);border:1px solid var(--cyan);color:var(--cyan);}
+.lv2-badge{background:rgba(255,204,0,0.15);border:1px solid var(--gold);color:var(--gold);}
+.lv3-badge{background:rgba(204,119,255,0.15);border:1px solid var(--purple);color:var(--purple);}
+.ex-card{background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.22);border-radius:var(--radius);padding:24px 28px;margin-bottom:14px;position:relative;overflow:hidden;animation:cardIn 0.3s cubic-bezier(0.4,0,0.2,1);backdrop-filter:blur(14px);box-shadow:0 8px 32px rgba(0,0,0,0.35);}
+.ex-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.ex-type-badge{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:2px;color:var(--text-muted);margin-bottom:10px;}
+.ex-question{font-size:18px;font-weight:600;color:#ffffff;line-height:1.7;margin-bottom:12px;}
+.ex-hint{font-size:13px;color:var(--text-muted);margin-bottom:12px;font-style:italic;}
+.fill-input{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.25);border-radius:var(--radius-sm);padding:9px 14px;font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:600;color:#ffffff;outline:none;transition:all 0.2s;min-width:200px;max-width:100%;display:block;margin-top:8px;}
+.fill-input:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,240,255,0.2);}
+.fill-input.correct{border-color:var(--green);background:rgba(0,255,136,0.1);color:var(--green);}
+.fill-input.wrong{border-color:var(--red);background:rgba(255,77,109,0.1);color:var(--red);}
+.mc-options{display:flex;flex-direction:column;gap:9px;margin-bottom:12px;}
+.mc-btn{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.18);border-radius:var(--radius-sm);padding:12px 18px;cursor:pointer;font-size:15px;font-weight:600;color:var(--text-dim);transition:all 0.18s;text-align:left;font-family:'Rajdhani',sans-serif;}
+.mc-btn:hover{background:rgba(0,180,255,0.12);border-color:var(--cyan);color:#fff;}
+.mc-btn.selected{background:rgba(0,180,255,0.2);border-color:var(--cyan);color:#fff;}
+.mc-btn.correct{background:rgba(0,255,136,0.15);border-color:var(--green);color:var(--green);}
+.mc-btn.wrong{background:rgba(255,77,109,0.12);border-color:var(--red);color:var(--red);}
+.feedback-msg{margin-top:10px;font-size:14px;font-weight:600;min-height:20px;}
+.feedback-msg.ok{color:var(--green);}
+.feedback-msg.err{color:var(--red);}
+.action-bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+.btn{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;padding:11px 22px;border-radius:var(--radius-sm);border:1px solid;cursor:pointer;transition:all 0.2s;backdrop-filter:blur(8px);}
+.btn-primary{background:rgba(0,200,255,0.2);border-color:var(--cyan);color:#ffffff;}
+.btn-primary:hover{background:rgba(0,200,255,0.32);box-shadow:0 0 22px rgba(0,240,255,0.5);transform:translateY(-2px);}
+.btn-secondary{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.22);color:var(--text-dim);}
+.btn-secondary:hover{border-color:rgba(255,255,255,0.5);color:#ffffff;}
+.btn-green{background:rgba(0,200,100,0.22);border-color:var(--green);color:#aaffcc;}
+.btn-green:hover{background:rgba(0,200,100,0.34);box-shadow:0 0 22px rgba(0,255,136,0.5);transform:translateY(-2px);}
+.btn-back{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:1px;padding:7px 14px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.07);color:var(--text-dim);border-radius:var(--radius-sm);cursor:pointer;transition:all 0.2s;}
+.btn-back:hover{border-color:var(--cyan);color:var(--cyan);}
+.results-card{background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius);padding:36px;text-align:center;backdrop-filter:blur(14px);box-shadow:0 8px 40px rgba(0,0,0,0.4);position:relative;overflow:hidden;}
+.results-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--green),var(--purple),transparent);}
+.res-pct{font-family:'Orbitron',monospace;font-weight:900;font-size:72px;line-height:1;margin-bottom:8px;}
+.res-pct.pass{color:var(--green);text-shadow:0 0 30px var(--green-glow);animation:winGlow 1.5s ease-in-out infinite;}
+@keyframes winGlow{0%,100%{text-shadow:0 0 20px var(--green-glow);}50%{text-shadow:0 0 50px var(--green-glow),0 0 80px rgba(0,255,136,0.4);}}
+.res-pct.fail{color:var(--red);}
+.res-label{font-family:'Orbitron',monospace;font-size:12px;letter-spacing:4px;margin-bottom:6px;}
+.res-label.pass{color:var(--green);}.res-label.fail{color:var(--red);}
+.res-threshold{font-size:12px;color:var(--text-muted);letter-spacing:1px;margin-bottom:24px;}
+.res-breakdown{display:flex;justify-content:center;gap:36px;margin-bottom:24px;flex-wrap:wrap;}
+.rb-item{text-align:center;}
+.rb-num{font-family:'Orbitron',monospace;font-weight:900;font-size:34px;}
+.rb-num.g{color:var(--green);}.rb-num.r{color:var(--red);}
+.rb-label{font-size:9px;letter-spacing:2px;color:var(--text-muted);font-family:'Orbitron',monospace;}
+.retry-notice{background:rgba(255,140,66,0.12);border:1px solid rgba(255,140,66,0.3);border-radius:var(--radius-sm);padding:9px 14px;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--orange);margin-bottom:12px;}
+.completion-banner{background:rgba(255,255,255,0.09);border:2px solid rgba(255,204,0,0.55);border-radius:var(--radius);padding:40px;text-align:center;backdrop-filter:blur(14px);box-shadow:0 8px 40px rgba(255,204,0,0.2);}
+.cb-emoji{font-size:60px;margin-bottom:14px;display:block;animation:trophy 1s ease-in-out infinite;}
+@keyframes trophy{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-8px) scale(1.05);}}
+.cb-title{font-family:'Orbitron',monospace;font-weight:900;font-size:22px;letter-spacing:4px;color:var(--gold);text-shadow:0 0 25px var(--gold-glow);margin-bottom:8px;}
+.cb-text{color:var(--text-muted);font-size:13px;letter-spacing:2px;}
+.ex-card.flash-correct{animation:fCorrect 0.5s ease forwards!important;}
+.ex-card.flash-wrong{animation:fWrong 0.4s ease forwards!important;}
+@keyframes fCorrect{0%{border-color:rgba(255,255,255,0.22)}40%{border-color:var(--green);box-shadow:0 0 40px var(--green-glow)}100%{border-color:rgba(255,255,255,0.22)}}
+@keyframes fWrong{0%{border-color:rgba(255,255,255,0.22)}40%{border-color:var(--red);box-shadow:0 0 25px rgba(255,77,109,0.5)}100%{border-color:rgba(255,255,255,0.22)}}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,10,0.85);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;backdrop-filter:blur(8px);}
+.modal{background:rgba(10,18,40,0.97);border:1px solid rgba(255,255,255,0.18);border-radius:var(--radius);padding:32px;max-width:380px;width:100%;text-align:center;}
+.modal h2{font-family:'Orbitron',monospace;font-size:14px;letter-spacing:2px;color:var(--red);margin-bottom:12px;}
+.modal p{color:var(--text-dim);font-size:14px;margin-bottom:24px;line-height:1.7;}
+.modal-actions{display:flex;gap:10px;justify-content:center;}
+.save-panel{background:rgba(0,0,0,0.35);border:1px solid rgba(0,240,255,0.25);border-radius:var(--radius);padding:14px 20px;margin-bottom:20px;backdrop-filter:blur(10px);}
+.save-panel-label{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--cyan);opacity:0.75;display:block;margin-bottom:8px;}
+.save-code-display{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;letter-spacing:2px;color:#ffffff;background:rgba(0,0,0,0.45);border:1px solid rgba(0,240,255,0.3);border-radius:var(--radius-sm);padding:9px 18px;text-align:center;word-break:break-all;margin-bottom:10px;}
+.save-panel-hint{font-size:12px;color:var(--text-muted);margin-bottom:10px;line-height:1.5;}
+.save-panel-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.save-import-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);}
+.save-import-input{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius-sm);padding:8px 14px;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:1px;color:#ffffff;outline:none;flex:1;min-width:160px;}
+.save-import-input:focus{border-color:var(--cyan);}
+.save-import-input::placeholder{color:rgba(255,255,255,0.2);font-size:10px;}
+.save-import-msg{font-size:12px;margin-top:6px;min-height:16px;}
+.save-import-msg.ok{color:var(--green);}.save-import-msg.err{color:var(--red);}
+.btn-save{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid rgba(0,240,255,0.45);background:rgba(0,180,255,0.15);color:var(--cyan);cursor:pointer;transition:all 0.2s;}
+.btn-save:hover{background:rgba(0,180,255,0.28);border-color:var(--cyan);}
+.btn-save-sm{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.07);color:var(--text-dim);cursor:pointer;transition:all 0.2s;}
+</style>
+</head>
+<body>
+<canvas id="starCanvas"></canvas>
+<canvas id="particleCanvas"></canvas>
+<header>
+  <div><div class="logo">📝 LESSICO UNIT 10</div><span class="logo-sub">vocabulary quest · connections</span></div>
+  <button class="btn-reset" onclick="confirmReset()">↺ RESET</button>
+</header>
+<div id="screen-map" class="screen active">
+  <div class="map-hero"><h1>LESSICO UNIT 10</h1><h2>vocabulary quest</h2><p>emotions · relationships · connections</p></div>
+  <div class="level-legend">
+    <span class="legend-chip legend-1">LV1 · italiano → inglese</span>
+    <span class="legend-chip legend-2">LV2 · definizione → parola</span>
+    <span class="legend-chip legend-3">LV3 · frase con gap</span>
+  </div>
+  <div class="xp-panel">
+    <div class="xp-label">XP</div>
+    <div class="xp-track"><div class="xp-fill" id="overallBar" style="width:0%"></div></div>
+    <div class="xp-num" id="overallText">0/0</div>
+  </div>
+  <div class="save-panel">
+    <span class="save-panel-label">💾 SAVE CODE — riprendi su qualsiasi dispositivo</span>
+    <div class="save-code-display" id="saveCodeDisplay">—</div>
+    <div class="save-panel-hint">Copia o fotografa questo codice per riprendere da un altro dispositivo.</div>
+    <div class="save-panel-actions"><button class="btn-save" onclick="copyCode()" id="copyBtn">⌘ COPIA CODICE</button></div>
+    <div class="save-import-row">
+      <input class="save-import-input" id="importInput" type="text" placeholder="incolla codice da altro dispositivo...">
+      <button class="btn-save-sm" onclick="importCode()">↵ CARICA</button>
+    </div>
+    <div class="save-import-msg" id="importMsg"></div>
+  </div>
+  <div class="sections-list" id="sectionsList"></div>
+</div>
+<div id="screen-exercise" class="screen">
+  <div class="ex-header">
+    <div class="ex-title" id="exTitle"></div>
+    <button class="btn-back" onclick="goMap()">← MAP</button>
+  </div>
+  <div class="hud">
+    <div class="hud-track"><div class="hud-fill" id="hudFill" style="width:0%"></div></div>
+    <div class="hud-text" id="hudText">0/0</div>
+    <span class="hud-ok" id="hudOk">✓ 0</span>
+    <span class="hud-bad" id="hudBad">✗ 0</span>
+  </div>
+  <div id="exerciseArea"></div>
+  <div class="action-bar">
+    <button class="btn btn-primary" id="checkBtn" onclick="checkExercise()">▶ CONTROLLA</button>
+    <button class="btn btn-secondary" id="nextBtn" onclick="nextExercise()" style="display:none">AVANTI →</button>
+  </div>
+</div>
+<div id="screen-results" class="screen"></div>
+<div id="resetModal" class="modal-overlay" style="display:none">
+  <div class="modal">
+    <h2>⚠ RESET</h2><p>Tutti i progressi verranno cancellati.</p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">ANNULLA</button>
+      <button class="btn btn-primary" style="border-color:var(--red);color:var(--red)" onclick="doReset()">RESET</button>
+    </div>
+  </div>
+</div>
+<script>
+const SK='gq_lessico_abc_s',EK='gq_lessico_abc_e';
+let state={},errorMap={};
+
+const LEVELS=[
+
+// ══ 1 · ADJECTIVES: NEGATIVE EMOTIONS ════════════════════════════════
+{id:1,type:'study',title:'LV1 · ADJECTIVES: NEGATIVE EMOTIONS',desc:'angry · annoyed · bored · confused · depressed · disappointed · embarrassed · fed up · frustrated · guilty · hurt · jealous · lonely · miserable · offended · sad · shocked · stressed · upset · worried',
+exercises:[
+ {type:'lv1',it:'arrabbiato',en:'angry'},
+ {type:'lv1',it:'seccato / infastidito',en:'annoyed'},
+ {type:'lv1',it:'annoiato',en:'bored'},
+ {type:'lv1',it:'confuso',en:'confused'},
+ {type:'lv1',it:'depresso',en:'depressed'},
+ {type:'lv1',it:'deluso',en:'disappointed'},
+ {type:'lv1',it:'imbarazzato',en:'embarrassed'},
+ {type:'lv1',it:'stufo / esasperato',en:'fed up'},
+ {type:'lv1',it:'frustrato',en:'frustrated'},
+ {type:'lv1',it:'in colpa / colpevole',en:'guilty'},
+ {type:'lv1',it:'ferito (emotivamente)',en:'hurt'},
+ {type:'lv1',it:'geloso',en:'jealous'},
+ {type:'lv1',it:'solitario',en:'lonely'},
+ {type:'lv1',it:'miserabile / infelice',en:'miserable'},
+ {type:'lv1',it:'offeso',en:'offended'},
+ {type:'lv1',it:'triste',en:'sad'},
+ {type:'lv1',it:'scioccato',en:'shocked'},
+ {type:'lv1',it:'stressato',en:'stressed'},
+ {type:'lv1',it:'turbato / sconvolto',en:'upset'},
+ {type:'lv1',it:'preoccupato',en:'worried'},
+ {type:'lv2',def:'Emozione: qualcuno ti ha tradito o ferito nei sentimenti.',en:'hurt',accept:['hurt','offended']},
+ {type:'lv2',def:'Emozione: non hai più voglia di sopportare qualcosa.',en:'fed up'},
+ {type:'lv2',def:'Emozione: senti che hai fatto qualcosa di sbagliato.',en:'guilty'},
+ {type:'lv2',def:'Emozione: sei molto triste e non vuoi fare niente.',en:'miserable',accept:['miserable','depressed']},
+ {type:'lv2',def:'Emozione: ti senti solo e vorresti avere compagnia.',en:'lonely'},
+ {type:'lv2',def:'Emozione: qualcosa ti ha sorpreso in modo molto negativo.',en:'shocked'},
+ {type:'lv2',def:'Emozione: qualcuno ha quello che vorresti avere tu.',en:'jealous'},
+ {type:'lv3',sentence:'I feel really ___ because I forgot my best friend\'s birthday.',gap:'guilty',hint:'(guilty/embarrassed/upset)',accept:['guilty','embarrassed']},
+ {type:'lv3',sentence:'She\'s ___ of her sister who always gets better marks.',gap:'jealous',hint:'(jealous/upset/frustrated)',accept:['jealous']},
+ {type:'lv3',sentence:'He\'s ___ with the situation — nothing ever changes.',gap:'fed up',hint:'(fed up/bored/annoyed)',accept:['fed up','bored','frustrated']},
+ {type:'lv3',sentence:'I was ___ when she didn\'t come to my party.',gap:'hurt',hint:'(hurt/offended/disappointed)',accept:['hurt','offended','disappointed']},
+ {type:'lv3',sentence:'She lives far from her family and often feels ___.',gap:'lonely',hint:'(lonely/sad/miserable)',accept:['lonely','sad','miserable']},
+ {type:'lv3',sentence:'He was ___ when he heard the bad news — he didn\'t believe it.',gap:'shocked',hint:'(shocked/upset/stressed)',accept:['shocked','upset']},
+]},
+{id:'r1',type:'revision',title:'⟳ RIPASSO 1',desc:'negative emotions · misto',revises:[1]},
+{id:'d1',type:'difficult',title:'★ BOSS 1',desc:'esercizi sbagliati ≥2 volte',revises:[1]},
+
+// ══ 2 · ADJECTIVES: POSITIVE EMOTIONS & -ED/-ING ══════════════════════
+{id:2,type:'study',title:'LV2 · POSITIVE EMOTIONS & -ED/-ING ADJECTIVES',desc:'confident · delighted · elated · enthusiastic · excited · grateful · happy · hopeful · satisfied · surprised · annoying/annoyed · boring/bored...',
+exercises:[
+ {type:'lv1',it:'fiducioso / sicuro di sé',en:'confident'},
+ {type:'lv1',it:'felicissimo / raggiante',en:'delighted'},
+ {type:'lv1',it:'euforico / al settimo cielo',en:'elated'},
+ {type:'lv1',it:'entusiasta',en:'enthusiastic'},
+ {type:'lv1',it:'eccitato / emozionato',en:'excited'},
+ {type:'lv1',it:'grato / riconoscente',en:'grateful'},
+ {type:'lv1',it:'felice',en:'happy'},
+ {type:'lv1',it:'speranzoso / ottimista',en:'hopeful'},
+ {type:'lv1',it:'soddisfatto',en:'satisfied'},
+ {type:'lv1',it:'sorpreso',en:'surprised'},
+ {type:'lv1',it:'noioso (che causa noia — la cosa)',en:'boring'},
+ {type:'lv1',it:'annoiato (chi prova noia — la persona)',en:'bored'},
+ {type:'lv1',it:'che deprime / che mette tristezza',en:'depressing'},
+ {type:'lv1',it:'che emoziona / entusiasmante',en:'exciting'},
+ {type:'lv1',it:'che frustra / frustrante',en:'frustrating'},
+ {type:'lv1',it:'che soddisfa / soddisfacente',en:'satisfying'},
+ {type:'lv1',it:'che sciocca / scioccante',en:'shocking'},
+ {type:'lv1',it:'che sorprende / sorprendente',en:'surprising'},
+ {type:'lv1',it:'che preoccupa / preoccupante',en:'worrying'},
+ {type:'lv1',it:'che imbarazza / imbarazzante',en:'embarrassing'},
+ {type:'lv1',it:'che delude / deludente',en:'disappointing'},
+ {type:'lv2',def:'Aggettivo positivo superlativo: sei così felice che stai quasi saltando.',en:'elated'},
+ {type:'lv2',def:'Aggettivo positivo: sei contento di quello che hai ricevuto.',en:'grateful'},
+ {type:'lv2',def:'Aggettivo positivo: hai aspettative positive per il futuro.',en:'hopeful'},
+ {type:'lv2',def:'La cosa è ___ (causa). La persona è ___ (effetto). Es: boring / bored.',en:'boring / bored',accept:['boring / bored','boring/bored']},
+ {type:'lv3',sentence:'The film was really ___. I fell asleep! (la cosa)',gap:'boring',hint:'(boring/bored)',accept:['boring']},
+ {type:'lv3',sentence:'I was really ___ by the film. I fell asleep! (la persona)',gap:'bored',hint:'(bored/boring)',accept:['bored']},
+ {type:'lv3',sentence:'The news is very ___. Don\'t think about it too much. (la cosa)',gap:'worrying',hint:'(worrying/worried)',accept:['worrying']},
+ {type:'lv3',sentence:'She was ___ because she didn\'t expect the surprise.',gap:'surprised',hint:'(surprised/surprising)',accept:['surprised']},
+ {type:'lv3',sentence:'I\'m so ___ about my exam results — I think I passed!',gap:'hopeful',hint:'(hopeful/grateful/elated)',accept:['hopeful']},
+ {type:'lv3',sentence:'She was ___ with her performance — she\'d done everything perfectly.',gap:'satisfied',hint:'(satisfied/delighted/grateful)',accept:['satisfied','delighted']},
+]},
+{id:'r2',type:'revision',title:'⟳ RIPASSO 2',desc:'positive emotions · -ed/-ing adjectives · misto',revises:[2]},
+{id:'d2',type:'difficult',title:'★ BOSS 2',desc:'esercizi sbagliati ≥2 volte',revises:[2]},
+
+// ══ 3 · RELATIONSHIPS ═════════════════════════════════════════════════
+{id:3,type:'study',title:'LV3 · RELATIONSHIPS',desc:'ask someone out · blended family · break up · cheat on · fall in love · get divorced · get engaged · get married · go on a blind date · have a crush · live together · single parent · stepfamily · wedding...',
+exercises:[
+ {type:'lv1',it:'invitare qualcuno a uscire (romantico)',en:'ask someone out on a date',accept:['ask someone out on a date','ask someone out']},
+ {type:'lv1',it:'famiglia allargata',en:'blended family'},
+ {type:'lv1',it:'lasciarsi / rompere (con)',en:'break up / split up (with)',accept:['break up','split up','break up / split up']},
+ {type:'lv1',it:'tradire (il/la partner)',en:'cheat on'},
+ {type:'lv1',it:'innamorarsi (di)',en:'fall in love (with)',accept:['fall in love','fall in love with']},
+ {type:'lv1',it:'riconciliarsi / tornare insieme',en:'get back together'},
+ {type:'lv1',it:'divorziare',en:'get divorced'},
+ {type:'lv1',it:'fidanzarsi',en:'get engaged'},
+ {type:'lv1',it:'sposarsi',en:'get married'},
+ {type:'lv1',it:'andare d\'accordo (con)',en:'get on well (with)',accept:['get on well','get on well with']},
+ {type:'lv1',it:'uscire con qualcuno (appuntamento al buio)',en:'go on a blind date'},
+ {type:'lv1',it:'stare insieme / frequentarsi',en:'go out together'},
+ {type:'lv1',it:'avere una cotta per',en:'have a crush on'},
+ {type:'lv1',it:'litigare',en:'have an argument'},
+ {type:'lv1',it:'vivere da soli',en:'live alone'},
+ {type:'lv1',it:'vivere insieme / convivere',en:'live together'},
+ {type:'lv1',it:'matrimonio (istituzione)',en:'marriage'},
+ {type:'lv1',it:'single / non fidanzato/a',en:'single'},
+ {type:'lv1',it:'genitore single',en:'single parent'},
+ {type:'lv1',it:'famiglia con figliastri',en:'stepfamily'},
+ {type:'lv1',it:'matrimonio (cerimonia)',en:'wedding'},
+ {type:'lv2',def:'Espressione: li lasci definitivamente.',en:'break up / split up',accept:['break up','split up']},
+ {type:'lv2',def:'Espressione: dopo esserti lasciato/a, ricomincerete.',en:'get back together'},
+ {type:'lv2',def:'Un appuntamento dove non conosci la persona che incontrerai.',en:'go on a blind date'},
+ {type:'lv2',def:'Famiglia con genitori separati che ne formano una nuova con nuovi figli.',en:'blended family',accept:['blended family','stepfamily']},
+ {type:'lv2',def:'Avere sentimenti romantici per qualcuno senza dirlo.',en:'have a crush on'},
+ {type:'lv3',sentence:'They ___ in love when they met on set.',gap:'fell',hint:'(fell/got/went)',accept:['fell']},
+ {type:'lv3',sentence:'They broke ___ after two years but then got ___ together.',gap:'up / back',hint:'(up/back)',accept:['up / back','up/back']},
+ {type:'lv3',sentence:'He ___ her out on a date and she said yes.',gap:'asked',hint:'(asked/took/invited)',accept:['asked']},
+ {type:'lv3',sentence:'They got ___ in a small ceremony in 2012.',gap:'married',hint:'(married/engaged/divorced)',accept:['married']},
+ {type:'lv3',sentence:'She\'s had a ___ on him for years but never said anything.',gap:'crush',hint:'(crush/date/argument)',accept:['crush']},
+ {type:'lv3',sentence:'After they ___ divorced, he raised the children alone as a ___ parent.',gap:'got / single',hint:'(got/single)',accept:['got / single','got/single']},
+]},
+{id:'r3',type:'revision',title:'⟳ RIPASSO 3',desc:'relationships vocabulary · misto',revises:[3]},
+{id:'d3',type:'difficult',title:'★ BOSS 3',desc:'esercizi sbagliati ≥2 volte',revises:[3]},
+
+// ══ 4 · MAKE + OBJECT · GET + ADJECTIVE ══════════════════════════════
+{id:4,type:'study',title:'LV4 · MAKE + OBJECT · GET + ADJECTIVE',desc:'make someone feel safe · make someone laugh · make someone happy · get nervous · get fed up · get angry · get excited...',
+exercises:[
+ {type:'lv1',it:'far sentire qualcuno al sicuro',en:'make someone feel safe'},
+ {type:'lv1',it:'far ridere qualcuno',en:'make someone laugh'},
+ {type:'lv1',it:'rendere qualcuno felice',en:'make someone happy'},
+ {type:'lv1',it:'far sentire qualcuno in colpa',en:'make someone feel guilty'},
+ {type:'lv1',it:'rendere qualcuno nervoso',en:'make someone nervous'},
+ {type:'lv1',it:'rendere qualcuno triste',en:'make someone sad'},
+ {type:'lv1',it:'diventare nervoso',en:'get nervous'},
+ {type:'lv1',it:'diventare stufo / esasperarsi',en:'get fed up'},
+ {type:'lv1',it:'arrabbiarsi',en:'get angry'},
+ {type:'lv1',it:'emozionarsi / eccitarsi',en:'get excited'},
+ {type:'lv1',it:'preoccuparsi',en:'get worried'},
+ {type:'lv1',it:'stancarsi / esaurirsi',en:'get tired'},
+ {type:'lv1',it:'L\'isolamento rende le persone solitarie.',en:'Isolation makes us lonely.'},
+ {type:'lv1',it:'Una forte comunità fa sentire la gente al sicuro.',en:'A strong community makes people feel safe.'},
+ {type:'lv2',def:'Espressione: la musica mi fa sentire felice.',en:'Music makes me happy.',accept:['Music makes me happy','makes me happy']},
+ {type:'lv2',def:'Espressione: mi sto innervosendo / agitando.',en:'I\'m getting nervous.',accept:["I'm getting nervous","getting nervous"]},
+ {type:'lv2',def:'Espressione: mi sto stufando di questa situazione.',en:'I\'m getting fed up.',accept:["I'm getting fed up","getting fed up"]},
+ {type:'lv3',sentence:'Music ___ me feel happy.',gap:'makes',hint:'(makes/gets/does)',accept:['makes']},
+ {type:'lv3',sentence:'Bad news ___ me worried.',gap:'makes',hint:'(makes/gets/does)',accept:['makes']},
+ {type:'lv3',sentence:'She ___ nervous before exams.',gap:'gets',hint:'(gets/makes/becomes)',accept:['gets','becomes']},
+ {type:'lv3',sentence:'Too much homework ___ students stressed.',gap:'makes',hint:'(makes/gets/does)',accept:['makes']},
+ {type:'lv3',sentence:'He\'s ___ fed up with waiting.',gap:'getting',hint:'(getting/making/becoming)',accept:['getting','becoming']},
+ {type:'lv3',sentence:'Isolation ___ people lonely.',gap:'makes',hint:'(makes/gets/does)',accept:['makes']},
+ {type:'lv3',sentence:'She always ___ angry when she\'s late.',gap:'gets',hint:'(gets/makes/becomes)',accept:['gets','becomes']},
+]},
+{id:'r4',type:'revision',title:'⟳ RIPASSO 4',desc:'make + object · get + adjective · misto',revises:[4]},
+{id:'d4',type:'difficult',title:'★ BOSS 4',desc:'esercizi sbagliati ≥2 volte',revises:[4]},
+
+// ══ 5 · FOR / SINCE / HOW LONG? · JUST / ALREADY / YET / STILL ════════
+{id:5,type:'study',title:'LV5 · FOR · SINCE · HOW LONG? · JUST · ALREADY · YET · STILL',desc:'for · since · How long...? · just = appena · already = già · yet = ancora · still = ancora',
+exercises:[
+ {type:'lv1',it:'per (un periodo di tempo)',en:'for'},
+ {type:'lv1',it:'da (un momento preciso)',en:'since'},
+ {type:'lv1',it:'Da quanto tempo...?',en:'How long...?',accept:['How long...?','How long?']},
+ {type:'lv1',it:'appena (pochissimo fa)',en:'just'},
+ {type:'lv1',it:'già (prima del previsto)',en:'already'},
+ {type:'lv1',it:'già / non ancora (domande e negative)',en:'yet'},
+ {type:'lv1',it:'non ancora (con enfasi)',en:'still'},
+ {type:'lv2',def:'Usi ___ con un periodo: two years / a long time / months.',en:'for'},
+ {type:'lv2',def:'Usi ___ con un momento preciso: 2020 / last April / I was seven.',en:'since'},
+ {type:'lv2',def:'Avverbio: l\'azione è accaduta pochissimo fa.',en:'just'},
+ {type:'lv2',def:'Avverbio: l\'azione è accaduta prima di quanto ci si aspettasse.',en:'already'},
+ {type:'lv2',def:'Avverbio: in domande e frasi negative — qualcosa che non è ancora accaduto.',en:'yet'},
+ {type:'lv2',def:'Avverbio: enfatizza che qualcosa non è ancora accaduto.',en:'still'},
+ {type:'lv3',sentence:'I\'ve known her ___ five years.',gap:'for',hint:'(for/since)',accept:['for']},
+ {type:'lv3',sentence:'I haven\'t seen him ___ last summer.',gap:'since',hint:'(for/since)',accept:['since']},
+ {type:'lv3',sentence:'She\'s lived here ___ she was a child.',gap:'since',hint:'(for/since)',accept:['since']},
+ {type:'lv3',sentence:'___ long have you known your best friend?',gap:'How',hint:'(How/Since/For)',accept:['How']},
+ {type:'lv3',sentence:'Have you heard? Carla and Max have ___ broken up!',gap:'just',hint:'(just/already/yet)',accept:['just']},
+ {type:'lv3',sentence:'I\'ve ___ caught the bus — I was lucky!',gap:'already',hint:'(already/just/yet)',accept:['already','just']},
+ {type:'lv3',sentence:'Have you finished your homework ___?',gap:'yet',hint:'(yet/already/still)',accept:['yet']},
+ {type:'lv3',sentence:'Zac ___ hasn\'t apologised to me!',gap:'still',hint:'(still/yet/already)',accept:['still']},
+]},
+{id:'r5',type:'revision',title:'⟳ RIPASSO 5',desc:'for/since/How long · just/already/yet/still · misto',revises:[5]},
+{id:'d5',type:'difficult',title:'★ BOSS 5',desc:'esercizi sbagliati ≥2 volte',revises:[5]},
+
+// ══ 6 · EXPRESSING ANNOYANCE & CERTAINTY ══════════════════════════════
+{id:6,type:'study',title:'LV6 · EXPRESSING ANNOYANCE & CERTAINTY',desc:'What\'s the matter? · getting on my nerves · driving me mad · you\'re making it worse · By the way · I know that · I\'m sure that · I\'m convinced that...',
+exercises:[
+ {type:'lv1',it:'Cosa c\'è? / Qual è il problema?',en:'What\'s the matter?',accept:["What's the matter?","What's the problem?"]},
+ {type:'lv1',it:'Mi sta facendo innervosire.',en:'getting on my nerves',accept:['getting on my nerves',"She's getting on my nerves"]},
+ {type:'lv1',it:'Mi sta facendo impazzire.',en:'driving me mad',accept:['driving me mad',"It's driving me mad"]},
+ {type:'lv1',it:'Sta peggiorando le cose!',en:'you\'re making it worse',accept:["you're making it worse","making it worse"]},
+ {type:'lv1',it:'Non è colpa tua.',en:'It\'s not your fault.',accept:["It's not your fault","not your fault"]},
+ {type:'lv1',it:'A proposito...',en:'By the way',accept:['By the way,','By the way']},
+ {type:'lv1',it:'Lo so che...',en:'I know that...',accept:['I know that...','I know that']},
+ {type:'lv1',it:'Sono sicuro/a che...',en:'I\'m sure that...',accept:["I'm sure that...","I'm sure that"]},
+ {type:'lv1',it:'Sono convinto/a che...',en:'I\'m convinced that...',accept:["I'm convinced that...","I'm convinced that"]},
+ {type:'lv1',it:'È chiaro / ovvio che...',en:'It\'s clear/obvious that...',accept:["It's clear that","It's obvious that"]},
+ {type:'lv1',it:'È un fatto che...',en:'It\'s a fact that...',accept:["It's a fact that...","It's a fact that"]},
+ {type:'lv1',it:'Lo sappiamo tutti che...',en:'We all know that...',accept:['We all know that...','We all know that']},
+ {type:'lv2',def:'Come esprimi esasperazione verso qualcuno che ti irrita continuamente.',en:'getting on my nerves',accept:['getting on my nerves',"She's getting on my nerves"]},
+ {type:'lv2',def:'Come dici che qualcuno ti fa perdere la pazienza.',en:'driving me mad',accept:['driving me mad',"It's driving me mad"]},
+ {type:'lv2',def:'Espressione per introdurre un nuovo argomento in conversazione.',en:'By the way',accept:['By the way,','By the way']},
+ {type:'lv3',sentence:'___ the matter? You look upset.',gap:'What\'s',hint:"(What's/What is/Is there)",accept:["What's","What is"]},
+ {type:'lv3',sentence:'She\'s ___ on my nerves — she\'s always late!',gap:'getting',hint:'(getting/driving/making)',accept:['getting']},
+ {type:'lv3',sentence:'Stop! You\'re making it ___!',gap:'worse',hint:'(worse/bad/wrong)',accept:['worse']},
+ {type:'lv3',sentence:'I ___ that a good community makes people happier.',gap:'know',hint:'(know/think/believe)',accept:['know','think','believe']},
+ {type:'lv3',sentence:'I\'m ___ that more people should live in smaller communities.',gap:'convinced',hint:'(convinced/sure/certain)',accept:['convinced','sure','certain']},
+ {type:'lv3',sentence:'___ the way, are you going to Jack\'s party?',gap:'By',hint:'(By/On/To)',accept:['By']},
+]},
+{id:'r6',type:'revision',title:'⟳ RIPASSO 6',desc:'expressing annoyance · expressing certainty · misto',revises:[6]},
+{id:'d6',type:'difficult',title:'★ BOSS 6',desc:'esercizi sbagliati ≥2 volte',revises:[6]},
+
+// ══ 7 · REAL TALK & COMMUNITY EXPRESSIONS ═════════════════════════════
+{id:7,type:'study',title:'LV7 · REAL TALK & COMMUNITY EXPRESSIONS',desc:'make perfect sense · keep an eye on · get some time off · bring up · raise · community · isolation · connected · isolated',
+exercises:[
+ {type:'lv1',it:'avere senso / essere ragionevole',en:'make perfect sense',accept:['make perfect sense','make sense']},
+ {type:'lv1',it:'tenere d\'occhio / sorvegliare',en:'keep an eye on'},
+ {type:'lv1',it:'prendersi del tempo libero',en:'get some time off'},
+ {type:'lv1',it:'crescere / allevare un figlio',en:'bring up',accept:['bring up','raise']},
+ {type:'lv1',it:'crescere un bambino',en:'raise',accept:['raise','bring up']},
+ {type:'lv1',it:'comunità',en:'community'},
+ {type:'lv1',it:'isolamento',en:'isolation'},
+ {type:'lv1',it:'connesso',en:'connected'},
+ {type:'lv1',it:'isolato',en:'isolated'},
+ {type:'lv2',def:'Espressione: sorvegliare qualcuno o qualcosa.',en:'keep an eye on'},
+ {type:'lv2',def:'Espressione: qualcosa è logico e ragionevole.',en:'make perfect sense',accept:['make perfect sense','make sense']},
+ {type:'lv2',def:'Espressione: avere un periodo di vacanza dal lavoro.',en:'get some time off'},
+ {type:'lv2',def:'Gruppo di persone che vivono nello stesso posto e si aiutano.',en:'community'},
+ {type:'lv2',def:'Crescere un bambino — due sinonimi.',en:'bring up / raise',accept:['bring up / raise','bring up','raise']},
+ {type:'lv3',sentence:'It ___ sense to live near your family if you need support.',gap:'makes',hint:'(makes/gives/has)',accept:['makes']},
+ {type:'lv3',sentence:'Neighbours ___ an eye on each other\'s children.',gap:'keep',hint:'(keep/have/take)',accept:['keep']},
+ {type:'lv3',sentence:'She needs to ___ some time off — she\'s been working too much.',gap:'get',hint:'(get/take/have)',accept:['get','take','have']},
+ {type:'lv3',sentence:'It takes a village to ___ a child — everyone helps.',gap:'raise',hint:'(raise/bring/grow)',accept:['raise','bring up']},
+ {type:'lv3',sentence:'People who live far from others can feel ___.',gap:'isolated',hint:'(isolated/connected/lonely)',accept:['isolated','lonely']},
+ {type:'lv3',sentence:'A strong ___ makes people feel less stressed.',gap:'community',hint:'(community/family/group)',accept:['community']},
+]},
+{id:'r7',type:'revision',title:'⟳ RIPASSO 7',desc:'real talk · community expressions · misto',revises:[7]},
+{id:'d7',type:'difficult',title:'★ BOSS 7',desc:'esercizi sbagliati ≥2 volte',revises:[7]},
+
+{id:'rfinal',type:'revision',
+ title:'⟳ FINAL BOSS — UNIT 10',
+ desc:'tutto il lessico Unit 10 · emotions · relationships · make/get · for/since · just/already/yet/still · expressing annoyance · certainty · community',
+ revises:[1,2,3,4,5,6,7]},
+
+
+];
+
+
+// ─── ENGINE ──────────────────────────────────────────────────────────────────
+let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,isRetry=false,retryQueue=[],selectedMC=-1;
+
+function norm(s){s=String(s).trim().toLowerCase().replace(/[''`]/g,"'").replace(/[.,!?;:]/g,'').replace(/\s+/g,' ');s=s.replace(/\bi am\b/g,"i'm").replace(/\bshe is\b/g,"she's").replace(/\bhe is\b/g,"he's").replace(/\bit is\b/g,"it's").replace(/\bthey are\b/g,"they're").replace(/\bwe are\b/g,"we're").replace(/\byou are\b/g,"you're").replace(/\bis not\b/g,"isn't").replace(/\bare not\b/g,"aren't").replace(/\bdo not\b/g,"don't").replace(/\bdoes not\b/g,"doesn't").replace(/\bcannot\b/g,"can't");return s;}
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+function loadState(){
+  try{state=JSON.parse(localStorage.getItem(SK))||{};}catch(e){state={};}
+  try{errorMap=JSON.parse(localStorage.getItem(EK))||{};}catch(e){errorMap={};}
+  LEVELS.forEach(s=>{if(state[s.id]===undefined)state[s.id]='locked';});
+  if(state[LEVELS[0].id]==='locked')state[LEVELS[0].id]='unlocked';
+  saveState();
+}
+function saveState(){
+  try{localStorage.setItem(SK,JSON.stringify(state));}catch(e){}
+  try{localStorage.setItem(EK,JSON.stringify(errorMap));}catch(e){}
+  updateSaveCode();
+}
+function recordError(key){errorMap[key]=(errorMap[key]||0)+1;saveState();}
+function getErrors(ids){
+  let exs=[];
+  ids.forEach(id=>{const s=LEVELS.find(x=>x.id===id);if(s&&s.exercises)exs=exs.concat(buildStudyExs(s,id));});
+  return exs.filter(e=>(errorMap[e._key]||0)>=2);
+}
+function unlockNext(cid){
+  const idx=LEVELS.findIndex(s=>s.id===cid);if(idx<0)return;
+  if(idx+1<LEVELS.length){const n=LEVELS[idx+1];if(state[n.id]==='locked')state[n.id]='unlocked';}
+  autoComplete();saveState();
+}
+function autoComplete(){
+  let changed=true;
+  while(changed){changed=false;LEVELS.forEach((s,i)=>{if(s.type==='difficult'&&state[s.id]==='unlocked'&&getErrors(s.revises).length===0){state[s.id]='completed';if(i+1<LEVELS.length&&state[LEVELS[i+1].id]==='locked'){state[LEVELS[i+1].id]='unlocked';changed=true;}}});}
+}
+
+function buildStudyExs(s,overrideId){
+  const id=overrideId!==undefined?overrideId:s.id;
+  return s.exercises.map((e,i)=>{
+    const key=`${id}_${i}`;
+    if(e.type==='lv1') return {type:'fill',q:`🇮🇹  ${e.it}`,hint:'scrivi in inglese',a:e.en,accept:e.accept||[e.en],_key:key,_lv:1};
+    if(e.type==='lv2') return {type:'fill',q:`📖  ${e.def}`,hint:'scrivi la parola / espressione inglese',a:e.en,accept:e.accept||[e.en],_key:key,_lv:2};
+    if(e.type==='lv3'){const re=new RegExp(e.gap.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i');return {type:'fill',q:`✍️  ${e.sentence.replace(re,'___')}`,hint:e.hint||'',a:e.gap,accept:(e.accept||[e.gap]),_key:key,_lv:3};}
+    return {...e,_key:key};
+  });
+}
+
+function buildExercises(s){
+  if(s.type==='study') return buildStudyExs(s);
+  if(s.type==='revision'){
+    let exs=[];
+    s.revises.forEach(id=>{const sec=LEVELS.find(x=>x.id===id);if(sec)exs=exs.concat(buildStudyExs(sec,id));});
+    return shuffle(exs).slice(0,Math.min(exs.length,20));
+  }
+  return getErrors(s.revises);
+}
+
+function renderMap(){
+  const list=document.getElementById('sectionsList');list.innerHTML='';
+  const total=LEVELS.length,done=LEVELS.filter(s=>['completed','revision-done','difficult-done'].includes(state[s.id])).length;
+  document.getElementById('overallBar').style.width=`${(done/total)*100}%`;
+  document.getElementById('overallText').textContent=`${done} / ${total}`;
+  if(done===total){const b=document.createElement('div');b.className='completion-banner';b.innerHTML=`<span class="cb-emoji">🏆</span><div class="cb-title">UNIT 10 MASTER!</div><div class="cb-text">hai completato tutto il lessico della Unit 10</div>`;list.appendChild(b);setTimeout(()=>{for(let i=0;i<8;i++)setTimeout(()=>spawnBurst(Math.random()*innerWidth,Math.random()*innerHeight*0.6,['#00f0ff','#00ff88','#ffcc00','#cc77ff'][i%4],20),i*250);},100);return;}
+  LEVELS.forEach(s=>{
+    const st=state[s.id];const card=document.createElement('div');let cls='section-card ',badge='',icon='';
+    if(typeof s.id==='number')icon=String(s.id).padStart(2,'0');else if(s.type==='revision')icon='↺';else icon='★';
+    if(['completed','revision-done','difficult-done'].includes(st)){cls+=s.type==='difficult'?'difficult-done':s.type==='revision'?'revision-done':'completed';badge=`<span class="sc-badge badge-done">✓ DONE</span>`;}
+    else if(st==='unlocked'){if(s.type==='revision'){cls+='revision';badge=`<span class="sc-badge badge-required">⚠ OBB.</span>`;}else if(s.type==='difficult'){cls+='difficult';badge=`<span class="sc-badge badge-required-purple">★ ${getErrors(s.revises).length}</span>`;}else{cls+='unlocked';badge=`<span class="sc-badge badge-todo">▶ PLAY</span>`;}}
+    else{cls+='locked';badge=`<span class="sc-badge badge-locked">🔒</span>`;}
+    card.className=cls;card.innerHTML=`<div class="sc-icon">${icon}</div><div class="sc-body"><div class="sc-title">${s.title}</div><div class="sc-desc">${s.desc}</div></div>${badge}`;
+    if(st==='unlocked')card.onclick=()=>openLevel(s);
+    list.appendChild(card);
+  });
+}
+
+function openLevel(s){
+  currentLevel=s;let exs=buildExercises(s);
+  if(s.type==='difficult'&&!exs.length){state[s.id]='completed';unlockNext(s.id);saveState();goMap();return;}
+  exQueue=shuffle(exs);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=false;
+  document.getElementById('exTitle').textContent=currentLevel.title;
+  showScreen('exercise');renderExercise();
+}
+
+function getLvBadge(lv){
+  if(lv===1)return '<span class="level-badge lv1-badge">LV1 · IT → EN</span>';
+  if(lv===2)return '<span class="level-badge lv2-badge">LV2 · DEFINIZIONE</span>';
+  if(lv===3)return '<span class="level-badge lv3-badge">LV3 · GAP FILL</span>';
+  return '';
+}
+
+function renderExercise(){
+  exChecked=false;selectedMC=-1;
+  const ex=exQueue[exIdx];
+  const pct=exQueue.length>0?(exIdx/exQueue.length)*100:0;
+  document.getElementById('hudFill').style.width=`${pct}%`;
+  document.getElementById('hudText').textContent=`${exIdx+1}/${exQueue.length}`;
+  document.getElementById('hudOk').innerHTML=`✓ ${okCount}`;
+  document.getElementById('hudBad').innerHTML=`✗ ${badCount}`;
+  document.getElementById('checkBtn').style.display='inline-block';
+  document.getElementById('nextBtn').style.display='none';
+  let retryHtml=isRetry?`<div class="retry-notice">↺ SECONDO TENTATIVO — CONCENTRATI!</div>`:'';
+  let cardHtml='';
+  if(ex.type==='fill'){
+    const lvBadge=ex._lv?getLvBadge(ex._lv):'';
+    cardHtml=`<div class="ex-card" id="exCard">${lvBadge}<div class="ex-type-badge">// SCRIVI LA RISPOSTA</div><div class="ex-question">${ex.q}</div>${ex.hint?`<div class="ex-hint">${ex.hint}</div>`:''}<input class="fill-input" id="fillInput" autocomplete="off" spellcheck="false" placeholder="..." onkeydown="if(event.key==='Enter'){if(!exChecked)checkExercise();else nextExercise();}"><div class="feedback-msg" id="feedbackMsg"></div></div>`;
+  }
+  document.getElementById('exerciseArea').innerHTML=retryHtml+cardHtml;
+  const inp=document.getElementById('fillInput');if(inp)setTimeout(()=>inp.focus(),80);
+}
+
+function checkExercise(){
+  if(exChecked)return;exChecked=true;
+  const ex=exQueue[exIdx];let correct=false;
+  const card=document.getElementById('exCard');const fb=document.getElementById('feedbackMsg');
+  const val=document.getElementById('fillInput').value;
+  const accepted=(ex.accept||[ex.a]).map(norm);
+  correct=accepted.includes(norm(val));
+  const inp=document.getElementById('fillInput');inp.classList.add(correct?'correct':'wrong');inp.disabled=true;
+  fb.className='feedback-msg '+(correct?'ok':'err');
+  fb.innerHTML=correct?'✓ Corretto!':'✗ Risposta corretta: <strong>'+ex.a+'</strong>';
+  if(correct){okCount++;if(card){card.classList.add('flash-correct');setTimeout(()=>card.classList.remove('flash-correct'),500);}burstAt(card,'#00ff88');}
+  else{badCount++;retryQueue.push(ex);if(!isRetry)recordError(ex._key);if(card){card.classList.add('flash-wrong');setTimeout(()=>card.classList.remove('flash-wrong'),400);}}
+  document.getElementById('hudOk').innerHTML=`✓ ${okCount}`;
+  document.getElementById('hudBad').innerHTML=`✗ ${badCount}`;
+  document.getElementById('checkBtn').style.display='none';
+  document.getElementById('nextBtn').style.display='inline-block';
+}
+
+function nextExercise(){
+  exIdx++;
+  if(exIdx>=exQueue.length){if(retryQueue.length>0){exQueue=shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();}
+  else renderExercise();
+}
+
+function showExResults(){
+  const total=exQueue.length,pct=Math.round((okCount/total)*100),passed=pct>=75;
+  if(passed){state[currentLevel.id]=currentLevel.type==='revision'?'revision-done':currentLevel.type==='difficult'?'difficult-done':'completed';unlockNext(currentLevel.id);saveState();setTimeout(()=>{for(let i=0;i<6;i++)setTimeout(()=>spawnBurst(Math.random()*innerWidth,Math.random()*innerHeight*0.5,['#00f0ff','#00ff88','#ffcc00','#cc77ff'][i%4],22),i*200);},100);}
+  const btnHtml=passed?`<button class="btn btn-green" onclick="goMap()">← MAPPA</button>`:`<button class="btn btn-primary" onclick="retryLevel()">↺ RIPROVA</button><button class="btn btn-secondary" onclick="goMap()">← MAPPA</button>`;
+  document.getElementById('screen-results').innerHTML=`<div class="results-card"><div class="res-pct ${passed?'pass':'fail'}">${pct}%</div><div class="res-label ${passed?'pass':'fail'}">${passed?'✓ LIVELLO COMPLETATO!':'✗ RIPROVA'}</div><div class="res-threshold">soglia: 75% · ${okCount}/${total} corretti</div><div class="res-breakdown"><div class="rb-item"><div class="rb-num g">${okCount}</div><div class="rb-label">CORRETTI</div></div><div class="rb-item"><div class="rb-num r">${badCount}</div><div class="rb-label">ERRORI</div></div></div><div class="action-bar" style="justify-content:center;margin-top:24px">${btnHtml}</div></div>`;
+  showScreen('results');
+}
+
+function retryLevel(){openLevel(currentLevel);}
+function confirmReset(){document.getElementById('resetModal').style.display='flex';}
+function closeModal(){document.getElementById('resetModal').style.display='none';}
+function doReset(){localStorage.removeItem(SK);localStorage.removeItem(EK);state={};errorMap={};closeModal();loadState();goMap();}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(`screen-${id}`).classList.add('active');}
+function goMap(){renderMap();showScreen('map');}
+function stateToCode(){const s=JSON.stringify({s:state,e:errorMap});return btoa(unescape(encodeURIComponent(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');}
+function codeToState(code){try{const s=decodeURIComponent(escape(atob(code.replace(/-/g,'+').replace(/_/g,'/'))));return JSON.parse(s);}catch(e){return null;}}
+function updateSaveCode(){document.getElementById('saveCodeDisplay').textContent=stateToCode();}
+function copyCode(){const code=document.getElementById('saveCodeDisplay').textContent;if(navigator.clipboard){navigator.clipboard.writeText(code).then(()=>{const btn=document.getElementById('copyBtn');btn.textContent='✓ COPIATO!';setTimeout(()=>btn.textContent='⌘ COPIA CODICE',2000);});}else{const ta=document.createElement('textarea');ta.value=code;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);}}
+function importCode(){const code=document.getElementById('importInput').value.trim();const msg=document.getElementById('importMsg');if(!code){msg.className='save-import-msg err';msg.textContent='Incolla prima un codice!';return;}const obj=codeToState(code);if(!obj||!obj.s){msg.className='save-import-msg err';msg.textContent='Codice non valido.';return;}state=obj.s||{};errorMap=obj.e||{};saveState();msg.className='save-import-msg ok';msg.textContent='✓ Progressi caricati!';setTimeout(()=>msg.textContent='',3000);goMap();}
+const pCanvas=document.getElementById('particleCanvas');const pCtx=pCanvas.getContext('2d');let particles=[];
+function resizeCanvases(){pCanvas.width=innerWidth;pCanvas.height=innerHeight;const sC=document.getElementById('starCanvas');sC.width=innerWidth;sC.height=innerHeight;const ctx=sC.getContext('2d');ctx.clearRect(0,0,sC.width,sC.height);for(let i=0;i<180;i++){ctx.beginPath();ctx.arc(Math.random()*sC.width,Math.random()*sC.height,Math.random()*1.5,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${Math.random()*0.7+0.1})`;ctx.fill();}}
+function spawnBurst(x,y,color,count){for(let i=0;i<count;i++){const a=Math.random()*Math.PI*2,sp=Math.random()*5+2;particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-2,life:1,color,size:Math.random()*4+2});}}
+function burstAt(el,color){if(!el)return;const r=el.getBoundingClientRect();spawnBurst(r.left+r.width/2,r.top+r.height/2,color,14);}
+function animParticles(){pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);particles=particles.filter(p=>p.life>0);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.12;p.life-=0.022;pCtx.globalAlpha=Math.max(0,p.life);pCtx.fillStyle=p.color;pCtx.beginPath();pCtx.arc(p.x,p.y,p.size,0,Math.PI*2);pCtx.fill();});pCtx.globalAlpha=1;requestAnimationFrame(animParticles);}
+window.addEventListener('resize',resizeCanvases);resizeCanvases();animParticles();
+loadState();renderMap();
+</script>
+</body>
+</html>
