@@ -270,20 +270,17 @@ rule:`<strong>PRESENT PERFECT SIMPLE — FORMA — unit 10:</strong><br>
 &#x26A0; <em>have</em> con I/you/we/they &nbsp;&middot;&nbsp; <em>has</em> con he/she/it<br>
 &#x26A0; In inglese NON si usa il Present perfect dopo nomi propri (She <strong>has been</strong> a fashion designer — NON She is)`,
 exercises:[
-{type:"fill",q:"She ___ (play) volleyball since 2010. She's very good.",hint:"(present perfect)",a:"has played",accept:["has played"]},
-{type:"fill",q:"I ___ (not see) Jess since my birthday party.",hint:"(present perfect negativa)",a:"haven't seen",accept:["haven't seen","have not seen"]},
-{type:"mc",q:"'___ you decided what to do yet?' (present perfect question)",options:["Have","Has","Did","Do"],a:"Have"},
-{type:"fill",q:"She ___ (be) a fashion designer for two years.",hint:"(present perfect)",a:"has been",accept:["has been"]},
-{type:"mc",q:"'They've just got ___.' (recent event — relationship)",options:["engaged","engagement","engaging","engages"],a:"engaged"},
-{type:"fill",q:"Zac's my best friend. I ___ (know) her for a long time.",hint:"(present perfect)",a:"have known",accept:["have known","'ve known"]},
+{type:"fill",q:"She ___ (play) volleyball since 2010. She's very good.",a:"has played",accept:["has played"]},
+{type:"fill",q:"I ___ (not see) Jess since my birthday party.",a:"haven't seen",accept:["haven't seen","have not seen"]},
+{type:"mc",q:"'___ you decided what to do yet?'",opts:["Have","Has","Did","Do"],correct:0},
+{type:"fill",q:"She ___ (be) a fashion designer for two years.",a:"has been",accept:["has been"]},
+{type:"mc",q:"'They've just got ___.' (recent event — relationship)",opts:["engaged","engagement","engaging","engages"],correct:0},
+{type:"fill",q:"Zac's my best friend. I ___ (know) her for a long time.",a:"have known",accept:["have known","'ve known"]},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["I","have","known","her","since","we","were","in","primary","school"],answer:"I have known her since we were in primary school"},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["Has","Ryan","lived","in","Glasgow","for","six","months","or","longer?"],answer:"Has Ryan lived in Glasgow for six months or longer?"},
 {type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"She is a fashion designer for two years.",a:"She has been a fashion designer for two years.",accept:["She has been a fashion designer for two years."]},
-{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"He have lived here since 2016.",a:"He has lived here since 2016.",accept:["He has lived here since 2016."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"He have lived here since 2016.",a:"He has lived here since 2016.",accept:["He has lived here since 2016."]}
 ]},
-{id:"r1",type:"revision",title:"⟳ RIPASSO — LIVELLO 1",desc:"present perfect · forma · have/has + past participle",revises:[1]},
-{id:"d1",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 1",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[1]},
-
 {id:2,type:"study",title:"LEVEL 02 — FOR / SINCE",desc:"for = periodo · since = momento di inizio",
 rule:`<strong>FOR / SINCE — unit 10:</strong><br>
 &#x2714; <code>for</code> = indica un <strong>periodo di tempo</strong>:<br>
@@ -294,25 +291,31 @@ rule:`<strong>FOR / SINCE — unit 10:</strong><br>
 &nbsp;&nbsp;&nbsp;<em><strong>How long</strong> have you known her? — Since 2014.</em><br>
 &#x26A0; <em>for</em> e <em>since</em> significano entrambi 'da' in italiano — ma funzionano in modo diverso!`,
 exercises:[
-{type:"mc",q:"'I've lived in Glasgow ___ three years.' (period of time)",options:["for","since","from","ago"],a:"for"},
-{type:"mc",q:"'I've lived in Glasgow ___ 2016.' (starting point)",options:["since","for","from","in"],a:"since"},
-{type:"fill",q:"I haven't seen Olivia ___ last summer. I miss her.",hint:"(for/since)",a:"since",accept:["since"]},
-{type:"fill",q:"They've been together ___ three weeks. It's a new relationship.",hint:"(for/since)",a:"for",accept:["for"]},
-{type:"mc",q:"'How long have you known Sam?' — '___ a year.' (period)",options:["For","Since","From","In"],a:"For"},
-{type:"fill",q:"Tom first liked tap music when he was 13 and he still likes it. He's liked it ___ he was 13.",hint:"(for/since)",a:"since",accept:["since"]},
-{type:"wordbox",instruction:"Complete with for or since.",verbs:["for","since"],
-sentences:[
-{pre:"She's been my best friend",post:"primary school.",a:"since",accept:["since"]},
-{pre:"I've had this phone",post:"two months.",a:"for",accept:["for"]},
-{pre:"We haven't won a match",post:"February.",a:"since",accept:["since"]},
-{pre:"He's worked here",post:"a long time.",a:"for",accept:["for"]},
-]},
+{type:"mc",q:"'I've lived in Glasgow ___ three years.' (period of time)",opts:["for","since","from","ago"],correct:0},
+{type:"mc",q:"'I've lived in Glasgow ___ 2016.' (starting point)",opts:["since","for","from","in"],correct:0},
+{type:"fill",q:"I haven't seen Olivia ___ last summer. I miss her.",a:"since",accept:["since"]},
+{type:"fill",q:"They've been together ___ three weeks. It's a new relationship.",a:"for",accept:["for"]},
+{type:"mc",q:"'How long have you known Sam?' — '___ a year.' (period)",opts:["For","Since","From","In"],correct:0},
+{type:"fill",q:"Tom first liked tap music when he was 13 and he still likes it. He's liked it ___ he was 13.",a:"since",accept:["since"]},
+{type:"fill",q:"She's been my best friend ___ primary school.",a:"since",accept:["since"]},
+{type:"fill",q:"I've had this phone ___ two months.",a:"for",accept:["for"]},
+{type:"fill",q:"We haven't won a match ___ February.",a:"since",accept:["since"]},
+{type:"fill",q:"He's worked here ___ a long time.",a:"for",accept:["for"]},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["How","long","have","you","studied","English","at","this","school?"],answer:"How long have you studied English at this school?"},
-{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Tom worked here since 2016.",a:"Tom's worked here since 2016.",accept:["Tom's worked here since 2016.","Tom has worked here since 2016."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Tom worked here since 2016.",a:"Tom's worked here since 2016.",accept:["Tom's worked here since 2016.","Tom has worked here since 2016."]}
 ]},
-{id:"r2",type:"revision",title:"⟳ RIPASSO — LIVELLO 2",desc:"for · since · How long...?",revises:[2]},
-{id:"d2",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 2",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[2]},
-
+{id:"rev2",type:"revision",title:"⟳ RIPASSO — argomenti 1-2",desc:"present perfect · for/since",exercises:[
+{type:"fill",q:"She ___ (be) a fashion designer for two years.",a:"has been",accept:["has been"]},
+{type:"fill",q:"I haven't seen Olivia ___ last summer. I miss her.",a:"since",accept:["since"]},
+{type:"fill",q:"Zac's my best friend. I ___ (know) her for a long time.",a:"have known",accept:["have known","'ve known"]},
+{type:"fill",q:"She's been my best friend ___ primary school.",a:"since",accept:["since"]},
+{type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["How","long","have","you","studied","English","at","this","school?"],answer:"How long have you studied English at this school?"},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"He have lived here since 2016.",a:"He has lived here since 2016.",accept:["He has lived here since 2016."]},
+{type:"mc",q:"'I've lived in Glasgow ___ 2016.' (starting point)",opts:["since","for","from","in"],correct:0},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Tom worked here since 2016.",a:"Tom's worked here since 2016.",accept:["Tom's worked here since 2016.","Tom has worked here since 2016."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"She is a fashion designer for two years.",a:"She has been a fashion designer for two years.",accept:["She has been a fashion designer for two years."]},
+{type:"fill",q:"I've had this phone ___ two months.",a:"for",accept:["for"]}
+]},
 {id:3,type:"study",title:"LEVEL 03 — JUST / ALREADY / YET",desc:"just = appena · already = già · yet = ancora",
 rule:`<strong>JUST / ALREADY / YET — unit 10:</strong><br>
 &#x2714; <code>just</code> = 'appena' → frasi affermative, prima del participio:<br>
@@ -324,20 +327,29 @@ rule:`<strong>JUST / ALREADY / YET — unit 10:</strong><br>
 &#x26A0; <em>yet</em> NON si usa nelle frasi affermative<br>
 &#x26A0; <em>already</em> nelle interrogative esprime sorpresa: <em>Have you <strong>already</strong> been to the shops?</em>`,
 exercises:[
-{type:"mc",q:"'Leo has ___ called! He asked me to go out with him!' (a moment ago)",options:["just","already","yet","still"],a:"just"},
-{type:"mc",q:"'I can't come to the concert — but I've ___ bought the tickets!' (before expected)",options:["already","just","yet","still"],a:"already"},
-{type:"mc",q:"'Have you decided what to do ___?' (question — expecting it to happen)",options:["yet","already","just","still"],a:"yet"},
-{type:"fill",q:"They've ___ got engaged. He proposed this morning!",hint:"(just/already/yet)",a:"just",accept:["just"]},
-{type:"fill",q:"Dan's split up with Hannah — he's ___ met someone else!",hint:"(just/already/yet)",a:"just",accept:["just"]},
-{type:"fill",q:"Have they booked a table ___? We need to know.",hint:"(just/already/yet)",a:"yet",accept:["yet"]},
-{type:"fill",q:"I've ___ seen this film twice — I don't want to watch it again.",hint:"(already/just/yet)",a:"already",accept:["already"]},
+{type:"mc",q:"'Leo has ___ called! He asked me to go out with him!' (a moment ago)",opts:["just","already","yet","still"],correct:0},
+{type:"mc",q:"'I can't come to the concert — but I've ___ bought the tickets!' (before expected)",opts:["already","just","yet","still"],correct:0},
+{type:"mc",q:"'Have you decided what to do ___?' (question — expecting it to happen)",opts:["yet","already","just","still"],correct:0},
+{type:"fill",q:"They've ___ got engaged. He proposed this morning!",a:"just",accept:["just"]},
+{type:"fill",q:"Dan's split up with Hannah — he's ___ met someone else!",a:"just",accept:["just"]},
+{type:"fill",q:"Have they booked a table ___? We need to know.",a:"yet",accept:["yet"]},
+{type:"fill",q:"I've ___ seen this film twice — I don't want to watch it again.",a:"already",accept:["already"]},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["She","hasn't","apologised","to","me","yet","—","it's","been","three","days"],answer:"She hasn't apologised to me yet — it's been three days"},
 {type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Sorry, I haven't done yet my homework.",a:"Sorry, I haven't done my homework yet.",accept:["Sorry, I haven't done my homework yet."]},
-{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Has Mum made dinner yet? — No, she hasn't done it already.",a:"Has Mum made dinner yet? — No, she hasn't done it yet.",accept:["Has Mum made dinner yet? — No, she hasn't done it yet."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Has Mum made dinner yet? — No, she hasn't done it already.",a:"Has Mum made dinner yet? — No, she hasn't done it yet.",accept:["Has Mum made dinner yet? — No, she hasn't done it yet."]}
 ]},
-{id:"r3",type:"revision",title:"⟳ RIPASSO — LIVELLO 3",desc:"just · already · yet · posizione nella frase",revises:[3]},
-{id:"d3",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 3",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[3]},
-
+{id:"rev3",type:"revision",title:"⟳ RIPASSO — argomenti 1-3",desc:"+ just/already/yet",exercises:[
+{type:"mc",q:"'I've lived in Glasgow ___ three years.' (period of time)",opts:["for","since","from","ago"],correct:0},
+{type:"mc",q:"'Leo has ___ called! He asked me to go out with him!' (a moment ago)",opts:["just","already","yet","still"],correct:0},
+{type:"fill",q:"I ___ (not see) Jess since my birthday party.",a:"haven't seen",accept:["haven't seen","have not seen"]},
+{type:"fill",q:"Have they booked a table ___? We need to know.",a:"yet",accept:["yet"]},
+{type:"fill",q:"We haven't won a match ___ February.",a:"since",accept:["since"]},
+{type:"mc",q:"'Have you decided what to do ___?' (question — expecting it to happen)",opts:["yet","already","just","still"],correct:0},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Sorry, I haven't done yet my homework.",a:"Sorry, I haven't done my homework yet.",accept:["Sorry, I haven't done my homework yet."]},
+{type:"mc",q:"'___ you decided what to do yet?'",opts:["Have","Has","Did","Do"],correct:0},
+{type:"fill",q:"I've ___ seen this film twice — I don't want to watch it again.",a:"already",accept:["already"]},
+{type:"fill",q:"Tom first liked tap music when he was 13 and he still likes it. He's liked it ___ he was 13.",a:"since",accept:["since"]}
+]},
 {id:4,type:"study",title:"LEVEL 04 — STILL / YET vs ALREADY",desc:"still = non ancora (enfasi) · confronto yet/already/still",
 rule:`<strong>STILL / YET / ALREADY — unit 10:</strong><br>
 &#x2714; <code>still</code> = 'non ancora' → frasi <strong>negative</strong>, prima del verbo ausiliare:<br>
@@ -350,20 +362,29 @@ rule:`<strong>STILL / YET / ALREADY — unit 10:</strong><br>
 &#x26A0; <em>still</em> si colloca prima dell'ausiliare: <em>He <strong>still</strong> hasn't called.</em><br>
 &#x26A0; <em>yet</em> si colloca in fondo alla frase`,
 exercises:[
-{type:"mc",q:"'I've left him three messages but he ___ hasn't answered.' (emphasis on lack)",options:["still","yet","already","just"],a:"still"},
-{type:"mc",q:"'Lois ___ hasn't called me!' Which word goes before 'hasn't'?",options:["still","yet","already","just"],a:"still"},
-{type:"fill",q:"It's 9pm and I haven't done my homework ___.",hint:"(still/yet/already)",a:"yet",accept:["yet"]},
-{type:"fill",q:"He ___ hasn't tidied his room — I've asked him several times.",hint:"(still/yet/already)",a:"still",accept:["still"]},
-{type:"mc",q:"'Jay's only 16 and he ___ won a medal.' (before expected — affirmative)",options:["has already","has yet","has still","just has"],a:"has already"},
-{type:"fill",q:"Have you ___ been to the shops? Great — what did you buy?",hint:"(already/yet/still — interrogativa sorpresa)",a:"already",accept:["already"]},
+{type:"mc",q:"'I've left him three messages but he ___ hasn't answered.' (emphasis on lack)",opts:["still","yet","already","just"],correct:0},
+{type:"mc",q:"'Lois ___ hasn't called me!' Which word goes before 'hasn't'?",opts:["still","yet","already","just"],correct:0},
+{type:"fill",q:"It's 9pm and I haven't done my homework ___.",a:"yet",accept:["yet"]},
+{type:"fill",q:"He ___ hasn't tidied his room — I've asked him several times.",a:"still",accept:["still"]},
+{type:"mc",q:"'Jay's only 16 and he ___ won a medal.' (before expected — affirmative)",opts:["has already","has yet","has still","just has"],correct:0},
+{type:"fill",q:"Have you ___ been to the shops? Great — what did you buy?",a:"already",accept:["already"]},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["I've","left","him","three","messages","but","he","still","hasn't","replied"],answer:"I've left him three messages but he still hasn't replied"},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["The","party","guests","have","already","arrived","and","I'm","not","ready!"],answer:"The party guests have already arrived and I'm not ready!"},
 {type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"She hasn't yet apologised to me.",a:"She hasn't apologised to me yet.",accept:["She hasn't apologised to me yet."]},
-{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"He still has not answered yet.",a:"He still hasn't answered.",accept:["He still hasn't answered.","He hasn't answered yet."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"He still has not answered yet.",a:"He still hasn't answered.",accept:["He still hasn't answered.","He hasn't answered yet."]}
 ]},
-{id:"r4",type:"revision",title:"⟳ RIPASSO — LIVELLO 4",desc:"still · yet · already · posizione e differenze",revises:[4]},
-{id:"d4",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 4",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[4]},
-
+{id:"rev4",type:"revision",title:"⟳ RIPASSO — argomenti 1-4",desc:"+ still/yet vs already",exercises:[
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"He still has not answered yet.",a:"He still hasn't answered.",accept:["He still hasn't answered.","He hasn't answered yet."]},
+{type:"fill",q:"She ___ (play) volleyball since 2010. She's very good.",a:"has played",accept:["has played"]},
+{type:"mc",q:"'I can't come to the concert — but I've ___ bought the tickets!' (before expected)",opts:["already","just","yet","still"],correct:0},
+{type:"fill",q:"They've been together ___ three weeks. It's a new relationship.",a:"for",accept:["for"]},
+{type:"fill",q:"He ___ hasn't tidied his room — I've asked him several times.",a:"still",accept:["still"]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"She hasn't yet apologised to me.",a:"She hasn't apologised to me yet.",accept:["She hasn't apologised to me yet."]},
+{type:"fill",q:"It's 9pm and I haven't done my homework ___.",a:"yet",accept:["yet"]},
+{type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["I","have","known","her","since","we","were","in","primary","school"],answer:"I have known her since we were in primary school"},
+{type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["She","hasn't","apologised","to","me","yet","—","it's","been","three","days"],answer:"She hasn't apologised to me yet — it's been three days"},
+{type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["I've","left","him","three","messages","but","he","still","hasn't","replied"],answer:"I've left him three messages but he still hasn't replied"}
+]},
 {id:5,type:"study",title:"LEVEL 05 — PRESENT PERFECT vs PAST SIMPLE",desc:"How long...? · for/since = PP · ago = Past simple",
 rule:`<strong>PRESENT PERFECT vs PAST SIMPLE — unit 10:</strong><br>
 &#x2714; <strong>Present perfect + for/since</strong> = situazione iniziata nel passato che <strong>continua</strong>:<br>
@@ -374,20 +395,29 @@ rule:`<strong>PRESENT PERFECT vs PAST SIMPLE — unit 10:</strong><br>
 &nbsp;&nbsp;&nbsp;<em>We <strong>arrived</strong> an hour ago. (NON: We have arrived)</em><br>
 &#x26A0; <em>ago</em> → sempre con Past simple &nbsp;&middot;&nbsp; <em>for/since</em> → spesso con Present perfect`,
 exercises:[
-{type:"mc",q:"'How long ___ you ___ this car?' (still have it now)",options:["have · had","did · have","have · have","did · had"],a:"have · had"},
-{type:"mc",q:"'How long ___ your dad ___ his old car?' (he doesn't have it anymore)",options:["did · have","have · had","has · had","did · had"],a:"did · have"},
-{type:"fill",q:"Alice bought her new phone two months ago. She ___ her phone for two months. (still has it)",hint:"(has had / had)",a:"has had",accept:["has had"]},
-{type:"fill",q:"We ___ an hour ago. (arrived — completed action, use past simple)",hint:"(arrived / have arrived)",a:"arrived",accept:["arrived"]},
-{type:"mc",q:"'The match ___ ten minutes ago.' (finished — completed)",options:["finished","has finished","finishes","had finished"],a:"finished"},
-{type:"fill",q:"My dad works for a company in Turin. He ___ there for twenty years. (still works there)",hint:"(has worked / worked)",a:"has worked",accept:["has worked"]},
+{type:"mc",q:"'How long ___ you ___ this car?' (still have it now)",opts:["have · had","did · have","have · have","did · had"],correct:0},
+{type:"mc",q:"'How long ___ your dad ___ his old car?' (he doesn't have it anymore)",opts:["did · have","have · had","has · had","did · had"],correct:0},
+{type:"fill",q:"She ___ (have) her phone for two months. (still has it now)",a:"has had",accept:["has had"]},
+{type:"fill",q:"We ___ (arrive) an hour ago.",a:"arrived",accept:["arrived"]},
+{type:"mc",q:"'The match ___ ten minutes ago.' (finished — completed)",opts:["finished","has finished","finishes","had finished"],correct:0},
+{type:"fill",q:"He ___ (work) there for twenty years. (still works there now)",a:"has worked",accept:["has worked"]},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["The","last","time","I","saw","Emma","was","two","weeks","ago"],answer:"The last time I saw Emma was two weeks ago"},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["How","long","have","you","known","Aisha?","—","Since","we","were","at","primary","school"],answer:"How long have you known Aisha? — Since we were at primary school"},
 {type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"She has lived in Milan since three years.",a:"She has lived in Milan for three years.",accept:["She has lived in Milan for three years."]},
-{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"We have arrived an hour ago.",a:"We arrived an hour ago.",accept:["We arrived an hour ago."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"We have arrived an hour ago.",a:"We arrived an hour ago.",accept:["We arrived an hour ago."]}
 ]},
-{id:"r5",type:"revision",title:"⟳ RIPASSO — LIVELLO 5",desc:"present perfect vs past simple · for/since/ago",revises:[5]},
-{id:"d5",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 5",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[5]},
-
+{id:"rev5",type:"revision",title:"⟳ RIPASSO — argomenti 1-5",desc:"+ present perfect vs past simple",exercises:[
+{type:"fill",q:"Have you ___ been to the shops? Great — what did you buy?",a:"already",accept:["already"]},
+{type:"fill",q:"They've ___ got engaged. He proposed this morning!",a:"just",accept:["just"]},
+{type:"mc",q:"'They've just got ___.' (recent event — relationship)",opts:["engaged","engagement","engaging","engages"],correct:0},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"She has lived in Milan since three years.",a:"She has lived in Milan for three years.",accept:["She has lived in Milan for three years."]},
+{type:"mc",q:"'Lois ___ hasn't called me!' Which word goes before 'hasn't'?",opts:["still","yet","already","just"],correct:0},
+{type:"mc",q:"'How long ___ your dad ___ his old car?' (he doesn't have it anymore)",opts:["did · have","have · had","has · had","did · had"],correct:0},
+{type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["The","last","time","I","saw","Emma","was","two","weeks","ago"],answer:"The last time I saw Emma was two weeks ago"},
+{type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["How","long","have","you","known","Aisha?","—","Since","we","were","at","primary","school"],answer:"How long have you known Aisha? — Since we were at primary school"},
+{type:"fill",q:"He ___ (work) there for twenty years. (still works there now)",a:"has worked",accept:["has worked"]},
+{type:"fill",q:"We ___ (arrive) an hour ago.",a:"arrived",accept:["arrived"]}
+]},
 {id:6,type:"study",title:"LEVEL 06 — MAKE + OBJECT + VERB/ADJECTIVE",desc:"make someone laugh · make someone feel · make someone nervous",
 rule:`<strong>MAKE + OBJECT + VERB/ADJECTIVE — unit 10:</strong><br>
 &#x2714; <code>subject + make + object + base form</code> = causare che qualcuno faccia qualcosa:<br>
@@ -399,20 +429,29 @@ rule:`<strong>MAKE + OBJECT + VERB/ADJECTIVE — unit 10:</strong><br>
 &nbsp;&nbsp;&nbsp;<em>He makes me <strong>laugh</strong></em> (NON: <em>to laugh</em>)<br>
 &#x26A0; <em>make</em> + oggetto può anche significare 'obbligare': <em>My parents make me tidy my room.</em>`,
 exercises:[
-{type:"mc",q:"'Freya is so funny. She always makes us ___.' (base form)",options:["laugh","to laugh","laughing","laughed"],a:"laugh"},
-{type:"fill",q:"Bad friends make us ___. Good friends make us happy.",hint:"(upset/upsetting/to upset)",a:"upset",accept:["upset"]},
-{type:"mc",q:"'Exams make me ___.' (adjective — emotion)",options:["nervous","nervously","to be nervous","nervousness"],a:"nervous"},
-{type:"fill",q:"He makes me feel ___. I can't trust him.",hint:"(jealous/guilty/lonely)",a:"jealous",accept:["jealous","guilty","lonely","confused","upset"]},
-{type:"fill",q:"My parents make me ___ my room every Saturday. (obligation)",hint:"(tidy/to tidy/tidying)",a:"tidy",accept:["tidy"]},
-{type:"mc",q:"'What makes you ___?' Which form is correct after 'makes you'?",options:["cry","to cry","crying","cried"],a:"cry"},
+{type:"mc",q:"'Freya is so funny. She always makes us ___.' (base form)",opts:["laugh","to laugh","laughing","laughed"],correct:0},
+{type:"fill",q:"Bad friends make us ___. Good friends make us happy.",a:"upset",accept:["upset"]},
+{type:"mc",q:"'Exams make me ___.' (adjective — emotion)",opts:["nervous","nervously","to be nervous","nervousness"],correct:0},
+{type:"fill",q:"He makes me feel ___. I can't trust him.",a:"jealous",accept:["jealous","guilty","lonely","confused","upset"]},
+{type:"fill",q:"My parents make me ___ my room every Saturday. (obligation)",a:"tidy",accept:["tidy"]},
+{type:"mc",q:"'What makes you ___?' Which form is correct after 'makes you'?",opts:["cry","to cry","crying","cried"],correct:0},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["A","good","comedy","film","always","makes","me","laugh","—","what","about","you?"],answer:"A good comedy film always makes me laugh — what about you?"},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["Being","alone","makes","Olivia","feel","miserable","and","confused"],answer:"Being alone makes Olivia feel miserable and confused"},
 {type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"He makes me to feel guilty if I spend time with my friends.",a:"He makes me feel guilty if I spend time with my friends.",accept:["He makes me feel guilty if I spend time with my friends."]},
-{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Good friends makes us feel confident.",a:"Good friends make us feel confident.",accept:["Good friends make us feel confident."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Good friends makes us feel confident.",a:"Good friends make us feel confident.",accept:["Good friends make us feel confident."]}
 ]},
-{id:"r6",type:"revision",title:"⟳ RIPASSO — LIVELLO 6",desc:"make + object + verb/adjective · causative",revises:[6]},
-{id:"d6",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 6",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[6]},
-
+{id:"rev6",type:"revision",title:"⟳ RIPASSO — argomenti 1-6",desc:"+ make + object + verb/adjective",exercises:[
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"He makes me to feel guilty if I spend time with my friends.",a:"He makes me feel guilty if I spend time with my friends.",accept:["He makes me feel guilty if I spend time with my friends."]},
+{type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["A","good","comedy","film","always","makes","me","laugh","—","what","about","you?"],answer:"A good comedy film always makes me laugh — what about you?"},
+{type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["Being","alone","makes","Olivia","feel","miserable","and","confused"],answer:"Being alone makes Olivia feel miserable and confused"},
+{type:"fill",q:"She ___ (have) her phone for two months. (still has it now)",a:"has had",accept:["has had"]},
+{type:"mc",q:"'Jay's only 16 and he ___ won a medal.' (before expected — affirmative)",opts:["has already","has yet","has still","just has"],correct:0},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"We have arrived an hour ago.",a:"We arrived an hour ago.",accept:["We arrived an hour ago."]},
+{type:"mc",q:"'How long have you known Sam?' — '___ a year.' (period)",opts:["For","Since","From","In"],correct:0},
+{type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["Has","Ryan","lived","in","Glasgow","for","six","months","or","longer?"],answer:"Has Ryan lived in Glasgow for six months or longer?"},
+{type:"mc",q:"'Freya is so funny. She always makes us ___.' (base form)",opts:["laugh","to laugh","laughing","laughed"],correct:0},
+{type:"fill",q:"My parents make me ___ my room every Saturday. (obligation)",a:"tidy",accept:["tidy"]}
+]},
 {id:7,type:"study",title:"LEVEL 07 — VOCABULARY: EMOTIONS",desc:"negative emotions · positive emotions · -ed/-ing adjectives",
 rule:`<strong>VOCABULARY — EMOTIONS — unit 10:</strong><br>
 &#x2714; <strong>Negative:</strong> <code>angry · annoyed · bored · confused · depressed · disappointed · embarrassed · fed up · frustrated · guilty · hurt · jealous · lonely · miserable · offended · sad · shocked · stressed · upset · worried</code><br>
@@ -421,20 +460,29 @@ rule:`<strong>VOCABULARY — EMOTIONS — unit 10:</strong><br>
 &nbsp;&nbsp;&nbsp;<code>-ed</code> = come ti senti: <em>I was <strong>bored</strong>. I'm <strong>confused</strong>.</em><br>
 &nbsp;&nbsp;&nbsp;<code>-ing</code> = caratteristica della cosa: <em>The film was <strong>boring</strong>. It's <strong>confusing</strong>.</em>`,
 exercises:[
-{type:"mc",q:"'When I started my new school, I felt a bit ___ because I missed my old friends.' (negative emotion)",options:["lonely","elated","satisfied","hopeful"],a:"lonely"},
-{type:"mc",q:"'It was so ___ / ___ at the party.' Which pair is correct? (you felt it / the situation caused it)",options:["embarrassed / embarrassing","embarrassing / embarrassed","embarrassed / embarrassed","embarrassing / embarrassing"],a:"embarrassed / embarrassing"},
-{type:"fill",q:"I can't do my Maths homework. I keep making mistakes — it's getting really ___.",hint:"(frustrating/frustrated/frustrate)",a:"frustrating",accept:["frustrating"]},
-{type:"fill",q:"I'm very ___ to you for all your help. Thank you so much.",hint:"(grateful/satisfied/delighted)",a:"grateful",accept:["grateful"]},
-{type:"mc",q:"'The news of the crash was ___ / ___.' (the news caused shock / I felt shocked)",options:["shocking / shocked","shocked / shocking","shocking / shocking","shocked / shocked"],a:"shocking / shocked"},
-{type:"fill",q:"When I don't help my mum I feel a bit ___.",hint:"(guilty/lonely/upset)",a:"guilty",accept:["guilty"]},
-{type:"fill",q:"Chloe was really ___ with her exam results — she expected better marks.",hint:"(disappointed/annoying/satisfied)",a:"disappointed",accept:["disappointed"]},
-{type:"mc",q:"Olivia says: 'He makes me feel ___ if I spend time with my friends.' (negative — he causes this feeling)",options:["guilty","guilt","guiltily","guiltiness"],a:"guilty"},
+{type:"mc",q:"'When I started my new school, I felt a bit ___ because I missed my old friends.' (negative emotion)",opts:["lonely","elated","satisfied","hopeful"],correct:0},
+{type:"mc",q:"'It was so ___ / ___ at the party.' Which pair is correct? (you felt it / the situation caused it)",opts:["embarrassed / embarrassing","embarrassing / embarrassed","embarrassed / embarrassed","embarrassing / embarrassing"],correct:0},
+{type:"fill",q:"I can't do my Maths homework. I keep making mistakes — it's getting really ___.",a:"frustrating",accept:["frustrating"]},
+{type:"fill",q:"I'm very ___ to you for all your help. Thank you so much.",a:"grateful",accept:["grateful"]},
+{type:"mc",q:"'The news of the crash was ___ / ___.' (the news caused shock / I felt shocked)",opts:["shocking / shocked","shocked / shocking","shocking / shocking","shocked / shocked"],correct:0},
+{type:"fill",q:"When I don't help my mum I feel a bit ___.",a:"guilty",accept:["guilty"]},
+{type:"fill",q:"Chloe was really ___ with her exam results — she expected better marks.",a:"disappointed",accept:["disappointed"]},
+{type:"mc",q:"Olivia says: 'He makes me feel ___ if I spend time with my friends.' (negative — he causes this feeling)",opts:["guilty","guilt","guiltily","guiltiness"],correct:0},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["I","felt","depressed","and","miserable","when","my","best","friend","moved","away"],answer:"I felt depressed and miserable when my best friend moved away"},
-{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"I felt annoying when he cancelled our plans at the last minute.",a:"I felt annoyed when he cancelled our plans at the last minute.",accept:["I felt annoyed when he cancelled our plans at the last minute."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"I felt annoying when he cancelled our plans at the last minute.",a:"I felt annoyed when he cancelled our plans at the last minute.",accept:["I felt annoyed when he cancelled our plans at the last minute."]}
 ]},
-{id:"r7",type:"revision",title:"⟳ RIPASSO — LIVELLO 7",desc:"emotions · -ed/-ing adjectives · Olivia's post",revises:[7]},
-{id:"d7",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 7",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[7]},
-
+{id:"rev7",type:"revision",title:"⟳ RIPASSO — argomenti 1-7",desc:"+ emotions",exercises:[
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Has Mum made dinner yet? — No, she hasn't done it already.",a:"Has Mum made dinner yet? — No, she hasn't done it yet.",accept:["Has Mum made dinner yet? — No, she hasn't done it yet."]},
+{type:"fill",q:"Bad friends make us ___. Good friends make us happy.",a:"upset",accept:["upset"]},
+{type:"mc",q:"'When I started my new school, I felt a bit ___ because I missed my old friends.' (negative emotion)",opts:["lonely","elated","satisfied","hopeful"],correct:0},
+{type:"mc",q:"'I've left him three messages but he ___ hasn't answered.' (emphasis on lack)",opts:["still","yet","already","just"],correct:0},
+{type:"fill",q:"Chloe was really ___ with her exam results — she expected better marks.",a:"disappointed",accept:["disappointed"]},
+{type:"mc",q:"'What makes you ___?' Which form is correct after 'makes you'?",opts:["cry","to cry","crying","cried"],correct:0},
+{type:"fill",q:"He's worked here ___ a long time.",a:"for",accept:["for"]},
+{type:"mc",q:"'The news of the crash was ___ / ___.' (the news caused shock / I felt shocked)",opts:["shocking / shocked","shocked / shocking","shocking / shocking","shocked / shocked"],correct:0},
+{type:"mc",q:"'It was so ___ / ___ at the party.' Which pair is correct? (you felt it / the situation caused it)",opts:["embarrassed / embarrassing","embarrassing / embarrassed","embarrassed / embarrassed","embarrassing / embarrassing"],correct:0},
+{type:"fill",q:"I can't do my Maths homework. I keep making mistakes — it's getting really ___.",a:"frustrating",accept:["frustrating"]}
+]},
 {id:8,type:"study",title:"LEVEL 08 — VOCABULARY: RELATIONSHIPS",desc:"fall in love · break up · get married · have a crush on",
 rule:`<strong>VOCABULARY — RELATIONSHIPS — unit 10:</strong><br>
 &#x2714; <code>ask someone out on a date · go on a blind date · have a crush on · fall in love (with)</code><br>
@@ -443,21 +491,31 @@ rule:`<strong>VOCABULARY — RELATIONSHIPS — unit 10:</strong><br>
 &#x2714; <code>live together · live alone · single · single parent · stepfamily · blended family · wedding (event) · marriage (state)</code><br>
 &#x2714; <strong>Royal Romance:</strong> Prince Harry met Meghan Markle on a blind date in 2017.`,
 exercises:[
-{type:"mc",q:"'Patrick really likes Sarah. He's had a ___ on her for months.' (secret attraction)",options:["crush","date","argument","relationship"],a:"crush"},
-{type:"fill",q:"Mark and Violet have just ___ up. They're not together anymore.",hint:"(split/break/broke)",a:"split",accept:["split","broken"]},
-{type:"mc",q:"'They went on a tour to Botswana and he asked Meghan to ___ with him.' (travel together as a couple)",options:["go","come","date","live"],a:"go"},
-{type:"fill",q:"In November 2017, Harry and Meghan officially ___ — Harry designed the ring himself.",hint:"(got engaged / got married)",a:"got engaged",accept:["got engaged"]},
-{type:"mc",q:"'They enjoyed being together and immediately ___ well.' (liked each other from the start)",options:["got on","got up","got back","got out"],a:"got on"},
-{type:"fill",q:"More people are ___ alone in 2017: 3.9 million people aged 16-64 lived alone.",hint:"(living/single/divorced)",a:"living",accept:["living"]},
-{type:"fill",q:"The average age to ___ married is now around 35 for women and 38 for men.",hint:"(get/be/have)",a:"get",accept:["get"]},
-{type:"mc",q:"'Stepfamilies or blended families are where one or both parents already has children from a previous relationship.' What is a 'blended family'?",options:["A family with children from previous relationships","A family with only one parent","A family with no children","A family that lives together unmarried"],a:"A family with children from previous relationships"},
+{type:"mc",q:"'Patrick really likes Sarah. He's had a ___ on her for months.' (secret attraction)",opts:["crush","date","argument","relationship"],correct:0},
+{type:"fill",q:"Mark and Violet have just ___ up. They're not together anymore.",a:"split",accept:["split","broken"]},
+{type:"mc",q:"'They went on a tour to Botswana and he asked Meghan to ___ with him.' (travel together as a couple)",opts:["go","come","date","live"],correct:0},
+{type:"fill",q:"In November 2017, Harry and Meghan officially ___ — Harry designed the ring himself.",a:"got engaged",accept:["got engaged"]},
+{type:"mc",q:"'They enjoyed being together and immediately ___ well.' (liked each other from the start)",opts:["got on","got up","got back","got out"],correct:0},
+{type:"fill",q:"More people are ___ alone in 2017: 3.9 million people aged 16-64 lived alone.",a:"living",accept:["living"]},
+{type:"fill",q:"The average age to ___ married is now around 35 for women and 38 for men.",a:"get",accept:["get"]},
+{type:"mc",q:"'Stepfamilies or blended families are where one or both parents already has children from a previous relationship.' What is a 'blended family'?",opts:["A family with children from previous relationships","A family with only one parent","A family with no children","A family that lives together unmarried"],correct:0},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["They","started","going","out","together","just","three","or","four","weeks","after","they","met"],answer:"They started going out together just three or four weeks after they met"},
-{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"They have broken up last month but they are still in contact.",a:"They broke up last month but they are still in contact.",accept:["They broke up last month but they are still in contact.","They split up last month but they are still in contact."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"They have broken up last month but they are still in contact.",a:"They broke up last month but they are still in contact.",accept:["They broke up last month but they are still in contact.","They split up last month but they are still in contact."]}
 ]},
-{id:"r8",type:"revision",title:"⟳ RIPASSO — LIVELLO 8",desc:"relationships · royal romance · family vocabulary",revises:[8]},
-{id:"d8",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 8",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[8]},
-
-{id:"rfinal",type:"revision",title:"⟳ FINAL BOSS — TUTTA L'UNIT 10",desc:"boss finale · tutti i livelli · diventa MASTER!",revises:[1,2,3,4,5,6,7,8]},
+{id:"rfinal",type:"revision",title:"⟳ FINAL BOSS — TUTTA L'UNIT 10",desc:"tutti gli argomenti insieme",exercises:[
+{type:"mc",q:"'Exams make me ___.' (adjective — emotion)",opts:["nervous","nervously","to be nervous","nervousness"],correct:0},
+{type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["They","started","going","out","together","just","three","or","four","weeks","after","they","met"],answer:"They started going out together just three or four weeks after they met"},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"I felt annoying when he cancelled our plans at the last minute.",a:"I felt annoyed when he cancelled our plans at the last minute.",accept:["I felt annoyed when he cancelled our plans at the last minute."]},
+{type:"fill",q:"He makes me feel ___. I can't trust him.",a:"jealous",accept:["jealous","guilty","lonely","confused","upset"]},
+{type:"mc",q:"'How long ___ you ___ this car?' (still have it now)",opts:["have · had","did · have","have · have","did · had"],correct:0},
+{type:"mc",q:"'Stepfamilies or blended families are where one or both parents already has children from a previous relationship.' What is a 'blended family'?",opts:["A family with children from previous relationships","A family with only one parent","A family with no children","A family that lives together unmarried"],correct:0},
+{type:"fill",q:"The average age to ___ married is now around 35 for women and 38 for men.",a:"get",accept:["get"]},
+{type:"mc",q:"'The match ___ ten minutes ago.' (finished — completed)",opts:["finished","has finished","finishes","had finished"],correct:0},
+{type:"fill",q:"When I don't help my mum I feel a bit ___.",a:"guilty",accept:["guilty"]},
+{type:"mc",q:"'They went on a tour to Botswana and he asked Meghan to ___ with him.' (travel together as a couple)",opts:["go","come","date","live"],correct:0},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Good friends makes us feel confident.",a:"Good friends make us feel confident.",accept:["Good friends make us feel confident."]},
+{type:"fill",q:"I'm very ___ to you for all your help. Thank you so much.",a:"grateful",accept:["grateful"]}
+]}
 ];
 
 const SK='gq_u10_s',EK='gq_u10_e';
@@ -470,14 +528,14 @@ function rebuildUnlocks(){
   LEVELS.forEach((s,i)=>{if(state[s.id]==='completed'&&i+1<LEVELS.length){if(state[LEVELS[i+1].id]==='locked')state[LEVELS[i+1].id]='unlocked';}});
   autoComplete();
 }
-function importCode(){const val=(document.getElementById('importInput').value||'').trim();const msg=document.getElementById('importMsg');if(!val){msg.className='save-import-msg err';msg.textContent='Inserisci un codice.';return;}const obj=decodeState(val);if(!obj){msg.className='save-import-msg err';msg.textContent='Codice non valido — controlla di averlo copiato per intero.';return;}state=obj.s;errorMap=obj.e;LEVELS.forEach(s=>{if(state[s.id]===undefined)state[s.id]='locked';});if(state[LEVELS[0].id]==='locked')state[LEVELS[0].id]='unlocked';rebuildUnlocks();saveState();msg.className='save-import-msg ok';msg.textContent='Progresso caricato! Bentornato/a ✓';document.getElementById('importInput').value='';renderMap();}
-function loadState(){try{state=JSON.parse(localStorage.getItem(SK))||{};}catch(e){state={};}try{errorMap=JSON.parse(localStorage.getItem(EK))||{};}catch(e){errorMap={};}LEVELS.forEach(s=>{if(state[s.id]===undefined)state[s.id]='locked';});if(state[LEVELS[0].id]==='locked')state[LEVELS[0].id]='unlocked';saveState();}
+function importCode(){const val=(document.getElementById('importInput').value||'').trim();const msg=document.getElementById('importMsg');if(!val){msg.className='save-import-msg err';msg.textContent='Inserisci un codice.';return;}const obj=decodeState(val);if(!obj){msg.className='save-import-msg err';msg.textContent='Codice non valido — controlla di averlo copiato per intero.';return;}state=obj.s;errorMap=obj.e;LEVELS.forEach(s=>{if(state[s.id]!=='completed')state[s.id]='unlocked';});if(state[LEVELS[0].id]==='locked')state[LEVELS[0].id]='unlocked';rebuildUnlocks();saveState();msg.className='save-import-msg ok';msg.textContent='Progresso caricato! Bentornato/a ✓';document.getElementById('importInput').value='';renderMap();}
+function loadState(){try{state=JSON.parse(localStorage.getItem(SK))||{};}catch(e){state={};}try{errorMap=JSON.parse(localStorage.getItem(EK))||{};}catch(e){errorMap={};}LEVELS.forEach(s=>{if(state[s.id]!=='completed')state[s.id]='unlocked';});if(state[LEVELS[0].id]==='locked')state[LEVELS[0].id]='unlocked';saveState();}
 function saveState(){try{localStorage.setItem(SK,JSON.stringify(state));}catch(e){}try{localStorage.setItem(EK,JSON.stringify(errorMap));}catch(e){}updateSaveCode();}
 function recordError(key){errorMap[key]=(errorMap[key]||0)+1;saveState();}
 function getErrors(ids){let exs=[];ids.forEach(id=>{const s=LEVELS.find(x=>x.id===id);if(s&&s.exercises)exs=exs.concat(s.exercises.map((e,i)=>({...e,_key:`${id}_${i}`})));});return exs.filter(e=>(errorMap[e._key]||0)>=2);}
 function unlockNext(cid){const idx=LEVELS.findIndex(s=>s.id===cid);if(idx<0)return;if(idx+1<LEVELS.length){const n=LEVELS[idx+1];if(state[n.id]==='locked')state[n.id]='unlocked';}autoComplete();saveState();}
 function autoComplete(){let changed=true;while(changed){changed=false;LEVELS.forEach((s,i)=>{if(s.type==='difficult'&&state[s.id]==='unlocked'&&getErrors(s.revises).length===0){state[s.id]='completed';if(i+1<LEVELS.length&&state[LEVELS[i+1].id]==='locked'){state[LEVELS[i+1].id]='unlocked';changed=true;}}});}}
-function renderMap(){const list=document.getElementById('sectionsList');list.innerHTML='';const total=LEVELS.length,done=LEVELS.filter(s=>state[s.id]==='completed').length;document.getElementById('overallBar').style.width=`${(done/total)*100}%`;document.getElementById('overallText').textContent=`${done} / ${total}`;if(done===total){const b=document.createElement('div');b.className='completion-banner';b.innerHTML=`<span class="cb-emoji">&#x1F3C6;</span><div class="cb-title">GRAMMAR MASTER!</div><div class="cb-text">hai completato tutta la Unit 10 &middot; missione compiuta</div>`;list.appendChild(b);setTimeout(()=>{for(let i=0;i<8;i++)setTimeout(()=>spawnBurst(Math.random()*innerWidth,Math.random()*innerHeight*0.6,['#00f0ff','#00ff88','#ffcc00','#cc77ff'][i%4],20),i*250);},100);return;}LEVELS.forEach(s=>{const st=state[s.id];const card=document.createElement('div');let cls='section-card ',badge='',icon='';if(typeof s.id==='number')icon=String(s.id).padStart(2,'0');else if(s.type==='revision')icon='&#x21BA;';else icon='&#x2605;';if(st==='completed'){cls+=s.type==='difficult'?'difficult-done':s.type==='revision'?'revision-done':'completed';badge=`<span class="sc-badge badge-done">&#x2713; DONE</span>`;}else if(st==='unlocked'){if(s.type==='revision'){cls+='revision';badge=`<span class="sc-badge badge-required">&#x26A0; OBB.</span>`;}else if(s.type==='difficult'){cls+='difficult';badge=`<span class="sc-badge badge-required-purple">&#x2605; ${getErrors(s.revises).length}</span>`;}else{cls+='unlocked';badge=`<span class="sc-badge badge-todo">&#x25B6; PLAY</span>`;}}else{cls+='locked';badge=`<span class="sc-badge badge-locked">&#x1F512;</span>`;}card.className=cls;card.innerHTML=`<div class="sc-icon">${icon}</div><div class="sc-body"><div class="sc-title">${s.title}</div><div class="sc-desc">${s.desc}</div></div>${badge}`;if(st==='unlocked')card.onclick=()=>openLevel(s);list.appendChild(card);});}
+function renderMap(){const list=document.getElementById('sectionsList');list.innerHTML='';const total=LEVELS.length,done=LEVELS.filter(s=>state[s.id]==='completed').length;document.getElementById('overallBar').style.width=`${(done/total)*100}%`;document.getElementById('overallText').textContent=`${done} / ${total}`;if(done===total){const b=document.createElement('div');b.className='completion-banner';b.innerHTML=`<span class="cb-emoji">&#x1F3C6;</span><div class="cb-title">GRAMMAR MASTER!</div><div class="cb-text">hai completato tutta la Unit 10 &middot; missione compiuta</div>`;list.appendChild(b);setTimeout(()=>{for(let i=0;i<8;i++)setTimeout(()=>spawnBurst(Math.random()*innerWidth,Math.random()*innerHeight*0.6,['#00f0ff','#00ff88','#ffcc00','#cc77ff'][i%4],20),i*250);},100);return;}LEVELS.forEach(s=>{const st=state[s.id];const card=document.createElement('div');let cls='section-card ',badge='',icon='';if(typeof s.id==='number')icon=String(s.id).padStart(2,'0');else if(s.type==='revision')icon='&#x21BA;';else icon='&#x2605;';if(st==='completed'){cls+=s.type==='difficult'?'difficult-done':s.type==='revision'?'revision-done':'completed';badge=`<span class="sc-badge badge-done">&#x2713; DONE</span>`;}else if(st==='unlocked'){if(s.type==='revision'){cls+='revision';badge=`<span class="sc-badge badge-required">&#x26A0; OBB.</span>`;}else if(s.type==='difficult'){cls+='difficult';badge=`<span class="sc-badge badge-required-purple">&#x2605; ${getErrors(s.revises).length}</span>`;}else{cls+='unlocked';badge=`<span class="sc-badge badge-todo">&#x25B6; PLAY</span>`;}}else{cls+='locked';badge=`<span class="sc-badge badge-locked">&#x1F512;</span>`;}card.className=cls;card.innerHTML=`<div class="sc-icon">${icon}</div><div class="sc-body"><div class="sc-title">${s.title}</div><div class="sc-desc">${s.desc}</div></div>${badge}`;if(st!=='locked')card.onclick=()=>openLevel(s);list.appendChild(card);});}
 let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,isRetry=false,retryQueue=[],reorderWords=[];
 function openLevel(s){currentLevel=s;let exs;if(s.type==='study'){exs=s.exercises.map((e,i)=>({...e,_key:`${s.id}_${i}`}));}else if(s.type==='revision'){exs=[];s.revises.forEach(id=>{const sec=LEVELS.find(x=>x.id===id);if(sec&&sec.exercises)exs=exs.concat(sec.exercises.map((e,i)=>({...e,_key:`${id}_${i}`})));});exs=shuffle(exs).slice(0,Math.min(exs.length,16));}else{exs=getErrors(s.revises);if(!exs.length){state[s.id]='completed';unlockNext(s.id);saveState();goMap();return;}}exQueue=shuffle(exs);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=false;document.getElementById('exTitle').textContent=currentLevel.title;showScreen('exercise');renderExercise();}
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
@@ -496,6 +554,17 @@ function doReset(){localStorage.removeItem(SK);localStorage.removeItem(EK);state
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(`screen-${id}`).classList.add('active');}
 function goMap(){renderMap();showScreen('map');}
 loadState();renderMap();
+
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Enter')return;
+  var rm=document.getElementById('resetModal'); if(rm&&rm.style.display==='flex')return;
+  var sc=document.getElementById('screen-exercise'); if(!sc||!sc.classList.contains('active'))return;
+  e.preventDefault();
+  var nb=document.getElementById('nextBtn'), cb=document.getElementById('checkBtn');
+  if(nb&&nb.style.display!=='none')nextExercise();
+  else if(cb&&cb.style.display!=='none')checkExercise();
+});
+
 </script>
 </body>
 </html>
