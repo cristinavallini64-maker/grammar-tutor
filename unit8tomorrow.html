@@ -270,19 +270,20 @@ rule:`<strong>WILL / WON'T — unit 8:</strong><br>
 &#x26A0; Spesso usato con: <em>maybe, probably, definitely, I think, I don't think, I hope, I'm sure</em><br>
 &#x26A0; <em>I don't think Sally will come</em> (NON: I think Sally won't come)`,
 exercises:[
-{type:"mc",q:"'According to experts, nanotechnology ___ completely change clothes.'",opts:["will","is going to","won't","would"],correct:0},
-{type:"fill",q:"I'm really tired. I think I ___ go to bed now.",a:"'ll",accept:["'ll","will","I'll"]},
-{type:"fill",q:"I'm sure Ruby ___ come to the concert — she doesn't like Taylor Swift.",a:"won't",accept:["won't","will not"]},
-{type:"mc",q:"'New materials ___ be difficult to recycle.'",opts:["won't","will","aren't going to","don't"],correct:0},
-{type:"fill",q:"___ you be on time? — Yes, I will. / No, I won't.",a:"Will",accept:["will","Will"]},
-{type:"fill",q:"I'm a bit nervous about the dentist tomorrow. Oh, you ___ be fine!",a:"'ll",accept:["'ll","will","you'll"]},
+{type:"mc",q:"'According to experts, nanotechnology ___ completely change clothes.' (prediction)",options:["will","is going to","won't","would"],a:"will"},
+{type:"fill",q:"I'm really tired. I think I ___ go to bed now.",hint:"('ll / won't)",a:"'ll",accept:["'ll","will","I'll"]},
+{type:"fill",q:"I'm sure Ruby ___ come to the concert — she doesn't like Taylor Swift.",hint:"(won't / will)",a:"won't",accept:["won't","will not"]},
+{type:"mc",q:"'New materials ___ be difficult to recycle.' (prediction — negative)",options:["won't","will","aren't going to","don't"],a:"won't"},
+{type:"fill",q:"___ you be on time? — Yes, I will. / No, I won't.",hint:"(Will/Would/Are)",a:"Will",accept:["will","Will"]},
+{type:"fill",q:"I'm a bit nervous about the dentist tomorrow. Oh, you ___ be fine!",hint:"('ll/won't)",a:"'ll",accept:["'ll","will","you'll"]},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["I","don't","think","Sally","will","come","to","the","party","—","she's","busy"],answer:"I don't think Sally will come to the party — she's busy"},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["People","will","probably","live","longer","in","the","future","because","of","new","technology"],answer:"People will probably live longer in the future because of new technology"},
 {type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"I think Sally won't come to the party. She's not interested.",a:"I don't think Sally will come to the party. She's not interested.",accept:["I don't think Sally will come to the party. She's not interested."]},
-{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"She wills arrive on time — she's always early.",a:"She will arrive on time — she's always early.",accept:["She will arrive on time — she's always early."]}
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"She wills arrive on time — she's always early.",a:"She will arrive on time — she's always early.",accept:["She will arrive on time — she's always early."]},
 ]},
 {id:"r1",type:"revision",title:"⟳ RIPASSO — LIVELLO 1",desc:"will · won't · previsioni e decisioni spontanee",revises:[1]},
 {id:"d1",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 1",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[1]},
+
 {id:2,type:"study",title:"LEVEL 02 — GOING TO",desc:"intenzioni · previsioni basate su evidenza · imminente",
 rule:`<strong>GOING TO — unit 8:</strong><br>
 &#x2714; <code>am/is/are + going to + base form</code>:<br>
@@ -293,19 +294,20 @@ rule:`<strong>GOING TO — unit 8:</strong><br>
 &#x2714; Domanda: <code>Am/Is/Are + soggetto + going to + base form?</code><br>
 &nbsp;&nbsp;&nbsp;<em>Is it <strong>going to</strong> rain? &nbsp;|&nbsp; Are you <strong>going to</strong> leave early?</em>`,
 exercises:[
-{type:"mc",q:"'I'm ___ have a big party for my birthday this year.'",opts:["going to","will","going","going to to"],correct:0},
-{type:"fill",q:"What are you ___ wear tomorrow? I haven't decided yet.",a:"going to",accept:["going to"]},
-{type:"fill",q:"Look at those clouds! It ___ rain. We should take an umbrella.",a:"'s going to",accept:["'s going to","is going to"]},
-{type:"mc",q:"'Patrick really likes Sarah. Is he ___ ask her out?'",opts:["going to","will","going","about to"],correct:0},
-{type:"fill",q:"My parents say I ___ have a party. So I hope so!",a:"can",accept:["can","'m going to","am going to"]},
-{type:"fill",q:"She ___ late for school — she missed the bus.",a:"'s going to be",accept:["'s going to be","is going to be"]},
+{type:"mc",q:"'I'm ___ have a big party for my birthday this year.' (intention already decided)",options:["going to","will","going","going to to"],a:"going to"},
+{type:"fill",q:"What are you ___ wear tomorrow? I haven't decided yet.",hint:"(going to / going)",a:"going to",accept:["going to"]},
+{type:"fill",q:"Look at those clouds! It ___ rain. We should take an umbrella.",hint:"('s going to / will)",a:"'s going to",accept:["'s going to","is going to"]},
+{type:"mc",q:"'Patrick really likes Sarah. Is he ___ ask her out?' (intention)",options:["going to","will","going","about to"],a:"going to"},
+{type:"fill",q:"My parents say I ___ have a party. So I hope so!",hint:"(can / 'm going to / will)",a:"can",accept:["can","'m going to","am going to"]},
+{type:"fill",q:"She ___ late for school — she missed the bus.",hint:"('s going to be / will be)",a:"'s going to be",accept:["'s going to be","is going to be"]},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["I'm","going","to","go","shopping","on","Saturday","and","buy","some","new","trainers"],answer:"I'm going to go shopping on Saturday and buy some new trainers"},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["Are","you","going","to","try","on","those","jeans","before","you","buy","them?"],answer:"Are you going to try on those jeans before you buy them?"},
 {type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"They going to get married next spring.",a:"They're going to get married next spring.",accept:["They're going to get married next spring.","They are going to get married next spring."]},
-{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Oh no! That girl going to fall off her bike!",a:"Oh no! That girl is going to fall off her bike!",accept:["Oh no! That girl is going to fall off her bike!"]}
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Oh no! That girl going to fall off her bike!",a:"Oh no! That girl is going to fall off her bike!",accept:["Oh no! That girl is going to fall off her bike!"]},
 ]},
 {id:"r2",type:"revision",title:"⟳ RIPASSO — LIVELLO 2",desc:"going to · intenzioni e previsioni da evidenza",revises:[2]},
 {id:"d2",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 2",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[2]},
+
 {id:3,type:"study",title:"LEVEL 03 — WILL vs GOING TO",desc:"differenza · quando usarli · Smart Jeans",
 rule:`<strong>WILL vs GOING TO — unit 8:</strong><br>
 &#x2714; <strong>will</strong> per: previsioni generali (opinione/aspettativa) · decisioni spontanee · promesse · offerte<br>
@@ -316,19 +318,20 @@ rule:`<strong>WILL vs GOING TO — unit 8:</strong><br>
 &#x26A0; In inglese scritto non si usa <em>will</em> dopo <em>if</em> o <em>when</em><br>
 &#x26A0; <em>be about to</em> = azione imminente: <em>They're about to announce the winner.</em>`,
 exercises:[
-{type:"mc",q:"'Gaia and Joe are the perfect couple. I'm sure they ___ get married.'",opts:["will","are going to","won't","are about to"],correct:0},
-{type:"mc",q:"'I'm going to throw away my old T-shirts.' — What does this tell us?",opts:["She already decided this","She just decided this now","It's a prediction","She's making a promise"],correct:0},
-{type:"fill",q:"'Max ___ be at school on Saturday. He's going away for the weekend.'",a:"won't",accept:["won't","will not"]},
-{type:"fill",q:"She ___ be sixteen next week.",a:"'ll",accept:["'ll","will","'s going to","is going to"]},
-{type:"mc",q:"Oliver hasn't got much money so he ___ come to the concert with us.",opts:["won't","isn't going to","both are correct","will"],correct:0},
-{type:"fill",q:"Look out! You ___ have an accident!",a:"'re going to",accept:["'re going to","are going to"]},
+{type:"mc",q:"'Gaia and Joe are the perfect couple. I'm sure they ___ get married.' (prediction — opinion)",options:["will","are going to","won't","are about to"],a:"will"},
+{type:"mc",q:"'I'm going to throw away my old T-shirts.' — What does this tell us?",options:["She already decided this","She just decided this now","It's a prediction","She's making a promise"],a:"She already decided this"},
+{type:"fill",q:"'Max ___ be at school on Saturday. He's going away for the weekend.' (spontaneous decision/promise)",hint:"('ll/is going to/won't)",a:"'ll",accept:["'ll","will"]},
+{type:"fill",q:"She ___ be sixteen next week. (future fact — scheduled event)",hint:"('ll/'s going to)",a:"'ll",accept:["'ll","will"]},
+{type:"mc",q:"Oliver hasn't got much money so he ___ come to the concert with us.",options:["won't","isn't going to","both are correct","will"],a:"both are correct"},
+{type:"fill",q:"Look out! You ___ have an accident! (evidence visible right now)",hint:"('re going to / will)",a:"'re going to",accept:["'re going to","are going to"]},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["In","the","future,","we","will","all","wear","smart","jeans","with","graphene","technology"],answer:"In the future, we will all wear smart jeans with graphene technology"},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["I'm","going","to","ask","Dad","if","I","can","go","camping","this","weekend"],answer:"I'm going to ask Dad if I can go camping this weekend"},
 {type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"I'll call you when I will arrive. Don't worry.",a:"I'll call you when I arrive. Don't worry.",accept:["I'll call you when I arrive. Don't worry."]},
-{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Jason definitely won't be happy if he will lose.",a:"Jason definitely won't be happy if he loses.",accept:["Jason definitely won't be happy if he loses."]}
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"Jason definitely won't be happy if he will lose.",a:"Jason definitely won't be happy if he loses.",accept:["Jason definitely won't be happy if he loses."]},
 ]},
 {id:"r3",type:"revision",title:"⟳ RIPASSO — LIVELLO 3",desc:"will vs going to · differenze e usi",revises:[3]},
 {id:"d3",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 3",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[3]},
+
 {id:4,type:"study",title:"LEVEL 04 — ZERO CONDITIONAL",desc:"If/When + present simple + present simple · fatti sempre veri",
 rule:`<strong>ZERO CONDITIONAL — unit 8:</strong><br>
 &#x2714; Struttura: <code>If/When + Present simple, + Present simple</code><br>
@@ -339,19 +342,20 @@ rule:`<strong>ZERO CONDITIONAL — unit 8:</strong><br>
 &#x26A0; <em>if</em> e <em>when</em> sono intercambiabili nel Zero conditional<br>
 &#x26A0; La frase secondaria può venire prima: <em>You <strong>get</strong> yellow when you <strong>mix</strong> blue and green.</em>`,
 exercises:[
-{type:"mc",q:"'If you ___ (not call) me, I always worry.'",opts:["don't call","won't call","didn't call","aren't calling"],correct:0},
-{type:"fill",q:"When Zoe ___ horror films, she has bad dreams.",hint:"(watch)",a:"watches",accept:["watches"]},
-{type:"fill",q:"If you ___ (get) stressed, your clothes will release a fragrance.",a:"get",accept:["get"]},
-{type:"mc",q:"'Does your mum ___ angry if you are late?'",opts:["get","gets","will get","got"],correct:0},
-{type:"fill",q:"If I can't try them on, I ___ clothes.",hint:"(buy)",a:"don't buy",accept:["don't buy","do not buy","won't buy","will not buy"]},
-{type:"fill",q:"When you ___ (mix) blue and yellow, you get green.",a:"mix",accept:["mix"]},
+{type:"mc",q:"'If you ___ (not call) me, I always worry.' (zero conditional — habit)",options:["don't call","won't call","didn't call","aren't calling"],a:"don't call"},
+{type:"fill",q:"When Zoe ___ horror films, she has bad dreams. (zero conditional)",hint:"(watches/watch/will watch)",a:"watches",accept:["watches"]},
+{type:"fill",q:"If you ___ (get) stressed, your clothes will release a fragrance. (zero conditional — fact)",hint:"(get/gets/will get)",a:"get",accept:["get"]},
+{type:"mc",q:"'Does your mum ___ angry if you are late?' (zero conditional question)",options:["get","gets","will get","got"],a:"get"},
+{type:"fill",q:"If I can't try them on, I ___ clothes. (zero conditional — personal habit)",hint:"(don't buy / won't buy)",a:"don't buy",accept:["don't buy"]},
+{type:"fill",q:"When you ___ (mix) blue and green, you get yellow. (scientific fact)",hint:"(mix/will mix/mixed)",a:"mix",accept:["mix"]},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["When","clothes","are","old,","we","often","throw","them","away","because","recycling","isn't","always","possible"],answer:"When clothes are old, we often throw them away because recycling isn't always possible"},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["If","we","feel","stressed,","our","clothes","will","release","a","fragrance","to","help","us","relax"],answer:"If we feel stressed, our clothes will release a fragrance to help us relax"},
 {type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"When you will mix red and yellow, you get orange.",a:"When you mix red and yellow, you get orange.",accept:["When you mix red and yellow, you get orange."]},
-{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"If I have a problem, I will tell my mum.",a:"If I have a problem, I tell my mum.",accept:["If I have a problem, I tell my mum."]}
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"If I have a problem, I will tell my mum.",a:"If I have a problem, I tell my mum.",accept:["If I have a problem, I tell my mum."]},
 ]},
 {id:"r4",type:"revision",title:"⟳ RIPASSO — LIVELLO 4",desc:"zero conditional · If/When + present + present",revises:[4]},
 {id:"d4",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 4",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[4]},
+
 {id:5,type:"study",title:"LEVEL 05 — FIRST CONDITIONAL",desc:"If + present simple + will · situazioni possibili nel futuro",
 rule:`<strong>FIRST CONDITIONAL — unit 8:</strong><br>
 &#x2714; Struttura: <code>If + Present simple, + will/won't + base form</code><br>
@@ -363,21 +367,25 @@ rule:`<strong>FIRST CONDITIONAL — unit 8:</strong><br>
 &#x26A0; La frase con <em>if</em> può venire seconda: <em>I<strong>'ll call</strong> you if I <strong>need</strong> help.</em><br>
 &#x26A0; Contrasto Zero vs First: Zero = sempre vero · First = possibile nel futuro`,
 exercises:[
-{type:"fill",q:"If the weather ___ nice at the weekend, I love barbecues in the garden.",hint:"(be)",a:"is",accept:["is"]},
-{type:"fill",q:"I really want to go to Aaron's party. I'll be upset if he ___ invite me.",a:"doesn't",accept:["doesn't","does not"]},
-{type:"mc",q:"'What ___ Sunita do at university if she passes all her exams?'",opts:["will","would","is going to","does"],correct:0},
-{type:"fill",q:"Hurry up! If we ___ the last bus, we'll have to walk.",hint:"(miss)",a:"miss",accept:["miss"]},
-{type:"fill",q:"Don't worry. I ___ tell anyone if you don't want me to.",a:"won't",accept:["won't","will not"]},
-{type:"fill",q:"If I ___ money for my next birthday, I'll buy new trainers.",hint:"(get)",a:"get",accept:["get"]},
-{type:"fill",q:"If you ___ (not study), you won't pass the exam.",a:"don't study",accept:["don't study"]},
-{type:"fill",q:"I ___ (call) you when I arrive home.",a:"'ll call",accept:["'ll call","will call"]},
-{type:"fill",q:"If she ___ (pass) all her exams, she'll study medicine.",a:"passes",accept:["passes"]},
+{type:"fill",q:"If the weather ___ nice at the weekend, I love barbecues in the garden. (first conditional)",hint:"(is / will be / was)",a:"is",accept:["is"]},
+{type:"fill",q:"I really want to go to Aaron's party. I'll be upset if he ___ invite me.",hint:"(doesn't / won't / isn't)",a:"doesn't",accept:["doesn't"]},
+{type:"mc",q:"'What ___ Sunita do at university if she passes all her exams?' (first conditional question)",options:["will","would","is going to","does"],a:"will"},
+{type:"fill",q:"Hurry up! If we ___ the last bus, we'll have to walk.",hint:"(miss / will miss / missed)",a:"miss",accept:["miss"]},
+{type:"fill",q:"Don't worry. I ___ tell anyone if you don't want me to.",hint:"(won't / don't)",a:"won't",accept:["won't"]},
+{type:"fill",q:"If I ___ money for my next birthday, I'll buy new trainers.",hint:"(get / will get / got)",a:"get",accept:["get"]},
+{type:"wordbox",instruction:"Complete with the correct form of the verbs in brackets.",verbs:["present simple (if-clause) · will/won't (main clause)"],
+sentences:[
+{pre:"If you",post:"(not study), you won't pass the exam.",a:"don't study",accept:["don't study"]},
+{pre:"I",post:"(call) you when I arrive home.",a:"'ll call",accept:["'ll call","will call"]},
+{pre:"If she",post:"(pass) all her exams, she'll study medicine.",a:"passes",accept:["passes"]},
+]},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["If","I","don't","pass","my","exams","at","the","end","of","the","year,","I'll","be","very","upset"],answer:"If I don't pass my exams at the end of the year, I'll be very upset"},
 {type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"If you will study hard, you'll pass the exam.",a:"If you study hard, you'll pass the exam.",accept:["If you study hard, you'll pass the exam."]},
-{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"I'll tell him if I will see him tomorrow.",a:"I'll tell him if I see him tomorrow.",accept:["I'll tell him if I see him tomorrow."]}
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"I'll tell him if I will see him tomorrow.",a:"I'll tell him if I see him tomorrow.",accept:["I'll tell him if I see him tomorrow."]},
 ]},
 {id:"r5",type:"revision",title:"⟳ RIPASSO — LIVELLO 5",desc:"first conditional · If + present simple + will",revises:[5]},
 {id:"d5",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 5",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[5]},
+
 {id:6,type:"study",title:"LEVEL 06 — ZERO vs FIRST CONDITIONAL",desc:"differenza · shopping · future trends",
 rule:`<strong>ZERO vs FIRST CONDITIONAL — unit 8:</strong><br>
 &#x2714; <strong>Zero conditional</strong> = sempre vero (fatto, legge, abitudine):<br>
@@ -388,19 +396,20 @@ rule:`<strong>ZERO vs FIRST CONDITIONAL — unit 8:</strong><br>
 &nbsp;&nbsp;&nbsp;<em>If the weather <strong>is</strong> good, we <strong>'ll go</strong> to the beach.</em><br>
 &#x26A0; Il modo più semplice per distinguerli: nella principale c'è <em>will</em>? → First conditional`,
 exercises:[
-{type:"mc",q:"'When you ___ blue and green, you get yellow.'",opts:["mix","will mix","mixed","are mixing"],correct:0},
-{type:"mc",q:"'If it ___ hot this weekend, we'll go to the beach.'",opts:["is","will be","was","would be"],correct:0},
-{type:"fill",q:"If you ask when the shop opens, the assistant ___ tell you.",a:"will",accept:["will","'ll"]},
-{type:"fill",q:"When I ___ stressed, I always go shopping.",hint:"(be)",a:"am",accept:["am"]},
-{type:"mc",q:"'If they ___ (give) me the job, I'll be so happy.'",opts:["give","will give","gave","are giving"],correct:0},
-{type:"fill",q:"If we ___ feel stressed, our smart clothes will release a fragrance.",a:"feel",accept:["feel"]},
+{type:"mc",q:"'When you ___ blue and green, you get yellow.' (zero conditional)",options:["mix","will mix","mixed","are mixing"],a:"mix"},
+{type:"mc",q:"'If it ___ hot this weekend, we'll go to the beach.' (first conditional)",options:["is","will be","was","would be"],a:"is"},
+{type:"fill",q:"If you ask when the shop opens, the assistant ___ tell you. (first conditional)",hint:"(will/would/tells)",a:"will",accept:["will","'ll"]},
+{type:"fill",q:"When I ___ stressed, I always go shopping. (zero conditional — habit)",hint:"(am/will be/was)",a:"am",accept:["am"]},
+{type:"mc",q:"'If they ___ (give) me the job, I'll be so happy.' (first conditional)",options:["give","will give","gave","are giving"],a:"give"},
+{type:"fill",q:"If we ___ feel stressed, our smart clothes will release a fragrance. (first conditional)",hint:"(feel/will feel/felt)",a:"feel",accept:["feel"]},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["If","I","get","money","for","my","next","birthday,","I'll","buy","some","vintage","clothes"],answer:"If I get money for my next birthday, I'll buy some vintage clothes"},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["When","I","ask","my","parents","for","money,","they","always","say","no"],answer:"When I ask my parents for money, they always say no"},
 {type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"If the shop assistant will help you, you find what you need more easily.",a:"If the shop assistant helps you, you find what you need more easily.",accept:["If the shop assistant helps you, you find what you need more easily."]},
-{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"I won't go to the beach tomorrow if it will rain.",a:"I won't go to the beach tomorrow if it rains.",accept:["I won't go to the beach tomorrow if it rains."]}
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"I won't go to the beach tomorrow if it will rain.",a:"I won't go to the beach tomorrow if it rains.",accept:["I won't go to the beach tomorrow if it rains."]},
 ]},
 {id:"r6",type:"revision",title:"⟳ RIPASSO — LIVELLO 6",desc:"zero vs first conditional · tutti e due",revises:[6]},
 {id:"d6",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 6",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[6]},
+
 {id:7,type:"study",title:"LEVEL 07 — VOCABULARY: FASHION",desc:"clothes · accessories · materials · adjectives",
 rule:`<strong>VOCABULARY — FASHION — unit 8:</strong><br>
 &#x2714; <strong>Clothes & footwear:</strong> <code>boots · coat · dress · hoodie · jacket · jeans · jumper · leggings · sandals · shirt · shoes · shorts · skirt · suit · tights · top · trainers · trousers · T-shirt</code><br>
@@ -408,19 +417,20 @@ rule:`<strong>VOCABULARY — FASHION — unit 8:</strong><br>
 &#x2714; <strong>Materials:</strong> <code>cotton · denim · leather · silk · wool</code><br>
 &#x2714; <strong>Adjectives:</strong> <code>baggy · casual · checked · designer · long-sleeved · patterned · plain · short-sleeved · smart · spotty · stripy · tight · trendy · unfashionable · vintage</code>`,
 exercises:[
-{type:"mc",q:"Sophie's jumper is stripy/spotty. Tom is wearing jeans and what kind of shirt?",opts:["checked","plain","stripy","patterned"],correct:0},
-{type:"mc",q:"'These are not tight — they're very loose and comfortable.' Which adjective?",opts:["baggy","smart","casual","tight"],correct:0},
-{type:"fill",q:"Alex's shirt is ___ — it has a square pattern in two colours.",a:"checked",accept:["checked"]},
-{type:"mc",q:"Jess's skirt is short-sleeved / long-sleeved. How do we describe a skirt's length?",opts:["Neither — skirts don't have sleeves","short-sleeved","long-sleeved","both"],correct:0},
-{type:"fill",q:"Shoes are made of ___ — the material that comes from animal skin.",a:"leather",accept:["leather"]},
-{type:"mc",q:"'Which of these is NOT an accessory?'",opts:["leggings","bracelet","scarf","belt"],correct:0},
-{type:"fill",q:"Jeans are made of ___. It's a strong, casual material, usually blue.",a:"denim",accept:["denim"]},
-{type:"mc",q:"'This jumper is very soft and warm. It's made from sheep.' What material?",opts:["wool","cotton","silk","leather"],correct:0},
+{type:"mc",q:"Sophie's jumper is stripy/spotty. Tom is wearing jeans and what kind of shirt?",options:["checked","plain","stripy","patterned"],a:"checked"},
+{type:"mc",q:"'These are not tight — they're very loose and comfortable.' Which adjective?",options:["baggy","smart","casual","tight"],a:"baggy"},
+{type:"fill",q:"Alex's shirt is ___ — it has a square pattern in two colours.",hint:"(checked/plain/stripy)",a:"checked",accept:["checked"]},
+{type:"mc",q:"Jess's skirt is short-sleeved / long-sleeved. How do we describe a skirt's length?",options:["Neither — skirts don't have sleeves","short-sleeved","long-sleeved","both"],a:"Neither — skirts don't have sleeves"},
+{type:"fill",q:"Shoes are made of ___ — the material that comes from animal skin.",hint:"(leather/cotton/silk)",a:"leather",accept:["leather"]},
+{type:"mc",q:"'Which of these is NOT an accessory?'",options:["leggings","bracelet","scarf","belt"],a:"leggings"},
+{type:"fill",q:"Jeans are made of ___. It's a strong, casual material, usually blue.",hint:"(denim/cotton/silk)",a:"denim",accept:["denim"]},
+{type:"mc",q:"'This jumper is very soft and warm. It's made from sheep.' What material?",options:["wool","cotton","silk","leather"],a:"wool"},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["Tom","is","wearing","a","checked","shirt,","baggy","jeans","and","trainers"],answer:"Tom is wearing a checked shirt, baggy jeans and trainers"},
-{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"The blue one is my favourite jacket. I prefer the blue one.",a:"The blue one is my favourite jacket.",accept:["The blue one is my favourite jacket.","I prefer the blue one."]}
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"The blue one is my favourite jacket. I prefer the blue one.",a:"The blue one is my favourite jacket.",accept:["The blue one is my favourite jacket.","I prefer the blue one."]},
 ]},
 {id:"r7",type:"revision",title:"⟳ RIPASSO — LIVELLO 7",desc:"clothes · accessories · materials · adjectives",revises:[7]},
 {id:"d7",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 7",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[7]},
+
 {id:8,type:"study",title:"LEVEL 08 — SHOPPING VOCABULARY",desc:"changing rooms · discount · home delivery · try on · sales",
 rule:`<strong>VOCABULARY — SHOPPING — unit 8:</strong><br>
 &#x2714; <strong>Shopping:</strong> <code>changing rooms · customer · discount · fit (v) · home delivery · pay in cash / by card / by app · return (something) · sales · shop around · shop assistant · shop online · size · suit (v) · try on</code><br>
@@ -430,20 +440,21 @@ rule:`<strong>VOCABULARY — SHOPPING — unit 8:</strong><br>
 &nbsp;&nbsp;&nbsp;<code>shop around</code> = girare per negozi per confrontare prezzi<br>
 &#x2714; <strong>Future shopping:</strong> <em>Drones will make deliveries. Robots will help you find everything.</em>`,
 exercises:[
-{type:"mc",q:"'Can I see that bag, please? — Which one? — This one? — No, the black one.' They are using ___.",opts:["one/ones","some/any","this/that","it/them"],correct:0},
-{type:"fill",q:"You ___ the clothes on in the changing rooms to see if they fit.",a:"try on",accept:["try on"]},
-{type:"mc",q:"'I'll pay ___ — I haven't got my card today.' (cash)",opts:["in cash","by cash","with cash","cash"],correct:0},
-{type:"fill",q:"These jeans don't ___ — they're too small. I need a bigger size.",a:"fit",accept:["fit"]},
-{type:"mc",q:"'Technology is changing shopping. Shops will ___ stores more often to attract customers.' (Future shopping trends)",opts:["shop online","offer discounts","change","use home delivery"],correct:0},
-{type:"fill",q:"In the future, drones ___ make deliveries before you even leave the shop.",a:"will",accept:["will","'ll"]},
-{type:"fill",q:"Notes and coins will disappear, so we ___ need cash for anything — we'll use an app.",a:"won't",accept:["won't","will not"]},
+{type:"mc",q:"'Can I see that bag, please? — Which one? — This one? — No, the black one.' They are using ___.",options:["one/ones","some/any","this/that","it/them"],a:"one/ones"},
+{type:"fill",q:"You ___ the clothes on in the changing rooms to see if they fit.",hint:"(try/try on/wear)",a:"try on",accept:["try on"]},
+{type:"mc",q:"'I'll pay ___ — I haven't got my card today.' (cash)",options:["in cash","by cash","with cash","cash"],a:"in cash"},
+{type:"fill",q:"These jeans don't ___ — they're too small. I need a bigger size.",hint:"(fit/suit/try)",a:"fit",accept:["fit"]},
+{type:"mc",q:"'Technology is changing shopping. Shops will ___ stores more often to attract customers.' (Future shopping trends)",options:["shop online","offer discounts","change","use home delivery"],a:"offer discounts"},
+{type:"fill",q:"In the future, drones ___ make deliveries before you even leave the shop.",hint:"(will / are going to)",a:"will",accept:["will","'ll"]},
+{type:"fill",q:"Notes and coins will disappear, so we ___ need cash for anything — we'll use an app.",hint:"(won't / will)",a:"won't",accept:["won't"]},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["If","you","shop","online,","you","can","compare","prices","and","get","a","better","discount"],answer:"If you shop online, you can compare prices and get a better discount"},
 {type:"reorder",instruction:"Metti le parole nell'ordine giusto:",words:["New","software","will","create","an","accurate","3D","model","so","you'll","be","able","to","try","jeans","in","a","virtual","changing","room"],answer:"New software will create an accurate 3D model so you'll be able to try jeans in a virtual changing room"},
-{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"I want to try on the jacket. Can I use the fitting room?",a:"I want to try on the jacket. Can I use the changing room?",accept:["I want to try on the jacket. Can I use the changing room?"]}
+{type:"errorcorrect",instruction:"Trova e correggi l'errore:",wrong:"I want to try on the jacket. Can I use the fitting room?",a:"I want to try on the jacket. Can I use the changing room?",accept:["I want to try on the jacket. Can I use the changing room?"]},
 ]},
 {id:"r8",type:"revision",title:"⟳ RIPASSO — LIVELLO 8",desc:"shopping vocabulary · future shopping trends",revises:[8]},
 {id:"d8",type:"difficult",title:"★ BOSS FIGHT — DIFFICILI 8",desc:"esercizi sbagliati ≥2 volte · eliminali!",revises:[8]},
-{id:"rfinal",type:"revision",title:"⟳ FINAL BOSS — TUTTA L'UNIT 8",desc:"boss finale · tutti i livelli · diventa MASTER!",revises:[1,2,3,4,5,6,7,8]}
+
+{id:"rfinal",type:"revision",title:"⟳ FINAL BOSS — TUTTA L'UNIT 8",desc:"boss finale · tutti i livelli · diventa MASTER!",revises:[1,2,3,4,5,6,7,8]},
 ];
 
 const SK='gq_u8_s',EK='gq_u8_e';
@@ -614,7 +625,7 @@ function checkExercise(){
     fb.className='feedback-msg '+(correct?'ok':'err');
     fb.innerHTML=correct?'\u2713 Corretto!':'\u2717 Risposte corrette: <strong>'+ex.sentences.map(s=>s.a).join(' · ')+'</strong>';
   } else if(ex.type==='reorder'){
-    const given=reorderWords.map(w=>w.word).join(' ');const _acc=(ex.accept||[ex.answer]).map(norm);correct=_acc.includes(norm(given));
+    const given=reorderWords.map(w=>w.word).join(' ');correct=norm(given)===norm(ex.answer);
     const area=document.getElementById('answerArea');area.classList.add(correct?'correct':'wrong');
     fb.className='feedback-msg '+(correct?'ok':'err');fb.innerHTML=correct?'\u2713 Corretto!':'\u2717 Risposta corretta: <strong>'+ex.answer+'</strong>';
   }
