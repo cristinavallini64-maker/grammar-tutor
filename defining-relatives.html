@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defining Relative Clauses — Grammar Quest</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a1628;--surface:rgba(255,255,255,0.09);--border:rgba(255,255,255,0.18);--text:#ffffff;--text-dim:rgba(255,255,255,0.75);--text-muted:rgba(255,255,255,0.45);--cyan:#00f0ff;--cyan-dim:rgba(0,240,255,0.15);--cyan-glow:rgba(0,240,255,0.6);--green:#00ff88;--green-dim:rgba(0,255,136,0.15);--green-glow:rgba(0,255,136,0.6);--red:#ff4d6d;--gold:#ffcc00;--gold-dim:rgba(255,204,0,0.18);--gold-glow:rgba(255,204,0,0.6);--purple:#cc77ff;--purple-dim:rgba(204,119,255,0.18);--purple-glow:rgba(204,119,255,0.6);--orange:#ff8c42;--radius:12px;--radius-sm:6px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{min-height:100vh;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:16px;overflow-x:hidden;position:relative;background:linear-gradient(160deg,#060d1e 0%,#0e1a3a 35%,#161030 65%,#060d1e 100%);}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 55% 45% at 15% 25%,rgba(0,100,220,0.35) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 85% 75%,rgba(80,20,160,0.3) 0%,transparent 70%),radial-gradient(ellipse 40% 35% at 55% 5%,rgba(0,180,255,0.2) 0%,transparent 65%);pointer-events:none;z-index:0;}
+#starCanvas{position:fixed;inset:0;z-index:1;pointer-events:none;}
+#particleCanvas{position:fixed;inset:0;z-index:3;pointer-events:none;}
+header{position:relative;z-index:10;padding:0 24px;height:62px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,13,30,0.85);border-bottom:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(16px);}
+header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);opacity:0.9;}
+.logo{font-family:'Orbitron',monospace;font-weight:900;font-size:18px;letter-spacing:4px;background:linear-gradient(135deg,#00f0ff,#ffffff,#cc77ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 10px rgba(0,240,255,0.5));}
+.logo-sub{font-size:10px;letter-spacing:2px;color:var(--text-muted);font-family:'Rajdhani',sans-serif;-webkit-text-fill-color:var(--text-muted);display:block;margin-top:-3px;}
+.btn-reset{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:1px;padding:7px 14px;border:1px solid rgba(255,77,109,0.35);background:rgba(255,77,109,0.07);color:rgba(255,255,255,0.45);border-radius:var(--radius-sm);cursor:pointer;transition:all 0.25s;}
+.btn-reset:hover{border-color:var(--red);color:var(--red);background:rgba(255,77,109,0.14);}
+.screen{display:none;position:relative;z-index:2;padding:24px;max-width:860px;margin:0 auto;}
+.screen.active{display:block;}
+.map-hero{text-align:center;padding:28px 0 20px;}
+.map-hero h1{font-family:'Orbitron',monospace;font-weight:900;font-size:30px;letter-spacing:5px;background:linear-gradient(135deg,#00f0ff 0%,#ffffff 50%,#cc77ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:titleGlow 3s ease-in-out infinite;margin-bottom:6px;}
+.map-hero h2{font-family:'Orbitron',monospace;font-weight:600;font-size:13px;letter-spacing:4px;color:var(--cyan);opacity:0.7;margin-bottom:8px;}
+@keyframes titleGlow{0%,100%{filter:drop-shadow(0 0 14px rgba(0,240,255,0.5));}50%{filter:drop-shadow(0 0 32px rgba(0,240,255,0.9));}}
+.map-hero p{color:var(--text-muted);font-size:13px;letter-spacing:3px;text-transform:uppercase;}
+.xp-panel{background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius);padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;gap:14px;backdrop-filter:blur(10px);}
+.xp-label{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--text-muted);min-width:24px;}
+.xp-track{flex:1;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:4px;height:14px;overflow:hidden;}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--cyan),#8800ff,var(--purple));background-size:200% 100%;border-radius:4px;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);animation:xpShimmer 2.5s linear infinite;box-shadow:0 0 10px var(--cyan-glow);}
+@keyframes xpShimmer{0%{background-position:0% 0%;}100%{background-position:200% 0%;}}
+.xp-num{font-family:'Orbitron',monospace;font-size:12px;color:#fff;white-space:nowrap;font-weight:700;}
+.sections-list{display:flex;flex-direction:column;gap:9px;}
+.section-card{border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;gap:14px;transition:all 0.25s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden;border:2px solid;}
+.section-card::after{content:'';position:absolute;top:0;left:0;right:0;height:42%;background:linear-gradient(180deg,rgba(255,255,255,0.07) 0%,transparent 100%);pointer-events:none;border-radius:10px 10px 0 0;}
+.section-card.locked{background:linear-gradient(135deg,rgba(100,90,130,0.35) 0%,rgba(70,60,100,0.3) 100%);border-color:rgba(180,170,210,0.25);cursor:not-allowed;filter:saturate(0.3) brightness(0.7);}
+.section-card.unlocked{background:linear-gradient(135deg,rgba(0,180,255,0.28) 0%,rgba(60,30,180,0.35) 100%);border-color:var(--cyan);cursor:pointer;animation:unlockBreath 3s ease-in-out infinite;}
+@keyframes unlockBreath{0%,100%{box-shadow:0 4px 20px rgba(0,0,0,0.4),0 0 12px rgba(0,240,255,0.25);}50%{box-shadow:0 4px 24px rgba(0,0,0,0.4),0 0 28px rgba(0,240,255,0.55);}}
+.section-card.unlocked:hover{transform:translateX(7px) scale(1.01);border-color:#55ffff;box-shadow:0 6px 28px rgba(0,0,0,0.5),0 0 42px rgba(0,240,255,0.65)!important;animation:none;}
+.section-card.completed{background:linear-gradient(135deg,rgba(0,140,70,0.55) 0%,rgba(0,80,40,0.45) 100%);border-color:var(--green);opacity:0.8;}
+.section-card.revision{background:linear-gradient(135deg,rgba(200,140,0,0.5) 0%,rgba(120,80,0,0.45) 100%);border-color:var(--gold);cursor:pointer;animation:revPulse 2s ease-in-out infinite;}
+@keyframes revPulse{0%,100%{box-shadow:0 4px 20px rgba(0,0,0,0.4),0 0 14px rgba(255,204,0,0.3);}50%{box-shadow:0 4px 24px rgba(0,0,0,0.4),0 0 32px rgba(255,204,0,0.65);}}
+.section-card.revision:hover{transform:translateX(7px) scale(1.01);border-color:#ffee44;box-shadow:0 6px 28px rgba(0,0,0,0.5),0 0 44px rgba(255,204,0,0.75)!important;animation:none;}
+.section-card.revision-done{background:linear-gradient(135deg,rgba(0,140,70,0.5),rgba(0,80,40,0.4));border-color:var(--green);opacity:0.65;}
+.section-card.difficult{background:linear-gradient(135deg,rgba(150,40,220,0.55) 0%,rgba(90,10,150,0.5) 100%);border-color:var(--purple);cursor:pointer;animation:bossPulse 1.6s ease-in-out infinite;}
+@keyframes bossPulse{0%,100%{box-shadow:0 4px 20px rgba(0,0,0,0.4),0 0 16px rgba(204,119,255,0.3);}50%{box-shadow:0 4px 24px rgba(0,0,0,0.4),0 0 38px rgba(204,119,255,0.7);}}
+.section-card.difficult:hover{transform:translateX(7px) scale(1.01);border-color:#ee88ff;box-shadow:0 6px 28px rgba(0,0,0,0.5),0 0 50px rgba(204,119,255,0.8)!important;animation:none;}
+.section-card.difficult-done{background:linear-gradient(135deg,rgba(0,140,70,0.5),rgba(0,80,40,0.4));border-color:var(--green);opacity:0.65;}
+.section-card.challenging{background:linear-gradient(135deg,rgba(255,80,0,0.55) 0%,rgba(180,30,0,0.5) 100%);border-color:var(--orange);cursor:pointer;animation:challPulse 1.4s ease-in-out infinite;}
+@keyframes challPulse{0%,100%{box-shadow:0 4px 20px rgba(0,0,0,0.4),0 0 16px rgba(255,140,66,0.35);}50%{box-shadow:0 4px 24px rgba(0,0,0,0.4),0 0 42px rgba(255,140,66,0.75);}}
+.section-card.challenging:hover{transform:translateX(7px) scale(1.01);border-color:#ffaa55;box-shadow:0 6px 28px rgba(0,0,0,0.5),0 0 55px rgba(255,140,66,0.85)!important;animation:none;}
+.section-card.challenging-done{background:linear-gradient(135deg,rgba(0,140,70,0.5),rgba(0,80,40,0.4));border-color:var(--green);opacity:0.65;}
+.sc-icon{font-family:'Orbitron',monospace;font-weight:900;font-size:20px;min-width:46px;text-align:center;flex-shrink:0;}
+.section-card.locked .sc-icon{color:rgba(200,190,220,0.5);}
+.section-card.unlocked .sc-icon{color:#ffffff;text-shadow:0 0 16px var(--cyan-glow);}
+.section-card.completed .sc-icon{color:var(--green);text-shadow:0 0 12px var(--green-glow);}
+.section-card.revision .sc-icon{color:#fff8aa;text-shadow:0 0 16px var(--gold-glow);}
+.section-card.revision-done .sc-icon{color:var(--green);}
+.section-card.difficult .sc-icon{color:#ffffff;text-shadow:0 0 20px var(--purple-glow);font-size:22px;}
+.section-card.difficult-done .sc-icon{color:var(--green);}
+.section-card.challenging .sc-icon{color:#ffffff;text-shadow:0 0 20px rgba(255,140,66,0.9);font-size:22px;}
+.section-card.challenging-done .sc-icon{color:var(--green);}
+.sc-body{flex:1;min-width:0;}
+.sc-title{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.section-card.locked .sc-title{color:rgba(200,190,220,0.55);}
+.section-card.unlocked .sc-title{color:#ffffff;}
+.section-card.completed .sc-title{color:#aaffcc;}
+.section-card.revision .sc-title{color:#fff8aa;}
+.section-card.revision-done .sc-title{color:#aaffcc;}
+.section-card.difficult .sc-title{color:#f0ccff;}
+.section-card.difficult-done .sc-title{color:#aaffcc;}
+.section-card.challenging .sc-title{color:#ffd0a0;}
+.section-card.challenging-done .sc-title{color:#aaffcc;}
+.sc-desc{font-size:13px;color:rgba(255,255,255,0.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.section-card.unlocked .sc-desc{color:rgba(255,255,255,0.65);}
+.section-card.revision .sc-desc{color:rgba(255,248,170,0.65);}
+.section-card.difficult .sc-desc{color:rgba(240,204,255,0.65);}
+.section-card.challenging .sc-desc{color:rgba(255,208,160,0.7);}
+.sc-badge{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:1px;padding:5px 11px;border-radius:4px;white-space:nowrap;border:1px solid;flex-shrink:0;font-weight:700;}
+.badge-locked{border-color:rgba(200,190,220,0.3);color:rgba(200,190,220,0.45);background:rgba(100,90,130,0.2);}
+.badge-todo{border-color:var(--cyan);color:#ffffff;background:rgba(0,180,255,0.35);}
+.badge-done{border-color:var(--green);color:#aaffcc;background:rgba(0,160,80,0.3);}
+.badge-required{border-color:var(--gold);color:#fff8aa;background:rgba(180,130,0,0.4);}
+.badge-required-purple{border-color:var(--purple);color:#f0ccff;background:rgba(130,40,200,0.4);}
+.badge-required-orange{border-color:var(--orange);color:#ffd0a0;background:rgba(200,80,0,0.4);}
+.ex-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.12);flex-wrap:wrap;gap:10px;}
+.ex-title{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--cyan);text-shadow:0 0 12px var(--cyan-glow);}
+.hud{display:flex;align-items:center;gap:12px;margin-bottom:16px;background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius);padding:11px 16px;flex-wrap:wrap;backdrop-filter:blur(10px);}
+.hud-track{flex:1;min-width:120px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.1);border-radius:3px;height:10px;overflow:hidden;}
+.hud-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:3px;transition:width 0.4s ease;box-shadow:0 0 8px var(--cyan-glow);}
+.hud-text{font-family:'Orbitron',monospace;font-size:11px;color:#fff;font-weight:700;white-space:nowrap;}
+.hud-ok{font-family:'Orbitron',monospace;font-size:12px;color:var(--green);font-weight:700;}
+.hud-bad{font-family:'Orbitron',monospace;font-size:12px;color:var(--red);font-weight:700;}
+.rule-box{background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.22);border-radius:var(--radius);padding:14px 18px;margin-bottom:16px;font-size:14px;color:var(--text-dim);line-height:1.7;}
+.rule-box strong{color:var(--cyan);font-weight:700;}
+.rule-box code{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:2px 8px;font-family:'Rajdhani',sans-serif;font-size:13px;color:#ffffff;letter-spacing:0.5px;}
+.rule-box.orange{background:rgba(255,140,66,0.07);border-color:rgba(255,140,66,0.3);}
+.rule-box.orange strong{color:var(--orange);}
+.ex-card{background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.22);border-radius:var(--radius);padding:24px 28px;margin-bottom:14px;position:relative;overflow:hidden;animation:cardIn 0.3s cubic-bezier(0.4,0,0.2,1);backdrop-filter:blur(14px);box-shadow:0 8px 32px rgba(0,0,0,0.35);}
+.ex-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);}
+.ex-card.orange-card::before{background:linear-gradient(90deg,transparent,var(--orange),#ff4400,transparent);}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.ex-type-badge{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:2px;color:var(--text-muted);margin-bottom:10px;}
+.ex-question{font-size:17px;font-weight:600;color:#ffffff;line-height:1.7;margin-bottom:18px;}
+.ex-question .sentence-pair{font-size:15px;color:var(--text-dim);margin-bottom:6px;line-height:1.6;}
+.ex-question .sentence-pair span{color:#fff;font-weight:700;}
+.fill-input{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.25);border-radius:var(--radius-sm);padding:9px 14px;font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:600;color:#ffffff;outline:none;transition:all 0.2s;letter-spacing:0.5px;min-width:180px;max-width:100%;}
+.fill-input:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,240,255,0.2),0 0 14px rgba(0,240,255,0.2);background:rgba(0,240,255,0.05);}
+.fill-input.correct{border-color:var(--green);background:rgba(0,255,136,0.1);color:var(--green);box-shadow:0 0 0 2px rgba(0,255,136,0.2),0 0 14px var(--green-glow);}
+.fill-input.wrong{border-color:var(--red);background:rgba(255,77,109,0.1);color:var(--red);}
+.fill-input.wide{min-width:320px;width:100%;}
+.mc-options{display:flex;flex-direction:column;gap:9px;margin-bottom:12px;}
+.mc-option{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.18);border-radius:var(--radius-sm);padding:12px 18px;cursor:pointer;font-size:15px;font-weight:600;color:var(--text-dim);transition:all 0.18s;text-align:left;}
+.mc-option:hover{background:rgba(0,180,255,0.12);border-color:var(--cyan);color:#fff;}
+.mc-option.selected{background:rgba(0,180,255,0.2);border-color:var(--cyan);color:#fff;}
+.mc-option.correct{background:rgba(0,255,136,0.15);border-color:var(--green);color:var(--green);}
+.mc-option.wrong{background:rgba(255,77,109,0.12);border-color:var(--red);color:var(--red);}
+.word-bank{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;min-height:42px;}
+.word-chip{background:rgba(0,180,255,0.15);border:1px solid rgba(0,180,255,0.4);border-radius:6px;padding:6px 14px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;color:#ffffff;cursor:pointer;transition:all 0.18s;user-select:none;}
+.word-chip:hover{background:rgba(0,180,255,0.28);border-color:var(--cyan);transform:translateY(-1px);}
+.word-chip.used{opacity:0.3;cursor:not-allowed;background:rgba(100,100,100,0.15);border-color:rgba(255,255,255,0.1);}
+.answer-area{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius-sm);padding:10px 14px;min-height:48px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px;}
+.answer-area .word-chip{background:rgba(60,30,180,0.3);border-color:rgba(120,80,255,0.5);}
+.answer-area .word-chip:hover{background:rgba(80,40,200,0.4);border-color:var(--purple);}
+.answer-area.correct{border-color:var(--green);background:rgba(0,255,136,0.05);}
+.answer-area.wrong{border-color:var(--red);background:rgba(255,77,109,0.05);}
+.reorder-hint{font-size:13px;color:var(--text-muted);margin-bottom:10px;font-style:italic;}
+.ec-wrong{font-size:16px;color:var(--red);text-decoration:line-through;margin-bottom:10px;padding:8px 12px;background:rgba(255,77,109,0.08);border-radius:var(--radius-sm);border:1px solid rgba(255,77,109,0.2);}
+.ec-label{font-size:13px;color:var(--text-muted);margin-bottom:8px;}
+.feedback-msg{margin-top:10px;font-size:14px;font-weight:600;min-height:20px;}
+.feedback-msg.ok{color:var(--green);}
+.feedback-msg.err{color:var(--red);}
+.action-bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+.btn{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;padding:11px 22px;border-radius:var(--radius-sm);border:1px solid;cursor:pointer;transition:all 0.2s;backdrop-filter:blur(8px);}
+.btn-primary{background:rgba(0,200,255,0.2);border-color:var(--cyan);color:#ffffff;}
+.btn-primary:hover{background:rgba(0,200,255,0.32);box-shadow:0 0 22px rgba(0,240,255,0.5);transform:translateY(-2px);}
+.btn-secondary{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.22);color:var(--text-dim);}
+.btn-secondary:hover{border-color:rgba(255,255,255,0.5);color:#ffffff;}
+.btn-green{background:rgba(0,200,100,0.22);border-color:var(--green);color:#aaffcc;}
+.btn-green:hover{background:rgba(0,200,100,0.34);box-shadow:0 0 22px rgba(0,255,136,0.5);transform:translateY(-2px);}
+.btn-back{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:1px;padding:7px 14px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.07);color:var(--text-dim);border-radius:var(--radius-sm);cursor:pointer;transition:all 0.2s;}
+.btn-back:hover{border-color:var(--cyan);color:var(--cyan);}
+.results-card{background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius);padding:36px;text-align:center;backdrop-filter:blur(14px);box-shadow:0 8px 40px rgba(0,0,0,0.4);position:relative;overflow:hidden;}
+.results-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--green),var(--purple),transparent);}
+.res-pct{font-family:'Orbitron',monospace;font-weight:900;font-size:72px;line-height:1;margin-bottom:8px;}
+.res-pct.pass{color:var(--green);text-shadow:0 0 30px var(--green-glow);animation:winGlow 1.5s ease-in-out infinite;}
+@keyframes winGlow{0%,100%{text-shadow:0 0 20px var(--green-glow);}50%{text-shadow:0 0 50px var(--green-glow),0 0 80px rgba(0,255,136,0.4);}}
+.res-pct.fail{color:var(--red);}
+.res-label{font-family:'Orbitron',monospace;font-size:12px;letter-spacing:4px;margin-bottom:6px;}
+.res-label.pass{color:var(--green);}.res-label.fail{color:var(--red);}
+.res-threshold{font-size:12px;color:var(--text-muted);letter-spacing:1px;margin-bottom:24px;}
+.res-breakdown{display:flex;justify-content:center;gap:36px;margin-bottom:24px;flex-wrap:wrap;}
+.rb-item{text-align:center;}
+.rb-num{font-family:'Orbitron',monospace;font-weight:900;font-size:34px;}
+.rb-num.g{color:var(--green);text-shadow:0 0 14px var(--green-glow);}.rb-num.r{color:var(--red);}
+.rb-label{font-size:9px;letter-spacing:2px;color:var(--text-muted);font-family:'Orbitron',monospace;}
+.retry-notice{background:rgba(255,140,66,0.12);border:1px solid rgba(255,140,66,0.3);border-radius:var(--radius-sm);padding:9px 14px;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--orange);margin-bottom:12px;}
+.completion-banner{background:rgba(255,255,255,0.09);border:2px solid rgba(255,204,0,0.55);border-radius:var(--radius);padding:40px;text-align:center;backdrop-filter:blur(14px);box-shadow:0 8px 40px rgba(255,204,0,0.2);position:relative;overflow:hidden;}
+.completion-banner::before{content:'';position:absolute;top:0;left:-200%;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:scanGold 2s linear infinite;}
+@keyframes scanGold{to{left:200%;}}
+.cb-emoji{font-size:60px;margin-bottom:14px;display:block;animation:trophy 1s ease-in-out infinite;}
+@keyframes trophy{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-8px) scale(1.05);}}
+.cb-title{font-family:'Orbitron',monospace;font-weight:900;font-size:22px;letter-spacing:4px;color:var(--gold);text-shadow:0 0 25px var(--gold-glow);margin-bottom:8px;}
+.cb-text{color:var(--text-muted);font-size:13px;letter-spacing:2px;}
+.ex-card.flash-correct{animation:fCorrect 0.5s ease forwards!important;}
+.ex-card.flash-wrong{animation:fWrong 0.4s ease forwards!important;}
+@keyframes fCorrect{0%{border-color:rgba(255,255,255,0.22)}40%{border-color:var(--green);box-shadow:0 0 40px var(--green-glow),inset 0 0 30px rgba(0,255,136,0.1)}100%{border-color:rgba(255,255,255,0.22)}}
+@keyframes fWrong{0%{border-color:rgba(255,255,255,0.22)}40%{border-color:var(--red);box-shadow:0 0 25px rgba(255,77,109,0.5)}100%{border-color:rgba(255,255,255,0.22)}}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,10,0.85);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;backdrop-filter:blur(8px);}
+.modal{background:rgba(10,18,40,0.97);border:1px solid rgba(255,255,255,0.18);border-radius:var(--radius);padding:32px;max-width:380px;width:100%;text-align:center;position:relative;}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent);}
+.modal h2{font-family:'Orbitron',monospace;font-size:14px;letter-spacing:2px;color:var(--red);margin-bottom:12px;}
+.modal p{color:var(--text-dim);font-size:14px;margin-bottom:24px;line-height:1.7;}
+.modal-actions{display:flex;gap:10px;justify-content:center;}
+.save-panel{background:rgba(0,0,0,0.35);border:1px solid rgba(0,240,255,0.25);border-radius:var(--radius);padding:14px 20px;margin-bottom:20px;backdrop-filter:blur(10px);}
+.save-panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.save-panel-label{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--cyan);opacity:0.75;}
+.save-code-display{font-family:'Orbitron',monospace;font-size:17px;font-weight:700;letter-spacing:4px;color:#ffffff;background:rgba(0,0,0,0.45);border:1px solid rgba(0,240,255,0.3);border-radius:var(--radius-sm);padding:9px 18px;text-align:center;word-break:break-all;text-shadow:0 0 10px rgba(0,240,255,0.4);margin-bottom:10px;}
+.save-panel-hint{font-size:12px;color:var(--text-muted);margin-bottom:10px;line-height:1.5;}
+.save-panel-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.save-import-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);}
+.save-import-input{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius-sm);padding:8px 14px;font-family:'Orbitron',monospace;font-size:13px;letter-spacing:2px;color:#ffffff;outline:none;flex:1;min-width:180px;transition:border-color 0.2s;}
+.save-import-input:focus{border-color:var(--cyan);}
+.save-import-input::placeholder{color:rgba(255,255,255,0.2);font-size:11px;}
+.save-import-msg{font-size:12px;margin-top:6px;min-height:16px;}
+.save-import-msg.ok{color:var(--green);}
+.save-import-msg.err{color:var(--red);}
+.btn-save{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid rgba(0,240,255,0.45);background:rgba(0,180,255,0.15);color:var(--cyan);cursor:pointer;transition:all 0.2s;}
+.btn-save:hover{background:rgba(0,180,255,0.28);border-color:var(--cyan);box-shadow:0 0 14px rgba(0,240,255,0.35);}
+.btn-save-sm{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.07);color:var(--text-dim);cursor:pointer;transition:all 0.2s;}
+.btn-save-sm:hover{border-color:rgba(255,255,255,0.45);color:#fff;}
+.wb-sentences{display:flex;flex-direction:column;gap:10px;margin-bottom:4px;}
+.wb-item{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600;color:#ffffff;flex-wrap:wrap;}
+.wb-item .fill-input{min-width:140px;}
+.word-box{background:rgba(0,240,255,0.07);border:1px solid rgba(0,240,255,0.3);border-radius:var(--radius-sm);padding:10px 16px;margin-bottom:14px;font-size:15px;font-weight:600;color:var(--cyan);letter-spacing:0.5px;}
+.word-box span{color:var(--text-muted);font-size:12px;letter-spacing:2px;font-family:'Orbitron',monospace;display:block;margin-bottom:6px;}
+</style>
+</head>
+<body>
+<canvas id="starCanvas"></canvas>
+<canvas id="particleCanvas"></canvas>
+<header>
+  <div><div class="logo">Defining Relatives</div><span class="logo-sub">grammar quest · unit 9</span></div>
+  <button class="btn-reset" onclick="confirmReset()">&#x27F3; RESET</button>
+</header>
+<div id="screen-map" class="screen active">
+  <div class="map-hero"><h1>DEFINING RELATIVE CLAUSES</h1><h2>grammar quest · unit 9</h2><p>who · which · that · where · when · whose · omission</p></div>
+  <div class="xp-panel">
+    <div class="xp-label">XP</div>
+    <div class="xp-track"><div class="xp-fill" id="overallBar" style="width:0%"></div></div>
+    <div class="xp-num" id="overallText">0/0</div>
+  </div>
+  <div class="save-panel">
+    <div class="save-panel-header"><span class="save-panel-label">&#x1F4BE; SAVE CODE</span></div>
+    <div class="save-code-display" id="saveCodeDisplay">&mdash;</div>
+    <div class="save-panel-hint">Copia questo codice per riprendere su un altro dispositivo.</div>
+    <div class="save-panel-actions"><button class="btn-save" onclick="copyCode()" id="copyBtn">&#x2398; COPIA</button></div>
+    <div class="save-import-row">
+      <input class="save-import-input" id="importInput" type="text" maxlength="200" placeholder="incolla codice da altro dispositivo...">
+      <button class="btn-save-sm" onclick="importCode()">&#x21B5; CARICA</button>
+    </div>
+    <div class="save-import-msg" id="importMsg"></div>
+  </div>
+  <div class="sections-list" id="sectionsList"></div>
+</div>
+<div id="screen-exercise" class="screen">
+  <div class="ex-header">
+    <div class="ex-title" id="exTitle"></div>
+    <button class="btn-back" onclick="goMap()">&larr; MAP</button>
+  </div>
+  <div class="hud">
+    <div class="hud-track"><div class="hud-fill" id="hudFill" style="width:0%"></div></div>
+    <div class="hud-text" id="hudText">0/0</div>
+    <span class="hud-ok" id="hudOk">&#x2713; 0</span>
+    <span class="hud-bad" id="hudBad">&#x2717; 0</span>
+  </div>
+  <div id="exerciseArea"></div>
+  <div class="action-bar">
+    <button class="btn btn-primary" id="checkBtn" onclick="checkExercise()">&#x25B6; CONTROLLA</button>
+    <button class="btn btn-secondary" id="nextBtn" onclick="nextExercise()" style="display:none">AVANTI &rarr;</button>
+  </div>
+</div>
+<div id="screen-results" class="screen"></div>
+<div id="resetModal" class="modal-overlay" style="display:none">
+  <div class="modal">
+    <h2>&#x26A0; RESET</h2>
+    <p>Tutti i progressi verranno cancellati.</p>
+    <div class="modal-actions">
+      <button class="btn" style="background:rgba(255,77,109,0.18);border-color:var(--red);color:var(--red)" onclick="doReset()">CONFERMA</button>
+      <button class="btn btn-secondary" onclick="closeModal()">ANNULLA</button>
+    </div>
+  </div>
+</div>
+<script>
+const sc=document.getElementById('starCanvas'),sctx=sc.getContext('2d');let stars=[];
+function resizeSC(){sc.width=innerWidth;sc.height=innerHeight;stars=[];for(let i=0;i<240;i++)stars.push({x:Math.random()*sc.width,y:Math.random()*sc.height,r:Math.random()*2+0.3,alpha:Math.random()*0.9+0.1,twinkle:Math.random()*Math.PI*2,ts:Math.random()*0.02+0.005,vy:Math.random()*0.08+0.01,color:['#ffffff','#ffffff','#aaddff','#ddaaff','#ffffcc'][Math.floor(Math.random()*5)]});}
+function animStars(){sctx.clearRect(0,0,sc.width,sc.height);stars.forEach(s=>{s.twinkle+=s.ts;const a=s.alpha*(0.4+0.6*Math.sin(s.twinkle));sctx.globalAlpha=a;if(s.r>1.3){sctx.save();sctx.translate(s.x,s.y);sctx.fillStyle=s.color;sctx.beginPath();for(let i=0;i<8;i++){const ang=(i*Math.PI)/4-Math.PI/2,r=i%2===0?s.r*1.6:s.r*0.35;i===0?sctx.moveTo(Math.cos(ang)*r,Math.sin(ang)*r):sctx.lineTo(Math.cos(ang)*r,Math.sin(ang)*r);}sctx.closePath();sctx.fill();sctx.restore();}else{sctx.beginPath();sctx.arc(s.x,s.y,s.r,0,Math.PI*2);sctx.fillStyle=s.color;sctx.fill();}sctx.globalAlpha=1;s.y+=s.vy;if(s.y>sc.height+5){s.y=-5;s.x=Math.random()*sc.width;}});requestAnimationFrame(animStars);}
+window.addEventListener('resize',resizeSC);resizeSC();animStars();
+const pc=document.getElementById('particleCanvas'),pctx=pc.getContext('2d');let particles=[];
+function resizePC(){pc.width=innerWidth;pc.height=innerHeight;}window.addEventListener('resize',resizePC);resizePC();
+function spawnBurst(x,y,color,count=28){for(let i=0;i<count;i++){const a=Math.random()*Math.PI*2,sp=Math.random()*7+2;particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-2.5,r:Math.random()*4+1,alpha:1,color,gravity:0.18,decay:Math.random()*0.022+0.014});}for(let i=0;i<12;i++){const a=Math.random()*Math.PI*2,sp=Math.random()*11+5;particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-4,r:Math.random()*3+1.5,alpha:1,color:'#ffffff',gravity:0.12,decay:Math.random()*0.028+0.018});}}
+function animParticles(){pctx.clearRect(0,0,pc.width,pc.height);particles=particles.filter(p=>p.alpha>0);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.gravity;p.alpha-=p.decay;pctx.globalAlpha=Math.max(0,p.alpha);pctx.fillStyle=p.color;pctx.beginPath();pctx.arc(p.x,p.y,p.r,0,Math.PI*2);pctx.fill();});pctx.globalAlpha=1;requestAnimationFrame(animParticles);}
+animParticles();
+function burstAt(el,color){const r=el.getBoundingClientRect();spawnBurst(r.left+r.width/2,r.top+r.height/2,color);}
+
+const LEVELS=[
+{id:1,type:"study",title:"LEVEL 01 — RISCALDAMENTO",desc:"scegli il pronome giusto (who/which/where/when/whose)",rule:`<strong>RIPASSO VELOCE — quale pronome?</strong><br>&#x2714; <code>who</code> persone &nbsp;·&nbsp; <code>which</code> cose/animali<br>&#x2714; <code>where</code> luoghi &nbsp;·&nbsp; <code>when</code> tempo &nbsp;·&nbsp; <code>whose</code> possesso<br>&#x1F4A1; non usare <code>that</code>: solo who / which / whose / where / when.`,exercises:[
+{type:"fill",q:"She's the nurse ___ looked after me in hospital.",a:"who",accept:["who"]},
+{type:"fill",q:"It's the bridge ___ collapsed during the storm.",a:"which",accept:["which"]},
+{type:"fill",q:"That's the town ___ I was born.",a:"where",accept:["where"]},
+{type:"fill",q:"Sunday is the day ___ I finally relax.",a:"when",accept:["when"]},
+{type:"fill",q:"He's the man ___ dog bit the postman.",a:"whose",accept:["whose"]},
+{type:"fill",q:"These are the keys ___ open the main door.",a:"which",accept:["which"]}
+]},
+{id:2,type:"study",title:"LEVEL 02 — UNISCI: soggetto & oggetto",desc:"unisci due frasi · omissione dell'oggetto",rule:`<strong>UNISCI LE DUE FRASI in una sola.</strong><br>Scrivi la frase unita per intero. Pensa alla <strong>logica</strong>:<br>&#x2714; pronome <u>soggetto</u> (subito + verbo) → <strong>non si omette</strong>: <em>the man <u>who</u> fixed my car</em><br>&#x2714; pronome <u>oggetto</u> (segue soggetto + verbo) → <strong>OMETTILO</strong>: <em>the book I read</em><br>&#x26A0; il pronome personale (him/her/it/them) della 2&ordf; frase si <strong>CANCELLA</strong>: <em>the book I read</em> (NON <s>the book I read it</s>).`,exercises:[
+{type:"fill",q:"Unisci: Do you know the author? She won an award.",a:"Do you know the author who won an award?",accept:["Do you know the author who won an award?"]},
+{type:"fill",q:"Unisci: I've finally finished the novel. You lent it to me.",a:"I've finally finished the novel you lent me.",accept:["I've finally finished the novel you lent me.","I've finally finished the novel you lent to me."]},
+{type:"fill",q:"Unisci: There's a mechanic round the corner. He fixed my bike.",a:"There's a mechanic round the corner who fixed my bike.",accept:["There's a mechanic round the corner who fixed my bike."]},
+{type:"fill",q:"Unisci: Have you seen the series? Everyone is watching it.",a:"Have you seen the series everyone is watching?",accept:["Have you seen the series everyone is watching?"]},
+{type:"fill",q:"Unisci: My aunt is the doctor. She looks after our family.",a:"My aunt is the doctor who looks after our family.",accept:["My aunt is the doctor who looks after our family."]},
+{type:"fill",q:"Unisci: I love the photos. You took them in Rome.",a:"I love the photos you took in Rome.",accept:["I love the photos you took in Rome."]},
+{type:"fill",q:"Unisci: Take the bus. It goes to the station.",a:"Take the bus which goes to the station.",accept:["Take the bus which goes to the station."]},
+{type:"fill",q:"Unisci: I can't remember the woman. We met her at the fair.",a:"I can't remember the woman we met at the fair.",accept:["I can't remember the woman we met at the fair."]},
+{type:"fill",q:"Unisci: She's the songwriter. She wrote our school anthem.",a:"She's the songwriter who wrote our school anthem.",accept:["She's the songwriter who wrote our school anthem."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore (cancella il pronome di troppo):",wrong:"I've lost the umbrella which I bought it yesterday.",a:"I've lost the umbrella I bought yesterday.",accept:["I've lost the umbrella I bought yesterday.","I've lost the umbrella which I bought yesterday."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore (cancella il pronome di troppo):",wrong:"Here's the friend we invited her to the party.",a:"Here's the friend we invited to the party.",accept:["Here's the friend we invited to the party."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore (cancella il pronome di troppo):",wrong:"He's the painter who he sold the picture.",a:"He's the painter who sold the picture.",accept:["He's the painter who sold the picture."]}
+]},
+{id:"rev2",type:"revision",title:"⟳ RIPASSO — argomenti 1-2",desc:"frasi nuove · unisci soggetto/oggetto · omissione",exercises:[
+{type:"fill",q:"Unisci: I admire the architect. She designed the new bridge.",a:"I admire the architect who designed the new bridge.",accept:["I admire the architect who designed the new bridge."]},
+{type:"fill",q:"Unisci: Did you get the email? I sent it this morning.",a:"Did you get the email I sent this morning?",accept:["Did you get the email I sent this morning?"]},
+{type:"fill",q:"Unisci: Our neighbours have a dog. It barks all night.",a:"Our neighbours have a dog which barks all night.",accept:["Our neighbours have a dog which barks all night."]},
+{type:"fill",q:"Unisci: He's the boy. Everyone admires him.",a:"He's the boy everyone admires.",accept:["He's the boy everyone admires."]},
+{type:"fill",q:"Unisci: I can't find the keys. I put them on the table.",a:"I can't find the keys I put on the table.",accept:["I can't find the keys I put on the table."]},
+{type:"fill",q:"Unisci: Let's thank the nurse. She looked after Grandma.",a:"Let's thank the nurse who looked after Grandma.",accept:["Let's thank the nurse who looked after Grandma."]},
+{type:"fill",q:"Unisci: That's the tune. We danced to it.",a:"That's the tune we danced to.",accept:["That's the tune we danced to."]},
+{type:"fill",q:"Unisci: Everyone loves the painting. The gallery wants to buy it.",a:"Everyone loves the painting the gallery wants to buy.",accept:["Everyone loves the painting the gallery wants to buy."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore (cancella il pronome di troppo):",wrong:"That's the film we watched it last night.",a:"That's the film we watched last night.",accept:["That's the film we watched last night."]}
+]},
+{id:3,type:"study",title:"LEVEL 03 — UNISCI: where · when · whose",desc:"luogo · tempo · possesso",rule:`<strong>UNISCI con where / when / whose.</strong><br>&#x2714; luogo (there) → <code>where</code> &nbsp; &#x2714; tempo (then/that day) → <code>when</code> &nbsp; &#x2714; possesso (his/her/their) → <code>whose</code><br>&#x1F4A1; con <code>where/when</code> spesso si può anche omettere: <em>the day (when) we met</em>.`,exercises:[
+{type:"fill",q:"Unisci: We've moved back to the village. I grew up there.",a:"We've moved back to the village where I grew up.",accept:["We've moved back to the village where I grew up.","We've moved back to the village I grew up in."]},
+{type:"fill",q:"Unisci: I'll never forget the evening. We first met then.",a:"I'll never forget the evening when we first met.",accept:["I'll never forget the evening when we first met.","I'll never forget the evening we first met."]},
+{type:"fill",q:"Unisci: Do you know the man? His car was towed away.",a:"Do you know the man whose car was towed away?",accept:["Do you know the man whose car was towed away?"]},
+{type:"fill",q:"Unisci: Let's go back to the café. They got engaged there.",a:"Let's go back to the café where they got engaged.",accept:["Let's go back to the café where they got engaged.","Let's go back to the café they got engaged in."]},
+{type:"fill",q:"Unisci: 2020 was the year. Everything changed then.",a:"2020 was the year when everything changed.",accept:["2020 was the year when everything changed.","2020 was the year everything changed."]},
+{type:"fill",q:"Unisci: She's the novelist. Her books win awards.",a:"She's the novelist whose books win awards.",accept:["She's the novelist whose books win awards."]},
+{type:"fill",q:"Unisci: That's the gym. I train there every morning.",a:"That's the gym where I train every morning.",accept:["That's the gym where I train every morning.","That's the gym I train at every morning."]},
+{type:"fill",q:"Unisci: He's the inventor. His ideas changed the world.",a:"He's the inventor whose ideas changed the world.",accept:["He's the inventor whose ideas changed the world."]},
+{type:"fill",q:"Unisci: Saturday is the day. We relax then.",a:"Saturday is the day when we relax.",accept:["Saturday is the day when we relax.","Saturday is the day we relax."]}
+]},
+{id:"rev3",type:"revision",title:"⟳ RIPASSO — argomenti 1-3",desc:"frasi nuove · + where/when/whose",exercises:[
+{type:"fill",q:"Unisci: I miss the town. I studied there.",a:"I miss the town where I studied.",accept:["I miss the town where I studied.","I miss the town I studied in."]},
+{type:"fill",q:"Unisci: Monday is the day. The shop is shut then.",a:"Monday is the day when the shop is shut.",accept:["Monday is the day when the shop is shut.","Monday is the day the shop is shut."]},
+{type:"fill",q:"Unisci: Have you met the writer? His novels are everywhere.",a:"Have you met the writer whose novels are everywhere?",accept:["Have you met the writer whose novels are everywhere?"]},
+{type:"fill",q:"Unisci: I recognise the woman. We met her at the conference.",a:"I recognise the woman we met at the conference.",accept:["I recognise the woman we met at the conference."]},
+{type:"fill",q:"Unisci: This is the stadium. Italy won the final there.",a:"This is the stadium where Italy won the final.",accept:["This is the stadium where Italy won the final.","This is the stadium Italy won the final in."]},
+{type:"fill",q:"Unisci: It's the firm. Its profits doubled last year.",a:"It's the firm whose profits doubled last year.",accept:["It's the firm whose profits doubled last year."]},
+{type:"fill",q:"Unisci: That's the actor. He played the villain.",a:"That's the actor who played the villain.",accept:["That's the actor who played the villain."]},
+{type:"fill",q:"Unisci: August is the month. Most shops close then.",a:"August is the month when most shops close.",accept:["August is the month when most shops close.","August is the month most shops close."]}
+]},
+{id:4,type:"study",title:"LEVEL 04 — UNISCI: con preposizione",desc:"preposizione alla fine + omissione",rule:`<strong>UNISCI con la PREPOSIZIONE.</strong><br>In inglese la preposizione va alla <strong>FINE</strong> e il pronome si <strong>omette</strong>:<br><em>This is the man. I talked to him.</em> → <em>This is the man I talked to.</em><br>&#x26A0; CANCELLA il pronome personale: <em>the man I talked to</em> (NON <s>the man I talked to him</s>). OK anche <em>the man who I talked to</em>.`,exercises:[
+{type:"fill",q:"Unisci: Here's the colleague. I share an office with him.",a:"Here's the colleague I share an office with.",accept:["Here's the colleague I share an office with."]},
+{type:"fill",q:"Unisci: Did she get the job? She applied for it.",a:"Did she get the job she applied for?",accept:["Did she get the job she applied for?"]},
+{type:"fill",q:"Unisci: He's the friend. I can always count on him.",a:"He's the friend I can always count on.",accept:["He's the friend I can always count on."]},
+{type:"fill",q:"Unisci: I love the podcast. I listen to it on the train.",a:"I love the podcast I listen to on the train.",accept:["I love the podcast I listen to on the train."]},
+{type:"fill",q:"Unisci: It's the cat. My sister looks after it.",a:"It's the cat my sister looks after.",accept:["It's the cat my sister looks after."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore (cancella il pronome di troppo):",wrong:"That's the issue we talked about it.",a:"That's the issue we talked about.",accept:["That's the issue we talked about."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore (cancella il pronome di troppo):",wrong:"She's the singer I waited for her.",a:"She's the singer I waited for.",accept:["She's the singer I waited for."]},
+{type:"fill",q:"Unisci: That's the exam. I worry about it most.",a:"That's the exam I worry about most.",accept:["That's the exam I worry about most."]},
+{type:"fill",q:"Unisci: He's the client. I deal with him every day.",a:"He's the client I deal with every day.",accept:["He's the client I deal with every day."]},
+{type:"fill",q:"Unisci: That's the club. I belong to it.",a:"That's the club I belong to.",accept:["That's the club I belong to."]},
+{type:"fill",q:"Unisci: She's the mentor. I learn so much from her.",a:"She's the mentor I learn so much from.",accept:["She's the mentor I learn so much from."]}
+]},
+{id:"rev4",type:"revision",title:"⟳ RIPASSO — argomenti 1-4",desc:"frasi nuove · + preposizione alla fine",exercises:[
+{type:"fill",q:"Unisci: He's the man. I lent my bike to him.",a:"He's the man I lent my bike to.",accept:["He's the man I lent my bike to."]},
+{type:"fill",q:"Unisci: That's the hamlet. My grandparents grew up there.",a:"That's the hamlet where my grandparents grew up.",accept:["That's the hamlet where my grandparents grew up.","That's the hamlet my grandparents grew up in."]},
+{type:"fill",q:"Unisci: She's the violinist. Her playing fills the hall.",a:"She's the violinist whose playing fills the hall.",accept:["She's the violinist whose playing fills the hall."]},
+{type:"fill",q:"Unisci: This is the article. I was telling you about it.",a:"This is the article I was telling you about.",accept:["This is the article I was telling you about."]},
+{type:"fill",q:"Unisci: It's the gadget. It peels the potatoes.",a:"It's the gadget which peels the potatoes.",accept:["It's the gadget which peels the potatoes."]},
+{type:"fill",q:"Unisci: I'll never forget the moment. I changed my mind then.",a:"I'll never forget the moment when I changed my mind.",accept:["I'll never forget the moment when I changed my mind.","I'll never forget the moment I changed my mind."]},
+{type:"fill",q:"Unisci: He's the teammate. I always depend on him.",a:"He's the teammate I always depend on.",accept:["He's the teammate I always depend on."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore (cancella il pronome di troppo):",wrong:"It's the stool I was sitting on it.",a:"It's the stool I was sitting on.",accept:["It's the stool I was sitting on."]}
+]},
+{id:5,type:"challenging",title:"LEVEL 05 — UNISCI: misto difficile",desc:"tutto insieme · frasi lunghe",rule:`<strong>UNISCI — tutto insieme.</strong><br>Frasi più lunghe: scegli il pronome giusto, ometti quando puoi, e sposta la preposizione alla fine. Pensa sempre se il pronome è soggetto o oggetto.`,exercises:[
+{type:"fill",q:"Unisci: She's the reporter. Her story about the scandal made headlines.",a:"She's the reporter whose story about the scandal made headlines.",accept:["She's the reporter whose story about the scandal made headlines."]},
+{type:"fill",q:"Unisci: We should go back to the trattoria. We had our first date there.",a:"We should go back to the trattoria where we had our first date.",accept:["We should go back to the trattoria where we had our first date.","We should go back to the trattoria we had our first date in."]},
+{type:"fill",q:"Unisci: Avoid the topic. Everyone keeps arguing about it.",a:"Avoid the topic everyone keeps arguing about.",accept:["Avoid the topic everyone keeps arguing about."]},
+{type:"fill",q:"Unisci: This is the agency. I sent my application to it.",a:"This is the agency I sent my application to.",accept:["This is the agency I sent my application to."]},
+{type:"fill",q:"Unisci: It was the instant. I realised my mistake then.",a:"It was the instant when I realised my mistake.",accept:["It was the instant when I realised my mistake.","It was the instant I realised my mistake."]},
+{type:"fill",q:"Unisci: She's the surgeon. I owe my recovery to her.",a:"She's the surgeon I owe my recovery to.",accept:["She's the surgeon I owe my recovery to."]},
+{type:"fill",q:"Unisci: That's the valley. My family has farmed the land there for generations.",a:"That's the valley where my family has farmed the land for generations.",accept:["That's the valley where my family has farmed the land for generations.","That's the valley my family has farmed the land in for generations."]},
+{type:"fill",q:"Unisci: He's the novelist. I queued for hours to meet him.",a:"He's the novelist I queued for hours to meet.",accept:["He's the novelist I queued for hours to meet."]},
+{type:"fill",q:"Unisci: It's the rule. Nobody agrees with it.",a:"It's the rule nobody agrees with.",accept:["It's the rule nobody agrees with."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore (cancella il pronome di troppo):",wrong:"He's the candidate everyone voted for him.",a:"He's the candidate everyone voted for.",accept:["He's the candidate everyone voted for."]}
+]},
+{id:"rev5",type:"revision",title:"⟳ RIPASSO — argomenti 1-5",desc:"frasi nuove · tutti i tipi di unione",exercises:[
+{type:"fill",q:"Unisci: She's the consultant. I got my advice from her.",a:"She's the consultant I got my advice from.",accept:["She's the consultant I got my advice from."]},
+{type:"fill",q:"Unisci: That's the reading room. I spend my evenings there.",a:"That's the reading room where I spend my evenings.",accept:["That's the reading room where I spend my evenings.","That's the reading room I spend my evenings in."]},
+{type:"fill",q:"Unisci: He's the manager. His staff never complain.",a:"He's the manager whose staff never complain.",accept:["He's the manager whose staff never complain."]},
+{type:"fill",q:"Unisci: This is the proposal. I worked on it all month.",a:"This is the proposal I worked on all month.",accept:["This is the proposal I worked on all month."]},
+{type:"fill",q:"Unisci: It's the result. We had all hoped for it.",a:"It's the result we had all hoped for.",accept:["It's the result we had all hoped for."]},
+{type:"fill",q:"Unisci: She's the student. Her project went viral.",a:"She's the student whose project went viral.",accept:["She's the student whose project went viral."]},
+{type:"fill",q:"Unisci: That's the spring. I moved abroad then.",a:"That's the spring when I moved abroad.",accept:["That's the spring when I moved abroad.","That's the spring I moved abroad."]},
+{type:"fill",q:"Unisci: He's the landlord. I'm always arguing with him.",a:"He's the landlord I'm always arguing with.",accept:["He's the landlord I'm always arguing with."]}
+]},
+{id:"rfinal",type:"revision",title:"⟳ FINAL BOSS — TUTTO",desc:"la sfida finale · unisci tutto",exercises:[
+{type:"fill",q:"Unisci: Do you know the baker? He runs the corner shop.",a:"Do you know the baker who runs the corner shop?",accept:["Do you know the baker who runs the corner shop?"]},
+{type:"fill",q:"Unisci: She's the workmate. I share a desk with her.",a:"She's the workmate I share a desk with.",accept:["She's the workmate I share a desk with."]},
+{type:"fill",q:"Unisci: We went back to the inn. We stayed there last summer.",a:"We went back to the inn where we stayed last summer.",accept:["We went back to the inn where we stayed last summer.","We went back to the inn we stayed in last summer."]},
+{type:"fill",q:"Unisci: It's the side. Its goalkeeper saved the penalty.",a:"It's the side whose goalkeeper saved the penalty.",accept:["It's the side whose goalkeeper saved the penalty."]},
+{type:"fill",q:"Unisci: That's the rumour. Everyone keeps talking about it.",a:"That's the rumour everyone keeps talking about.",accept:["That's the rumour everyone keeps talking about."]},
+{type:"fill",q:"Unisci: December is the month. The nights are longest then.",a:"December is the month when the nights are longest.",accept:["December is the month when the nights are longest.","December is the month the nights are longest."]},
+{type:"fill",q:"Unisci: He's the leader. Voters no longer trust him.",a:"He's the leader voters no longer trust.",accept:["He's the leader voters no longer trust."]},
+{type:"fill",q:"Unisci: She's the pupil. Her painting won the prize.",a:"She's the pupil whose painting won the prize.",accept:["She's the pupil whose painting won the prize."]},
+{type:"fill",q:"Unisci: That's the studio. I sent my demo to it.",a:"That's the studio I sent my demo to.",accept:["That's the studio I sent my demo to."]},
+{type:"fill",q:"Unisci: This is the pitch. We used to train there.",a:"This is the pitch where we used to train.",accept:["This is the pitch where we used to train.","This is the pitch we used to train on."]},
+{type:"errorcorrect",instruction:"Trova e correggi l'errore (cancella il pronome di troppo):",wrong:"He's the coach who he trained the champions.",a:"He's the coach who trained the champions.",accept:["He's the coach who trained the champions."]}
+]}
+];
+
+const SK='gq_rel_s',EK='gq_rel_e';
+let state={},errorMap={};
+
+function encodeState(){try{const comp=Object.keys(state).filter(k=>state[k]==='completed');const errs=Object.keys(errorMap).filter(k=>errorMap[k]>=2);const raw=comp.join(',')+'\x7C'+errs.join(',');const b64=btoa(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');return 'GQR.'+b64;}catch(e){return null;}}
+function decodeState(code){try{const b64=code.trim().replace(/^[A-Za-z]+\./,'').replace(/-/g,'+').replace(/_/g,'/');const pad=b64.length%4?b64+'='.repeat(4-b64.length%4):b64;const raw=atob(pad);const parts=raw.split('\x7C');const comp=parts[0]?parts[0].split(',').filter(Boolean):[];const errs=parts[1]?parts[1].split(',').filter(Boolean):[];const s={};comp.forEach(k=>{s[k]='completed';});const e={};errs.forEach(k=>{e[k]=2;});return {s,e};}catch(ex){return null;}}
+function updateSaveCode(){const code=encodeState();const el=document.getElementById('saveCodeDisplay');if(el)el.textContent=code||'—';}
+function copyCode(){const code=document.getElementById('saveCodeDisplay').textContent;if(!code||code==='—')return;navigator.clipboard?.writeText(code).catch(()=>{const ta=document.createElement('textarea');ta.value=code;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);});const btn=document.getElementById('copyBtn');if(btn){const orig=btn.innerHTML;btn.innerHTML='&#x2713; COPIATO!';setTimeout(()=>btn.innerHTML=orig,2000);}}
+function importCode(){const val=(document.getElementById('importInput').value||'').trim();const msg=document.getElementById('importMsg');if(!val){msg.className='save-import-msg err';msg.textContent='Inserisci un codice.';return;}const res=decodeState(val);if(!res){msg.className='save-import-msg err';msg.textContent='Codice non valido.';return;}state=res.s;errorMap=res.e;rebuildUnlocks();saveState();msg.className='save-import-msg ok';msg.textContent='✓ Progressi ripristinati!';renderMap();updateSaveCode();}
+function saveState(){try{localStorage.setItem(SK,JSON.stringify(state));localStorage.setItem(EK,JSON.stringify(errorMap));}catch(e){}}
+function loadState(){try{state=JSON.parse(localStorage.getItem(SK))||{};}catch(e){state={};}try{errorMap=JSON.parse(localStorage.getItem(EK))||{};}catch(e){errorMap={};}LEVELS.forEach(s=>{if(state[s.id]!=='completed')state[s.id]='unlocked';});saveState();}
+function rebuildUnlocks(){LEVELS.forEach((s,i)=>{if(state[s.id]==='completed'&&i+1<LEVELS.length){if(state[LEVELS[i+1].id]==='locked')state[LEVELS[i+1].id]='unlocked';}});autoComplete();}
+function autoComplete(){let changed=true;while(changed){changed=false;LEVELS.forEach((s,i)=>{if(s.type==='difficult'&&state[s.id]==='unlocked'&&getErrors(s.revises||[]).length===0){state[s.id]='completed';if(i+1<LEVELS.length&&state[LEVELS[i+1].id]==='locked'){state[LEVELS[i+1].id]='unlocked';changed=true;}}});}}
+function getErrors(ids){const keys=[];ids.forEach(id=>{const sec=LEVELS.find(x=>x.id===id);if(sec&&sec.exercises)sec.exercises.forEach((_,i)=>{const k=`${id}_${i}`;if(errorMap[k]>=2)keys.push(k);});});return keys;}
+function recordError(key){errorMap[key]=(errorMap[key]||0)+1;saveState();}
+function unlockNext(cid){const idx=LEVELS.findIndex(s=>s.id===cid);if(idx<0)return;if(idx+1<LEVELS.length){const n=LEVELS[idx+1];if(state[n.id]==='locked')state[n.id]='unlocked';}autoComplete();saveState();}
+
+function renderMap(){
+  const total=LEVELS.filter(s=>s.type==='study'||s.type==='challenging').length;
+  const done=LEVELS.filter(s=>(s.type==='study'||s.type==='challenging')&&state[s.id]==='completed').length;
+  const pct=total?Math.round((done/total)*100):0;
+  document.getElementById('overallBar').style.width=pct+'%';
+  document.getElementById('overallText').textContent=done+'/'+total;
+  const list=document.getElementById('sectionsList');list.innerHTML='';
+  LEVELS.forEach(s=>{
+    const st=state[s.id]||'locked';
+    let cls='section-card ',badge='',icon='';
+    if(s.type==='revision')icon='&#x21BA;';
+    else if(s.type==='difficult')icon='&#x2605;';
+    else if(s.type==='challenging')icon='&#x1F525;';
+    else icon=s.id;
+    if(st==='completed'){
+      cls+=s.type==='difficult'?'difficult-done':s.type==='revision'?'revision-done':s.type==='challenging'?'challenging-done':'completed';
+      badge=`<span class="sc-badge badge-done">&#x2713; DONE</span>`;
+    } else if(st==='unlocked'){
+      if(s.type==='revision'){cls+='revision';badge=`<span class="sc-badge badge-required">&#x26A0; OBB.</span>`;}
+      else if(s.type==='difficult'){cls+='difficult';badge=`<span class="sc-badge badge-required-purple">&#x2605; ${getErrors(s.revises||[]).length}</span>`;}
+      else if(s.type==='challenging'){cls+='challenging';badge=`<span class="sc-badge badge-required-orange">&#x1F525; SFIDA</span>`;}
+      else{cls+='unlocked';badge=`<span class="sc-badge badge-todo">&#x25B6; PLAY</span>`;}
+    } else {cls+='locked';badge=`<span class="sc-badge badge-locked">&#x1F512;</span>`;}
+    const card=document.createElement('div');card.className=cls;
+    card.innerHTML=`<div class="sc-icon">${icon}</div><div class="sc-body"><div class="sc-title">${s.title}</div><div class="sc-desc">${s.desc}</div></div>${badge}`;
+    if(st!=='locked')card.onclick=()=>openLevel(s);
+    list.appendChild(card);
+  });
+  updateSaveCode();
+}
+
+let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,selectedMC=-1,reorderWords=[],retryQueue=[],isRetry=false;
+
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function openLevel(s){
+  currentLevel=s;let exs=[];isRetry=false;
+  if(s.type==='study'||s.type==='challenging'){exs=s.exercises.map((e,i)=>({...e,_key:`${s.id}_${i}`}));}
+  else if(s.type==='revision'){if(s.exercises){exs=s.exercises.map((e,i)=>({...e,_key:`${s.id}_${i}`}));}else{exs=[];(s.revises||[]).forEach(id=>{const sec=LEVELS.find(x=>x.id===id);if(sec&&sec.exercises)exs=exs.concat(sec.exercises.map((e,i)=>({...e,_key:`${id}_${i}`})));});exs=shuffle(exs).slice(0,Math.min(exs.length,18));}}
+  else if(s.type==='difficult'){const keys=getErrors(s.revises||[]);exs=[];keys.forEach(k=>{const parts=k.split('_');const sid=isNaN(parts[0])?parts[0]:parseInt(parts[0]);const idx=parseInt(parts[1]);const sec=LEVELS.find(x=>x.id===sid);if(sec&&sec.exercises&&sec.exercises[idx])exs.push({...sec.exercises[idx],_key:k});});if(exs.length===0){state[s.id]='completed';saveState();renderMap();return;}exs=shuffle(exs);}
+  exQueue=shuffle(exs);retryQueue=[];exIdx=0;okCount=0;badCount=0;
+  document.getElementById('exTitle').textContent=s.title;
+  showScreen('exercise');renderExercise();
+}
+
+function renderExercise(){
+  exChecked=false;selectedMC=-1;reorderWords=[];
+  document.getElementById('checkBtn').style.display='inline-block';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('hudOk').innerHTML=`&#x2713; ${okCount}`;
+  document.getElementById('hudBad').innerHTML=`&#x2717; ${badCount}`;
+  const pct=exQueue.length?Math.round((exIdx/exQueue.length)*100):0;
+  document.getElementById('hudFill').style.width=pct+'%';
+  document.getElementById('hudText').textContent=`${exIdx+1}/${exQueue.length}`;
+  const ex=exQueue[exIdx];
+  const isOrange=currentLevel.type==='challenging';
+  const cardClass=isOrange?'ex-card orange-card':'ex-card';
+  let ruleHtml='';
+  if((currentLevel.type==='study'||currentLevel.type==='challenging')&&currentLevel.rule&&exIdx===0){
+    const ruleClass=isOrange?'rule-box orange':'rule-box';
+    ruleHtml=`<div class="${ruleClass}">${currentLevel.rule}</div>`;
+  }
+  let retryHtml=isRetry?`<div class="retry-notice">&#x21BA; RETRY MODE — esercizi sbagliati</div>`:'';
+  let cardHtml='';
+  if(ex.type==='fill'){
+    cardHtml=`<div class="${cardClass}"><div class="ex-type-badge">FILL IN THE BLANK</div><div class="ex-question">${ex.q}</div>${ex.hint?`<div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">${ex.hint}</div>`:''}<input class="fill-input wide" id="fillInput" type="text" autocomplete="off" placeholder="scrivi qui..."><div class="feedback-msg" id="feedbackMsg"></div></div>`;
+  } else if(ex.type==='mc'){
+    const opts=ex.options.map((o,i)=>`<button class="mc-option" onclick="selectMC(${exIdx},'${o.replace(/'/g,"\\'")}',this)">${o}</button>`).join('');
+    cardHtml=`<div class="${cardClass}"><div class="ex-type-badge">MULTIPLE CHOICE</div><div class="ex-question">${ex.q}</div><div class="mc-options">${opts}</div><div class="feedback-msg" id="feedbackMsg"></div></div>`;
+  } else if(ex.type==='reorder'){
+    const chips=shuffle([...ex.words]).map((w,i)=>`<div class="word-chip" id="chip${i}" onclick="addWord(${i},this)">${w}</div>`).join('');
+    cardHtml=`<div class="${cardClass}"><div class="ex-type-badge">RIORDINA LE PAROLE</div><div class="ex-question">${ex.instruction||'Metti le parole nell\'ordine giusto:'}</div><div class="reorder-hint">Clicca le parole nell'ordine corretto. Clicca di nuovo per rimuoverle.</div><div class="word-bank">${chips}</div><div class="answer-area" id="answerArea"></div><div class="feedback-msg" id="feedbackMsg"></div></div>`;
+  } else if(ex.type==='errorcorrect'){
+    cardHtml=`<div class="${cardClass}"><div class="ex-type-badge">ERROR CORRECTION</div><div class="ex-question">${ex.instruction||'Trova e correggi l\'errore:'}</div><div class="ec-wrong">${ex.wrong}</div><div class="ec-label">Scrivi la versione corretta:</div><input class="fill-input wide" id="fillInput" type="text" autocomplete="off" placeholder="scrivi la frase corretta..."><div class="feedback-msg" id="feedbackMsg"></div></div>`;
+  }
+  document.getElementById('exerciseArea').innerHTML=ruleHtml+retryHtml+cardHtml;
+  if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);
+}
+
+function selectMC(idx,val,el){if(exChecked)return;document.querySelectorAll('.mc-option').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');selectedMC=val;}
+function addWord(idx,el){if(exChecked||el.classList.contains('used'))return;el.classList.add('used');const word=el.textContent;reorderWords.push({idx,word});const area=document.getElementById('answerArea');const chip=document.createElement('div');chip.className='word-chip';chip.textContent=word;const ci=idx;chip.onclick=()=>{if(exChecked)return;const pos=reorderWords.findIndex(w=>w.idx===ci);if(pos>-1)reorderWords.splice(pos,1);chip.remove();document.getElementById(`chip${ci}`).classList.remove('used');};area.appendChild(chip);}
+function norm(s){return s.trim().toLowerCase().replace(/[.,!?;:]+$/,'').replace(/[—–]/g,'-').replace(/\s+/g,' ').trim();}
+
+function checkExercise(){
+  if(exChecked)return;exChecked=true;
+  const ex=exQueue[exIdx];let correct=false;
+  const card=document.getElementById('exerciseArea').querySelector('.ex-card');
+  const fb=document.getElementById('feedbackMsg');
+  if(ex.type==='fill'||ex.type==='errorcorrect'){
+    const val=document.getElementById('fillInput').value;
+    const accepted=(ex.accept||[ex.a]).map(norm);correct=accepted.includes(norm(val));
+    const inp=document.getElementById('fillInput');inp.classList.add(correct?'correct':'wrong');inp.disabled=true;
+    fb.className='feedback-msg '+(correct?'ok':'err');fb.innerHTML=correct?'&#x2713; Corretto!':'&#x2717; Risposta corretta: <strong>'+ex.a+'</strong>';
+  } else if(ex.type==='mc'){
+    if(selectedMC==-1){exChecked=false;return;}
+    correct=norm(selectedMC)===norm(ex.a);
+    document.querySelectorAll('.mc-option').forEach(b=>{const isC=norm(b.textContent)===norm(ex.a);if(isC)b.classList.add('correct');else if(b.classList.contains('selected')&&!isC)b.classList.add('wrong');b.style.pointerEvents='none';});
+    fb.className='feedback-msg '+(correct?'ok':'err');fb.innerHTML=correct?'&#x2713; Corretto!':'&#x2717; Risposta corretta: <strong>'+ex.a+'</strong>';
+  } else if(ex.type==='reorder'){
+    const given=reorderWords.map(w=>w.word).join(' ');const _acc=(ex.accept||[ex.answer]).map(norm);correct=_acc.includes(norm(given));
+    const area=document.getElementById('answerArea');area.classList.add(correct?'correct':'wrong');
+    fb.className='feedback-msg '+(correct?'ok':'err');fb.innerHTML=correct?'&#x2713; Corretto!':'&#x2717; Risposta corretta: <strong>'+ex.answer+'</strong>';
+  }
+  if(correct){okCount++;if(card){card.classList.add('flash-correct');setTimeout(()=>card.classList.remove('flash-correct'),500);}burstAt(card,'#00ff88');}
+  else{badCount++;retryQueue.push(ex);if(!isRetry)recordError(ex._key);if(card){card.classList.add('flash-wrong');setTimeout(()=>card.classList.remove('flash-wrong'),400);}}
+  document.getElementById('hudOk').innerHTML=`&#x2713; ${okCount}`;document.getElementById('hudBad').innerHTML=`&#x2717; ${badCount}`;
+  document.getElementById('checkBtn').style.display='none';document.getElementById('nextBtn').style.display='inline-block';
+}
+
+function nextExercise(){
+  exIdx++;
+  if(exIdx>=exQueue.length){if(retryQueue.length>0){exQueue=shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();}
+  else renderExercise();
+}
+
+function showExResults(){
+  const total=exQueue.length,pct=Math.round((okCount/total)*100),passed=pct>=80;
+  if(passed){state[currentLevel.id]='completed';unlockNext(currentLevel.id);saveState();setTimeout(()=>{for(let i=0;i<6;i++)setTimeout(()=>spawnBurst(Math.random()*innerWidth,Math.random()*innerHeight*0.5,['#00f0ff','#00ff88','#ffcc00','#cc77ff'][i%4],22),i*200);},100);}
+  const btnHtml=passed?`<button class="btn btn-green" onclick="goMap()">&larr; MAPPA</button>`:`<button class="btn btn-primary" onclick="retryLevel()">&#x21BA; RIPROVA</button><button class="btn btn-secondary" onclick="goMap()">&larr; MAPPA</button>`;
+  document.getElementById('screen-results').innerHTML=`<div class="results-card"><div class="res-pct ${passed?'pass':'fail'}">${pct}%</div><div class="res-label ${passed?'pass':'fail'}">${passed?'&#x2713; LEVEL COMPLETED!':'&#x2717; TRY AGAIN'}</div><div class="res-threshold">soglia: 80% &middot; ${okCount}/${total} corretti</div><div class="res-breakdown"><div class="rb-item"><div class="rb-num g">${okCount}</div><div class="rb-label">CORRETTI</div></div><div class="rb-item"><div class="rb-num r">${badCount}</div><div class="rb-label">ERRORI</div></div></div><div class="action-bar" style="justify-content:center;margin-top:24px">${btnHtml}</div></div>`;
+  showScreen('results');
+}
+
+function retryLevel(){openLevel(currentLevel);}
+function confirmReset(){document.getElementById('resetModal').style.display='flex';}
+function closeModal(){document.getElementById('resetModal').style.display='none';}
+function doReset(){localStorage.removeItem(SK);localStorage.removeItem(EK);state={};errorMap={};closeModal();loadState();goMap();updateSaveCode();}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(`screen-${id}`).classList.add('active');}
+function goMap(){renderMap();showScreen('map');}
+loadState();renderMap();
+
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Enter')return;
+  var rm=document.getElementById('resetModal'); if(rm&&rm.style.display==='flex')return;
+  var sc=document.getElementById('screen-exercise'); if(!sc||!sc.classList.contains('active'))return;
+  e.preventDefault();
+  var nb=document.getElementById('nextBtn'), cb=document.getElementById('checkBtn');
+  if(nb&&nb.style.display!=='none')nextExercise();
+  else if(cb&&cb.style.display!=='none')checkExercise();
+});
+
+</script>
+</body>
+</html>
