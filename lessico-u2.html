@@ -164,6 +164,7 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
 .btn-save:hover{background:rgba(0,180,255,0.28);border-color:var(--cyan);}
 .btn-save-sm{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.07);color:var(--text-dim);cursor:pointer;transition:all 0.2s;}
 </style>
+<script src="https://cristinavallini64-maker.github.io/grammar-tutor/tracker.js"></script>
 </head>
 <body>
 <canvas id="starCanvas"></canvas>
@@ -510,7 +511,7 @@ exercises:[
 ];
 
 // ─── ENGINE ──────────────────────────────────────────────────────────────────
-let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,isRetry=false,retryQueue=[],selectedMC=-1;
+let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,isRetry=false,retryQueue=[],selectedMC=-1,_firstTotal=0,_firstDone=false;
 
 function norm(s){s=String(s).trim().toLowerCase().replace(/[''`]/g,"'").replace(/[.,!?;:]/g,'').replace(/\s+/g,' ');s=s.replace(/\bi am\b/g,"i'm").replace(/\bshe is\b/g,"she's").replace(/\bhe is\b/g,"he's").replace(/\bit is\b/g,"it's").replace(/\bthey are\b/g,"they're").replace(/\bwe are\b/g,"we're").replace(/\byou are\b/g,"you're").replace(/\bis not\b/g,"isn't").replace(/\bare not\b/g,"aren't").replace(/\bdo not\b/g,"don't").replace(/\bdoes not\b/g,"doesn't").replace(/\bcannot\b/g,"can't");return s;}
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
@@ -585,7 +586,7 @@ function renderMap(){
 function openLevel(s){
   currentLevel=s;let exs=buildExercises(s);
   if(s.type==='difficult'&&!exs.length){state[s.id]='completed';unlockNext(s.id);saveState();goMap();return;}
-  exQueue=shuffle(exs);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=false;
+  exQueue=shuffle(exs);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=false;_firstTotal=exQueue.length;_firstDone=false;
   document.getElementById('exTitle').textContent=currentLevel.title;
   showScreen('exercise');renderExercise();
 }
@@ -637,7 +638,7 @@ function checkExercise(){
 
 function nextExercise(){
   exIdx++;
-  if(exIdx>=exQueue.length){if(retryQueue.length>0){exQueue=shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();}
+  if(exIdx>=exQueue.length){if(!isRetry&&!_firstDone){_firstDone=true;var _fp=_firstTotal>0?Math.round((okCount/_firstTotal)*100):0;if(window.EFTrack)EFTrack.event('punteggio:'+currentLevel.title,_fp);}if(retryQueue.length>0){exQueue=shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();}
   else renderExercise();
 }
 
