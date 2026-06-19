@@ -196,6 +196,7 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
 .word-box{background:rgba(0,240,255,0.07);border:1px solid rgba(0,240,255,0.3);border-radius:var(--radius-sm);padding:10px 16px;margin-bottom:14px;font-size:15px;font-weight:600;color:var(--cyan);letter-spacing:0.5px;}
 .word-box span{color:var(--text-muted);font-size:12px;letter-spacing:2px;font-family:'Orbitron',monospace;display:block;margin-bottom:6px;}
 </style>
+<script src="https://cristinavallini64-maker.github.io/grammar-tutor/tracker.js"></script>
 </head>
 <body>
 <canvas id="starCanvas"></canvas>
@@ -433,7 +434,7 @@ function renderMap(){
   updateSaveCode();
 }
 
-let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,selectedMC=-1,reorderWords=[],retryQueue=[],isRetry=false;
+let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,selectedMC=-1,reorderWords=[],retryQueue=[],isRetry=false,_firstTotal=0,_firstDone=false;
 
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
@@ -442,7 +443,7 @@ function openLevel(s){
   if(s.type==='study'||s.type==='challenging'){exs=s.exercises.map((e,i)=>({...e,_key:`${s.id}_${i}`}));}
   else if(s.type==='revision'){if(s.exercises){exs=s.exercises.map((e,i)=>({...e,_key:`${s.id}_${i}`}));}else{exs=[];(s.revises||[]).forEach(id=>{const sec=LEVELS.find(x=>x.id===id);if(sec&&sec.exercises)exs=exs.concat(sec.exercises.map((e,i)=>({...e,_key:`${id}_${i}`})));});exs=shuffle(exs).slice(0,Math.min(exs.length,18));}}
   else if(s.type==='difficult'){const keys=getErrors(s.revises||[]);exs=[];keys.forEach(k=>{const parts=k.split('_');const sid=isNaN(parts[0])?parts[0]:parseInt(parts[0]);const idx=parseInt(parts[1]);const sec=LEVELS.find(x=>x.id===sid);if(sec&&sec.exercises&&sec.exercises[idx])exs.push({...sec.exercises[idx],_key:k});});if(exs.length===0){state[s.id]='completed';saveState();renderMap();return;}exs=shuffle(exs);}
-  exQueue=shuffle(exs);retryQueue=[];exIdx=0;okCount=0;badCount=0;
+  exQueue=shuffle(exs);retryQueue=[];exIdx=0;okCount=0;badCount=0;_firstTotal=exQueue.length;_firstDone=false;
   document.getElementById('exTitle').textContent=s.title;
   showScreen('exercise');renderExercise();
 }
@@ -513,7 +514,7 @@ function checkExercise(){
 
 function nextExercise(){
   exIdx++;
-  if(exIdx>=exQueue.length){if(retryQueue.length>0){exQueue=shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();}
+  if(exIdx>=exQueue.length){if(!isRetry&&!_firstDone){_firstDone=true;var _fp=_firstTotal>0?Math.round((okCount/_firstTotal)*100):0;if(window.EFTrack)EFTrack.event('punteggio:'+currentLevel.title,_fp);}if(retryQueue.length>0){exQueue=shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();}
   else renderExercise();
 }
 

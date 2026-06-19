@@ -182,6 +182,7 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
 .btn-save-sm:hover{border-color:rgba(255,255,255,0.45);color:#fff;}
 .wb-sol{margin-top:6px;}.wb-sol div{margin:3px 0;}
 </style>
+<script src="https://cristinavallini64-maker.github.io/grammar-tutor/tracker.js"></script>
 </head>
 <body>
 <canvas id="starCanvas"></canvas>
@@ -602,13 +603,13 @@ function renderMap(){
     list.appendChild(card);
   });
 }
-let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,isRetry=false,retryQueue=[],selectedMC=-1,reorderWords=[];
+let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,isRetry=false,retryQueue=[],selectedMC=-1,reorderWords=[],_firstTotal=0,_firstDone=false;
 function openLevel(s){
   currentLevel=s;let exs;
   if(s.type==='study'){exs=s.exercises.map((e,i)=>({...e,_key:`${s.id}_${i}`}));}
   else if(s.type==='revision'){if(s.exercises){exs=s.exercises.map((e,i)=>({...e,_key:`${s.id}_${i}`}));}else{exs=[];s.revises.forEach(id=>{const sec=LEVELS.find(x=>x.id===id);if(sec&&sec.exercises)exs=exs.concat(sec.exercises.map((e,i)=>({...e,_key:`${id}_${i}`})));});exs=shuffle(exs).slice(0,Math.min(exs.length,16));}}
   else{exs=getErrors(s.revises);if(!exs.length){state[s.id]='completed';unlockNext(s.id);saveState();goMap();return;}}
-  exQueue=shuffle(exs);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=false;
+  exQueue=shuffle(exs);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=false;_firstTotal=exQueue.length;_firstDone=false;
   document.getElementById('exTitle').textContent=currentLevel.title;
   showScreen('exercise');renderExercise();
 }
@@ -683,7 +684,7 @@ function checkExercise(){
 }
 function nextExercise(){
   exIdx++;
-  if(exIdx>=exQueue.length){if(retryQueue.length>0){exQueue=shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();}
+  if(exIdx>=exQueue.length){if(!isRetry&&!_firstDone){_firstDone=true;var _fp=_firstTotal>0?Math.round((okCount/_firstTotal)*100):0;if(window.EFTrack)EFTrack.event('punteggio:'+currentLevel.title,_fp);}if(retryQueue.length>0){exQueue=shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();}
   else renderExercise();
 }
 function showExResults(){
