@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Framework — Monitoraggio accessi</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a1628; --panel:rgba(255,255,255,0.05); --panel-2:rgba(255,255,255,0.08);
+  --border:rgba(255,255,255,0.14); --text:#ffffff; --dim:rgba(255,255,255,0.72);
+  --muted:rgba(255,255,255,0.42); --cyan:#00f0ff; --green:#00ff88; --gold:#ffcc00;
+  --red:#ff4d6d; --radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  min-height:100vh; color:var(--text); font-family:'Rajdhani',sans-serif; font-size:16px;
+  background:linear-gradient(160deg,#060d1e 0%,#0e1a3a 45%,#0a1226 100%); padding:0;
+}
+a{color:var(--cyan);}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 20px 60px;}
+
+/* ---- header ---- */
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:8px;}
+.brand h1{font-family:'Orbitron',sans-serif;font-weight:900;font-size:24px;letter-spacing:3px;
+  background:linear-gradient(135deg,#00f0ff,#ffffff 60%,#00ff88);-webkit-background-clip:text;
+  background-clip:text;-webkit-text-fill-color:transparent;}
+.brand p{color:var(--muted);font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+.hdr-actions{display:flex;gap:10px;align-items:center;}
+.btn{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;letter-spacing:.5px;
+  padding:9px 16px;border-radius:10px;border:1px solid var(--border);background:var(--panel-2);
+  color:var(--text);cursor:pointer;transition:all .2s;}
+.btn:hover{border-color:var(--cyan);color:var(--cyan);}
+.btn.ghost{background:transparent;}
+.divider{height:2px;border-radius:2px;margin:14px 0 22px;
+  background:linear-gradient(90deg,var(--cyan),transparent 70%);opacity:.7;}
+
+/* ---- login gate ---- */
+.gate{max-width:380px;margin:14vh auto 0;background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--radius);padding:30px 26px;backdrop-filter:blur(12px);}
+.gate h2{font-family:'Orbitron',sans-serif;font-size:16px;letter-spacing:2px;margin-bottom:6px;}
+.gate p{color:var(--dim);font-size:14px;margin-bottom:18px;}
+.field{display:flex;flex-direction:column;gap:8px;}
+input[type=password],input[type=text]{font-family:'Rajdhani',sans-serif;font-size:16px;
+  padding:11px 14px;border-radius:10px;border:1px solid var(--border);
+  background:rgba(0,0,0,.35);color:var(--text);outline:none;}
+input:focus{border-color:var(--cyan);}
+.btn.primary{background:var(--cyan);color:#04121f;border-color:var(--cyan);font-weight:700;}
+.btn.primary:hover{background:#fff;color:#04121f;}
+.gate .btn.primary{width:100%;margin-top:16px;padding:12px;}
+.err{color:var(--red);font-size:14px;margin-top:12px;min-height:1.1em;}
+
+/* ---- stats ---- */
+.stats{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:22px;}
+.stat{flex:1;min-width:150px;background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--radius);padding:16px 18px;}
+.stat .n{font-family:'Orbitron',sans-serif;font-weight:700;font-size:28px;color:var(--cyan);}
+.stat .l{color:var(--muted);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+
+/* ---- search ---- */
+.toolbar{display:flex;gap:12px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+.toolbar input{flex:1;min-width:220px;}
+.count{color:var(--muted);font-size:13px;}
+
+/* ---- table ---- */
+.tbl{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;}
+.tbl th{font-family:'Orbitron',sans-serif;font-weight:600;font-size:11px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--muted);text-align:left;padding:13px 16px;
+  border-bottom:1px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap;}
+.tbl th:hover{color:var(--cyan);}
+.tbl th.sorted::after{content:' \25BC';font-size:9px;}
+.tbl th.sorted.asc::after{content:' \25B2';}
+.tbl td{padding:13px 16px;border-bottom:1px solid rgba(255,255,255,.06);font-size:15px;}
+.row-main{cursor:pointer;transition:background .15s;}
+.row-main:hover{background:rgba(0,240,255,.05);}
+.email{font-weight:600;}
+.email .caret{color:var(--muted);margin-right:8px;font-size:11px;display:inline-block;width:10px;transition:transform .2s;}
+.row-main.open .caret{transform:rotate(90deg);color:var(--cyan);}
+.num{font-variant-numeric:tabular-nums;}
+.muted{color:var(--muted);}
+.detail td{padding:0;border-bottom:1px solid rgba(255,255,255,.06);}
+.detail-inner{padding:6px 16px 14px 42px;}
+.subtbl{width:100%;border-collapse:collapse;}
+.subtbl th{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;
+  text-align:left;padding:8px 12px;font-family:'Orbitron',sans-serif;font-weight:600;cursor:default;}
+.subtbl th:hover{color:var(--muted);}
+.subtbl td{padding:8px 12px;font-size:14px;border-bottom:1px solid rgba(255,255,255,.05);}
+.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:700;}
+.pill.good{background:rgba(0,255,136,.15);color:var(--green);}
+.pill.mid{background:rgba(255,204,0,.15);color:var(--gold);}
+.pill.low{background:rgba(255,77,109,.15);color:var(--red);}
+.pill.none{background:rgba(255,255,255,.08);color:var(--muted);}
+
+.empty{text-align:center;color:var(--dim);padding:50px 20px;background:var(--panel);
+  border:1px solid var(--border);border-radius:var(--radius);}
+.empty strong{display:block;font-family:'Orbitron',sans-serif;font-size:15px;letter-spacing:1px;margin-bottom:8px;color:var(--text);}
+
+@media(max-width:600px){
+  .tbl .hide-sm{display:none;}
+  .stat .n{font-size:22px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- LOGIN -->
+  <div id="gate" class="gate">
+    <h2>Monitoraggio accessi</h2>
+    <p>Inserisci la password per vedere i dati.</p>
+    <div class="field">
+      <input id="pw" type="password" placeholder="Password" autocomplete="current-password">
+    </div>
+    <button class="btn primary" onclick="login()">Apri</button>
+    <div id="gateErr" class="err"></div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="app" style="display:none;">
+    <header>
+      <div class="brand">
+        <h1>ENGLISH FRAMEWORK</h1>
+        <p>Monitoraggio accessi studenti</p>
+      </div>
+      <div class="hdr-actions">
+        <button class="btn ghost" onclick="reload()">&#x21BB; Aggiorna</button>
+        <button class="btn ghost" onclick="logout()">Esci</button>
+      </div>
+    </header>
+    <div class="divider"></div>
+
+    <div class="stats">
+      <div class="stat"><div class="n" id="stStudents">0</div><div class="l">Studenti</div></div>
+      <div class="stat"><div class="n" id="stOpens">0</div><div class="l">Aperture totali</div></div>
+      <div class="stat"><div class="n" id="stTime">0</div><div class="l">Tempo totale</div></div>
+    </div>
+
+    <div class="toolbar">
+      <input id="search" type="text" placeholder="Cerca uno studente per email..." oninput="render()">
+      <span class="count" id="count"></span>
+    </div>
+
+    <div id="tableHost"></div>
+  </div>
+
+</div>
+
+<script>
+const WORKER_URL = "https://tracker.cristinavallini64.workers.dev";
+let PW = null;
+let DATA = { byStudent: [], byPage: [] };
+let sortKey = "last_seen", sortAsc = false;
+const openRows = new Set();
+
+function login(){
+  const pw = document.getElementById('pw').value.trim();
+  if(!pw){ document.getElementById('gateErr').textContent = "Scrivi la password."; return; }
+  PW = pw;
+  fetchData(true);
+}
+function logout(){
+  PW = null; DATA = { byStudent:[], byPage:[] }; openRows.clear();
+  document.getElementById('app').style.display = "none";
+  document.getElementById('gate').style.display = "block";
+  document.getElementById('pw').value = "";
+}
+function reload(){ fetchData(false); }
+
+function fetchData(fromGate){
+  fetch(WORKER_URL + "/report?key=" + encodeURIComponent(PW))
+    .then(r => r.json())
+    .then(d => {
+      if(!d || !d.ok){
+        const msg = (d && d.error) || "Errore.";
+        if(fromGate){ document.getElementById('gateErr').textContent = msg; PW = null; }
+        else alert(msg);
+        return;
+      }
+      DATA = { byStudent: d.byStudent || [], byPage: d.byPage || [] };
+      document.getElementById('gate').style.display = "none";
+      document.getElementById('app').style.display = "block";
+      render();
+    })
+    .catch(() => {
+      const msg = "Impossibile contattare il server. Controlla la connessione.";
+      if(fromGate){ document.getElementById('gateErr').textContent = msg; PW = null; }
+      else alert(msg);
+    });
+}
+
+/* --- helpers --- */
+function fmtTime(sec){
+  sec = Math.round(sec || 0);
+  if(sec < 60) return sec + "s";
+  if(sec < 3600) return Math.floor(sec/60) + "m " + (sec%60) + "s";
+  const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60);
+  return h + "h " + m + "m";
+}
+function fmtDate(s){
+  if(!s) return "—";
+  const d = new Date(s.replace(" ","T") + "Z");      // il DB salva in UTC
+  if(isNaN(d)) return s;
+  return d.toLocaleString("it-IT",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
+}
+function scorePill(v){
+  if(v === null || v === undefined) return '<span class="pill none">—</span>';
+  const cls = v >= 80 ? "good" : v >= 60 ? "mid" : "low";
+  return '<span class="pill '+cls+'">'+Math.round(v)+'%</span>';
+}
+function setSort(k){
+  if(sortKey === k) sortAsc = !sortAsc;
+  else { sortKey = k; sortAsc = (k === "email"); }
+  render();
+}
+
+function render(){
+  const q = (document.getElementById('search').value || "").toLowerCase().trim();
+  let rows = DATA.byStudent.slice();
+  if(q) rows = rows.filter(r => (r.email||"").toLowerCase().includes(q));
+
+  rows.sort((a,b) => {
+    let x = a[sortKey], y = b[sortKey];
+    if(sortKey === "email" || sortKey === "last_seen"){ x = (x||""); y = (y||""); return sortAsc ? (x<y?-1:x>y?1:0) : (x>y?-1:x<y?1:0); }
+    x = +x||0; y = +y||0; return sortAsc ? x-y : y-x;
+  });
+
+  // stats (su tutti, non solo i filtrati)
+  const totOpens = DATA.byStudent.reduce((s,r)=>s+(+r.opens||0),0);
+  const totSec   = DATA.byStudent.reduce((s,r)=>s+(+r.seconds||0),0);
+  document.getElementById('stStudents').textContent = DATA.byStudent.length;
+  document.getElementById('stOpens').textContent = totOpens;
+  document.getElementById('stTime').textContent = fmtTime(totSec);
+  document.getElementById('count').textContent = rows.length + " studenti mostrati";
+
+  const host = document.getElementById('tableHost');
+
+  if(DATA.byStudent.length === 0){
+    host.innerHTML = '<div class="empty"><strong>Nessun accesso ancora registrato</strong>I dati compariranno qui non appena gli studenti accederanno alle pagine.</div>';
+    return;
+  }
+
+  const arrow = k => 'class="'+(sortKey===k?'sorted '+(sortAsc?'asc':''):'')+'" onclick="setSort(\''+k+'\')"';
+
+  let html = '<table class="tbl"><thead><tr>'+
+    '<th '+arrow('email')+'>Studente</th>'+
+    '<th '+arrow('opens')+'>Aperture</th>'+
+    '<th class="hide-sm" '+arrow('seconds')+'>Tempo</th>'+
+    '<th '+arrow('last_seen')+'>Ultimo accesso</th>'+
+    '</tr></thead><tbody>';
+
+  rows.forEach(r => {
+    const isOpen = openRows.has(r.email);
+    html += '<tr class="row-main'+(isOpen?' open':'')+'" onclick="toggle(\''+escAttr(r.email)+'\')">'+
+      '<td class="email"><span class="caret">&#9654;</span>'+esc(r.email)+'</td>'+
+      '<td class="num">'+(r.opens||0)+'</td>'+
+      '<td class="num hide-sm">'+fmtTime(r.seconds)+'</td>'+
+      '<td class="muted">'+fmtDate(r.last_seen)+'</td>'+
+      '</tr>';
+    if(isOpen) html += detailRow(r.email);
+  });
+  html += '</tbody></table>';
+  host.innerHTML = html;
+}
+
+function detailRow(email){
+  const pages = DATA.byPage.filter(p => p.email === email)
+    .sort((a,b)=>(+b.opens||0)-(+a.opens||0));
+  let inner = '<table class="subtbl"><thead><tr><th>Pagina</th><th>Aperture</th><th>Tempo</th><th>Miglior punteggio</th><th>Ultimo accesso</th></tr></thead><tbody>';
+  if(pages.length === 0){
+    inner += '<tr><td colspan="5" class="muted">Nessun dettaglio.</td></tr>';
+  } else {
+    pages.forEach(p => {
+      inner += '<tr>'+
+        '<td>'+esc((p.page||"").replace(/\.html$/,""))+'</td>'+
+        '<td class="num">'+(p.opens||0)+'</td>'+
+        '<td class="num">'+fmtTime(p.seconds)+'</td>'+
+        '<td>'+scorePill(p.best_score)+'</td>'+
+        '<td class="muted">'+fmtDate(p.last_seen)+'</td>'+
+        '</tr>';
+    });
+  }
+  inner += '</tbody></table>';
+  return '<tr class="detail"><td colspan="4"><div class="detail-inner">'+inner+'</div></td></tr>';
+}
+
+function toggle(email){
+  if(openRows.has(email)) openRows.delete(email); else openRows.add(email);
+  render();
+}
+
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function escAttr(s){ return esc(s).replace(/'/g,"\\'"); }
+
+/* Invio per accedere */
+document.getElementById('pw').addEventListener('keydown', e => { if(e.key === 'Enter') login(); });
+</script>
+</body>
+</html>
