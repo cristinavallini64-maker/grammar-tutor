@@ -175,6 +175,7 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
 .btn-save-sm{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.07);color:var(--text-dim);cursor:pointer;transition:all 0.2s;}
 .btn-save-sm:hover{border-color:rgba(255,255,255,0.45);color:#fff;}
 </style>
+<script src="https://cristinavallini64-maker.github.io/grammar-tutor/tracker.js"></script>
 </head>
 <body>
 <canvas id="starCanvas"></canvas>
@@ -600,7 +601,7 @@ function unlockNext(doneId){
   saveState();
 }
 
-let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,selectedMC=-1,reorderWords=[],retryQueue=[],isRetry=false;
+let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,selectedMC=-1,reorderWords=[],retryQueue=[],isRetry=false,_firstTotal=0,_firstDone=false;
 
 function openLevel(lv){
   currentLevel=lv;isRetry=false;
@@ -616,7 +617,7 @@ function openLevel(lv){
     exercises=shuffle(exercises);
   }
   exercises=exercises.map((e,i)=>({...e,_key:e._key||`${lv.id}_${i}`}));
-  exQueue=exercises;exIdx=0;okCount=0;badCount=0;retryQueue=[];exChecked=false;selectedMC=-1;reorderWords=[];
+  exQueue=exercises;exIdx=0;okCount=0;badCount=0;retryQueue=[];exChecked=false;selectedMC=-1;reorderWords=[];_firstTotal=exQueue.length;_firstDone=false;
   document.getElementById('exTitle').textContent=lv.title;
   updateHUD();renderExercise();showScreen('exercise');
 }
@@ -703,7 +704,7 @@ function checkExercise(){
 }
 function nextExercise(){
   exIdx++;
-  if(exIdx>=exQueue.length){if(retryQueue.length>0){exQueue=shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();}
+  if(exIdx>=exQueue.length){if(!isRetry&&!_firstDone){_firstDone=true;var _fp=_firstTotal>0?Math.round((okCount/_firstTotal)*100):0;if(window.EFTrack)EFTrack.event('punteggio:'+currentLevel.title,_fp);}if(retryQueue.length>0){exQueue=shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();}
   else renderExercise();
 }
 function showExResults(){

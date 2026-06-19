@@ -172,6 +172,7 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
 .btn-save-sm{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.07);color:var(--text-dim);cursor:pointer;transition:all 0.2s;}
 .btn-save-sm:hover{border-color:rgba(255,255,255,0.45);color:#fff;}
 </style>
+<script src="https://cristinavallini64-maker.github.io/grammar-tutor/tracker.js"></script>
 </head>
 <body>
 <canvas id="starCanvas"></canvas>
@@ -513,14 +514,14 @@ function updateOverallXP(){
   document.getElementById('overallText').textContent=`${done}/${total}`;
 }
 function unlockNext(doneId){saveState();}
-let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,selectedMC=-1,reorderWords=[],retryQueue=[],isRetry=false;
+let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,selectedMC=-1,reorderWords=[],retryQueue=[],isRetry=false,_firstTotal=0,_firstDone=false;
 function openLevel(lv){
   currentLevel=lv;isRetry=false;let exercises=[];
   if(lv.type==='study'){exercises=lv.exercises||[];}
   else if(lv.type==='revision'){LEVELS.forEach(l=>{if(l.exercises&&lv.revises.includes(l.id))exercises=[...exercises,...l.exercises.map(e=>({...e,_key:`${l.id}_${l.exercises.indexOf(e)}`}))];});exercises=shuffle(exercises).slice(0,12);}
   else if(lv.type==='difficult'){exercises=getErrors(lv.revises);if(exercises.length===0){state[lv.id]='difficult-done';saveState();renderMap();return;}exercises=shuffle(exercises);}
   exercises=exercises.map((e,i)=>({...e,_key:e._key||`${lv.id}_${i}`}));
-  exQueue=exercises;exIdx=0;okCount=0;badCount=0;retryQueue=[];exChecked=false;selectedMC=-1;reorderWords=[];
+  exQueue=exercises;exIdx=0;okCount=0;badCount=0;retryQueue=[];exChecked=false;selectedMC=-1;reorderWords=[];_firstTotal=exQueue.length;_firstDone=false;
   document.getElementById('exTitle').textContent=lv.title;
   updateHUD();renderExercise();showScreen('exercise');
 }
@@ -581,7 +582,7 @@ function checkExercise(){
   document.getElementById('hudOk').innerHTML=`✓ ${okCount}`;document.getElementById('hudBad').innerHTML=`✗ ${badCount}`;
   document.getElementById('checkBtn').style.display='none';document.getElementById('nextBtn').style.display='inline-block';
 }
-function nextExercise(){exIdx++;if(exIdx>=exQueue.length){if(retryQueue.length>0){exQueue=shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();}else renderExercise();}
+function nextExercise(){exIdx++;if(exIdx>=exQueue.length){if(!isRetry&&!_firstDone){_firstDone=true;var _fp=_firstTotal>0?Math.round((okCount/_firstTotal)*100):0;if(window.EFTrack)EFTrack.event('punteggio:'+currentLevel.title,_fp);}if(retryQueue.length>0){exQueue=shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();}else renderExercise();}
 function showExResults(){
   const total=exQueue.length,pct=Math.round((okCount/total)*100),passed=pct>=80;
   if(passed){state[currentLevel.id]=currentLevel.type==='revision'?'revision-done':currentLevel.type==='difficult'?'difficult-done':'completed';unlockNext(currentLevel.id);saveState();setTimeout(()=>{for(let i=0;i<6;i++)setTimeout(()=>spawnBurst(Math.random()*innerWidth,Math.random()*innerHeight*0.5,['#00f0ff','#00ff88','#ffcc00','#cc77ff'][i%4],22),i*200);},100);}
