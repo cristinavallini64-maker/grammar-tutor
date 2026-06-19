@@ -594,13 +594,13 @@ function renderMap(){
     list.appendChild(card);
   });
 }
-let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,isRetry=false,retryQueue=[],selectedMC=-1,reorderWords=[];
+let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,isRetry=false,retryQueue=[],selectedMC=-1,reorderWords=[],_firstTotal=0,_firstDone=false;
 function openLevel(s){
   currentLevel=s;let exs;
   if(s.type==='study'){exs=s.exercises.map((e,i)=>({...e,_key:`${s.id}_${i}`}));}
   else if(s.type==='revision'){if(s.exercises){exs=s.exercises.map((e,i)=>({...e,_key:`${s.id}_${i}`}));}else{exs=[];(s.revises||[]).forEach(id=>{const sec=LEVELS.find(x=>x.id===id);if(sec&&sec.exercises)exs=exs.concat(sec.exercises.map((e,i)=>({...e,_key:`${id}_${i}`})));});exs=shuffle(exs).slice(0,Math.min(exs.length,16));}}
   else{exs=getErrors(s.revises||[]);if(!exs.length){state[s.id]='completed';unlockNext(s.id);saveState();goMap();return;}}
-  exQueue=shuffle(exs);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=false;
+  exQueue=shuffle(exs);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=false;_firstTotal=exQueue.length;_firstDone=false;
   document.getElementById('exTitle').textContent=currentLevel.title;
   showScreen('exercise');renderExercise();
 }
@@ -692,12 +692,18 @@ function checkExercise(){
 }
 function nextExercise(){
   exIdx++;_mcVal='';
-  if(exIdx>=exQueue.length){if(retryQueue.length>0){exQueue=shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();}
+  if(exIdx>=exQueue.length){
+    if(!isRetry&&!_firstDone){
+      _firstDone=true;
+      const fp=_firstTotal>0?Math.round((okCount/_firstTotal)*100):0;
+      if(window.EFTrack)EFTrack.event('punteggio:'+currentLevel.title, fp);
+    }
+    if(retryQueue.length>0){exQueue=shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();
+  }
   else renderExercise();
 }
 function showExResults(){
   const total=exQueue.length,pct=Math.round((okCount/total)*100),passed=pct>=80;
-  if(window.EFTrack)EFTrack.event('punteggio:'+currentLevel.id, pct);
   if(passed){state[currentLevel.id]='completed';unlockNext(currentLevel.id);saveState();setTimeout(()=>{for(let i=0;i<6;i++)setTimeout(()=>spawnBurst(Math.random()*innerWidth,Math.random()*innerHeight*0.5,['#00f0ff','#00ff88','#ffcc00','#cc77ff'][i%4],22),i*200);},100);}
   const btnHtml=passed?`<button class="btn btn-green" onclick="goMap()">&larr; MAPPA</button>`:`<button class="btn btn-primary" onclick="retryLevel()">&#x21BA; RIPROVA</button><button class="btn btn-secondary" onclick="goMap()">&larr; MAPPA</button>`;
   document.getElementById('screen-results').innerHTML=`<div class="results-card"><div class="res-pct ${passed?'pass':'fail'}">${pct}%</div><div class="res-label ${passed?'pass':'fail'}">${passed?'&#x2713; LEVEL COMPLETED!':'&#x2717; TRY AGAIN'}</div><div class="res-threshold">soglia: 80% &middot; ${okCount}/${total} corretti</div><div class="res-breakdown"><div class="rb-item"><div class="rb-num g">${okCount}</div><div class="rb-label">CORRETTI</div></div><div class="rb-item"><div class="rb-num r">${badCount}</div><div class="rb-label">ERRORI</div></div></div><div class="action-bar" style="justify-content:center;margin-top:24px">${btnHtml}</div></div>`;

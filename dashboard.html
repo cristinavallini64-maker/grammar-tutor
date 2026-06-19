@@ -91,6 +91,8 @@ input:focus{border-color:var(--cyan);}
 .pill.mid{background:rgba(255,204,0,.15);color:var(--gold);}
 .pill.low{background:rgba(255,77,109,.15);color:var(--red);}
 .pill.none{background:rgba(255,255,255,.08);color:var(--muted);}
+.lvls{display:flex;flex-direction:column;gap:6px;}
+.lvl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dim);}
 
 .empty{text-align:center;color:var(--dim);padding:50px 20px;background:var(--panel);
   border:1px solid var(--border);border-radius:var(--radius);}
@@ -149,7 +151,7 @@ input:focus{border-color:var(--cyan);}
 <script>
 const WORKER_URL = "https://tracker.cristinavallini64.workers.dev";
 let PW = null;
-let DATA = { byStudent: [], byPage: [] };
+let DATA = { byStudent: [], byPage: [], byLevel: [] };
 let sortKey = "last_seen", sortAsc = false;
 const openRows = new Set();
 
@@ -177,7 +179,7 @@ function fetchData(fromGate){
         else alert(msg);
         return;
       }
-      DATA = { byStudent: d.byStudent || [], byPage: d.byPage || [] };
+      DATA = { byStudent: d.byStudent || [], byPage: d.byPage || [], byLevel: d.byLevel || [] };
       document.getElementById('gate').style.display = "none";
       document.getElementById('app').style.display = "block";
       render();
@@ -266,16 +268,25 @@ function render(){
 function detailRow(email){
   const pages = DATA.byPage.filter(p => p.email === email)
     .sort((a,b)=>(+b.opens||0)-(+a.opens||0));
-  let inner = '<table class="subtbl"><thead><tr><th>Pagina</th><th>Aperture</th><th>Tempo</th><th>Miglior punteggio</th><th>Ultimo accesso</th></tr></thead><tbody>';
+  let inner = '<table class="subtbl"><thead><tr><th>Pagina</th><th>Aperture</th><th>Tempo</th><th>Punteggi 1\u00b0 tentativo (per livello)</th><th>Ultimo accesso</th></tr></thead><tbody>';
   if(pages.length === 0){
     inner += '<tr><td colspan="5" class="muted">Nessun dettaglio.</td></tr>';
   } else {
     pages.forEach(p => {
+      const levels = DATA.byLevel.filter(l => l.email === email && l.page === p.page);
+      let scoreCell;
+      if(levels.length === 0){
+        scoreCell = '<span class="muted">—</span>';
+      } else {
+        scoreCell = '<div class="lvls">' + levels.map(l =>
+          '<span class="lvl">'+esc(l.level)+' '+scorePill(l.score)+'</span>'
+        ).join('') + '</div>';
+      }
       inner += '<tr>'+
         '<td>'+esc((p.page||"").replace(/\.html$/,""))+'</td>'+
         '<td class="num">'+(p.opens||0)+'</td>'+
         '<td class="num">'+fmtTime(p.seconds)+'</td>'+
-        '<td>'+scorePill(p.best_score)+'</td>'+
+        '<td>'+scoreCell+'</td>'+
         '<td class="muted">'+fmtDate(p.last_seen)+'</td>'+
         '</tr>';
     });
