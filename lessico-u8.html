@@ -226,12 +226,12 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
   </div>
 </div>
 <script>
-const SK='gq_lessico_abc_s',EK='gq_lessico_abc_e';
+const SK='gq_lessico_u8_v2_s',EK='gq_lessico_u8_v2_e';
 let state={},errorMap={};
 
 const LEVELS=[
 
-// ══ 1 · CLOTHES & FOOTWEAR ════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:1,type:'study',title:'LV1 · CLOTHES & FOOTWEAR',desc:'boots · coat · hoodie · joggers · jumper · leggings · sandals · tights · trainers · trousers · T-shirt...',
 exercises:[
  {type:'lv1',it:'stivali',en:'boots'},
@@ -270,10 +270,8 @@ exercises:[
  {type:'lv3',sentence:'In summer I usually wear ___ or ___ instead of trousers.',gap:'shorts / skirt',hint:'(shorts/skirt)',accept:['shorts / skirt','shorts/skirt','shorts','skirt']},
  {type:'lv3',sentence:'Don\'t forget your ___ — it\'s raining and you\'ll get your feet wet.',gap:'boots',hint:'(boots/trainers/shoes)',accept:['boots','shoes','trainers']},
 ]},
-{id:'r1',type:'revision',title:'⟳ RIPASSO 1',desc:'clothes & footwear · misto',revises:[1]},
-{id:'d1',type:'difficult',title:'★ BOSS 1',desc:'esercizi sbagliati ≥2 volte',revises:[1]},
 
-// ══ 2 · ACCESSORIES & MATERIALS ═══════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:2,type:'study',title:'LV2 · ACCESSORIES & MATERIALS',desc:'belt · bracelet · cap · earrings · gloves · necklace · scarf · sunglasses · tie · watch · cotton · denim · leather · silk · wool',
 exercises:[
  {type:'lv1',it:'borsa',en:'bag'},
@@ -308,10 +306,8 @@ exercises:[
  {type:'lv3',sentence:'My jeans are 100% ___ — classic blue fabric.',gap:'denim',hint:'(denim/cotton/leather)',accept:['denim','cotton']},
  {type:'lv3',sentence:'It\'s sunny — don\'t forget your ___!',gap:'sunglasses',hint:'(sunglasses/cap/hat)',accept:['sunglasses','cap','hat']},
 ]},
-{id:'r2',type:'revision',title:'⟳ RIPASSO 2',desc:'accessories · materials · misto',revises:[2]},
-{id:'d2',type:'difficult',title:'★ BOSS 2',desc:'esercizi sbagliati ≥2 volte',revises:[2]},
 
-// ══ 3 · ADJECTIVES FOR CLOTHES ════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:3,type:'study',title:'LV3 · ADJECTIVES FOR CLOTHES',desc:'baggy · casual · checked · designer · long-sleeved · patterned · plain · smart · spotty · stripy · tight · trendy · vintage...',
 exercises:[
  {type:'lv1',it:'largo / ampio (vestiti)',en:'baggy'},
@@ -347,10 +343,8 @@ exercises:[
  {type:'lv3',sentence:'You need to dress ___ for the interview — a suit or a jacket.',gap:'smart',hint:'(smart/casual/trendy)',accept:['smart']},
  {type:'lv3',sentence:'It\'s cold — wear a ___ shirt, not a sleeveless one.',gap:'long-sleeved',hint:'(long-sleeved/short-sleeved/baggy)',accept:['long-sleeved']},
 ]},
-{id:'r3',type:'revision',title:'⟳ RIPASSO 3',desc:'adjectives for clothes · misto',revises:[3]},
-{id:'d3',type:'difficult',title:'★ BOSS 3',desc:'esercizi sbagliati ≥2 volte',revises:[3]},
 
-// ══ 4 · SHOPPING VOCABULARY ═══════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:4,type:'study',title:'LV4 · SHOPPING VOCABULARY',desc:'changing rooms · discount · fit · return · sales · shop around · shop assistant · size · suit (v) · try on · home delivery...',
 exercises:[
  {type:'lv1',it:'camerini (negozio)',en:'changing rooms'},
@@ -384,10 +378,10 @@ exercises:[
  {type:'lv3',sentence:'The ___ rooms are at the back of the shop.',gap:'changing',hint:'(changing/fitting/trying)',accept:['changing','fitting']},
  {type:'lv3',sentence:'There\'s a 10% ___. So it\'s not £30, it\'s £27.',gap:'discount',hint:'(discount/sale/size)',accept:['discount']},
 ]},
-{id:'r4',type:'revision',title:'⟳ RIPASSO 4',desc:'shopping vocabulary · fit vs suit · misto',revises:[4]},
-{id:'d4',type:'difficult',title:'★ BOSS 4',desc:'esercizi sbagliati ≥2 volte',revises:[4]},
 
-// ══ 5 · WILL / WON'T ══════════════════════════════════════════════════
+{id:'rmid',type:'revision',title:'⟳ RIPASSO 1-4',desc:'ripasso cumulativo',revises:[1, 2, 3, 4]},
+
+// ══════════════════════════════════════════════════════════════════════
 {id:5,type:'study',title:'LV5 · WILL / WON\'T',desc:'previsione · decisione spontanea · fatto futuro · promessa · offerta · Yes, I will / Maybe / Probably / Definitely...',
 exercises:[
  {type:'lv1',it:'Penso che farà bello domani. (previsione)',en:'I think it will be sunny tomorrow.'},
@@ -412,10 +406,8 @@ exercises:[
  {type:'lv3',sentence:'Will you come to the party? — ___! I can\'t wait.',gap:'Definitely',hint:'(Definitely/Maybe/Probably)',accept:['Definitely']},
  {type:'lv3',sentence:'___ you be rich and successful one day?',gap:'Will',hint:'(Will/Do/Are)',accept:['Will']},
 ]},
-{id:'r5',type:'revision',title:'⟳ RIPASSO 5',desc:'will / won\'t · misto',revises:[5]},
-{id:'d5',type:'difficult',title:'★ BOSS 5',desc:'esercizi sbagliati ≥2 volte',revises:[5]},
 
-// ══ 6 · BE GOING TO ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:6,type:'study',title:'LV6 · BE GOING TO',desc:'intenzione · previsione su evidenza presente · qualcosa di imminente · differenza con will',
 exercises:[
  {type:'lv1',it:'Hai intenzione di andare alla festa? (intenzione)',en:'Are you going to go to the party?'},
@@ -430,10 +422,8 @@ exercises:[
  {type:'lv3',sentence:'The dog ___ eat the chicken — stop it!',gap:'is going to',hint:'(is going to/will/would)',accept:['is going to']},
  {type:'lv3',sentence:'We ___ see the new Marvel film on Saturday.',gap:'\'re going to',hint:'(\'re going to/will/would)',accept:["'re going to","are going to"]},
 ]},
-{id:'r6',type:'revision',title:'⟳ RIPASSO 6',desc:'be going to · differenza con will · misto',revises:[6]},
-{id:'d6',type:'difficult',title:'★ BOSS 6',desc:'esercizi sbagliati ≥2 volte',revises:[6]},
 
-// ══ 7 · ZERO & FIRST CONDITIONAL ══════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:7,type:'study',title:'LV7 · ZERO & FIRST CONDITIONAL',desc:'If/When + present + present (zero) · If/When + present + will/won\'t (first) · fatti sempre veri · situazioni possibili',
 exercises:[
  {type:'lv1',it:'Se hai un problema, dimmelo. (zero)',en:'If you have a problem, tell me.',accept:['If you have a problem, tell me','zero conditional']},
@@ -446,10 +436,8 @@ exercises:[
  {type:'lv3',sentence:'When you ___ sad films, you usually cry. (zero)',gap:'watch',hint:'(watch/will watch/watched)',accept:['watch']},
  {type:'lv3',sentence:'If it ___ hot this weekend, we\'ll go to the beach.',gap:'is',hint:'(is/will be/was)',accept:['is']},
 ]},
-{id:'r7',type:'revision',title:'⟳ RIPASSO 7',desc:'zero & first conditional · misto',revises:[7]},
-{id:'d7',type:'difficult',title:'★ BOSS 7',desc:'esercizi sbagliati ≥2 volte',revises:[7]},
 
-// ══ 8 · SHOPPING FOR CLOTHES & REAL TALK ══════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:8,type:'study',title:'LV8 · SHOPPING FOR CLOTHES & REAL TALK',desc:'Can I help you? · Does it suit you? · It really suits you · I\'ll take it · craze · all the rage · in a heartbeat · giving reasons...',
 exercises:[
  {type:'lv1',it:'Posso aiutarla? (commessa)',en:'Can I help you?'},
@@ -481,15 +469,9 @@ exercises:[
  {type:'lv3',sentence:'Pink was a big ___ in 2023 — everyone was wearing it.',gap:'craze',hint:'(craze/trend/rage)',accept:['craze','trend']},
  {type:'lv3',sentence:'Baggy trousers are ___ right now.',gap:'all the rage',hint:'(all the rage/out/a craze)',accept:['all the rage','trendy','in fashion']},
 ]},
-{id:'r8',type:'revision',title:'⟳ RIPASSO 8',desc:'shopping for clothes · real talk · giving reasons · misto',revises:[8]},
-{id:'d8',type:'difficult',title:'★ BOSS 8',desc:'esercizi sbagliati ≥2 volte',revises:[8]},
 
-{id:'rfinal',type:'revision',
- title:'⟳ FINAL BOSS — UNIT 8',
- desc:'tutto il lessico Unit 8 · clothes · accessories · materials · adjectives · shopping · will · be going to · conditionals · key language',
- revises:[1,2,3,4,5,6,7,8]},
-
-
+{id:'rfinal',type:'revision',title:'⟳ RIPASSO GLOBALE',desc:'tutto il lessico dell unita',revises:[1, 2, 3, 4, 5, 6, 7, 8]},
+// ══════════════════════════════════════════════════════════════════════
 ];
 
 // ─── ENGINE ──────────────────────────────────────────────────────────────────
@@ -501,8 +483,7 @@ function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.fl
 function loadState(){
   try{state=JSON.parse(localStorage.getItem(SK))||{};}catch(e){state={};}
   try{errorMap=JSON.parse(localStorage.getItem(EK))||{};}catch(e){errorMap={};}
-  LEVELS.forEach(s=>{if(state[s.id]===undefined)state[s.id]='locked';});
-  if(state[LEVELS[0].id]==='locked')state[LEVELS[0].id]='unlocked';
+  LEVELS.forEach(s=>{if(state[s.id]!=='completed')state[s.id]='unlocked';});
   saveState();
 }
 function saveState(){

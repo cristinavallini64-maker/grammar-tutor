@@ -226,13 +226,13 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
   </div>
 </div>
 <script>
-const SK='gq_lessico_abc_s',EK='gq_lessico_abc_e';
+const SK='gq_lessico_u3_v2_s',EK='gq_lessico_u3_v2_e';
 let state={},errorMap={};
 
 const LEVELS=[
 
-// ══ 1 · APPEARANCE — HAIR ═════════════════════════════════════════════
-{id:1,type:'study',title:'LV1 · APPEARANCE — HAIR & BUILD',desc:'bald · curly · fair · freckles · muscular · overweight · pale · shoulder-length · slim · straight · wavy...',
+// ══════════════════════════════════════════════════════════════════════
+{id:1,type:'study',title:'LV1 · APPEARANCE — HAIR & FACE',desc:'capelli e viso',
 exercises:[
  {type:'lv1',it:'calvo',en:'bald'},
  {type:'lv1',it:'riccio (capelli)',en:'curly'},
@@ -247,6 +247,19 @@ exercises:[
  {type:'lv1',it:'a spalle (capelli)',en:'shoulder-length'},
  {type:'lv1',it:'lungo (capelli)',en:'long'},
  {type:'lv1',it:'corto (capelli)',en:'short'},
+ {type:'lv1',it:'barba',en:'beard'},
+ {type:'lv2',def:'Capelli né corti né lunghi: arrivano alle spalle.',en:'shoulder-length'},
+ {type:'lv2',def:'Capelli con onde naturali, non lisci e non ricci.',en:'wavy'},
+ {type:'lv2',def:'Piccole macchie marroni sul viso, tipiche delle pelli chiare.',en:'freckles'},
+ {type:'lv3',sentence:'He\'s got ___ hair — neither straight nor curly.',gap:'wavy',hint:'(wavy/bald/shoulder-length)',accept:['wavy']},
+ {type:'lv3',sentence:'She\'s got ___ hair — it reaches her shoulders.',gap:'shoulder-length',hint:'(shoulder-length/curly/wavy)',accept:['shoulder-length']},
+ {type:'lv3',sentence:'He\'s got red hair and lots of ___ on his nose and cheeks.',gap:'freckles',hint:'(freckles/beard/spots)',accept:['freckles']},
+ {type:'lv3',sentence:'He\'s got short ___ hair and blue eyes.',gap:'fair',hint:'(fair/olive/pale)',accept:['fair','blonde']},
+]},
+
+// ══════════════════════════════════════════════════════════════════════
+{id:2,type:'study',title:'LV2 · APPEARANCE — BUILD, AGE & SKIN',desc:'corporatura, eta e carnagione',
+exercises:[
  {type:'lv1',it:'muscoloso',en:'muscular'},
  {type:'lv1',it:'sovrappeso',en:'overweight'},
  {type:'lv1',it:'magro / snello',en:'slim'},
@@ -256,32 +269,22 @@ exercises:[
  {type:'lv1',it:'di mezza età',en:'middle-aged'},
  {type:'lv1',it:'giovane',en:'young'},
  {type:'lv1',it:'anziano / vecchio',en:'old'},
- {type:'lv1',it:'barba',en:'beard'},
  {type:'lv1',it:'olivastro (carnagione)',en:'olive'},
  {type:'lv1',it:'pallido (carnagione)',en:'pale'},
- {type:'lv2',def:'Capelli né corti né lunghi: arrivano alle spalle.',en:'shoulder-length'},
- {type:'lv2',def:'Capelli con onde naturali, non lisci e non ricci.',en:'wavy'},
  {type:'lv2',def:'Carnagione scura con toni giallo-verdastri, tipica del Mediterraneo.',en:'olive'},
  {type:'lv2',def:'Molto chiaro di pelle, quasi senza colore.',en:'pale'},
- {type:'lv2',def:'Piccole macchie marroni sul viso, tipiche delle pelli chiare.',en:'freckles'},
  {type:'lv2',def:'Con muscoli ben sviluppati e visibili.',en:'muscular'},
  {type:'lv2',def:'Persona che ha più peso del necessario per la sua altezza.',en:'overweight'},
  {type:'lv2',def:'Persona molto magra, quasi senza grasso.',en:'thin'},
  {type:'lv2',def:'Persona magra ma in forma, con un corpo proporzionato.',en:'slim'},
- {type:'lv3',sentence:'He\'s got ___ hair — neither straight nor curly.',gap:'wavy',hint:'(wavy/bald/shoulder-length)',accept:['wavy']},
- {type:'lv3',sentence:'She\'s got ___ hair — it reaches her shoulders.',gap:'shoulder-length',hint:'(shoulder-length/curly/wavy)',accept:['shoulder-length']},
  {type:'lv3',sentence:'He\'s got a Mediterranean look — dark eyes and ___ skin.',gap:'olive',hint:'(olive/pale/fair)',accept:['olive']},
  {type:'lv3',sentence:'She never goes in the sun, so she\'s very ___.',gap:'pale',hint:'(pale/fair/olive)',accept:['pale','fair']},
  {type:'lv3',sentence:'He goes to the gym every day — he\'s really ___.',gap:'muscular',hint:'(muscular/slim/overweight)',accept:['muscular']},
- {type:'lv3',sentence:'He\'s got red hair and lots of ___ on his nose and cheeks.',gap:'freckles',hint:'(freckles/beard/spots)',accept:['freckles']},
  {type:'lv3',sentence:'She\'s not fat, not thin — she\'s ___.',gap:'slim',hint:'(slim/overweight/muscular)',accept:['slim']},
- {type:'lv3',sentence:'He\'s got short ___ hair and blue eyes.',gap:'fair',hint:'(fair/olive/pale)',accept:['fair','blonde']},
 ]},
-{id:'r1',type:'revision',title:'⟳ RIPASSO 1',desc:'appearance: hair & build · misto',revises:[1]},
-{id:'d1',type:'difficult',title:'★ BOSS 1',desc:'esercizi sbagliati ≥2 volte',revises:[1]},
 
-// ══ 2 · APPEARANCE — FACE & GENERAL ══════════════════════════════════
-{id:2,type:'study',title:'LV2 · APPEARANCE — FACE & GENERAL',desc:'attractive · good-looking · handsome · pretty · look · look like · be like · qualifiers...',
+// ══════════════════════════════════════════════════════════════════════
+{id:3,type:'study',title:'LV3 · APPEARANCE — FACE & GENERAL',desc:'attractive · good-looking · handsome · pretty · look · look like · be like · qualifiers...',
 exercises:[
  {type:'lv1',it:'attraente / di bell\'aspetto',en:'attractive',accept:['attractive','good-looking']},
  {type:'lv1',it:'attraente / di bell\'aspetto (generico)',en:'good-looking'},
@@ -309,11 +312,9 @@ exercises:[
  {type:'lv3',sentence:'The film was ___ amazing — I want to see it again!',gap:'really',hint:'(really/quite/not very)',accept:['really']},
  {type:'lv3',sentence:'He\'s ___ tall — shorter than me.',gap:'not very',hint:'(not very/quite/really)',accept:['not very']},
 ]},
-{id:'r2',type:'revision',title:'⟳ RIPASSO 2',desc:'appearance: face · look/look like/be like · qualifiers · misto',revises:[2]},
-{id:'d2',type:'difficult',title:'★ BOSS 2',desc:'esercizi sbagliati ≥2 volte',revises:[2]},
 
-// ══ 3 · PERSONALITY — POSITIVE ════════════════════════════════════════
-{id:3,type:'study',title:'LV3 · PERSONALITY — POSITIVE',desc:'calm · cheerful · clever · confident · friendly · funny · hard-working · honest · kind · outgoing · patient · polite · reliable · sensible · sensitive...',
+// ══════════════════════════════════════════════════════════════════════
+{id:4,type:'study',title:'LV4 · PERSONALITY — POSITIVE',desc:'calm · cheerful · clever · confident · friendly · funny · hard-working · honest · kind · outgoing · patient · polite · reliable · sensible · sensitive...',
 exercises:[
  {type:'lv1',it:'calmo / tranquillo',en:'calm'},
  {type:'lv1',it:'allegro / di buon umore',en:'cheerful'},
@@ -347,11 +348,11 @@ exercises:[
  {type:'lv3',sentence:'She always does the right thing. She\'s very ___.',gap:'sensible',hint:'(sensible/clever/reliable)',accept:['sensible','reliable']},
  {type:'lv3',sentence:'He\'s really ___. He studies for hours every day.',gap:'hard-working',hint:'(hard-working/serious/clever)',accept:['hard-working']},
 ]},
-{id:'r3',type:'revision',title:'⟳ RIPASSO 3',desc:'personality positive · misto',revises:[3]},
-{id:'d3',type:'difficult',title:'★ BOSS 3',desc:'esercizi sbagliati ≥2 volte',revises:[3]},
 
-// ══ 4 · PERSONALITY — NEGATIVE & PREFIXES ════════════════════════════
-{id:4,type:'study',title:'LV4 · PERSONALITY — NEGATIVE & PREFIXES',desc:'dishonest · disorganised · impatient · insensitive · lazy · noisy · rude · unfriendly · unkind · unreliable · un-/dis-/im-...',
+{id:'rmid',type:'revision',title:'⟳ RIPASSO 1-4',desc:'ripasso cumulativo',revises:[1, 2, 3, 4]},
+
+// ══════════════════════════════════════════════════════════════════════
+{id:5,type:'study',title:'LV5 · PERSONALITY — NEGATIVE & PREFIXES',desc:'dishonest · disorganised · impatient · insensitive · lazy · noisy · rude · unfriendly · unkind · unreliable · un-/dis-/im-...',
 exercises:[
  {type:'lv1',it:'disonesto',en:'dishonest'},
  {type:'lv1',it:'disorganizzato',en:'disorganised'},
@@ -391,11 +392,9 @@ exercises:[
  {type:'lv3',sentence:'Il prefisso ___ si usa con honest e organised.',gap:'dis-',hint:'(im-/un-/dis-)',accept:['dis-','dis']},
  {type:'lv3',sentence:'Il prefisso ___ si usa con friendly, happy, kind, reliable.',gap:'un-',hint:'(im-/un-/dis-)',accept:['un-','un']},
 ]},
-{id:'r4',type:'revision',title:'⟳ RIPASSO 4',desc:'personality negative · prefissi · misto',revises:[4]},
-{id:'d4',type:'difficult',title:'★ BOSS 4',desc:'esercizi sbagliati ≥2 volte',revises:[4]},
 
-// ══ 5 · PERSONALITY IDIOMS & GIVING EXAMPLES ══════════════════════════
-{id:5,type:'study',title:'LV5 · PERSONALITY IDIOMS & GIVING EXAMPLES',desc:'smart cookie · chatterbox · down-to-earth · for example · for instance · such as · like',
+// ══════════════════════════════════════════════════════════════════════
+{id:6,type:'study',title:'LV6 · PERSONALITY IDIOMS & GIVING EXAMPLES',desc:'smart cookie · chatterbox · down-to-earth · for example · for instance · such as · like',
 exercises:[
  {type:'lv1',it:'uno studente brillante che sa sempre le risposte (idiom)',en:'smart cookie'},
  {type:'lv1',it:'una persona che parla troppo senza fermarsi (idiom)',en:'chatterbox'},
@@ -416,11 +415,9 @@ exercises:[
  {type:'lv3',sentence:'I love outdoor activities ___ hiking, cycling and swimming.',gap:'such as',hint:'(such as/for example/like)',accept:['such as','like']},
  {type:'lv3',sentence:'Some people criticise others on social media. ___, they leave mean comments.',gap:'For instance',hint:'(For instance/Such as/Like)',accept:['For instance','For example']},
 ]},
-{id:'r5',type:'revision',title:'⟳ RIPASSO 5',desc:'personality idioms · giving examples · misto',revises:[5]},
-{id:'d5',type:'difficult',title:'★ BOSS 5',desc:'esercizi sbagliati ≥2 volte',revises:[5]},
 
-// ══ 6 · MAKING A VIDEO CALL — KEY LANGUAGE ════════════════════════════
-{id:6,type:'study',title:'LV6 · MAKING A VIDEO CALL',desc:'I can\'t see you · You\'re on mute · Can you hear me? · Gotta go · Talk later · screen · volume...',
+// ══════════════════════════════════════════════════════════════════════
+{id:7,type:'study',title:'LV7 · MAKING A VIDEO CALL',desc:'I can\'t see you · You\'re on mute · Can you hear me? · Gotta go · Talk later · screen · volume...',
 exercises:[
  {type:'lv1',it:'Non riesco a vederti.',en:'I can\'t see you.',accept:["I can't see you","I can't see you."]},
  {type:'lv1',it:'Sei in muto.',en:'You\'re on mute.',accept:["You're on mute","You're on mute."]},
@@ -444,15 +441,9 @@ exercises:[
  {type:'lv3',sentence:'You\'re ___! I can see you but you\'re not moving.',gap:'frozen',hint:'(frozen/muted/slow)',accept:['frozen']},
  {type:'lv3',sentence:'OK, I have to go. ___!',gap:'Gotta go',hint:'(Gotta go/Talk later/Bye)',accept:['Gotta go','Talk later','Bye']},
 ]},
-{id:'r6',type:'revision',title:'⟳ RIPASSO 6',desc:'making a video call · key language · misto',revises:[6]},
-{id:'d6',type:'difficult',title:'★ BOSS 6',desc:'esercizi sbagliati ≥2 volte',revises:[6]},
 
-{id:'rfinal',type:'revision',
- title:'⟳ FINAL BOSS — UNIT 3',
- desc:'tutto il lessico Unit 3 · appearance · personality · idioms · giving examples · video calls',
- revises:[1,2,3,4,5,6]},
-
-
+{id:'rfinal',type:'revision',title:'⟳ RIPASSO GLOBALE',desc:'tutto il lessico dell unita',revises:[1, 2, 3, 4, 5, 6, 7]},
+// ══════════════════════════════════════════════════════════════════════
 ];
 
 // ─── ENGINE ──────────────────────────────────────────────────────────────────
@@ -464,8 +455,7 @@ function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.fl
 function loadState(){
   try{state=JSON.parse(localStorage.getItem(SK))||{};}catch(e){state={};}
   try{errorMap=JSON.parse(localStorage.getItem(EK))||{};}catch(e){errorMap={};}
-  LEVELS.forEach(s=>{if(state[s.id]===undefined)state[s.id]='locked';});
-  if(state[LEVELS[0].id]==='locked')state[LEVELS[0].id]='unlocked';
+  LEVELS.forEach(s=>{if(state[s.id]!=='completed')state[s.id]='unlocked';});
   saveState();
 }
 function saveState(){

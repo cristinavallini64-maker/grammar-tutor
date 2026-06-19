@@ -226,12 +226,12 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
   </div>
 </div>
 <script>
-const SK='gq_lessico_abc_s',EK='gq_lessico_abc_e';
+const SK='gq_lessico_u6_v2_s',EK='gq_lessico_u6_v2_e';
 let state={},errorMap={};
 
 const LEVELS=[
 
-// ══ 1 · FILM GENRES ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:1,type:'study',title:'LV1 · FILM GENRES',desc:'action/adventure · animated · biopic · comedy · drama · fantasy · historical · horror · musical · rom com · sci-fi · superhero · thriller · war film',
 exercises:[
  {type:'lv1',it:'film d\'azione / avventura',en:'action/adventure film',accept:['action/adventure film','action film','adventure film']},
@@ -266,45 +266,50 @@ exercises:[
  {type:'lv3',sentence:'Toy Story is a famous ___ — all the characters are animated.',gap:'animated film',hint:'(animated film/fantasy film/comedy)',accept:['animated film']},
  {type:'lv3',sentence:'The Hunger Games has a fantasy world but also lots of action — it\'s a ___ film.',gap:'fantasy',hint:'(fantasy/horror/sci-fi)',accept:['fantasy','action/adventure','sci-fi']},
 ]},
-{id:'r1',type:'revision',title:'⟳ RIPASSO 1',desc:'film genres · misto',revises:[1]},
-{id:'d1',type:'difficult',title:'★ BOSS 1',desc:'esercizi sbagliati ≥2 volte',revises:[1]},
 
-// ══ 2 · FILM REVIEWS — PEOPLE & ELEMENTS ══════════════════════════════
-{id:2,type:'study',title:'LV2 · FILM REVIEWS — PEOPLE & ELEMENTS',desc:'based on · cast · CGI · costumes · director · extra · leading role · make-up · plot · sequel · set in · stuntman · stunts · visual effects...',
+// ══════════════════════════════════════════════════════════════════════
+{id:2,type:'study',title:'LV2 · FILM — PEOPLE & ROLES',desc:'persone e ruoli del cinema',
 exercises:[
- {type:'lv1',it:'basato su (un libro, una storia vera...)',en:'based on'},
  {type:'lv1',it:'cast / attori del film',en:'cast'},
- {type:'lv1',it:'grafica computerizzata',en:'CGI',accept:['CGI','computer-generated imagery']},
  {type:'lv1',it:'personaggio',en:'character'},
  {type:'lv1',it:'costumi',en:'costumes'},
  {type:'lv1',it:'regista',en:'director'},
  {type:'lv1',it:'comparsa (attore non protagonista)',en:'extra'},
- {type:'lv1',it:'girare un film',en:'film / shoot',accept:['film','shoot','film / shoot']},
  {type:'lv1',it:'eroe / eroina',en:'hero / heroine',accept:['hero','heroine','hero / heroine']},
  {type:'lv1',it:'ruolo principale',en:'leading role'},
- {type:'lv1',it:'location / luogo delle riprese',en:'location'},
  {type:'lv1',it:'trucco (cinema/teatro)',en:'make-up'},
+ {type:'lv1',it:'protagonista / essere protagonista',en:'star',accept:['star (n,v)','star']},
+ {type:'lv1',it:'cascatore / cascatrice',en:'stuntman / stuntwoman',accept:['stuntman','stuntwoman','stuntman / stuntwoman']},
+ {type:'lv2',def:'Tutti gli attori che recitano nel film.',en:'cast'},
+ {type:'lv2',def:'La persona che dirige e supervisiona la realizzazione del film.',en:'director'},
+ {type:'lv2',def:'Attore che esegue le scene pericolose al posto del protagonista.',en:'stuntman',accept:['stuntman','stuntwoman']},
+ {type:'lv2',def:'Il ruolo più importante del film, solitamente il protagonista.',en:'leading role'},
+ {type:'lv2',def:'I vestiti e gli abiti che indossano gli attori nel film.',en:'costumes'},
+ {type:'lv3',sentence:'The ___ do all the dangerous scenes so the actors stay safe.',gap:'stuntmen',hint:'(stuntmen/extras/cast)',accept:['stuntmen','stuntman','stunt performers']},
+ {type:'lv3',sentence:'She has the ___ — she\'s in every scene.',gap:'leading role',hint:'(leading role/cast/character)',accept:['leading role']},
+]},
+
+// ══════════════════════════════════════════════════════════════════════
+{id:3,type:'study',title:'LV3 · FILM — STORY & EFFECTS',desc:'storia, produzione ed effetti',
+exercises:[
+ {type:'lv1',it:'basato su (un libro, una storia vera...)',en:'based on'},
+ {type:'lv1',it:'grafica computerizzata',en:'CGI',accept:['CGI','computer-generated imagery']},
+ {type:'lv1',it:'girare un film',en:'film / shoot',accept:['film','shoot','film / shoot']},
+ {type:'lv1',it:'location / luogo delle riprese',en:'location'},
  {type:'lv1',it:'trama',en:'plot'},
  {type:'lv1',it:'scena',en:'scene'},
  {type:'lv1',it:'sceneggiatura',en:'script'},
  {type:'lv1',it:'sequel / secondo capitolo',en:'sequel'},
  {type:'lv1',it:'ambientato in (luogo/periodo)',en:'set in'},
  {type:'lv1',it:'colonna sonora',en:'soundtrack'},
- {type:'lv1',it:'protagonista / essere protagonista',en:'star',accept:['star (n,v)','star']},
- {type:'lv1',it:'cascatore / cascatrice',en:'stuntman / stuntwoman',accept:['stuntman','stuntwoman','stuntman / stuntwoman']},
  {type:'lv1',it:'acrobazie / scene pericolose',en:'stunts'},
  {type:'lv1',it:'effetti speciali / visivi',en:'visual effects'},
  {type:'lv2',def:'La storia del film: cosa succede dall\'inizio alla fine.',en:'plot'},
  {type:'lv2',def:'Il secondo (o terzo) film di una serie.',en:'sequel'},
  {type:'lv2',def:'Dove e quando è ambientato il film.',en:'set in'},
- {type:'lv2',def:'Tutti gli attori che recitano nel film.',en:'cast'},
  {type:'lv2',def:'Effetti visivi creati al computer.',en:'CGI',accept:['CGI','visual effects']},
- {type:'lv2',def:'La persona che dirige e supervisiona la realizzazione del film.',en:'director'},
- {type:'lv2',def:'Attore che esegue le scene pericolose al posto del protagonista.',en:'stuntman',accept:['stuntman','stuntwoman']},
  {type:'lv2',def:'Scene pericolose come esplosioni, cadute e inseguimenti.',en:'stunts'},
- {type:'lv2',def:'Il ruolo più importante del film, solitamente il protagonista.',en:'leading role'},
  {type:'lv2',def:'La musica che accompagna le scene del film.',en:'soundtrack'},
- {type:'lv2',def:'I vestiti e gli abiti che indossano gli attori nel film.',en:'costumes'},
  {type:'lv2',def:'Il testo scritto con i dialoghi e le istruzioni per gli attori.',en:'script'},
  {type:'lv3',sentence:'The film is ___ New York in the 1920s.',gap:'set in',hint:'(set in/based on/filmed in)',accept:['set in']},
  {type:'lv3',sentence:'The film is ___ a true story.',gap:'based on',hint:'(based on/set in/filmed in)',accept:['based on']},
@@ -312,14 +317,10 @@ exercises:[
  {type:'lv3',sentence:'The ___ was confusing — I didn\'t understand what was happening.',gap:'plot',hint:'(plot/script/scene)',accept:['plot']},
  {type:'lv3',sentence:'Avatar 2 is the ___ to Avatar — James Cameron directed both.',gap:'sequel',hint:'(sequel/character/leading role)',accept:['sequel']},
  {type:'lv3',sentence:'The ___ effects were amazing — everything looked completely real.',gap:'visual',hint:'(visual/special/CGI)',accept:['visual','CGI']},
- {type:'lv3',sentence:'The ___ do all the dangerous scenes so the actors stay safe.',gap:'stuntmen',hint:'(stuntmen/extras/cast)',accept:['stuntmen','stuntman','stunt performers']},
- {type:'lv3',sentence:'She has the ___ — she\'s in every scene.',gap:'leading role',hint:'(leading role/cast/character)',accept:['leading role']},
 ]},
-{id:'r2',type:'revision',title:'⟳ RIPASSO 2',desc:'film reviews vocabulary · misto',revises:[2]},
-{id:'d2',type:'difficult',title:'★ BOSS 2',desc:'esercizi sbagliati ≥2 volte',revises:[2]},
 
-// ══ 3 · FILM ADJECTIVES ═══════════════════════════════════════════════
-{id:3,type:'study',title:'LV3 · FILM ADJECTIVES',desc:'awful · boring · complicated · entertaining · gripping · hilarious · incredible · predictable · violent · frightening/scary...',
+// ══════════════════════════════════════════════════════════════════════
+{id:4,type:'study',title:'LV4 · FILM ADJECTIVES',desc:'awful · boring · complicated · entertaining · gripping · hilarious · incredible · predictable · violent · frightening/scary...',
 exercises:[
  {type:'lv1',it:'nella norma / abbastanza buono',en:'all right',accept:['all right','OK']},
  {type:'lv1',it:'terribile / pessimo',en:'awful'},
@@ -357,11 +358,9 @@ exercises:[
  {type:'lv3',sentence:'Nothing much happened for two hours — it was really ___.',gap:'boring',hint:'(boring/slow/predictable)',accept:['boring','slow']},
  {type:'lv3',sentence:'It was much better than the first film — not ___ at all.',gap:'disappointing',hint:'(disappointing/predictable/slow)',accept:['disappointing']},
 ]},
-{id:'r3',type:'revision',title:'⟳ RIPASSO 3',desc:'film adjectives · misto',revises:[3]},
-{id:'d3',type:'difficult',title:'★ BOSS 3',desc:'esercizi sbagliati ≥2 volte',revises:[3]},
 
-// ══ 4 · COMPARATIVES ══════════════════════════════════════════════════
-{id:4,type:'study',title:'LV4 · COMPARATIVES',desc:'-er/more · less · as...as · not as...as · good→better · bad→worse · far→farther · fun→more fun · little→less · much/many→more',
+// ══════════════════════════════════════════════════════════════════════
+{id:5,type:'study',title:'LV5 · COMPARATIVES',desc:'-er/more · less · as...as · not as...as · good→better · bad→worse · far→farther · fun→more fun · little→less · much/many→more',
 exercises:[
  {type:'lv1',it:'più lungo (comparativo di long)',en:'longer'},
  {type:'lv1',it:'più grande (comparativo di big)',en:'bigger'},
@@ -392,11 +391,11 @@ exercises:[
  {type:'lv3',sentence:'The plot was ___ complicated ___ I expected.',gap:'more / than',hint:'(more...than)',accept:['more / than','more/than']},
  {type:'lv3',sentence:'Comedies are ___ as boring as documentaries.',gap:'not',hint:'(not/as/more)',accept:['not']},
 ]},
-{id:'r4',type:'revision',title:'⟳ RIPASSO 4',desc:'comparatives · misto',revises:[4]},
-{id:'d4',type:'difficult',title:'★ BOSS 4',desc:'esercizi sbagliati ≥2 volte',revises:[4]},
 
-// ══ 5 · SUPERLATIVES ══════════════════════════════════════════════════
-{id:5,type:'study',title:'LV5 · SUPERLATIVES',desc:'-est / the most / the least · good→the best · bad→the worst · far→the farthest · irregular forms · the before superlative',
+{id:'rmid',type:'revision',title:'⟳ RIPASSO 1-5',desc:'ripasso cumulativo',revises:[1, 2, 3, 4, 5]},
+
+// ══════════════════════════════════════════════════════════════════════
+{id:6,type:'study',title:'LV6 · SUPERLATIVES',desc:'-est / the most / the least · good→the best · bad→the worst · far→the farthest · irregular forms · the before superlative',
 exercises:[
  {type:'lv1',it:'il più lungo (superlativo di long)',en:'the longest'},
  {type:'lv1',it:'il più grande (superlativo di big)',en:'the biggest'},
@@ -423,11 +422,9 @@ exercises:[
  {type:'lv3',sentence:'We use ___ before superlative adjectives.',gap:'the',hint:'(the/a/an)',accept:['the']},
  {type:'lv3',sentence:'It was ___ entertaining film in the whole series. (least)',gap:'the least',hint:'(the least/the less/less)',accept:['the least']},
 ]},
-{id:'r5',type:'revision',title:'⟳ RIPASSO 5',desc:'superlatives · misto',revises:[5]},
-{id:'d5',type:'difficult',title:'★ BOSS 5',desc:'esercizi sbagliati ≥2 volte',revises:[5]},
 
-// ══ 6 · TOO / (NOT) ENOUGH ════════════════════════════════════════════
-{id:6,type:'study',title:'LV6 · TOO / (NOT) ENOUGH + ADJECTIVES',desc:'too + adjective · (not) adjective + enough · too long · not exciting enough · This soup isn\'t hot enough',
+// ══════════════════════════════════════════════════════════════════════
+{id:7,type:'study',title:'LV7 · TOO / (NOT) ENOUGH + ADJECTIVES',desc:'too + adjective · (not) adjective + enough · too long · not exciting enough · This soup isn\'t hot enough',
 exercises:[
  {type:'lv1',it:'troppo + aggettivo',en:'too + adjective',accept:['too','too + adjective']},
  {type:'lv1',it:'abbastanza + aggettivo (dopo l\'aggettivo)',en:'adjective + enough',accept:['enough','adjective + enough']},
@@ -445,11 +442,9 @@ exercises:[
  {type:'lv3',sentence:'My sister isn\'t old ___ to stay out late.',gap:'enough',hint:'(enough/too/very)',accept:['enough']},
  {type:'lv3',sentence:'Too viene ___ dell\'aggettivo; enough viene ___ dell\'aggettivo.',gap:'prima / dopo',hint:'(prima/dopo)',accept:['prima / dopo','prima/dopo','before / after','before/after']},
 ]},
-{id:'r6',type:'revision',title:'⟳ RIPASSO 6',desc:'too / (not) enough + adjectives · misto',revises:[6]},
-{id:'d6',type:'difficult',title:'★ BOSS 6',desc:'esercizi sbagliati ≥2 volte',revises:[6]},
 
-// ══ 7 · MAKING ARRANGEMENTS ═══════════════════════════════════════════
-{id:7,type:'study',title:'LV7 · MAKING ARRANGEMENTS',desc:'Would you like to...? · What/How about...? · Shall we...? · I\'d rather · I\'m not really into · What\'s on? · I can\'t wait!',
+// ══════════════════════════════════════════════════════════════════════
+{id:8,type:'study',title:'LV8 · MAKING ARRANGEMENTS',desc:'Would you like to...? · What/How about...? · Shall we...? · I\'d rather · I\'m not really into · What\'s on? · I can\'t wait!',
 exercises:[
  {type:'lv1',it:'Vorresti...? (invito)',en:'Would you like to...?',accept:['Would you like to...?','Would you like to?']},
  {type:'lv1',it:'Che ne dici di...? (suggerimento + -ing)',en:'What about...?',accept:['What about...?','How about...?','What about?','How about?']},
@@ -479,11 +474,9 @@ exercises:[
  {type:'lv3',sentence:'___ good for me. See you at 6!',gap:'That\'s',hint:"(That's/It's/I'm)",accept:["That's","It's"]},
  {type:'lv3',sentence:'No, sorry, I ___. I\'m busy on Saturday.',gap:'can\'t',hint:"(can't/don't/won't)",accept:["can't"]},
 ]},
-{id:'r7',type:'revision',title:'⟳ RIPASSO 7',desc:'making arrangements · misto',revises:[7]},
-{id:'d7',type:'difficult',title:'★ BOSS 7',desc:'esercizi sbagliati ≥2 volte',revises:[7]},
 
-// ══ 8 · REAL TALK & REVIEW LANGUAGE ══════════════════════════════════
-{id:8,type:'study',title:'LV8 · REAL TALK & REVIEW LANGUAGE',desc:'broke all records · on point · groundbreaking · box office · CGI · challenges stereotypes · comparing ideas...',
+// ══════════════════════════════════════════════════════════════════════
+{id:9,type:'study',title:'LV9 · REAL TALK & REVIEW LANGUAGE',desc:'broke all records · on point · groundbreaking · box office · CGI · challenges stereotypes · comparing ideas...',
 exercises:[
  {type:'lv1',it:'ha battuto tutti i record',en:'broke all records'},
  {type:'lv1',it:'perfetto / centrato / appropriato',en:'on point'},
@@ -509,15 +502,9 @@ exercises:[
  {type:'lv3',sentence:'___ best thing about the film is the soundtrack.',gap:'The',hint:'(The/A/Its)',accept:['The']},
  {type:'lv3',sentence:'The film ___ stereotypes by showing a powerful female director.',gap:'challenges',hint:'(challenges/breaks/changes)',accept:['challenges','breaks','changes']},
 ]},
-{id:'r8',type:'revision',title:'⟳ RIPASSO 8',desc:'real talk · review language · comparing ideas · misto',revises:[8]},
-{id:'d8',type:'difficult',title:'★ BOSS 8',desc:'esercizi sbagliati ≥2 volte',revises:[8]},
 
-{id:'rfinal',type:'revision',
- title:'⟳ FINAL BOSS — UNIT 6',
- desc:'tutto il lessico Unit 6 · film genres · reviews · adjectives · comparatives · superlatives · too/enough · making arrangements · real talk',
- revises:[1,2,3,4,5,6,7,8]},
-
-
+{id:'rfinal',type:'revision',title:'⟳ RIPASSO GLOBALE',desc:'tutto il lessico dell unita',revises:[1, 2, 3, 4, 5, 6, 7, 8, 9]},
+// ══════════════════════════════════════════════════════════════════════
 ];
 
 // ─── ENGINE ──────────────────────────────────────────────────────────────────
@@ -529,8 +516,7 @@ function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.fl
 function loadState(){
   try{state=JSON.parse(localStorage.getItem(SK))||{};}catch(e){state={};}
   try{errorMap=JSON.parse(localStorage.getItem(EK))||{};}catch(e){errorMap={};}
-  LEVELS.forEach(s=>{if(state[s.id]===undefined)state[s.id]='locked';});
-  if(state[LEVELS[0].id]==='locked')state[LEVELS[0].id]='unlocked';
+  LEVELS.forEach(s=>{if(state[s.id]!=='completed')state[s.id]='unlocked';});
   saveState();
 }
 function saveState(){

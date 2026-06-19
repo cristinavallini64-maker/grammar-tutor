@@ -226,12 +226,12 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
   </div>
 </div>
 <script>
-const SK='gq_lessico_abc_s',EK='gq_lessico_abc_e';
+const SK='gq_lessico_u10_v2_s',EK='gq_lessico_u10_v2_e';
 let state={},errorMap={};
 
 const LEVELS=[
 
-// ══ 1 · ADJECTIVES: NEGATIVE EMOTIONS ════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:1,type:'study',title:'LV1 · ADJECTIVES: NEGATIVE EMOTIONS',desc:'angry · annoyed · bored · confused · depressed · disappointed · embarrassed · fed up · frustrated · guilty · hurt · jealous · lonely · miserable · offended · sad · shocked · stressed · upset · worried',
 exercises:[
  {type:'lv1',it:'arrabbiato',en:'angry'},
@@ -268,10 +268,8 @@ exercises:[
  {type:'lv3',sentence:'She lives far from her family and often feels ___.',gap:'lonely',hint:'(lonely/sad/miserable)',accept:['lonely','sad','miserable']},
  {type:'lv3',sentence:'He was ___ when he heard the bad news — he didn\'t believe it.',gap:'shocked',hint:'(shocked/upset/stressed)',accept:['shocked','upset']},
 ]},
-{id:'r1',type:'revision',title:'⟳ RIPASSO 1',desc:'negative emotions · misto',revises:[1]},
-{id:'d1',type:'difficult',title:'★ BOSS 1',desc:'esercizi sbagliati ≥2 volte',revises:[1]},
 
-// ══ 2 · ADJECTIVES: POSITIVE EMOTIONS & -ED/-ING ══════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:2,type:'study',title:'LV2 · POSITIVE EMOTIONS & -ED/-ING ADJECTIVES',desc:'confident · delighted · elated · enthusiastic · excited · grateful · happy · hopeful · satisfied · surprised · annoying/annoyed · boring/bored...',
 exercises:[
  {type:'lv1',it:'fiducioso / sicuro di sé',en:'confident'},
@@ -306,10 +304,8 @@ exercises:[
  {type:'lv3',sentence:'I\'m so ___ about my exam results — I think I passed!',gap:'hopeful',hint:'(hopeful/grateful/elated)',accept:['hopeful']},
  {type:'lv3',sentence:'She was ___ with her performance — she\'d done everything perfectly.',gap:'satisfied',hint:'(satisfied/delighted/grateful)',accept:['satisfied','delighted']},
 ]},
-{id:'r2',type:'revision',title:'⟳ RIPASSO 2',desc:'positive emotions · -ed/-ing adjectives · misto',revises:[2]},
-{id:'d2',type:'difficult',title:'★ BOSS 2',desc:'esercizi sbagliati ≥2 volte',revises:[2]},
 
-// ══ 3 · RELATIONSHIPS ═════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:3,type:'study',title:'LV3 · RELATIONSHIPS',desc:'ask someone out · blended family · break up · cheat on · fall in love · get divorced · get engaged · get married · go on a blind date · have a crush · live together · single parent · stepfamily · wedding...',
 exercises:[
  {type:'lv1',it:'invitare qualcuno a uscire (romantico)',en:'ask someone out on a date',accept:['ask someone out on a date','ask someone out']},
@@ -345,10 +341,8 @@ exercises:[
  {type:'lv3',sentence:'She\'s had a ___ on him for years but never said anything.',gap:'crush',hint:'(crush/date/argument)',accept:['crush']},
  {type:'lv3',sentence:'After they ___ divorced, he raised the children alone as a ___ parent.',gap:'got / single',hint:'(got/single)',accept:['got / single','got/single']},
 ]},
-{id:'r3',type:'revision',title:'⟳ RIPASSO 3',desc:'relationships vocabulary · misto',revises:[3]},
-{id:'d3',type:'difficult',title:'★ BOSS 3',desc:'esercizi sbagliati ≥2 volte',revises:[3]},
 
-// ══ 4 · MAKE + OBJECT · GET + ADJECTIVE ══════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:4,type:'study',title:'LV4 · MAKE + OBJECT · GET + ADJECTIVE',desc:'make someone feel safe · make someone laugh · make someone happy · get nervous · get fed up · get angry · get excited...',
 exercises:[
  {type:'lv1',it:'far sentire qualcuno al sicuro',en:'make someone feel safe'},
@@ -376,10 +370,10 @@ exercises:[
  {type:'lv3',sentence:'Isolation ___ people lonely.',gap:'makes',hint:'(makes/gets/does)',accept:['makes']},
  {type:'lv3',sentence:'She always ___ angry when she\'s late.',gap:'gets',hint:'(gets/makes/becomes)',accept:['gets','becomes']},
 ]},
-{id:'r4',type:'revision',title:'⟳ RIPASSO 4',desc:'make + object · get + adjective · misto',revises:[4]},
-{id:'d4',type:'difficult',title:'★ BOSS 4',desc:'esercizi sbagliati ≥2 volte',revises:[4]},
 
-// ══ 5 · FOR / SINCE / HOW LONG? · JUST / ALREADY / YET / STILL ════════
+{id:'rmid',type:'revision',title:'⟳ RIPASSO 1-4',desc:'ripasso cumulativo',revises:[1, 2, 3, 4]},
+
+// ══════════════════════════════════════════════════════════════════════
 {id:5,type:'study',title:'LV5 · FOR · SINCE · HOW LONG? · JUST · ALREADY · YET · STILL',desc:'for · since · How long...? · just = appena · already = già · yet = ancora · still = ancora',
 exercises:[
  {type:'lv1',it:'per (un periodo di tempo)',en:'for'},
@@ -404,10 +398,8 @@ exercises:[
  {type:'lv3',sentence:'Have you finished your homework ___?',gap:'yet',hint:'(yet/already/still)',accept:['yet']},
  {type:'lv3',sentence:'Zac ___ hasn\'t apologised to me!',gap:'still',hint:'(still/yet/already)',accept:['still']},
 ]},
-{id:'r5',type:'revision',title:'⟳ RIPASSO 5',desc:'for/since/How long · just/already/yet/still · misto',revises:[5]},
-{id:'d5',type:'difficult',title:'★ BOSS 5',desc:'esercizi sbagliati ≥2 volte',revises:[5]},
 
-// ══ 6 · EXPRESSING ANNOYANCE & CERTAINTY ══════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:6,type:'study',title:'LV6 · EXPRESSING ANNOYANCE & CERTAINTY',desc:'What\'s the matter? · getting on my nerves · driving me mad · you\'re making it worse · By the way · I know that · I\'m sure that · I\'m convinced that...',
 exercises:[
  {type:'lv1',it:'Cosa c\'è? / Qual è il problema?',en:'What\'s the matter?',accept:["What's the matter?","What's the problem?"]},
@@ -432,10 +424,8 @@ exercises:[
  {type:'lv3',sentence:'I\'m ___ that more people should live in smaller communities.',gap:'convinced',hint:'(convinced/sure/certain)',accept:['convinced','sure','certain']},
  {type:'lv3',sentence:'___ the way, are you going to Jack\'s party?',gap:'By',hint:'(By/On/To)',accept:['By']},
 ]},
-{id:'r6',type:'revision',title:'⟳ RIPASSO 6',desc:'expressing annoyance · expressing certainty · misto',revises:[6]},
-{id:'d6',type:'difficult',title:'★ BOSS 6',desc:'esercizi sbagliati ≥2 volte',revises:[6]},
 
-// ══ 7 · REAL TALK & COMMUNITY EXPRESSIONS ═════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:7,type:'study',title:'LV7 · REAL TALK & COMMUNITY EXPRESSIONS',desc:'make perfect sense · keep an eye on · get some time off · bring up · raise · community · isolation · connected · isolated',
 exercises:[
  {type:'lv1',it:'avere senso / essere ragionevole',en:'make perfect sense',accept:['make perfect sense','make sense']},
@@ -459,15 +449,9 @@ exercises:[
  {type:'lv3',sentence:'People who live far from others can feel ___.',gap:'isolated',hint:'(isolated/connected/lonely)',accept:['isolated','lonely']},
  {type:'lv3',sentence:'A strong ___ makes people feel less stressed.',gap:'community',hint:'(community/family/group)',accept:['community']},
 ]},
-{id:'r7',type:'revision',title:'⟳ RIPASSO 7',desc:'real talk · community expressions · misto',revises:[7]},
-{id:'d7',type:'difficult',title:'★ BOSS 7',desc:'esercizi sbagliati ≥2 volte',revises:[7]},
 
-{id:'rfinal',type:'revision',
- title:'⟳ FINAL BOSS — UNIT 10',
- desc:'tutto il lessico Unit 10 · emotions · relationships · make/get · for/since · just/already/yet/still · expressing annoyance · certainty · community',
- revises:[1,2,3,4,5,6,7]},
-
-
+{id:'rfinal',type:'revision',title:'⟳ RIPASSO GLOBALE',desc:'tutto il lessico dell unita',revises:[1, 2, 3, 4, 5, 6, 7]},
+// ══════════════════════════════════════════════════════════════════════
 ];
 
 
@@ -480,8 +464,7 @@ function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.fl
 function loadState(){
   try{state=JSON.parse(localStorage.getItem(SK))||{};}catch(e){state={};}
   try{errorMap=JSON.parse(localStorage.getItem(EK))||{};}catch(e){errorMap={};}
-  LEVELS.forEach(s=>{if(state[s.id]===undefined)state[s.id]='locked';});
-  if(state[LEVELS[0].id]==='locked')state[LEVELS[0].id]='unlocked';
+  LEVELS.forEach(s=>{if(state[s.id]!=='completed')state[s.id]='unlocked';});
   saveState();
 }
 function saveState(){

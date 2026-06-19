@@ -226,12 +226,12 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
   </div>
 </div>
 <script>
-const SK='gq_lessico_abc_s',EK='gq_lessico_abc_e';
+const SK='gq_lessico_u9_v2_s',EK='gq_lessico_u9_v2_e';
 let state={},errorMap={};
 
 const LEVELS=[
 
-// ══ 1 · LUCKY & UNLUCKY EXPERIENCES ══════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:1,type:'study',title:'LV1 · LUCKY & UNLUCKY EXPERIENCES',desc:'break a bone · fail an exam · find money · have an accident · lose a competition · miss a train · pass an exam · win a prize · see a famous person...',
 exercises:[
  {type:'lv1',it:'rompersi un osso',en:'break a bone'},
@@ -256,10 +256,8 @@ exercises:[
  {type:'lv3',sentence:'He ___ a competition and won £500!',gap:'won',hint:'(won/passed/found)',accept:['won']},
  {type:'lv3',sentence:'I ___ a bone in my hand when I fell off my skateboard.',gap:'broke',hint:'(broke/had/lost)',accept:['broke']},
 ]},
-{id:'r1',type:'revision',title:'⟳ RIPASSO 1',desc:'lucky & unlucky experiences · misto',revises:[1]},
-{id:'d1',type:'difficult',title:'★ BOSS 1',desc:'esercizi sbagliati ≥2 volte',revises:[1]},
 
-// ══ 2 · LIFE EXPERIENCES ══════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:2,type:'study',title:'LV2 · LIFE EXPERIENCES',desc:'be in love · be on TV · break a promise · cook a meal · do something for charity · go abroad · go skiing · ride a horse · run 5km · sing or act in public...',
 exercises:[
  {type:'lv1',it:'essere innamorato/a',en:'be in love'},
@@ -285,10 +283,8 @@ exercises:[
  {type:'lv3',sentence:'We ___ something for charity last month — we raised £200.',gap:'did',hint:'(did/made/went)',accept:['did']},
  {type:'lv3',sentence:'Have you ever ___ or acted in public?',gap:'sung',hint:'(sung/sang/sing)',accept:['sung','sang']},
 ]},
-{id:'r2',type:'revision',title:'⟳ RIPASSO 2',desc:'life experiences · misto',revises:[2]},
-{id:'d2',type:'difficult',title:'★ BOSS 2',desc:'esercizi sbagliati ≥2 volte',revises:[2]},
 
-// ══ 3 · COMMON SYNONYMS ═══════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:3,type:'study',title:'LV3 · COMMON SYNONYMS',desc:'afraid–scared · awful–terrible · brave–courageous · difficult–hard · exhausted–tired · injured–hurt · lucky–fortunate · nervous–worried · relaxed–calm · strange–unusual',
 exercises:[
  {type:'lv1',it:'spaventato',en:'afraid',accept:['afraid','scared']},
@@ -327,10 +323,10 @@ exercises:[
  {type:'lv3',sentence:'He was very ___ / ___ — he ran into the burning building.',gap:'brave / courageous',hint:'(brave/courageous)',accept:['brave / courageous','brave/courageous','brave','courageous']},
  {type:'lv3',sentence:'How ___ / ___ — she found £200 in an old coat!',gap:'lucky / fortunate',hint:'(lucky/fortunate)',accept:['lucky / fortunate','lucky/fortunate','lucky','fortunate']},
 ]},
-{id:'r3',type:'revision',title:'⟳ RIPASSO 3',desc:'common synonyms · misto',revises:[3]},
-{id:'d3',type:'difficult',title:'★ BOSS 3',desc:'esercizi sbagliati ≥2 volte',revises:[3]},
 
-// ══ 4 · ESPRESSIONI DI TEMPO & CONNETTORI ════════════════════════════
+{id:'rmid',type:'revision',title:'⟳ RIPASSO 1-3',desc:'ripasso cumulativo',revises:[1, 2, 3]},
+
+// ══════════════════════════════════════════════════════════════════════
 {id:4,type:'study',title:'LV4 · ESPRESSIONI DI TEMPO & CONNETTORI',desc:'ever · never · been · gone · who · which · that · whose · where · when · Have you ever...?',
 exercises:[
  {type:'lv1',it:'mai (in domande: hai MAI fatto...?)',en:'ever'},
@@ -359,10 +355,8 @@ exercises:[
  {type:'lv3',sentence:'That was the year ___ he won the lottery.',gap:'when',hint:'(when/where/which)',accept:['when']},
  {type:'lv3',sentence:'They made a film about the restaurant ___ he worked.',gap:'where',hint:'(where/when/which)',accept:['where']},
 ]},
-{id:'r4',type:'revision',title:'⟳ RIPASSO 4',desc:'ever/never/been/gone · who/which/whose/where/when · misto',revises:[4]},
-{id:'d4',type:'difficult',title:'★ BOSS 4',desc:'esercizi sbagliati ≥2 volte',revises:[4]},
 
-// ══ 5 · SHOWING INTEREST — REPLY QUESTIONS ════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:5,type:'study',title:'LV5 · SHOWING INTEREST — REPLY QUESTIONS',desc:'Are you? · Have you? · Did you? · Was it? · Haven\'t you? · Actually · Good luck!',
 exercises:[
  {type:'lv1',it:'I\'m going to a party tonight. ↑ (risposta di interesse)',en:'Are you?'},
@@ -383,10 +377,8 @@ exercises:[
  {type:'lv3',sentence:'I haven\'t been to London. — ___ You should go!',gap:"Haven't you?",hint:"(Haven't you?/Have you?/Did you?)",accept:["Haven't you?","Haven't you"]},
  {type:'lv3',sentence:'I\'ve eaten Mexican food. — ___ When? Where?',gap:'Have you?',hint:'(Have you?/Did you?/Are you?)',accept:['Have you?','Have you']},
 ]},
-{id:'r5',type:'revision',title:'⟳ RIPASSO 5',desc:'reply questions · showing interest · misto',revises:[5]},
-{id:'d5',type:'difficult',title:'★ BOSS 5',desc:'esercizi sbagliati ≥2 volte',revises:[5]},
 
-// ══ 6 · IDIOMS OF LUCK & REAL TALK ════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:6,type:'study',title:'LV6 · IDIOMS OF LUCK & REAL TALK',desc:'miss the boat · Murphy\'s law · hit the jackpot · lucky break · born lucky · by accident · came across · Actually · Good luck!',
 exercises:[
  {type:'lv1',it:'perdere un\'occasione (idiom)',en:'miss the boat'},
@@ -410,15 +402,9 @@ exercises:[
  {type:'lv3',sentence:'Some people are just ___ — things always work out for them.',gap:'born lucky',hint:'(born lucky/fortunate/by accident)',accept:['born lucky','lucky']},
  {type:'lv3',sentence:'I found this old book ___ — I wasn\'t even looking for it.',gap:'by accident',hint:'(by accident/born lucky/came across)',accept:['by accident','accidentally']},
 ]},
-{id:'r6',type:'revision',title:'⟳ RIPASSO 6',desc:'idioms of luck · real talk · misto',revises:[6]},
-{id:'d6',type:'difficult',title:'★ BOSS 6',desc:'esercizi sbagliati ≥2 volte',revises:[6]},
 
-{id:'rfinal',type:'revision',
- title:'⟳ FINAL BOSS — UNIT 9',
- desc:'tutto il lessico Unit 9 · experiences · synonyms · ever/never/been/gone · connettori · reply questions · idioms of luck',
- revises:[1,2,3,4,5,6]},
-
-
+{id:'rfinal',type:'revision',title:'⟳ RIPASSO GLOBALE',desc:'tutto il lessico dell unita',revises:[1, 2, 3, 4, 5, 6]},
+// ══════════════════════════════════════════════════════════════════════
 ];
 
 
@@ -431,8 +417,7 @@ function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.fl
 function loadState(){
   try{state=JSON.parse(localStorage.getItem(SK))||{};}catch(e){state={};}
   try{errorMap=JSON.parse(localStorage.getItem(EK))||{};}catch(e){errorMap={};}
-  LEVELS.forEach(s=>{if(state[s.id]===undefined)state[s.id]='locked';});
-  if(state[LEVELS[0].id]==='locked')state[LEVELS[0].id]='unlocked';
+  LEVELS.forEach(s=>{if(state[s.id]!=='completed')state[s.id]='unlocked';});
   saveState();
 }
 function saveState(){

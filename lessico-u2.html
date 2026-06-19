@@ -226,70 +226,73 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
   </div>
 </div>
 <script>
-const SK='gq_lessico_abc_s',EK='gq_lessico_abc_e';
+const SK='gq_lessico_u2_v2_s',EK='gq_lessico_u2_v2_e';
 let state={},errorMap={};
 
 const LEVELS=[
 
-// ══ 1 · FOOD ══════════════════════════════════════════════════════════
-{id:1,type:'study',title:'LV1 · FOOD',desc:'apples · beans · beef · biscuits · courgettes · dairy products · honey · nuts · sausages · tuna · yoghurt...',
+// ══════════════════════════════════════════════════════════════════════
+{id:1,type:'study',title:'LV1 · FOOD — FRUIT, VEG & CEREALS',desc:'frutta, verdura, cereali e pane',
 exercises:[
  {type:'lv1',it:'mele',en:'apples'},
  {type:'lv1',it:'banane',en:'bananas'},
  {type:'lv1',it:'fagioli',en:'beans'},
- {type:'lv1',it:'manzo / carne bovina',en:'beef'},
- {type:'lv1',it:'biscotti',en:'biscuits'},
  {type:'lv1',it:'pane',en:'bread'},
- {type:'lv1',it:'burro',en:'butter'},
- {type:'lv1',it:'torta',en:'cake'},
  {type:'lv1',it:'carote',en:'carrots'},
  {type:'lv1',it:'cereali (da colazione)',en:'cereal'},
- {type:'lv1',it:'formaggio',en:'cheese'},
- {type:'lv1',it:'pollo',en:'chicken'},
- {type:'lv1',it:'patatine fritte (UK)',en:'chips'},
- {type:'lv1',it:'cioccolato',en:'chocolate'},
  {type:'lv1',it:'zucchine',en:'courgettes'},
- {type:'lv1',it:'patatine in busta',en:'crisps'},
- {type:'lv1',it:'latticini / prodotti caseari',en:'dairy products'},
- {type:'lv1',it:'uova',en:'eggs'},
- {type:'lv1',it:'pesce',en:'fish'},
  {type:'lv1',it:'frutta',en:'fruit'},
- {type:'lv1',it:'prosciutto / salume',en:'ham'},
- {type:'lv1',it:'miele',en:'honey'},
- {type:'lv1',it:'carne',en:'meat'},
  {type:'lv1',it:'noci / frutta secca',en:'nuts'},
  {type:'lv1',it:'arance',en:'oranges'},
  {type:'lv1',it:'patate',en:'potatoes'},
  {type:'lv1',it:'riso',en:'rice'},
+ {type:'lv1',it:'pomodori',en:'tomatoes'},
+ {type:'lv1',it:'verdure',en:'vegetables'},
+ {type:'lv2',def:'Verdura lunga e verde, simile al cetriolo.',en:'courgettes'},
+ {type:'lv2',def:'Frutta secca: noci, mandorle, nocciole.',en:'nuts'},
+ {type:'lv2',def:'Cereale bianco, base di molti piatti asiatici.',en:'rice'},
+ {type:'lv3',sentence:'I always have ___ and toast for breakfast.',gap:'cereal',hint:'(cereal/crisps/beef)',accept:['cereal']},
+ {type:'lv3',sentence:'I love roasted ___: carrots, peppers and courgettes.',gap:'vegetables',hint:'(vegetables/fruit/dairy products)',accept:['vegetables']},
+]},
+
+// ══════════════════════════════════════════════════════════════════════
+{id:2,type:'study',title:'LV2 · FOOD — MEAT, FISH, DAIRY & SNACKS',desc:'carne, pesce, latticini e snack',
+exercises:[
+ {type:'lv1',it:'manzo / carne bovina',en:'beef'},
+ {type:'lv1',it:'biscotti',en:'biscuits'},
+ {type:'lv1',it:'burro',en:'butter'},
+ {type:'lv1',it:'torta',en:'cake'},
+ {type:'lv1',it:'formaggio',en:'cheese'},
+ {type:'lv1',it:'pollo',en:'chicken'},
+ {type:'lv1',it:'patatine fritte (UK)',en:'chips'},
+ {type:'lv1',it:'cioccolato',en:'chocolate'},
+ {type:'lv1',it:'patatine in busta',en:'crisps'},
+ {type:'lv1',it:'latticini / prodotti caseari',en:'dairy products'},
+ {type:'lv1',it:'uova',en:'eggs'},
+ {type:'lv1',it:'pesce',en:'fish'},
+ {type:'lv1',it:'prosciutto / salume',en:'ham'},
+ {type:'lv1',it:'miele',en:'honey'},
+ {type:'lv1',it:'carne',en:'meat'},
  {type:'lv1',it:'salsicce',en:'sausages'},
  {type:'lv1',it:'zucchero',en:'sugar'},
- {type:'lv1',it:'pomodori',en:'tomatoes'},
  {type:'lv1',it:'tonno',en:'tuna'},
- {type:'lv1',it:'verdure',en:'vegetables'},
  {type:'lv1',it:'yogurt',en:'yoghurt',accept:['yoghurt','yogurt']},
  {type:'lv2',def:'Categoria: latte, formaggio, burro, panna.',en:'dairy products'},
  {type:'lv2',def:'Carne tipica degli hamburger.',en:'beef'},
- {type:'lv2',def:'Verdura lunga e verde, simile al cetriolo.',en:'courgettes'},
  {type:'lv2',def:'Sostanza dolce prodotta dalle api.',en:'honey'},
  {type:'lv2',def:'Pesce in scatola molto usato nelle insalate.',en:'tuna'},
  {type:'lv2',def:'Snack croccante di patate, venduto in busta.',en:'crisps'},
- {type:'lv2',def:'Frutta secca: noci, mandorle, nocciole.',en:'nuts'},
- {type:'lv2',def:'Cereale bianco, base di molti piatti asiatici.',en:'rice'},
  {type:'lv2',def:'Latte fermentato, cremoso, si mangia a colazione.',en:'yoghurt',accept:['yoghurt','yogurt']},
  {type:'lv2',def:'Carne di maiale lavorata: mortadella, salame, prosciutto.',en:'ham'},
- {type:'lv3',sentence:'I always have ___ and toast for breakfast.',gap:'cereal',hint:'(cereal/crisps/beef)',accept:['cereal']},
  {type:'lv3',sentence:'She doesn\'t eat ___ — she\'s vegetarian.',gap:'meat',hint:'(meat/fish/dairy products)',accept:['meat','beef','chicken','sausages','ham']},
  {type:'lv3',sentence:'He puts ___ on his toast instead of jam.',gap:'honey',hint:'(honey/sugar/butter)',accept:['honey','butter']},
  {type:'lv3',sentence:'Can I have a tin of ___, please? I want to make a salad.',gap:'tuna',hint:'(tuna/beef/ham)',accept:['tuna']},
  {type:'lv3',sentence:'We need to buy more ___: we\'ve run out of milk and cheese.',gap:'dairy products',hint:'(dairy products/meat/vegetables)',accept:['dairy products']},
- {type:'lv3',sentence:'I love roasted ___: carrots, peppers and courgettes.',gap:'vegetables',hint:'(vegetables/fruit/dairy products)',accept:['vegetables']},
  {type:'lv3',sentence:'He eats too many ___ — they\'re bad for his cholesterol.',gap:'sausages',hint:'(sausages/biscuits/nuts)',accept:['sausages']},
 ]},
-{id:'r1',type:'revision',title:'⟳ RIPASSO 1',desc:'food vocabulary · misto lv1/lv2/lv3',revises:[1]},
-{id:'d1',type:'difficult',title:'★ BOSS 1',desc:'esercizi sbagliati ≥2 volte',revises:[1]},
 
-// ══ 2 · DRINKS ════════════════════════════════════════════════════════
-{id:2,type:'study',title:'LV2 · DRINKS',desc:'coffee · fizzy drinks · milk · orange juice · tea · water',
+// ══════════════════════════════════════════════════════════════════════
+{id:3,type:'study',title:'LV3 · DRINKS',desc:'coffee · fizzy drinks · milk · orange juice · tea · water',
 exercises:[
  {type:'lv1',it:'caffè',en:'coffee'},
  {type:'lv1',it:'bibite gassate',en:'fizzy drinks'},
@@ -305,11 +308,9 @@ exercises:[
  {type:'lv3',sentence:'She never drinks ___ — she thinks they\'re too sweet.',gap:'fizzy drinks',hint:'(fizzy drinks/water/milk)',accept:['fizzy drinks']},
  {type:'lv3',sentence:'He has a glass of ___ every morning for breakfast.',gap:'orange juice',hint:'(orange juice/coffee/tea)',accept:['orange juice']},
 ]},
-{id:'r2',type:'revision',title:'⟳ RIPASSO 2',desc:'drinks · misto lv1/lv2/lv3',revises:[2]},
-{id:'d2',type:'difficult',title:'★ BOSS 2',desc:'esercizi sbagliati ≥2 volte',revises:[2]},
 
-// ══ 3 · PORTIONS & CONTAINERS ═════════════════════════════════════════
-{id:3,type:'study',title:'LV3 · PORTIONS & CONTAINERS',desc:'bottle · bowl · box · can · carton · cup · glass · jug · packet · slice · tin',
+// ══════════════════════════════════════════════════════════════════════
+{id:4,type:'study',title:'LV4 · PORTIONS & CONTAINERS',desc:'bottle · bowl · box · can · carton · cup · glass · jug · packet · slice · tin',
 exercises:[
  {type:'lv1',it:'bottiglia',en:'bottle'},
  {type:'lv1',it:'ciotola / scodella',en:'bowl'},
@@ -337,11 +338,9 @@ exercises:[
  {type:'lv3',sentence:'a ___ of soup',gap:'bowl',hint:'(bowl/cup/glass)',accept:['bowl','cup']},
  {type:'lv3',sentence:'a ___ of water',gap:'bottle',hint:'(bottle/jug/glass)',accept:['bottle','jug','glass']},
 ]},
-{id:'r3',type:'revision',title:'⟳ RIPASSO 3',desc:'portions & containers · misto lv1/lv2/lv3',revises:[3]},
-{id:'d3',type:'difficult',title:'★ BOSS 3',desc:'esercizi sbagliati ≥2 volte',revises:[3]},
 
-// ══ 4 · COOKING VERBS ═════════════════════════════════════════════════
-{id:4,type:'study',title:'LV4 · COOKING VERBS',desc:'add · boil · cook · cut · fry · grill · mix · put · stir · recipe · ingredients...',
+// ══════════════════════════════════════════════════════════════════════
+{id:5,type:'study',title:'LV5 · COOKING VERBS',desc:'add · boil · cook · cut · fry · grill · mix · put · stir · recipe · ingredients...',
 exercises:[
  {type:'lv1',it:'aggiungere',en:'add'},
  {type:'lv1',it:'bollire',en:'boil'},
@@ -374,11 +373,11 @@ exercises:[
  {type:'lv3',sentence:'___ the chicken in the oven for 40 minutes.',gap:'Cook',hint:'(Cook/Fry/Grill)',accept:['Cook','Grill']},
  {type:'lv3',sentence:'___ the pasta in a large pot of salted water.',gap:'Boil',hint:'(Boil/Fry/Grill)',accept:['Boil']},
 ]},
-{id:'r4',type:'revision',title:'⟳ RIPASSO 4',desc:'cooking verbs · misto lv1/lv2/lv3',revises:[4]},
-{id:'d4',type:'difficult',title:'★ BOSS 4',desc:'esercizi sbagliati ≥2 volte',revises:[4]},
 
-// ══ 5 · COUNTABLE & UNCOUNTABLE · SOME / ANY / NO ═════════════════════
-{id:5,type:'study',title:'LV5 · COUNTABLE & UNCOUNTABLE · SOME/ANY/NO',desc:'countable · uncountable · some · any · no · a/an con nc · plurale',
+{id:'rmid',type:'revision',title:'⟳ RIPASSO 1-5',desc:'ripasso cumulativo',revises:[1, 2, 3, 4, 5]},
+
+// ══════════════════════════════════════════════════════════════════════
+{id:6,type:'study',title:'LV6 · COUNTABLE & UNCOUNTABLE · SOME/ANY/NO',desc:'countable · uncountable · some · any · no · a/an con nc · plurale',
 exercises:[
  {type:'lv1',it:'nome numerabile (si può contare)',en:'countable noun',accept:['countable noun','countable']},
  {type:'lv1',it:'nome non numerabile (non si può contare)',en:'uncountable noun',accept:['uncountable noun','uncountable']},
@@ -392,11 +391,9 @@ exercises:[
  {type:'lv3',sentence:'"Water" è un nome ___: non ha plurale.',gap:'uncountable',hint:'(countable/uncountable)',accept:['uncountable','non numerabile','non-numerabile']},
  {type:'lv3',sentence:'"Apple" è un nome ___: ha il plurale "apples".',gap:'countable',hint:'(countable/uncountable)',accept:['countable','numerabile']},
 ]},
-{id:'r5',type:'revision',title:'⟳ RIPASSO 5',desc:'countable/uncountable · some/any/no · misto',revises:[5]},
-{id:'d5',type:'difficult',title:'★ BOSS 5',desc:'esercizi sbagliati ≥2 volte',revises:[5]},
 
-// ══ 6 · HOW MUCH/MANY · A LOT OF · MUCH/MANY ══════════════════════════
-{id:6,type:'study',title:'LV6 · HOW MUCH/MANY · A LOT OF · MUCH/MANY',desc:'how much? · how many? · a lot of / lots of · much · many',
+// ══════════════════════════════════════════════════════════════════════
+{id:7,type:'study',title:'LV7 · HOW MUCH/MANY · A LOT OF · MUCH/MANY',desc:'how much? · how many? · a lot of / lots of · much · many',
 exercises:[
  {type:'lv1',it:'Quanta...? (non numerabile)',en:'How much...?'},
  {type:'lv1',it:'Quanti/e...? (numerabile)',en:'How many...?'},
@@ -417,11 +414,9 @@ exercises:[
  {type:'lv3',sentence:'Is there ___ traffic in your city?',gap:'much',hint:'(much/many/a lot of)',accept:['much','a lot of']},
  {type:'lv3',sentence:'___ chairs does the classroom have?',gap:'How many',hint:'(How much/How many)',accept:['How many']},
 ]},
-{id:'r6',type:'revision',title:'⟳ RIPASSO 6',desc:'how much/many · a lot of · much/many · misto',revises:[6]},
-{id:'d6',type:'difficult',title:'★ BOSS 6',desc:'esercizi sbagliati ≥2 volte',revises:[6]},
 
-// ══ 7 · A LITTLE/FEW · TOO MUCH/MANY · ENOUGH ════════════════════════
-{id:7,type:'study',title:'LV7 · A LITTLE/FEW · TOO MUCH/MANY · ENOUGH',desc:'a little · a few · too much · too many · too little · (not) enough',
+// ══════════════════════════════════════════════════════════════════════
+{id:8,type:'study',title:'LV8 · A LITTLE/FEW · TOO MUCH/MANY · ENOUGH',desc:'a little · a few · too much · too many · too little · (not) enough',
 exercises:[
  {type:'lv1',it:'un po\' di (non numerabile)',en:'a little'},
  {type:'lv1',it:'qualche / pochi (numerabile)',en:'a few'},
@@ -445,11 +440,9 @@ exercises:[
  {type:'lv3',sentence:'I have ___ friends here — about three or four.',gap:'a few',hint:'(a few/a little/too many)',accept:['a few']},
  {type:'lv3',sentence:'We\'ve got ___ food. Let\'s go to the supermarket.',gap:'not enough',hint:'(not enough/too much/a little)',accept:['not enough']},
 ]},
-{id:'r7',type:'revision',title:'⟳ RIPASSO 7',desc:'a little/few · too much/many · enough · misto',revises:[7]},
-{id:'d7',type:'difficult',title:'★ BOSS 7',desc:'esercizi sbagliati ≥2 volte',revises:[7]},
 
-// ══ 8 · ORDERING FOOD & PRICES ════════════════════════════════════════
-{id:8,type:'study',title:'LV8 · ORDERING FOOD & PRICES',desc:'Are you ready to order? · I\'d like · Can I have · How much is it? · £1.50 · linking words...',
+// ══════════════════════════════════════════════════════════════════════
+{id:9,type:'study',title:'LV9 · ORDERING FOOD & PRICES',desc:'Are you ready to order? · I\'d like · Can I have · How much is it? · £1.50 · linking words...',
 exercises:[
  {type:'lv1',it:'Siete pronti per ordinare? (cameriere)',en:'Are you ready to order?'},
  {type:'lv1',it:'Vorrei... per favore. (cliente)',en:"I'd like..., please.",accept:["I'd like..., please.","I'd like, please","I would like..., please"]},
@@ -477,11 +470,9 @@ exercises:[
  {type:'lv3',sentence:'I eat meat ___ only twice a week.',gap:'but',hint:'(but/and/or)',accept:['but']},
  {type:'lv3',sentence:'Do you prefer pizza ___ pasta?',gap:'or',hint:'(or/and/but)',accept:['or']},
 ]},
-{id:'r8',type:'revision',title:'⟳ RIPASSO 8',desc:'ordinare cibo · prezzi · congiunzioni · misto',revises:[8]},
-{id:'d8',type:'difficult',title:'★ BOSS 8',desc:'esercizi sbagliati ≥2 volte',revises:[8]},
 
-// ══ 9 · GIVING INSTRUCTIONS · SEQUENCING ══════════════════════════════
-{id:9,type:'study',title:'LV9 · GIVING INSTRUCTIONS & SEQUENCING',desc:'First · Then · Next · After that · Finally · imperativo · sequenza',
+// ══════════════════════════════════════════════════════════════════════
+{id:10,type:'study',title:'LV10 · GIVING INSTRUCTIONS & SEQUENCING',desc:'First · Then · Next · After that · Finally · imperativo · sequenza',
 exercises:[
  {type:'lv1',it:'Prima / Come prima cosa',en:'First',accept:['First','First of all']},
  {type:'lv1',it:'Poi / Quindi',en:'Then',accept:['Then','Next']},
@@ -499,15 +490,9 @@ exercises:[
  {type:'lv3',sentence:'___ add too much salt — the soup is already salty.',gap:"Don't",hint:"(Don't/Not/No)",accept:["Don't"]},
  {type:'lv3',sentence:'Use the ___ to give instructions: Add, Mix, Stir...',gap:'imperative',hint:'(imperative/infinitive/gerund)',accept:['imperative','imperativo']},
 ]},
-{id:'r9',type:'revision',title:'⟳ RIPASSO 9',desc:'giving instructions · sequencing · misto',revises:[9]},
-{id:'d9',type:'difficult',title:'★ BOSS 9',desc:'esercizi sbagliati ≥2 volte',revises:[9]},
 
-{id:'rfinal',type:'revision',
- title:'⟳ FINAL BOSS — UNIT 2',
- desc:'tutto il lessico Unit 2 · food · drinks · containers · cooking · quantifiers · ordering food · instructions',
- revises:[1,2,3,4,5,6,7,8,9]},
-
-
+{id:'rfinal',type:'revision',title:'⟳ RIPASSO GLOBALE',desc:'tutto il lessico dell unita',revises:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]},
+// ══════════════════════════════════════════════════════════════════════
 ];
 
 // ─── ENGINE ──────────────────────────────────────────────────────────────────
@@ -519,8 +504,7 @@ function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.fl
 function loadState(){
   try{state=JSON.parse(localStorage.getItem(SK))||{};}catch(e){state={};}
   try{errorMap=JSON.parse(localStorage.getItem(EK))||{};}catch(e){errorMap={};}
-  LEVELS.forEach(s=>{if(state[s.id]===undefined)state[s.id]='locked';});
-  if(state[LEVELS[0].id]==='locked')state[LEVELS[0].id]='unlocked';
+  LEVELS.forEach(s=>{if(state[s.id]!=='completed')state[s.id]='unlocked';});
   saveState();
 }
 function saveState(){

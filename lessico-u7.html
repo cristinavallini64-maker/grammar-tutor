@@ -226,12 +226,12 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
   </div>
 </div>
 <script>
-const SK='gq_lessico_abc_s',EK='gq_lessico_abc_e';
+const SK='gq_lessico_u7_v2_s',EK='gq_lessico_u7_v2_e';
 let state={},errorMap={};
 
 const LEVELS=[
 
-// ══ 1 · LANDSCAPES ════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:1,type:'study',title:'LV1 · LANDSCAPES',desc:'bay · cliff · coast · desert · forest · hill · island · lake · mountain · rainforest · river · valley · waterfall...',
 exercises:[
  {type:'lv1',it:'baia',en:'bay'},
@@ -275,10 +275,8 @@ exercises:[
  {type:'lv3',sentence:'We walked along the ___ and watched the waves.',gap:'coast',hint:'(coast/beach/cliff)',accept:['coast','beach']},
  {type:'lv3',sentence:'There\'s ___ on the mountain all year round.',gap:'snow',hint:'(snow/ice/rain)',accept:['snow','ice']},
 ]},
-{id:'r1',type:'revision',title:'⟳ RIPASSO 1',desc:'landscapes · misto',revises:[1]},
-{id:'d1',type:'difficult',title:'★ BOSS 1',desc:'esercizi sbagliati ≥2 volte',revises:[1]},
 
-// ══ 2 · THE WEATHER ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
 {id:2,type:'study',title:'LV2 · THE WEATHER',desc:'cloudy · foggy · freezing · humid · mild · thunderstorm · windy · rain (v,n) · snow (v)...',
 exercises:[
  {type:'lv1',it:'nuvoloso',en:'cloudy'},
@@ -311,51 +309,57 @@ exercises:[
  {type:'lv3',sentence:'It ___ a lot in winter here — everything turns white.',gap:'snows',hint:'(snows/rains/freezes)',accept:['snows']},
  {type:'lv3',sentence:'Take an umbrella — it\'s going to ___ this afternoon.',gap:'rain',hint:'(rain/snow/freeze)',accept:['rain']},
 ]},
-{id:'r2',type:'revision',title:'⟳ RIPASSO 2',desc:'the weather · misto',revises:[2]},
-{id:'d2',type:'difficult',title:'★ BOSS 2',desc:'esercizi sbagliati ≥2 volte',revises:[2]},
 
-// ══ 3 · ANIMALS ═══════════════════════════════════════════════════════
-{id:3,type:'study',title:'LV3 · ANIMALS',desc:'amphibian · bee · crocodile · dolphin · eagle · leopard · mammal · mosquito · parrot · reptile · tortoise · wild boar · wolf...',
+// ══════════════════════════════════════════════════════════════════════
+{id:3,type:'study',title:'LV3 · ANIMALS — MAMMALS',desc:'mammiferi di terra e fattoria',
 exercises:[
- {type:'lv1',it:'anfibio',en:'amphibian'},
  {type:'lv1',it:'orso',en:'bear'},
- {type:'lv1',it:'ape',en:'bee'},
- {type:'lv1',it:'uccello',en:'bird'},
  {type:'lv1',it:'pollo',en:'chicken'},
  {type:'lv1',it:'mucca',en:'cow'},
- {type:'lv1',it:'coccodrillo',en:'crocodile'},
  {type:'lv1',it:'cervo',en:'deer'},
  {type:'lv1',it:'cane',en:'dog'},
- {type:'lv1',it:'delfino',en:'dolphin'},
- {type:'lv1',it:'aquila',en:'eagle'},
  {type:'lv1',it:'elefante',en:'elephant'},
- {type:'lv1',it:'pesce',en:'fish'},
- {type:'lv1',it:'mosca',en:'fly'},
  {type:'lv1',it:'volpe',en:'fox'},
- {type:'lv1',it:'rana',en:'frog'},
  {type:'lv1',it:'cavallo',en:'horse'},
- {type:'lv1',it:'insetto',en:'insect'},
  {type:'lv1',it:'leopardo',en:'leopard'},
  {type:'lv1',it:'leone',en:'lion'},
- {type:'lv1',it:'mammifero',en:'mammal'},
  {type:'lv1',it:'scimmia',en:'monkey'},
- {type:'lv1',it:'zanzara',en:'mosquito'},
  {type:'lv1',it:'topo',en:'mouse'},
- {type:'lv1',it:'pappagallo',en:'parrot'},
- {type:'lv1',it:'pinguino',en:'penguin'},
  {type:'lv1',it:'coniglio',en:'rabbit'},
  {type:'lv1',it:'ratto',en:'rat'},
- {type:'lv1',it:'rettile',en:'reptile'},
- {type:'lv1',it:'squalo',en:'shark'},
  {type:'lv1',it:'pecora',en:'sheep'},
- {type:'lv1',it:'serpente',en:'snake'},
  {type:'lv1',it:'tigre',en:'tiger'},
- {type:'lv1',it:'tartaruga',en:'tortoise',accept:['tortoise','turtle']},
- {type:'lv1',it:'balena',en:'whale'},
  {type:'lv1',it:'cinghiale',en:'wild boar'},
  {type:'lv1',it:'lupo',en:'wolf'},
- {type:'lv2',def:'Animale: vola, ha piume ma non può volare — vive in Antartide.',en:'penguin'},
  {type:'lv2',def:'Animale: grande felino maculato, molto veloce.',en:'leopard'},
+ {type:'lv3',sentence:'The ___ is the biggest land animal.',gap:'elephant',hint:'(elephant/whale/lion)',accept:['elephant']},
+ {type:'lv3',sentence:'It\'s called the king of the jungle.',gap:'lion',hint:'(lion/tiger/leopard)',accept:['lion']},
+ {type:'lv3',sentence:'We get wool from this animal.',gap:'sheep',hint:'(sheep/cow/rabbit)',accept:['sheep']},
+]},
+
+// ══════════════════════════════════════════════════════════════════════
+{id:4,type:'study',title:'LV4 · ANIMALS — BIRDS, SEA, REPTILES & INSECTS',desc:'uccelli, mare, rettili, insetti e categorie',
+exercises:[
+ {type:'lv1',it:'anfibio',en:'amphibian'},
+ {type:'lv1',it:'ape',en:'bee'},
+ {type:'lv1',it:'uccello',en:'bird'},
+ {type:'lv1',it:'coccodrillo',en:'crocodile'},
+ {type:'lv1',it:'delfino',en:'dolphin'},
+ {type:'lv1',it:'aquila',en:'eagle'},
+ {type:'lv1',it:'pesce',en:'fish'},
+ {type:'lv1',it:'mosca',en:'fly'},
+ {type:'lv1',it:'rana',en:'frog'},
+ {type:'lv1',it:'insetto',en:'insect'},
+ {type:'lv1',it:'mammifero',en:'mammal'},
+ {type:'lv1',it:'zanzara',en:'mosquito'},
+ {type:'lv1',it:'pappagallo',en:'parrot'},
+ {type:'lv1',it:'pinguino',en:'penguin'},
+ {type:'lv1',it:'rettile',en:'reptile'},
+ {type:'lv1',it:'squalo',en:'shark'},
+ {type:'lv1',it:'serpente',en:'snake'},
+ {type:'lv1',it:'tartaruga',en:'tortoise',accept:['tortoise','turtle']},
+ {type:'lv1',it:'balena',en:'whale'},
+ {type:'lv2',def:'Animale: vola, ha piume ma non può volare — vive in Antartide.',en:'penguin'},
  {type:'lv2',def:'Animale: rettile lento con il guscio.',en:'tortoise',accept:['tortoise','turtle']},
  {type:'lv2',def:'Animale: grande mammifero marino, il più grande del mondo.',en:'whale'},
  {type:'lv2',def:'Animale: mammifero acquatico intelligente, molto amichevole.',en:'dolphin'},
@@ -365,17 +369,12 @@ exercises:[
  {type:'lv2',def:'Categoria: animale che vive sia in acqua che a terra.',en:'amphibian'},
  {type:'lv3',sentence:'The horse is in the wild — it\'s a ___ (categoria).',gap:'mammal',hint:'(mammal/reptile/amphibian)',accept:['mammal']},
  {type:'lv3',sentence:'A ___ uses its venom to catch mice and birds.',gap:'snake',hint:'(snake/crocodile/shark)',accept:['snake']},
- {type:'lv3',sentence:'The ___ is the biggest land animal.',gap:'elephant',hint:'(elephant/whale/lion)',accept:['elephant']},
  {type:'lv3',sentence:'It bites humans in summer to drink their blood. (insect)',gap:'mosquito',hint:'(mosquito/bee/fly)',accept:['mosquito']},
  {type:'lv3',sentence:'It\'s a bird, but it can\'t fly. It lives in cold places.',gap:'penguin',hint:'(penguin/eagle/parrot)',accept:['penguin']},
- {type:'lv3',sentence:'It\'s called the king of the jungle.',gap:'lion',hint:'(lion/tiger/leopard)',accept:['lion']},
- {type:'lv3',sentence:'We get wool from this animal.',gap:'sheep',hint:'(sheep/cow/rabbit)',accept:['sheep']},
 ]},
-{id:'r3',type:'revision',title:'⟳ RIPASSO 3',desc:'animals · misto',revises:[3]},
-{id:'d3',type:'difficult',title:'★ BOSS 3',desc:'esercizi sbagliati ≥2 volte',revises:[3]},
 
-// ══ 4 · CONSERVATION ══════════════════════════════════════════════════
-{id:4,type:'study',title:'LV4 · CONSERVATION',desc:'conservation · habitats · breed · species · extinct · endangered · protect · wildlife',
+// ══════════════════════════════════════════════════════════════════════
+{id:5,type:'study',title:'LV5 · CONSERVATION',desc:'conservation · habitats · breed · species · extinct · endangered · protect · wildlife',
 exercises:[
  {type:'lv1',it:'conservazione (della natura)',en:'conservation'},
  {type:'lv1',it:'habitat / ambienti naturali',en:'habitats'},
@@ -400,11 +399,11 @@ exercises:[
  {type:'lv3',sentence:'The panda is still ___ — there are only about 1,800 left.',gap:'endangered',hint:'(endangered/extinct/protected)',accept:['endangered']},
  {type:'lv3',sentence:'Whipsnade is a ___ park — it protects ___ from all over the world.',gap:'conservation / wildlife',hint:'(conservation · wildlife)',accept:['conservation / wildlife','conservation/wildlife']},
 ]},
-{id:'r4',type:'revision',title:'⟳ RIPASSO 4',desc:'conservation vocabulary · misto',revises:[4]},
-{id:'d4',type:'difficult',title:'★ BOSS 4',desc:'esercizi sbagliati ≥2 volte',revises:[4]},
 
-// ══ 5 · MUST / MUSTN'T ════════════════════════════════════════════════
-{id:5,type:'study',title:'LV5 · MUST / MUSTN\'T',desc:'obbligo personale · forte raccomandazione · avvisi e regolamenti · divieto assoluto',
+{id:'rmid',type:'revision',title:'⟳ RIPASSO 1-5',desc:'ripasso cumulativo',revises:[1, 2, 3, 4, 5]},
+
+// ══════════════════════════════════════════════════════════════════════
+{id:6,type:'study',title:'LV6 · MUST / MUSTN\'T',desc:'obbligo personale · forte raccomandazione · avvisi e regolamenti · divieto assoluto',
 exercises:[
  {type:'lv1',it:'obbligo personale / forte raccomandazione',en:'must'},
  {type:'lv1',it:'divieto assoluto',en:'mustn\'t',accept:["mustn't","must not"]},
@@ -418,11 +417,9 @@ exercises:[
  {type:'lv3',sentence:'I ___ be more careful — I keep making mistakes.',gap:'must',hint:"(must/mustn't/should)",accept:['must','should']},
  {type:'lv3',sentence:'You ___ disturb the animals — stay on the paths.',gap:"mustn't",hint:"(mustn't/must/don't have to)",accept:["mustn't","must not"]},
 ]},
-{id:'r5',type:'revision',title:'⟳ RIPASSO 5',desc:'must / mustn\'t · misto',revises:[5]},
-{id:'d5',type:'difficult',title:'★ BOSS 5',desc:'esercizi sbagliati ≥2 volte',revises:[5]},
 
-// ══ 6 · HAVE TO / DON'T HAVE TO ═══════════════════════════════════════
-{id:6,type:'study',title:'LV6 · HAVE TO / DON\'T HAVE TO',desc:'obbligo esterno imposto · mancanza di obbligo · differenza con must',
+// ══════════════════════════════════════════════════════════════════════
+{id:7,type:'study',title:'LV7 · HAVE TO / DON\'T HAVE TO',desc:'obbligo esterno imposto · mancanza di obbligo · differenza con must',
 exercises:[
  {type:'lv1',it:'dovere (obbligo esterno)',en:'have to'},
  {type:'lv1',it:'non essere obbligato a',en:"don't have to",accept:["don't have to","do not have to"]},
@@ -435,11 +432,9 @@ exercises:[
  {type:'lv3',sentence:'She ___ work on Saturdays — lucky her!',gap:"doesn't have to",hint:"(doesn't have to/mustn't/must)",accept:["doesn't have to"]},
  {type:'lv3',sentence:'We ___ do our homework by Tuesday.',gap:'have to',hint:"(have to/must/should)",accept:['have to','must']},
 ]},
-{id:'r6',type:'revision',title:'⟳ RIPASSO 6',desc:'have to / don\'t have to · misto',revises:[6]},
-{id:'d6',type:'difficult',title:'★ BOSS 6',desc:'esercizi sbagliati ≥2 volte',revises:[6]},
 
-// ══ 7 · SHOULD / SHOULDN'T ════════════════════════════════════════════
-{id:7,type:'study',title:'LV7 · SHOULD / SHOULDN\'T',desc:'consiglio · opinione · chiedere e dare consigli · differenza con must e have to',
+// ══════════════════════════════════════════════════════════════════════
+{id:8,type:'study',title:'LV8 · SHOULD / SHOULDN\'T',desc:'consiglio · opinione · chiedere e dare consigli · differenza con must e have to',
 exercises:[
  {type:'lv1',it:'dovresti / è una buona idea (consiglio)',en:'should'},
  {type:'lv1',it:'non dovresti / non è una buona idea',en:"shouldn't",accept:["shouldn't","should not"]},
@@ -452,11 +447,9 @@ exercises:[
  {type:'lv3',sentence:'You ___ go camping near the sea — it\'s not safe.',gap:"shouldn't",hint:"(shouldn't/mustn't/don't have to)",accept:["shouldn't","mustn't"]},
  {type:'lv3',sentence:'You ___ book early if you want a good seat.',gap:'should',hint:"(should/must/have to)",accept:['should','must']},
 ]},
-{id:'r7',type:'revision',title:'⟳ RIPASSO 7',desc:'should / shouldn\'t · misto',revises:[7]},
-{id:'d7',type:'difficult',title:'★ BOSS 7',desc:'esercizi sbagliati ≥2 volte',revises:[7]},
 
-// ══ 8 · MAKING OFFERS & REQUESTS + ANIMAL IDIOMS ══════════════════════
-{id:8,type:'study',title:'LV8 · MAKING OFFERS & REQUESTS · ANIMAL IDIOMS',desc:'Shall I...? · Can you...? · Would you...? · the bee\'s knees · copycat · butterflies in your stomach · loads of · Come on!',
+// ══════════════════════════════════════════════════════════════════════
+{id:9,type:'study',title:'LV9 · MAKING OFFERS & REQUESTS · ANIMAL IDIOMS',desc:'Shall I...? · Can you...? · Would you...? · the bee\'s knees · copycat · butterflies in your stomach · loads of · Come on!',
 exercises:[
  {type:'lv1',it:'Posso aiutare? / Lo faccio io. (offerta)',en:'Shall I...?',accept:['Shall I...?','I\'ll do it.','I\'ll help.']},
  {type:'lv1',it:'Lo faccio io. (offerta decisa)',en:'I\'ll do it.',accept:["I'll do it","I'll do it."]},
@@ -484,15 +477,9 @@ exercises:[
  {type:'lv3',sentence:'I had ___ in my stomach before the exam. I was so nervous!',gap:'butterflies',hint:'(butterflies/loads/bees)',accept:['butterflies']},
  {type:'lv3',sentence:'There are ___ people going on holiday today.',gap:'loads of',hint:'(loads of/lots/a lot)',accept:['loads of','loads']},
 ]},
-{id:'r8',type:'revision',title:'⟳ RIPASSO 8',desc:'making offers & requests · animal idioms · misto',revises:[8]},
-{id:'d8',type:'difficult',title:'★ BOSS 8',desc:'esercizi sbagliati ≥2 volte',revises:[8]},
 
-{id:'rfinal',type:'revision',
- title:'⟳ FINAL BOSS — UNIT 7',
- desc:'tutto il lessico Unit 7 · landscapes · weather · animals · conservation · must/mustn\'t · have to · should · offers & requests · idioms',
- revises:[1,2,3,4,5,6,7,8]},
-
-
+{id:'rfinal',type:'revision',title:'⟳ RIPASSO GLOBALE',desc:'tutto il lessico dell unita',revises:[1, 2, 3, 4, 5, 6, 7, 8, 9]},
+// ══════════════════════════════════════════════════════════════════════
 ];
 
 // ─── ENGINE ──────────────────────────────────────────────────────────────────
@@ -504,8 +491,7 @@ function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.fl
 function loadState(){
   try{state=JSON.parse(localStorage.getItem(SK))||{};}catch(e){state={};}
   try{errorMap=JSON.parse(localStorage.getItem(EK))||{};}catch(e){errorMap={};}
-  LEVELS.forEach(s=>{if(state[s.id]===undefined)state[s.id]='locked';});
-  if(state[LEVELS[0].id]==='locked')state[LEVELS[0].id]='unlocked';
+  LEVELS.forEach(s=>{if(state[s.id]!=='completed')state[s.id]='unlocked';});
   saveState();
 }
 function saveState(){
