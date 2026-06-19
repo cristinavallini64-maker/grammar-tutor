@@ -15,9 +15,8 @@
   };
   /* ============================================ */
 
-  var EMAIL_KEY = "ef_student_email";
+  // Strada B: nessuna memoria del login. L'account si sceglie a ogni apertura.
   var email = null;
-  try { email = localStorage.getItem(EMAIL_KEY); } catch (e) {}
 
   function pageName() {
     return (location.pathname.split("/").pop() || location.pathname);
@@ -104,9 +103,10 @@
       google.accounts.id.initialize({
         client_id:   CONFIG.GOOGLE_CLIENT_ID,
         callback:    onCredential,
-        auto_select: true,
+        auto_select: false,
         hd:          CONFIG.SCHOOL_DOMAIN
       });
+      try { google.accounts.id.disableAutoSelect(); } catch (e) {}
       google.accounts.id.renderButton(
         document.getElementById("ef-gbtn"),
         { theme: "filled_blue", size: "large", text: "signin_with" }
@@ -126,7 +126,6 @@
       .then(function (d) {
         if (d && d.ok && d.email) {
           email = d.email;
-          try { localStorage.setItem(EMAIL_KEY, email); } catch (e) {}
           var ov = document.getElementById("ef-login-overlay");
           if (ov) ov.remove();
           startSession();
@@ -141,9 +140,7 @@
       });
   }
 
-  if (email) {
-    startSession();
-  } else if (document.readyState === "loading") {
+  if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", showLogin);
   } else {
     showLogin();
