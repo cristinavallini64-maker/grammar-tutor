@@ -32,6 +32,12 @@ header{display:flex;align-items:center;justify-content:space-between;gap:16px;fl
   color:var(--text);cursor:pointer;transition:all .2s;}
 .btn:hover{border-color:var(--cyan);color:var(--cyan);}
 .btn.ghost{background:transparent;}
+.btn.danger{border-color:rgba(255,77,109,.4);color:var(--red);background:rgba(255,77,109,.08);}
+.btn.danger:hover{border-color:var(--red);background:rgba(255,77,109,.18);color:var(--red);}
+.del-student{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;color:var(--red);
+  background:transparent;border:1px solid rgba(255,77,109,.35);border-radius:8px;
+  padding:5px 12px;cursor:pointer;margin-bottom:12px;transition:all .2s;}
+.del-student:hover{background:rgba(255,77,109,.15);border-color:var(--red);}
 .divider{height:2px;border-radius:2px;margin:14px 0 22px;
   background:linear-gradient(90deg,var(--cyan),transparent 70%);opacity:.7;}
 
@@ -127,6 +133,7 @@ input:focus{border-color:var(--cyan);}
       </div>
       <div class="hdr-actions">
         <button class="btn ghost" onclick="reload()">&#x21BB; Aggiorna</button>
+        <button class="btn danger" onclick="wipeAll()">Azzera tutto</button>
         <button class="btn ghost" onclick="logout()">Esci</button>
       </div>
     </header>
@@ -168,6 +175,30 @@ function logout(){
   document.getElementById('pw').value = "";
 }
 function reload(){ fetchData(false); }
+
+function wipeAll(){
+  if(!confirm("Azzerare TUTTI i dati di tutti gli studenti? L'operazione non \u00e8 reversibile.")) return;
+  const pw = prompt("Per conferma, ridigita la password:");
+  if(pw === null || pw === "") return;
+  fetch(WORKER_URL + "/delete", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ key: pw })
+  }).then(r => r.json()).then(d => {
+    if(d && d.ok){ openRows.clear(); reload(); }
+    else alert((d && d.error) || "Errore.");
+  }).catch(() => alert("Errore di rete."));
+}
+
+function deleteStudent(email){
+  if(!confirm("Eliminare tutti i dati di " + email + "?\nL'operazione non \u00e8 reversibile.")) return;
+  fetch(WORKER_URL + "/delete", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ key: PW, email: email })
+  }).then(r => r.json()).then(d => {
+    if(d && d.ok){ openRows.delete(email); reload(); }
+    else alert((d && d.error) || "Errore.");
+  }).catch(() => alert("Errore di rete."));
+}
 
 function fetchData(fromGate){
   fetch(WORKER_URL + "/report?key=" + encodeURIComponent(PW))
@@ -292,7 +323,8 @@ function detailRow(email){
     });
   }
   inner += '</tbody></table>';
-  return '<tr class="detail"><td colspan="4"><div class="detail-inner">'+inner+'</div></td></tr>';
+  const delBtn = '<button class="del-student" onclick="deleteStudent(\''+escAttr(email)+'\')">&#x2715; Elimina i dati di questo studente</button>';
+  return '<tr class="detail"><td colspan="4"><div class="detail-inner">'+delBtn+inner+'</div></td></tr>';
 }
 
 function toggle(email){
