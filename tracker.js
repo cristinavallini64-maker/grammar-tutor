@@ -7,6 +7,29 @@
 (function () {
   "use strict";
 
+  /* =====================================================================
+     INTERRUTTORE GENERALE
+     ---------------------------------------------------------------------
+     false = tracking SPENTO: nessun login, nessuna registrazione.
+             Le pagine funzionano normalmente, come se questo file non ci fosse.
+     true  = tracking ACCESO.
+
+     Serviva per i recuperi estivi: verificare chi aveva davvero lavorato
+     sulla piattaforma. Fuori da quel periodo raccoglierebbe dati inutilizzati
+     e costringerebbe a un login in piu' a ogni apertura (PC condivisi).
+
+     Per riaccenderlo la prossima estate: mettere true e ricaricare su GitHub.
+     Basta questo file: le pagine non vanno toccate.
+     I dati gia' registrati nel database restano dove sono.
+     ===================================================================== */
+  var ATTIVO = false;
+
+  if (!ATTIVO) {
+    // API finta: le pagine che chiamano EFTrack.event(...) non danno errore.
+    window.EFTrack = { event: function () {} };
+    return;
+  }
+
   /* ===== CONFIG — COMPILA QUESTI 3 VALORI ===== */
   var CONFIG = {
     SCHOOL_DOMAIN:    "iisprimolevi.org",
