@@ -22,7 +22,7 @@
      Basta questo file: le pagine non vanno toccate.
      I dati gia' registrati nel database restano dove sono.
      ===================================================================== */
-  var ATTIVO = false;
+  var ATTIVO = true;
 
   if (!ATTIVO) {
     // API finta: le pagine che chiamano EFTrack.event(...) non danno errore.
