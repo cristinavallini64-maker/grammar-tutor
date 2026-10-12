@@ -236,6 +236,15 @@ function fmtDate(s){
   if(isNaN(d)) return s;
   return d.toLocaleString("it-IT",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
 }
+/* Livelli con il totale nel nome, es. "LIVELLO 01 — USED TO (su 19)":
+   mostra anche le risposte corrette (es. 17/19). */
+function lvlCell(l){
+  const m = /\s*\(su (\d+)\)\s*$/.exec(l.level || "");
+  if(!m) return '<span class="lvl">'+esc(l.level)+' '+scorePill(l.score)+'</span>';
+  const tot = +m[1], name = l.level.slice(0, m.index);
+  const ok = (l.score === null || l.score === undefined) ? null : Math.round(l.score * tot / 100);
+  return '<span class="lvl">'+esc(name)+' '+(ok === null ? '' : '<b>'+ok+'/'+tot+'</b> ')+scorePill(l.score)+'</span>';
+}
 function scorePill(v){
   if(v === null || v === undefined) return '<span class="pill none">—</span>';
   const cls = v >= 80 ? "good" : v >= 60 ? "mid" : "low";
@@ -310,7 +319,7 @@ function detailRow(email){
         scoreCell = '<span class="muted">—</span>';
       } else {
         scoreCell = '<div class="lvls">' + levels.map(l =>
-          '<span class="lvl">'+esc(l.level)+' '+scorePill(l.score)+'</span>'
+          lvlCell(l)
         ).join('') + '</div>';
       }
       inner += '<tr>'+
