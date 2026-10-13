@@ -288,7 +288,7 @@ function render(){
     '<th '+arrow('email')+'>Studente</th>'+
     '<th '+arrow('opens')+'>Aperture</th>'+
     '<th class="hide-sm" '+arrow('seconds')+'>Tempo</th>'+
-    '<th '+arrow('last_seen')+'>Ultimo accesso</th>'+
+    '<th '+arrow('last_seen')+'>Ultima attività</th>'+
     '</tr></thead><tbody>';
 
   rows.forEach(r => {
@@ -308,7 +308,7 @@ function render(){
 function detailRow(email){
   const pages = DATA.byPage.filter(p => p.email === email)
     .sort((a,b)=>(+b.opens||0)-(+a.opens||0));
-  let inner = '<table class="subtbl"><thead><tr><th>Pagina</th><th>Aperture</th><th>Tempo</th><th>Punteggi 1\u00b0 tentativo (per livello)</th><th>Ultimo accesso</th></tr></thead><tbody>';
+  let inner = '<table class="subtbl"><thead><tr><th>Pagina</th><th>Aperture</th><th>Tempo</th><th>Punteggi 1\u00b0 tentativo (per livello)</th><th>Ultima attività</th></tr></thead><tbody>';
   if(pages.length === 0){
     inner += '<tr><td colspan="5" class="muted">Nessun dettaglio.</td></tr>';
   } else {
