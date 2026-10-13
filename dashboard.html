@@ -247,10 +247,19 @@ function fmtDate(s){
    mostra anche le risposte corrette (es. 17/19). */
 function lvlCell(l){
   const m = /\s*\(su (\d+)\)\s*$/.exec(l.level || "");
-  if(!m) return '<span class="lvl">'+esc(l.level)+' '+scorePill(l.score)+'</span>';
-  const tot = +m[1], name = l.level.slice(0, m.index);
-  const ok = (l.score === null || l.score === undefined) ? null : Math.round(l.score * tot / 100);
-  return '<span class="lvl">'+esc(name)+' '+(ok === null ? '' : '<b>'+ok+'/'+tot+'</b> ')+scorePill(l.score)+'</span>';
+  const tot = m ? +m[1] : 0, name = m ? l.level.slice(0, m.index) : (l.level || "");
+  const frac = v => (tot && v !== null && v !== undefined) ? '<b>'+Math.round(v * tot / 100)+'/'+tot+'</b> ' : '';
+  const n = +l.attempts || 1;
+  const first = (l.first_score === undefined || l.first_score === null) ? null : +l.first_score;
+  // un solo tentativo (o Worker vecchio): come prima
+  if(n <= 1 || first === null) return '<span class="lvl">'+esc(name)+' '+frac(l.score)+scorePill(l.score)+'</span>';
+  // piu' tentativi: primo tentativo (la misura vera) + migliore + quante volte
+  const sospetto = first < 50 && l.score >= 80;
+  return '<span class="lvl">'+esc(name)+' 1\u00b0: '+frac(first)+scorePill(first)+
+    ' &rarr; migliore: '+frac(l.score)+scorePill(l.score)+
+    ' <span class="muted">('+n+' volte)</span>'+
+    (sospetto ? ' <span title="Primo tentativo basso e poi punteggio alto: potrebbe aver memorizzato le risposte" style="color:#e00000;font-weight:800">&#9888;</span>' : '')+
+    '</span>';
 }
 function scorePill(v){
   if(v === null || v === undefined) return '<span class="pill none">—</span>';
@@ -319,7 +328,7 @@ function render(){
 function detailRow(email){
   const pages = DATA.byPage.filter(p => p.email === email)
     .sort((a,b)=>(+b.opens||0)-(+a.opens||0));
-  let inner = '<table class="subtbl"><thead><tr><th>Pagina</th><th>Aperture</th><th>Tempo</th><th>Uscite</th><th>Punteggi 1\u00b0 tentativo (per livello)</th><th>Primo accesso</th><th>Ultima attività</th></tr></thead><tbody>';
+  let inner = '<table class="subtbl"><thead><tr><th>Pagina</th><th>Aperture</th><th>Tempo</th><th>Uscite</th><th>Punteggi per livello (1\u00b0 tentativo / migliore)</th><th>Primo accesso</th><th>Ultima attività</th></tr></thead><tbody>';
   if(pages.length === 0){
     inner += '<tr><td colspan="7" class="muted">Nessun dettaglio.</td></tr>';
   } else {
