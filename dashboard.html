@@ -230,6 +230,13 @@ function fmtTime(sec){
   const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60);
   return h + "h " + m + "m";
 }
+/* Uscite dalla pagina: numero + tempo passato fuori (dati dal Worker: leaves, away_seconds) */
+function fmtLeaves(r){
+  if(r.leaves === undefined || r.leaves === null) return '<span class="muted">—</span>';
+  const n = +r.leaves || 0;
+  if(!n) return '0';
+  return n + ' <span class="muted">(' + fmtTime(+r.away_seconds || 0) + ' fuori)</span>';
+}
 function fmtDate(s){
   if(!s) return "—";
   const d = new Date(s.replace(" ","T") + "Z");      // il DB salva in UTC
@@ -288,6 +295,7 @@ function render(){
     '<th '+arrow('email')+'>Studente</th>'+
     '<th '+arrow('opens')+'>Aperture</th>'+
     '<th class="hide-sm" '+arrow('seconds')+'>Tempo</th>'+
+    '<th '+arrow('leaves')+' title="Quante volte ha lasciato la pagina (altra scheda, finestra o app) e per quanto tempo">Uscite</th>'+
     '<th class="hide-sm" '+arrow('first_seen')+'>Primo accesso</th>'+
     '<th '+arrow('last_seen')+'>Ultima attività</th>'+
     '</tr></thead><tbody>';
@@ -298,6 +306,7 @@ function render(){
       '<td class="email"><span class="caret">&#9654;</span>'+esc(r.email)+'</td>'+
       '<td class="num">'+(r.opens||0)+'</td>'+
       '<td class="num hide-sm">'+fmtTime(r.seconds)+'</td>'+
+      '<td class="num">'+fmtLeaves(r)+'</td>'+
       '<td class="muted hide-sm">'+fmtDate(r.first_seen)+'</td>'+
       '<td class="muted">'+fmtDate(r.last_seen)+'</td>'+
       '</tr>';
@@ -310,9 +319,9 @@ function render(){
 function detailRow(email){
   const pages = DATA.byPage.filter(p => p.email === email)
     .sort((a,b)=>(+b.opens||0)-(+a.opens||0));
-  let inner = '<table class="subtbl"><thead><tr><th>Pagina</th><th>Aperture</th><th>Tempo</th><th>Punteggi 1\u00b0 tentativo (per livello)</th><th>Primo accesso</th><th>Ultima attività</th></tr></thead><tbody>';
+  let inner = '<table class="subtbl"><thead><tr><th>Pagina</th><th>Aperture</th><th>Tempo</th><th>Uscite</th><th>Punteggi 1\u00b0 tentativo (per livello)</th><th>Primo accesso</th><th>Ultima attività</th></tr></thead><tbody>';
   if(pages.length === 0){
-    inner += '<tr><td colspan="6" class="muted">Nessun dettaglio.</td></tr>';
+    inner += '<tr><td colspan="7" class="muted">Nessun dettaglio.</td></tr>';
   } else {
     pages.forEach(p => {
       const levels = DATA.byLevel.filter(l => l.email === email && l.page === p.page);
@@ -328,6 +337,7 @@ function detailRow(email){
         '<td>'+esc((p.page||"").replace(/\.html$/,""))+'</td>'+
         '<td class="num">'+(p.opens||0)+'</td>'+
         '<td class="num">'+fmtTime(p.seconds)+'</td>'+
+        '<td class="num">'+fmtLeaves(p)+'</td>'+
         '<td>'+scoreCell+'</td>'+
         '<td class="muted">'+fmtDate(p.first_seen)+'</td>'+
         '<td class="muted">'+fmtDate(p.last_seen)+'</td>'+
@@ -336,7 +346,7 @@ function detailRow(email){
   }
   inner += '</tbody></table>';
   const delBtn = '<button class="del-student" onclick="deleteStudent(\''+escAttr(email)+'\')">&#x2715; Elimina i dati di questo studente</button>';
-  return '<tr class="detail"><td colspan="5"><div class="detail-inner">'+delBtn+inner+'</div></td></tr>';
+  return '<tr class="detail"><td colspan="6"><div class="detail-inner">'+delBtn+inner+'</div></td></tr>';
 }
 
 function toggle(email){

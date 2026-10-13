@@ -87,37 +87,60 @@
       title: document.title,
       num:   (typeof num === "number" ? num : null)
     };
-    if (!email) { if (type !== "time" && type !== "activity") early.push(payload); return; }
-    send(payload, type === "time" || type === "activity");
+    var bg = (type === "time" || type === "activity" || type === "uscite" || type === "fuori");
+    if (!email) { if (!bg) early.push(payload); return; }
+    send(payload, bg);
   }
 
   setInterval(retryQ, 60000);
   window.addEventListener("online", retryQ);
 
-  /* ---- tempo attivo + interazioni ---- */
-  var activeSeconds = 0, clicks = 0, lastTick = Date.now(), visible = !document.hidden;
+  /* ---- tempo attivo + interazioni + uscite dalla pagina ----
+     "Uscita" = lo studente lascia la pagina degli esercizi per un'altra scheda,
+     un'altra finestra o un'altra app (es. per cercare le risposte), e poi torna.
+     Si registra quante volte esce e per quanti secondi resta fuori.
+     Il tempo attivo conta solo quando lo studente e' sulla pagina. */
+  var activeSeconds = 0, clicks = 0, lastTick = Date.now();
+  var out = document.hidden || (document.hasFocus && !document.hasFocus());
+  var outSince = out ? Date.now() : 0, leaves = 0, awaySeconds = 0;
 
   setInterval(function () {
     var now = Date.now();
-    if (visible) activeSeconds += Math.round((now - lastTick) / 1000);
+    if (!out) activeSeconds += Math.round((now - lastTick) / 1000);
     lastTick = now;
   }, 1000);
 
+  function goOut() {
+    if (out) return;
+    out = true; outSince = Date.now(); lastTick = Date.now();
+    if (email) leaves++;
+  }
+  function comeBack() {
+    if (!out) return;
+    out = false; lastTick = Date.now();
+    if (email && outSince) awaySeconds += Math.round((Date.now() - outSince) / 1000);
+    outSince = 0;
+  }
+
   document.addEventListener("visibilitychange", function () {
-    visible = !document.hidden;
-    lastTick = Date.now();
-    if (document.hidden) flush();
+    if (document.hidden) { goOut(); flush(); } else comeBack();
   });
+  window.addEventListener("blur", goOut);
+  window.addEventListener("focus", comeBack);
 
   document.addEventListener("click", function (e) {
+    comeBack();
     if (e.target && (e.target.closest("button") || e.target.closest("a") || e.target.closest("[onclick]"))) {
       clicks++;
     }
   }, true);
 
   function flush() {
+    if (out && email && outSince) { awaySeconds += Math.round((Date.now() - outSince) / 1000); outSince = Date.now(); }
     if (activeSeconds > 0) { post("time", activeSeconds); activeSeconds = 0; }
     if (clicks > 0)        { post("activity", clicks);    clicks = 0; }
+    if (leaves > 0)        { post("uscite", leaves);      leaves = 0; }
+    if (awaySeconds > 0)   { post("fuori", awaySeconds);  awaySeconds = 0; }
   }
 
   // invio periodico: il tempo arriva anche se il PC viene spento senza chiudere la pagina
@@ -180,6 +203,7 @@
           var ov = document.getElementById("ef-login-overlay");
           if (ov) ov.remove();
           startSession();
+          leaves = 0; awaySeconds = 0; out = false; outSince = 0; lastTick = Date.now();   // il tempo del login non conta come uscita
           early.forEach(function (p) { p.email = email; send(p, false); }); early = [];
           retryQ();
         } else {
