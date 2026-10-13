@@ -56,7 +56,7 @@
     });
     try {
       if (navigator.sendBeacon && (type === "time" || type === "activity")) {
-        navigator.sendBeacon(CONFIG.WORKER_URL + "/log", new Blob([body], { type: "application/json" }));
+        navigator.sendBeacon(CONFIG.WORKER_URL + "/log", new Blob([body], { type: "text/plain;charset=UTF-8" }));
       } else {
         fetch(CONFIG.WORKER_URL + "/log", {
           method: "POST",
@@ -94,6 +94,8 @@
     if (clicks > 0)        { post("activity", clicks);    clicks = 0; }
   }
 
+  // invio periodico: il tempo arriva anche se il PC viene spento senza chiudere la pagina
+  setInterval(function () { if (email) flush(); }, 60000);
   window.addEventListener("pagehide", flush);
   window.addEventListener("beforeunload", flush);
 
