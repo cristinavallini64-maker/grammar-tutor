@@ -263,7 +263,7 @@ function render(){
 
   rows.sort((a,b) => {
     let x = a[sortKey], y = b[sortKey];
-    if(sortKey === "email" || sortKey === "last_seen"){ x = (x||""); y = (y||""); return sortAsc ? (x<y?-1:x>y?1:0) : (x>y?-1:x<y?1:0); }
+    if(sortKey === "email" || sortKey === "last_seen" || sortKey === "first_seen"){ x = (x||""); y = (y||""); return sortAsc ? (x<y?-1:x>y?1:0) : (x>y?-1:x<y?1:0); }
     x = +x||0; y = +y||0; return sortAsc ? x-y : y-x;
   });
 
@@ -288,6 +288,7 @@ function render(){
     '<th '+arrow('email')+'>Studente</th>'+
     '<th '+arrow('opens')+'>Aperture</th>'+
     '<th class="hide-sm" '+arrow('seconds')+'>Tempo</th>'+
+    '<th class="hide-sm" '+arrow('first_seen')+'>Primo accesso</th>'+
     '<th '+arrow('last_seen')+'>Ultima attività</th>'+
     '</tr></thead><tbody>';
 
@@ -297,6 +298,7 @@ function render(){
       '<td class="email"><span class="caret">&#9654;</span>'+esc(r.email)+'</td>'+
       '<td class="num">'+(r.opens||0)+'</td>'+
       '<td class="num hide-sm">'+fmtTime(r.seconds)+'</td>'+
+      '<td class="muted hide-sm">'+fmtDate(r.first_seen)+'</td>'+
       '<td class="muted">'+fmtDate(r.last_seen)+'</td>'+
       '</tr>';
     if(isOpen) html += detailRow(r.email);
@@ -308,9 +310,9 @@ function render(){
 function detailRow(email){
   const pages = DATA.byPage.filter(p => p.email === email)
     .sort((a,b)=>(+b.opens||0)-(+a.opens||0));
-  let inner = '<table class="subtbl"><thead><tr><th>Pagina</th><th>Aperture</th><th>Tempo</th><th>Punteggi 1\u00b0 tentativo (per livello)</th><th>Ultima attività</th></tr></thead><tbody>';
+  let inner = '<table class="subtbl"><thead><tr><th>Pagina</th><th>Aperture</th><th>Tempo</th><th>Punteggi 1\u00b0 tentativo (per livello)</th><th>Primo accesso</th><th>Ultima attività</th></tr></thead><tbody>';
   if(pages.length === 0){
-    inner += '<tr><td colspan="5" class="muted">Nessun dettaglio.</td></tr>';
+    inner += '<tr><td colspan="6" class="muted">Nessun dettaglio.</td></tr>';
   } else {
     pages.forEach(p => {
       const levels = DATA.byLevel.filter(l => l.email === email && l.page === p.page);
@@ -327,13 +329,14 @@ function detailRow(email){
         '<td class="num">'+(p.opens||0)+'</td>'+
         '<td class="num">'+fmtTime(p.seconds)+'</td>'+
         '<td>'+scoreCell+'</td>'+
+        '<td class="muted">'+fmtDate(p.first_seen)+'</td>'+
         '<td class="muted">'+fmtDate(p.last_seen)+'</td>'+
         '</tr>';
     });
   }
   inner += '</tbody></table>';
   const delBtn = '<button class="del-student" onclick="deleteStudent(\''+escAttr(email)+'\')">&#x2715; Elimina i dati di questo studente</button>';
-  return '<tr class="detail"><td colspan="4"><div class="detail-inner">'+delBtn+inner+'</div></td></tr>';
+  return '<tr class="detail"><td colspan="5"><div class="detail-inner">'+delBtn+inner+'</div></td></tr>';
 }
 
 function toggle(email){
