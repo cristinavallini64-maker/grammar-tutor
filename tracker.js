@@ -45,28 +45,54 @@
     return (location.pathname.split("/").pop() || location.pathname);
   }
 
-  function post(type, num) {
+  /* Punteggi che non sono partiti (rete assente, login non ancora fatto):
+     restano in coda e vengono rimandati appena possibile.
+     La coda salvata nel browser vale solo per lo STESSO studente (stessa email). */
+  var QKEY = "ef_pending_v1";
+  var early = [];                       // eventi nati prima del login (solo in questa pagina)
+  function loadQ() { try { return JSON.parse(localStorage.getItem(QKEY) || "[]"); } catch (e) { return []; } }
+  function saveQ(q) { try { localStorage.setItem(QKEY, JSON.stringify(q.slice(-200))); } catch (e) {} }
+
+  function send(payload, isBeacon) {
+    var body = JSON.stringify(payload);
+    // text/plain = richiesta "semplice": nessun controllo preliminare CORS, funziona anche su tablet
+    if (isBeacon && navigator.sendBeacon) {
+      try { if (navigator.sendBeacon(CONFIG.WORKER_URL + "/log", new Blob([body], { type: "text/plain;charset=UTF-8" }))) return; } catch (e) {}
+    }
+    try {
+      fetch(CONFIG.WORKER_URL + "/log", {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        body: body,
+        keepalive: true
+      }).then(function (r) { return r.json(); })
+        .then(function (d) { if (!d || !d.ok) throw 0; })
+        .catch(function () { if (!isBeacon) { var q = loadQ(); q.push(payload); saveQ(q); } });
+    } catch (e) { if (!isBeacon) { var q = loadQ(); q.push(payload); saveQ(q); } }
+  }
+
+  function retryQ() {
     if (!email) return;
-    var body = JSON.stringify({
+    var q = loadQ(), keep = [], mine = [];
+    q.forEach(function (p) { (p.email === email ? mine : keep).push(p); });
+    saveQ(keep);
+    mine.forEach(function (p) { send(p, false); });
+  }
+
+  function post(type, num) {
+    var payload = {
       email: email,
       type:  type,
       page:  pageName(),
       title: document.title,
       num:   (typeof num === "number" ? num : null)
-    });
-    try {
-      if (navigator.sendBeacon && (type === "time" || type === "activity")) {
-        navigator.sendBeacon(CONFIG.WORKER_URL + "/log", new Blob([body], { type: "text/plain;charset=UTF-8" }));
-      } else {
-        fetch(CONFIG.WORKER_URL + "/log", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: body,
-          keepalive: true
-        });
-      }
-    } catch (e) {}
+    };
+    if (!email) { if (type !== "time" && type !== "activity") early.push(payload); return; }
+    send(payload, type === "time" || type === "activity");
   }
+
+  setInterval(retryQ, 60000);
+  window.addEventListener("online", retryQ);
 
   /* ---- tempo attivo + interazioni ---- */
   var activeSeconds = 0, clicks = 0, lastTick = Date.now(), visible = !document.hidden;
@@ -154,6 +180,8 @@
           var ov = document.getElementById("ef-login-overlay");
           if (ov) ov.remove();
           startSession();
+          early.forEach(function (p) { p.email = email; send(p, false); }); early = [];
+          retryQ();
         } else {
           var err = document.getElementById("ef-login-err");
           if (err) err.textContent = (d && d.error) || "Accesso non consentito.";
