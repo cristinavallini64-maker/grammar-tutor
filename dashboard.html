@@ -100,6 +100,20 @@ input:focus{border-color:var(--cyan);}
 .lvls{display:flex;flex-direction:column;gap:6px;}
 .lvl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dim);}
 
+/* ---- sections ---- */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.tab{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;padding:9px 16px;border-radius:12px;
+  border:1px solid var(--border);background:var(--panel);color:var(--dim);cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;gap:8px;}
+.tab:hover{border-color:var(--sc,var(--cyan));color:var(--text);}
+.tab.on{background:var(--sc,var(--cyan));border-color:var(--sc,var(--cyan));color:#04121f;}
+.tab .dot{width:10px;height:10px;border-radius:50%;background:var(--sc,var(--cyan));}
+.tab.on .dot{background:#04121f;}
+.tab .k{font-size:12px;opacity:.75;}
+.sec-tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:700;
+  color:#04121f;background:var(--sc,var(--muted));white-space:nowrap;}
+.sec-title{font-family:'Orbitron',sans-serif;font-size:15px;letter-spacing:1.5px;margin:-6px 0 16px;color:var(--sc,var(--cyan));}
+
 .empty{text-align:center;color:var(--dim);padding:50px 20px;background:var(--panel);
   border:1px solid var(--border);border-radius:var(--radius);}
 .empty strong{display:block;font-family:'Orbitron',sans-serif;font-size:15px;letter-spacing:1px;margin-bottom:8px;color:var(--text);}
@@ -138,6 +152,9 @@ input:focus{border-color:var(--cyan);}
       </div>
     </header>
     <div class="divider"></div>
+
+    <div class="tabs" id="tabs"></div>
+    <div class="sec-title" id="secTitle"></div>
 
     <div class="stats">
       <div class="stat"><div class="n" id="stStudents">0</div><div class="l">Studenti</div></div>
@@ -213,13 +230,82 @@ function fetchData(fromGate){
       DATA = { byStudent: d.byStudent || [], byPage: d.byPage || [], byLevel: d.byLevel || [] };
       document.getElementById('gate').style.display = "none";
       document.getElementById('app').style.display = "block";
-      render();
+      (Object.keys(FILES).length ? Promise.resolve() : loadSectionFiles()).then(render);
     })
     .catch(() => {
       const msg = "Impossibile contattare il server. Controlla la connessione.";
       if(fromGate){ document.getElementById('gateErr').textContent = msg; PW = null; }
       else alert(msg);
     });
+}
+
+
+/* ---- Sezioni ----
+   Ogni sezione e' un sito (repository GitHub). La sezione di una pagina si riconosce
+   dal nome del file, cercandolo nell'elenco dei file di ciascun sito (letto da GitHub
+   all'apertura del pannello; se GitHub non risponde si usa l'elenco qui sotto).
+   Per aggiungere una sezione: aggiungi una riga in SECTIONS. */
+const SECTIONS = [
+  { repo: "grammar-tutor",     name: "Grammar Quest",     color: "#00f0ff" },
+  { repo: "structure",         name: "The Structure",     color: "#ffcc00" },
+  { repo: "technical-english", name: "Technical English", color: "#00ff88" }
+];
+const OTHER = { repo: "_altro", name: "Altre pagine", color: "#b9a6ff" };
+const FALLBACK_FILES = {
+  "grammar-tutor": ["defining-relatives.html", "food-quantity.html", "lessico-starter-abc.html", "lessico-starter-def.html", "lessico-u1.html", "lessico-u10.html", "lessico-u2.html", "lessico-u3.html", "lessico-u4.html", "lessico-u5.html", "lessico-u6.html", "lessico-u7.html", "lessico-u8.html", "lessico-u9.html", "past-simple.html", "present-continuous.html", "present-perfect.html", "present-simple.html", "speaking-tutor-a2.html", "speaking-tutor-b1.html", "starter1.html", "starter2.html", "unit10friends.html", "unit5.html", "unit6.html", "unit7.html", "unit8tomorrow.html"],
+  "structure": ["cambridge-u1.html", "cambridge-u10.html", "cambridge-u2.html", "cambridge-u3.html", "cambridge-u4.html", "cambridge-u5.html", "cambridge-u6.html", "cambridge-u7.html", "cambridge-u8.html", "cambridge-u9.html", "first-conditional.html", "modal-deduction.html", "modals-advice.html", "passive-voice.html", "past-narrative.html", "past-perfect-relatives.html", "present-perfect-advanced.html", "reported-speech.html", "second-conditional.html", "sentence-transformation-tutor.html", "speaking-b2-l1.html", "speaking-b2-l2.html", "studia-u1-index.html", "studia-u10-index.html", "studia-u2-index.html", "studia-u3-index.html", "studia-u4-index.html", "studia-u5-index.html", "studia-u6-index.html", "studia-u7-index.html", "studia-u8-index.html", "studia-u9-index.html", "tutor-spiega.html", "verb-patterns.html", "word-formation-tutor.html"],
+  "technical-english": ["index.html", "renewable-energy.html"]
+};
+const FILES = {};
+let currentSec = "all";
+
+function loadSectionFiles(){
+  return Promise.all(SECTIONS.map(sec => {
+    FILES[sec.repo] = new Set(FALLBACK_FILES[sec.repo] || []);
+    return fetch("https://api.github.com/repos/cristinavallini64-maker/" + sec.repo + "/contents/")
+      .then(r => r.ok ? r.json() : [])
+      .then(list => { if (Array.isArray(list)) list.forEach(f => { if (f.type === "file") FILES[sec.repo].add(f.name); }); })
+      .catch(() => {});
+  }));
+}
+function sectionOf(page){
+  page = page || "";
+  if (page.indexOf("/") >= 0) {
+    const repo = page.split("/")[0];
+    if (SECTIONS.some(s => s.repo === repo)) return repo;
+  }
+  const file = page.split("/").pop();
+  for (const sec of SECTIONS) if (FILES[sec.repo] && FILES[sec.repo].has(file)) return sec.repo;
+  return OTHER.repo;
+}
+function secInfo(repo){ return SECTIONS.find(s => s.repo === repo) || OTHER; }
+function setSection(repo){ currentSec = repo; openRows.clear(); render(); }
+
+/* righe studente calcolate dalle sole pagine della sezione scelta */
+function studentRowsFor(sec){
+  if (sec === "all") return DATA.byStudent.slice();
+  const m = {};
+  DATA.byPage.filter(p => sectionOf(p.page) === sec).forEach(p => {
+    const r = m[p.email] || (m[p.email] = { email: p.email, opens: 0, seconds: 0, leaves: 0, away_seconds: 0, first_seen: null, last_seen: null, _hasLeaves: false });
+    r.opens += +p.opens || 0;
+    r.seconds += +p.seconds || 0;
+    if (p.leaves !== undefined && p.leaves !== null) { r._hasLeaves = true; r.leaves += +p.leaves || 0; r.away_seconds += +p.away_seconds || 0; }
+    if (p.first_seen && (!r.first_seen || p.first_seen < r.first_seen)) r.first_seen = p.first_seen;
+    if (p.last_seen && (!r.last_seen || p.last_seen > r.last_seen)) r.last_seen = p.last_seen;
+  });
+  return Object.values(m).map(r => { if (!r._hasLeaves) { r.leaves = null; r.away_seconds = null; } return r; });
+}
+
+function renderTabs(){
+  const used = new Set(DATA.byPage.map(p => sectionOf(p.page)));
+  const list = SECTIONS.concat(used.has(OTHER.repo) ? [OTHER] : []);
+  const count = repo => new Set(DATA.byPage.filter(p => sectionOf(p.page) === repo).map(p => p.email)).size;
+  document.getElementById("tabs").innerHTML =
+    '<button class="tab' + (currentSec === "all" ? " on" : "") + '" onclick="setSection(\'all\')">Tutte le sezioni <span class="k">' + DATA.byStudent.length + '</span></button>' +
+    list.map(s => '<button class="tab' + (currentSec === s.repo ? " on" : "") + '" style="--sc:' + s.color + '" onclick="setSection(\'' + s.repo + '\')"><span class="dot"></span>' + esc(s.name) + ' <span class="k">' + count(s.repo) + '</span></button>').join("");
+  const t = document.getElementById("secTitle");
+  if (currentSec === "all") { t.textContent = ""; t.style.display = "none"; }
+  else { const s = secInfo(currentSec); t.textContent = s.name.toUpperCase(); t.style.setProperty("--sc", s.color); t.style.display = "block"; }
 }
 
 /* --- helpers --- */
@@ -274,7 +360,9 @@ function setSort(k){
 
 function render(){
   const q = (document.getElementById('search').value || "").toLowerCase().trim();
-  let rows = DATA.byStudent.slice();
+  renderTabs();
+  const allRows = studentRowsFor(currentSec);
+  let rows = allRows.slice();
   if(q) rows = rows.filter(r => (r.email||"").toLowerCase().includes(q));
 
   rows.sort((a,b) => {
@@ -284,15 +372,19 @@ function render(){
   });
 
   // stats (su tutti, non solo i filtrati)
-  const totOpens = DATA.byStudent.reduce((s,r)=>s+(+r.opens||0),0);
-  const totSec   = DATA.byStudent.reduce((s,r)=>s+(+r.seconds||0),0);
-  document.getElementById('stStudents').textContent = DATA.byStudent.length;
+  const totOpens = allRows.reduce((s,r)=>s+(+r.opens||0),0);
+  const totSec   = allRows.reduce((s,r)=>s+(+r.seconds||0),0);
+  document.getElementById('stStudents').textContent = allRows.length;
   document.getElementById('stOpens').textContent = totOpens;
   document.getElementById('stTime').textContent = fmtTime(totSec);
   document.getElementById('count').textContent = rows.length + " studenti mostrati";
 
   const host = document.getElementById('tableHost');
 
+  if(currentSec !== "all" && allRows.length === 0){
+    host.innerHTML = '<div class="empty"><strong>Nessun accesso in questa sezione</strong>Gli accessi compariranno qui quando gli studenti apriranno le pagine di questa sezione.</div>';
+    return;
+  }
   if(DATA.byStudent.length === 0){
     host.innerHTML = '<div class="empty"><strong>Nessun accesso ancora registrato</strong>I dati compariranno qui non appena gli studenti accederanno alle pagine.</div>';
     return;
@@ -326,11 +418,13 @@ function render(){
 }
 
 function detailRow(email){
-  const pages = DATA.byPage.filter(p => p.email === email)
-    .sort((a,b)=>(+b.opens||0)-(+a.opens||0));
-  let inner = '<table class="subtbl"><thead><tr><th>Pagina</th><th>Aperture</th><th>Tempo</th><th>Uscite</th><th>Punteggi per livello (1\u00b0 tentativo / migliore)</th><th>Primo accesso</th><th>Ultima attività</th></tr></thead><tbody>';
+  const pages = DATA.byPage.filter(p => p.email === email && (currentSec === "all" || sectionOf(p.page) === currentSec))
+    .sort((a,b)=> currentSec === "all"
+      ? (SECTIONS.findIndex(x=>x.repo===sectionOf(a.page)) - SECTIONS.findIndex(x=>x.repo===sectionOf(b.page))) || ((+b.opens||0)-(+a.opens||0))
+      : (+b.opens||0)-(+a.opens||0));
+  let inner = '<table class="subtbl"><thead><tr>'+(currentSec === "all" ? '<th>Sezione</th>' : '')+'<th>Pagina</th><th>Aperture</th><th>Tempo</th><th>Uscite</th><th>Punteggi per livello (1\u00b0 tentativo / migliore)</th><th>Primo accesso</th><th>Ultima attività</th></tr></thead><tbody>';
   if(pages.length === 0){
-    inner += '<tr><td colspan="7" class="muted">Nessun dettaglio.</td></tr>';
+    inner += '<tr><td colspan="8" class="muted">Nessun dettaglio.</td></tr>';
   } else {
     pages.forEach(p => {
       const levels = DATA.byLevel.filter(l => l.email === email && l.page === p.page);
@@ -342,8 +436,10 @@ function detailRow(email){
           lvlCell(l)
         ).join('') + '</div>';
       }
+      const si = secInfo(sectionOf(p.page));
       inner += '<tr>'+
-        '<td>'+esc((p.page||"").replace(/\.html$/,""))+'</td>'+
+        (currentSec === "all" ? '<td><span class="sec-tag" style="--sc:'+si.color+'">'+esc(si.name)+'</span></td>' : '')+
+        '<td>'+esc((p.page||"").split("/").pop().replace(/\.html$/,""))+'</td>'+
         '<td class="num">'+(p.opens||0)+'</td>'+
         '<td class="num">'+fmtTime(p.seconds)+'</td>'+
         '<td class="num">'+fmtLeaves(p)+'</td>'+
