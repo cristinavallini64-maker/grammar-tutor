@@ -21,18 +21,24 @@
   // sui Chromebook: si parla SUBITO, dentro il clic (niente attese), e si
   // sceglie la prima voce en-GB / en-US / en (o it-IT / it).
   const synth = window.speechSynthesis || null;
+  // Sui Chromebook le voci "Android …" risultano presenti ma restano bloccate
+  // (non parlano e fermano le letture successive): si scartano. Si preferiscono
+  // le voci Chrome OS / Google; per l'inglese il britannico se c'è.
   function scegliVoce(l) {
-    const vs = synth ? synth.getVoices() : [];
-    const pref = l === 'en' ? ['en-gb', 'en-us', 'en'] : ['it-it', 'it'];
-    for (const p of pref) {
-      const v = vs.find(x => x.lang && x.lang.replace('_', '-').toLowerCase().startsWith(p));
-      if (v) return v;
-    }
-    return null;
+    const vs = (synth ? synth.getVoices() : []).filter(x => x.lang && !/android/i.test(x.name));
+    const lang = x => x.lang.replace('_', '-').toLowerCase();
+    const mine = vs.filter(x => lang(x).startsWith(l));
+    if (!mine.length) return null;
+    const score = x => (l === 'en' && lang(x).startsWith('en-gb') ? 2 : 0) + (l === 'en' && lang(x).startsWith('en-us') ? 1 : 0)
+                     + (l === 'it' && lang(x).startsWith('it-it') ? 2 : 0)
+                     + (/chrome os|google/i.test(x.name) ? 3 : 0);
+    return mine.slice().sort((x, y) => score(y) - score(x))[0];
   }
+  // c'è una voce utilizzabile per questa lingua?
+  function haVoce(l) { return !!scegliVoce(l); }
   function senzaInglese() {
     const vs = synth ? synth.getVoices() : [];
-    return vs.length > 0 && !vs.some(x => x.lang && x.lang.toLowerCase().startsWith('en'));
+    return vs.length > 0 && !haVoce('en');
   }
   if (synth && synth.onvoiceschanged !== undefined) synth.onvoiceschanged = () => {};
 
@@ -44,9 +50,13 @@
     if (!synth) return;
     synth.cancel();
     segs = segs.filter(x => x.t && x.t.trim());
-    if (senzaInglese()) {
-      segs = segs.filter(x => x.lang !== 'en');
-      if (audioMsg) audioMsg('⚠ Su questo dispositivo non c\'è una voce inglese: le parti in inglese non vengono lette');
+    const vsTot = synth.getVoices().length;
+    if (vsTot > 0) {
+      const miss = ['en', 'it'].filter(l => !haVoce(l) && segs.some(x => x.lang === l));
+      if (miss.length) {
+        segs = segs.filter(x => !miss.includes(x.lang));
+        if (audioMsg) audioMsg('⚠ Su questo dispositivo manca una voce ' + miss.map(l => l === 'en' ? 'inglese' : 'italiana').join(' e ') + ' utilizzabile: quelle parti non vengono lette');
+      }
     }
     if (!segs.length) return;
     keep.length = 0;

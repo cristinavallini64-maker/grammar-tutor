@@ -12,7 +12,7 @@ button{font-size:16px;padding:10px 16px;margin:6px 6px 6px 0;border-radius:8px;b
 </head>
 <body>
 <h2>Prova voce</h2>
-<p>Premi i pulsanti e guarda cosa compare nel riquadro nero. Poi fai uno screenshot.</p>
+<p>Ricarica la pagina, premi <b>Prova italiano</b> e poi <b>Prova inglese</b>, e fai uno screenshot dell'<b>inizio</b> del riquadro nero.</p>
 <button id="en">🔊 Prova inglese</button>
 <button id="it">🔊 Prova italiano</button>
 <button id="plain">🔊 Prova senza scegliere la voce</button>
@@ -27,7 +27,13 @@ function listVoices(){
   if (!s) return;
   const v = s.getVoices();
   log('Voci totali: ' + v.length + ' — inglesi: ' + v.filter(x=>/^en/i.test(x.lang)).length + ' — italiane: ' + v.filter(x=>/^it/i.test(x.lang)).length);
-  v.filter(x=>/^(en|it)/i.test(x.lang)).slice(0,12).forEach(x=>log('   ' + x.lang + ' · ' + x.name + (x.localService?' (locale)':' (online)')));
+  const it = v.filter(x=>/^it/i.test(x.lang)).map(x=>x.name.replace('Riconoscimento e sintesi vocale di Google','')+' ['+x.lang+']');
+  const gb = v.filter(x=>/^en[-_]gb/i.test(x.lang)).map(x=>x.name.replace('Riconoscimento e sintesi vocale di Google','')+' ['+x.lang+']');
+  const other = v.filter(x=>!/^(it|en)/i.test(x.lang)).length;
+  log('ITALIANE: ' + (it.join(' | ') || 'nessuna'));
+  log('BRITANNICHE: ' + (gb.join(' | ') || 'nessuna'));
+  log('Nomi di tutte le inglesi: ' + v.filter(x=>/^en/i.test(x.lang)).map(x=>x.name.replace('Riconoscimento e sintesi vocale di Google','')).join(' | '));
+  log('Altre lingue: ' + other);
 }
 listVoices();
 if (s) s.onvoiceschanged = () => { log('— elenco voci aggiornato —'); listVoices(); };
@@ -39,8 +45,8 @@ function say(text, lang, useVoice){
     const u = new SpeechSynthesisUtterance(text);
     u.lang = lang;
     if (useVoice) {
-      const v = s.getVoices().filter(x => x.lang.toLowerCase().startsWith(lang.slice(0,2)));
-      const pick = v.find(x => x.localService) || v[0];
+      const v = s.getVoices().filter(x => x.lang.toLowerCase().startsWith(lang.slice(0,2)) && !/android/i.test(x.name));
+      const pick = v.find(x => /chrome os|google/i.test(x.name)) || v[0];
       if (pick) { u.voice = pick; log('Uso la voce: ' + pick.name); } else log('Nessuna voce per ' + lang + ': uso quella predefinita');
     }
     u.onstart = () => log('▶ partita');
