@@ -5,7 +5,7 @@
 
    Cosa aggiunge (senza toccare dati, punteggi, tracking, save code):
    1. Esercizi: 🎤 per rispondere a voce (il testo riconosciuto va nella casella);
-      dopo CONTROLLA si sente la risposta corretta (frase intera nei gap fill);
+      dopo CONTROLLA si sente la parola corretta;
       pulsanti 🔊 / 🐢 per riascoltarla.
    2. Mappa: pannello PRONUNCIA con due modalità per ogni livello di studio:
       - ASCOLTA E RIPETI: senti la parola e la ripeti al microfono;
@@ -144,16 +144,8 @@
   }
 
   // ─── 1. Esercizi ───────────────────────────────────────────────────────
-  // frase da leggere: per i gap fill la frase originale completa, presa dai dati
-  const _build = buildStudyExs;
-  buildStudyExs = function (s) {
-    const out = _build.apply(this, arguments);
-    (s.exercises || []).forEach((e, i) => {
-      if (e.type === 'lv3' && out[i]) out[i]._say = String(e.sentence).includes('___') ? e.sentence.replace('___', e.gap) : e.sentence;
-    });
-    return out;
-  };
-  function exSpeech(ex) { return ex ? (ex._say || ex.a) : ''; }
+  // si legge solo la parola / espressione della risposta (anche nei gap fill)
+  function exSpeech(ex) { return ex ? ex.a : ''; }
 
   const _render = renderExercise;
   renderExercise = function () {
