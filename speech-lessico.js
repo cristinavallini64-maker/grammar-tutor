@@ -4,9 +4,10 @@
    <script src="https://cristinavallini64-maker.github.io/grammar-tutor/speech-lessico.js"></script>
 
    Cosa aggiunge (senza toccare dati, punteggi, tracking, save code):
-   negli esercizi lo studente sceglie se scrivere o rispondere a voce (🎤:
-   il testo riconosciuto va nella casella); dopo CONTROLLA si sente la parola
-   corretta, con il pulsante 🔊 per riascoltarla.
+   negli esercizi il sito legge la domanda (🔊, voce italiana per l'italiano,
+   inglese per l'inglese, un bip al posto del buco); lo studente sceglie se
+   scrivere o rispondere a voce (🎤: il testo riconosciuto va nella casella);
+   dopo CONTROLLA si sente la parola corretta. AUDIO ON = lettura automatica.
    Usa solo le funzioni del browser (sintesi e riconoscimento vocale): gratis.
    Il riconoscimento funziona su Chrome / Edge (anche Android); se manca,
    i pulsanti 🎤 spariscono e si scrive come sempre.
@@ -15,57 +16,122 @@
   'use strict';
   if (typeof LEVELS === 'undefined' || typeof renderExercise !== 'function') return;
 
-  // ─── Sintesi vocale ────────────────────────────────────────────────────
+  // ─── Sintesi vocale (inglese e italiano) ──────────────────────────────
   const synth = window.speechSynthesis || null;
-  let voice = null, voiceFailed = false;
-  function pickVoice() {
+  const voices = { en: null, it: null }, failed = { en: false, it: false };
+  function pickVoices() {
     if (!synth) return;
-    const vs = synth.getVoices().filter(v => /^en/i.test(v.lang));
+    const all = synth.getVoices();
     // prima le voci installate sul dispositivo (le voci online di Chrome a volte tacciono)
-    const score = v => (/^en[-_]GB/i.test(v.lang) ? 4 : 0) + (v.localService ? 2 : 0) + (/natural|neural|daniel|serena|kate|libby|sonia|ryan/i.test(v.name) ? 1 : 0);
-    voice = vs.sort((x, y) => score(y) - score(x))[0] || null;
+    const best = (re, pref) => all.filter(v => re.test(v.lang))
+      .sort((x, y) => sc(y, pref) - sc(x, pref))[0] || null;
+    const sc = (v, pref) => (pref.test(v.lang) ? 4 : 0) + (v.localService ? 2 : 0) + (/natural|neural/i.test(v.name) ? 1 : 0);
+    voices.en = best(/^en/i, /^en[-_]GB/i);
+    voices.it = best(/^it/i, /^it[-_]IT/i);
   }
-  if (synth) { pickVoice(); if (synth.addEventListener) synth.addEventListener('voiceschanged', pickVoice); else synth.onvoiceschanged = pickVoice; }
+  if (synth) { pickVoices(); if (synth.addEventListener) synth.addEventListener('voiceschanged', pickVoices); else synth.onvoiceschanged = pickVoices; }
 
-  let audioMsg = null; // dove mostrare un eventuale problema audio
-  const keep = [];     // Chrome: tenere un riferimento, altrimenti a volte non parla
-  // pulizia per la lettura: (opzioni/tra/barre) e (___) via, a / b → a, b
-  function clean(t) {
-    return String(t)
-      .replace(/\s*\((?:[^()]*\/[^()]*|_+)\)\s*/g, ' ')
-      .replace(/\s*\/\s*/g, ', ')
-      .replace(/_+/g, ' ')
-      .replace(/\s+/g, ' ').trim();
+  let audioMsg = null;   // dove mostrare un eventuale problema audio
+  const keep = [];       // Chrome: tenere un riferimento, altrimenti a volte non parla
+  let playId = 0;        // ogni nuova lettura annulla la precedente
+
+  // "bip" al posto del buco
+  let actx = null;
+  function beep(done) {
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      const o = actx.createOscillator(), g = actx.createGain();
+      o.frequency.value = 880; g.gain.value = 0.12;
+      o.connect(g); g.connect(actx.destination);
+      o.start(); o.stop(actx.currentTime + 0.22);
+      o.onended = () => setTimeout(done, 120);
+    } catch (e) { setTimeout(done, 350); }
   }
-  function speakText(t, slow, retry) {
-    if (!synth || !t) return;
-    t = clean(t);
-    if (!voice) pickVoice();
+
+  // segs: [{t:'testo', lang:'en'|'it'} | {beep:true}]
+  function play(segs, retry) {
+    if (!synth) return;
+    segs = segs.filter(x => x.beep || (x.t && x.t.trim()));
+    if (!segs.length) return;
+    const id = ++playId;
     synth.cancel();
-    const u = new SpeechSynthesisUtterance(t);
-    u.lang = 'en-GB';
-    if (voice && !voiceFailed) { u.voice = voice; u.lang = voice.lang; }
-    u.rate = slow ? 0.65 : 0.95;
-    let started = false;
-    u.onstart = () => { started = true; };
-    u.onerror = ev => {
-      if (ev.error === 'canceled' || ev.error === 'interrupted') return;
-      if (!retry) { voiceFailed = true; speakText(t, slow, true); return; }
-      if (audioMsg) audioMsg('⚠ L\'audio non parte (' + ev.error + '): controlla il volume o prova con Chrome / Edge');
-    };
-    keep.push(u); if (keep.length > 5) keep.shift();
-    // Chrome perde la frase se speak() arriva subito dopo cancel(): piccola attesa
-    setTimeout(() => {
+    let i = 0, firstStarted = false;
+    const next = () => {
+      if (id !== playId || i >= segs.length) return;
+      const sg = segs[i++];
+      if (sg.beep) { beep(next); return; }
+      const u = new SpeechSynthesisUtterance(sg.t);
+      const v = voices[sg.lang];
+      u.lang = sg.lang === 'it' ? 'it-IT' : 'en-GB';
+      if (v && !failed[sg.lang]) { u.voice = v; u.lang = v.lang; }
+      u.rate = 0.95;
+      u.onstart = () => { firstStarted = true; };
+      u.onend = next;
+      u.onerror = ev => {
+        if (ev.error === 'canceled' || ev.error === 'interrupted') return;
+        if (!retry) { failed[sg.lang] = true; play(segs, true); return; }
+        if (audioMsg) audioMsg('⚠ L\'audio non parte (' + ev.error + '): controlla il volume o prova con Chrome / Edge');
+      };
+      keep.push(u); if (keep.length > 12) keep.shift();
       if (synth.paused) synth.resume();
       synth.speak(u);
+    };
+    // Chrome perde la frase se speak() arriva subito dopo cancel(): piccola attesa
+    setTimeout(() => {
+      next();
       setTimeout(() => {
-        if (started || synth.speaking) return;
-        if (!retry) { voiceFailed = true; speakText(t, slow, true); }
-        else if (audioMsg) audioMsg(synth.getVoices().some(v => /^en/i.test(v.lang))
-          ? '⚠ L\'audio non parte: controlla il volume del dispositivo'
-          : '⚠ Su questo dispositivo non c\'è una voce inglese installata: prova con Chrome o Edge');
+        if (id !== playId || firstStarted || synth.speaking || segs[0].beep) return;
+        if (!retry) { failed.en = failed.it = true; play(segs, true); }
+        else if (audioMsg) audioMsg('⚠ L\'audio non parte: controlla il volume del dispositivo o prova con Chrome / Edge');
       }, 1500);
     }, 80);
+  }
+  function stopAudio() { playId++; if (synth) synth.cancel(); }
+
+  // pulizia: a / b → a, b ; trattini lunghi → pausa
+  function tidy(t) {
+    return String(t).replace(/\s*[\/·]\s*/g, ', ').replace(/\s+[—–]\s+/g, ', ').replace(/\s+/g, ' ').trim();
+  }
+  function speakText(t) { play([{ t: tidy(String(t).replace(/_+/g, ' ')), lang: 'en' }]); }
+
+  // italiano o inglese? (per le note tra parentesi e le opzioni)
+  const IT_WORDS = /\b(di|da|la|il|lo|le|gli|un|una|uno|con|per|non|che|su|al|del|della|nel|vicino|cosa|persona|domanda|offerta|dietro|davanti|soggetto|oggetto|troppo|promessa|deciso|evidenza|visiva|previsione|intenzione|obbligatorio|sempre|mai|discordo|frase|negativa|positiva|anche|quando|dove|parola|verbo|aggettivo|nome|plurale|singolare|scrivi|inglese|italiano)\b/i;
+  function looksItalian(t) { return /[àèéìòù]/i.test(t) || IT_WORDS.test(t) || /\b[a-z]+(zione|mente)\b/i.test(t); }
+
+  // spezza un testo in pezzi: "virgolette" = altra lingua; (parentesi) = italiano nelle domande italiane, lingua riconosciuta nelle frasi inglesi; ___ = bip
+  function segment(text, base) {
+    const other = base === 'it' ? 'en' : 'it';
+    const out = [];
+    const pushText = (t, lang) => {
+      String(t).split(/_{2,}/).forEach((part, k) => {
+        if (k > 0) out.push({ beep: true });
+        const c = tidy(part);
+        if (c && /[\p{L}\p{N}]/u.test(c)) out.push({ t: c, lang });
+      });
+    };
+    const re = /"([^"]*)"|\(([^()]*)\)/g;
+    let last = 0, m;
+    while ((m = re.exec(text))) {
+      pushText(text.slice(last, m.index), base);
+      if (m[1] !== undefined) pushText(m[1], other);
+      else pushText(m[2], base === 'it' ? 'it' : (looksItalian(m[2]) ? 'it' : 'en'));
+      last = re.lastIndex;
+    }
+    pushText(text.slice(last), base);
+    return out;
+  }
+
+  // la domanda dell'esercizio, da leggere ad alta voce
+  function questionSegs(ex) {
+    if (!ex) return [];
+    const q = String(ex.q || '').replace(/^[^\p{L}\p{N}_"'(]+/u, '');
+    if (ex._lv === 3) {
+      const segs = segment(q, 'en');
+      const h = String(ex.hint || '').replace(/^\(|\)$/g, '');
+      if (h && h !== 'scrivi in inglese') segs.push(...segment('(' + h + ')', looksItalian(h) ? 'it' : 'en'));
+      return segs;
+    }
+    return segment(q, 'it');   // LV1 (italiano) e LV2 (definizione in italiano)
   }
 
   // ─── Riconoscimento vocale ─────────────────────────────────────────────
@@ -75,7 +141,7 @@
   function listen(onResult, onState) {
     if (!SR) return;
     if (recBusy && rec) { try { rec.stop(); } catch (e) {} return; }
-    if (synth) synth.cancel();
+    stopAudio();
     rec = new SR();
     rec.lang = 'en-GB';
     rec.interimResults = false;
@@ -144,8 +210,8 @@
     t.className = 'sp-toggle';
     const paint = () => { t.textContent = auto ? '🔊 AUDIO ON' : '🔇 AUDIO OFF'; };
     paint();
-    t.title = 'Ascolta automaticamente la risposta corretta dopo CONTROLLA';
-    t.onclick = () => { auto = !auto; try { localStorage.setItem(AK, auto ? '1' : '0'); } catch (e) {} paint(); if (!auto && synth) synth.cancel(); };
+    t.title = 'Lettura automatica: la domanda quando compare e la risposta corretta dopo CONTROLLA';
+    t.onclick = () => { auto = !auto; try { localStorage.setItem(AK, auto ? '1' : '0'); } catch (e) {} paint(); if (!auto) stopAudio(); };
     const wrap = document.createElement('div');
     wrap.style.display = 'flex';
     resetBtn.parentNode.insertBefore(wrap, resetBtn);
@@ -161,7 +227,21 @@
     _render.apply(this, arguments);
     const ex = exQueue[exIdx];
     const inp = document.getElementById('fillInput');
-    if (!ex || !inp || !SR) return;
+    if (!ex || !inp) return;
+    // 🔊 lettura della domanda (per chi fa fatica a leggere)
+    if (synth) {
+      const segs = questionSegs(ex);
+      const qrow = document.createElement('div');
+      qrow.className = 'sp-row';
+      qrow.style.margin = '0 0 10px';
+      qrow.innerHTML = '<button class="sp-btn" type="button" id="spQ">🔊 LEGGI LA DOMANDA</button><span class="sp-status" id="spQst"></span>';
+      inp.insertAdjacentElement('beforebegin', qrow);
+      const qst = qrow.querySelector('#spQst');
+      audioMsg = m => { qst.textContent = m; };
+      qrow.querySelector('#spQ').onclick = () => { audioMsg = m => { qst.textContent = m; }; play(segs); };
+      if (auto) play(segs);
+    }
+    if (!SR) return;
     const row = document.createElement('div');
     row.className = 'sp-row';
     row.innerHTML = '<button class="sp-btn mic" id="spMic" type="button">🎤 RISPONDI A VOCE</button><span class="sp-status" id="spStatus"></span>';
@@ -196,15 +276,15 @@
     row.className = 'sp-row';
     row.innerHTML = '<button class="sp-btn" type="button">🔊 ASCOLTA</button><span class="sp-status"></span>';
     const b1 = row.querySelector('button'), st = row.querySelector('.sp-status');
-    b1.onclick = () => speakText(txt, false);
+    b1.onclick = () => { audioMsg = m => { st.textContent = m; }; speakText(txt); };
     audioMsg = m => { st.textContent = m; };
     fb.insertAdjacentElement('afterend', row);
-    if (auto) speakText(txt, false);
+    if (auto) speakText(txt);
   };
 
   const _next = nextExercise;
-  nextExercise = function () { if (synth) synth.cancel(); return _next.apply(this, arguments); };
+  nextExercise = function () { stopAudio(); return _next.apply(this, arguments); };
   const _goMap = goMap;
-  goMap = function () { if (synth) synth.cancel(); if (recBusy && rec) { try { rec.stop(); } catch (e) {} } return _goMap.apply(this, arguments); };
+  goMap = function () { stopAudio(); if (recBusy && rec) { try { rec.stop(); } catch (e) {} } return _goMap.apply(this, arguments); };
 
 })();
