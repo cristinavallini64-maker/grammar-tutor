@@ -30,6 +30,67 @@
     return;
   }
 
+  /* =====================================================================
+     MODALITA' DOCENTE
+     Sui dispositivi della docente: un solo login, poi mai piu' richiesto
+     e nessuna registrazione (la dashboard resta pulita).
+     Si attiva dopo il login con l'account della docente, rispondendo "Si'"
+     alla domanda "Ricordare questo dispositivo?". MAI sui PC del laboratorio.
+     Per annullare: pulsante "esci" in basso a sinistra.
+     L'email non e' scritta in chiaro: qui c'e' solo la sua impronta SHA-256.
+     ===================================================================== */
+  var DOCENTE_HASH = "e2afcff81f655c84b69168c780300eed342312ce2db6bb1064f519146f901428";
+  var DKEY = "ef_docente_v1";
+  function isDocente() { try { return localStorage.getItem(DKEY) === "1"; } catch (e) { return false; } }
+
+  if (isDocente()) {
+    window.EFTrack = { event: function () {} };
+    var addBadge = function () {
+      var b = document.createElement("button");
+      b.textContent = "👩‍🏫 docente · esci";
+      b.title = "Modalita' docente: nessun login e nessuna registrazione su questo dispositivo. Clicca per uscire.";
+      b.style.cssText = "position:fixed;left:8px;bottom:8px;z-index:99999;font:12px sans-serif;" +
+        "padding:4px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.3);" +
+        "background:rgba(0,0,0,.55);color:#fff;opacity:.6;cursor:pointer;";
+      b.onclick = function () {
+        if (!confirm("Uscire dalla modalità docente su questo dispositivo?")) return;
+        try { localStorage.removeItem(DKEY); } catch (e) {}
+        location.reload();
+      };
+      document.body.appendChild(b);
+    };
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addBadge);
+    else addBadge();
+    return;
+  }
+
+  function sha256hex(str) {
+    if (!window.crypto || !crypto.subtle || !window.TextEncoder) return Promise.resolve("");
+    return crypto.subtle.digest("SHA-256", new TextEncoder().encode(str)).then(function (buf) {
+      return Array.prototype.map.call(new Uint8Array(buf), function (x) { return ("0" + x.toString(16)).slice(-2); }).join("");
+    }).catch(function () { return ""; });
+  }
+
+  function askRemember() {
+    var ov = document.createElement("div");
+    ov.style.cssText =
+      "position:fixed;inset:0;z-index:99999;background:rgba(13,13,13,.94);display:flex;" +
+      "flex-direction:column;align-items:center;justify-content:center;gap:16px;" +
+      "font-family:sans-serif;color:#fff;text-align:center;padding:20px;";
+    ov.innerHTML =
+      '<div style="font-size:1.25rem;font-weight:800;">Ricordare questo dispositivo?</div>' +
+      '<div style="opacity:.8;max-width:380px;">Su questo dispositivo non ti verr&agrave; pi&ugrave; chiesto l\'accesso e la tua attivit&agrave; non verr&agrave; registrata.<br><b>Non farlo sui PC del laboratorio.</b></div>' +
+      '<div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">' +
+      '<button id="ef-doc-yes" style="font-size:1rem;padding:10px 18px;border-radius:8px;border:0;background:#1a73e8;color:#fff;cursor:pointer;">S&igrave;, &egrave; il mio dispositivo</button>' +
+      '<button id="ef-doc-no" style="font-size:1rem;padding:10px 18px;border-radius:8px;border:1px solid #888;background:transparent;color:#fff;cursor:pointer;">No</button></div>';
+    document.body.appendChild(ov);
+    document.getElementById("ef-doc-yes").onclick = function () {
+      try { localStorage.setItem(DKEY, "1"); } catch (e) {}
+      location.reload();
+    };
+    document.getElementById("ef-doc-no").onclick = function () { ov.remove(); };
+  }
+
   /* ===== CONFIG — COMPILA QUESTI 3 VALORI ===== */
   var CONFIG = {
     SCHOOL_DOMAIN:    "iisprimolevi.org",
@@ -210,6 +271,7 @@
           leaves = 0; awaySeconds = 0; out = false; outSince = 0; lastTick = Date.now();   // il tempo del login non conta come uscita
           early.forEach(function (p) { p.email = email; send(p, false); }); early = [];
           retryQ();
+          sha256hex(String(email).trim().toLowerCase()).then(function (h) { if (h === DOCENTE_HASH) askRemember(); });
         } else {
           var err = document.getElementById("ef-login-err");
           if (err) err.textContent = (d && d.error) || "Accesso non consentito.";
