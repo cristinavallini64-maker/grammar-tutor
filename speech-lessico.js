@@ -4,15 +4,12 @@
    <script src="https://cristinavallini64-maker.github.io/grammar-tutor/speech-lessico.js"></script>
 
    Cosa aggiunge (senza toccare dati, punteggi, tracking, save code):
-   1. Esercizi: 🎤 per rispondere a voce (il testo riconosciuto va nella casella);
-      dopo CONTROLLA si sente la parola corretta;
-      pulsante 🔊 per riascoltarla.
-   2. Mappa: pannello PRONUNCIA con una modalità per ogni livello di studio:
-      - DILLO TU: vedi l'italiano e dici la parola inglese, poi la senti.
-      Nessun voto: è allenamento. Dopo 3 tentativi si va avanti comunque.
+   negli esercizi lo studente sceglie se scrivere o rispondere a voce (🎤:
+   il testo riconosciuto va nella casella); dopo CONTROLLA si sente la parola
+   corretta, con il pulsante 🔊 per riascoltarla.
    Usa solo le funzioni del browser (sintesi e riconoscimento vocale): gratis.
    Il riconoscimento funziona su Chrome / Edge (anche Android); se manca,
-   i pulsanti 🎤 spariscono e restano l'ascolto e il pulsante MOSTRA.
+   i pulsanti 🎤 spariscono e si scrive come sempre.
    ═══════════════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -137,19 +134,6 @@
 @keyframes spPulse{50%{box-shadow:0 0 14px rgba(255,77,109,0.7);}}
 .sp-status{font-size:14px;color:var(--text-dim,#ccc);min-height:18px;}
 .sp-toggle{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:1px;padding:7px 12px;border:1px solid rgba(0,240,255,0.35);background:rgba(0,240,255,0.07);color:var(--text-dim,#ccc);border-radius:var(--radius-sm,6px);cursor:pointer;margin-right:8px;}
-.sp-panel{background:var(--surface);border:1px solid rgba(255,204,0,0.35);border-radius:var(--radius,12px);padding:16px 18px;margin:0 0 20px;}
-.sp-panel-title{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:var(--gold,#ffcc00);margin-bottom:4px;}
-.sp-panel-sub{font-size:13px;color:var(--text-muted);margin-bottom:12px;}
-.sp-lv{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:7px 0;border-top:1px solid rgba(255,255,255,0.07);}
-.sp-lv-name{flex:1 1 200px;font-size:14px;font-weight:600;}
-.sp-word{font-size:40px;font-weight:700;text-align:center;margin:18px 0 6px;line-height:1.15;word-break:break-word;}
-.sp-it{font-size:19px;text-align:center;color:var(--text-dim);}
-.sp-big{font-size:26px;text-align:center;color:var(--text-dim);margin:24px 0 6px;}
-.sp-fb{text-align:center;font-size:17px;min-height:26px;margin-top:14px;}
-.sp-fb.ok{color:var(--green,#00ff88);} .sp-fb.err{color:var(--red,#ff4d6d);}
-.sp-center{justify-content:center;}
-.sp-note{font-size:12px;color:var(--text-muted);text-align:center;margin-top:18px;}
-@media(max-width:560px){.sp-word{font-size:30px;}}
 `;
   document.head.appendChild(css);
 
@@ -223,129 +207,4 @@
   const _goMap = goMap;
   goMap = function () { if (synth) synth.cancel(); if (recBusy && rec) { try { rec.stop(); } catch (e) {} } return _goMap.apply(this, arguments); };
 
-  // ─── 2. Pannello PRONUNCIA sulla mappa ────────────────────────────────
-  function wordsOf(lv) {
-    const seen = new Set(), out = [];
-    (lv.exercises || []).forEach(e => {
-      if (e.type !== 'lv1' || !e.en) return;
-      const k = key(e.en);
-      if (seen.has(k)) return;
-      seen.add(k);
-      out.push({ en: e.en, it: e.it || '', accept: e.accept || [e.en] });
-    });
-    return out;
-  }
-  const studyLevels = LEVELS.filter(l => l.type === 'study' && wordsOf(l).length);
-  if (!studyLevels.length || !synth) return;
-
-  const list = document.getElementById('sectionsList');
-  if (list) {
-    const panel = document.createElement('div');
-    panel.className = 'sp-panel';
-    panel.innerHTML = '<div class="sp-panel-title">🗣️ PRONUNCIA</div>'
-      + '<div class="sp-panel-sub"><b>Dillo tu</b>: vedi la parola in italiano e la dici in inglese, poi la senti. Nessun voto, è allenamento.</div>';
-    studyLevels.forEach(lv => {
-      const r = document.createElement('div');
-      r.className = 'sp-lv';
-      r.innerHTML = '<span class="sp-lv-name"></span><button class="sp-btn mic" type="button">💬 DILLO TU</button>';
-      r.querySelector('.sp-lv-name').textContent = lv.title;
-      r.querySelector('button').onclick = () => startDrill(lv, 'say');
-      panel.appendChild(r);
-    });
-    list.parentNode.insertBefore(panel, list);
-  }
-
-  const scr = document.createElement('div');
-  scr.id = 'screen-speak';
-  scr.className = 'screen';
-  document.body.insertBefore(scr, document.getElementById('screen-results') || null);
-
-  let D = null; // stato del drill
-
-  function startDrill(lv, mode) {
-    D = { lv, mode, words: shuffle(wordsOf(lv)), i: 0, tries: 0, done: 0 };
-    showScreen('speak');
-    window.scrollTo(0, 0);
-    drawDrill();
-  }
-
-  function drawDrill() {
-    const w = D.words[D.i];
-    const repeat = D.mode === 'repeat';
-    const title = (repeat ? '👂 ASCOLTA E RIPETI · ' : '💬 DILLO TU · ') + D.lv.title;
-    scr.innerHTML = '<div class="ex-header"><div class="ex-title"></div><button class="btn-back" type="button" id="spdBack">← MAP</button></div>'
-      + '<div class="hud"><div class="hud-track"><div class="hud-fill" style="width:' + (D.i / D.words.length * 100) + '%"></div></div><div class="hud-text">' + (D.i + 1) + '/' + D.words.length + '</div></div>'
-      + '<div class="ex-card" id="spdCard">'
-      + (repeat
-          ? '<div class="sp-word" id="spdWord"></div><div class="sp-it" id="spdIt"></div>'
-          : '<div class="sp-big" id="spdIt"></div><div class="sp-word" id="spdWord" style="visibility:hidden"></div>')
-      + '<div class="sp-row sp-center">'
-      + (SR ? '<button class="sp-btn mic" type="button" id="spdMic">🎤 ' + (repeat ? 'RIPETI' : 'DILLO') + '</button>' : '')
-      + '<button class="sp-btn" type="button" id="spdPlay">🔊 ASCOLTA</button>'
-      + (!repeat ? '<button class="sp-btn" type="button" id="spdShow">👁 MOSTRA</button>' : '')
-      + '</div>'
-      + '<div class="sp-fb" id="spdFb"></div>'
-      + '<div class="sp-row sp-center"><button class="btn btn-secondary" type="button" id="spdNext">AVANTI →</button></div>'
-      + '</div>'
-      + (SR ? '<div class="sp-note">Il riconoscimento vocale del browser controlla che la parola si capisca, non ogni suono: ascolta bene il modello e imitalo.</div>'
-            : '<div class="sp-note">Su questo browser il microfono non è disponibile (usa Chrome o Edge): puoi comunque ascoltare e ripetere ad alta voce.</div>');
-    scr.querySelector('.ex-title').textContent = title;
-    scr.querySelector('#spdWord').textContent = w.en;
-    scr.querySelector('#spdIt').textContent = '🇮🇹 ' + w.it;
-    const fb = scr.querySelector('#spdFb');
-    audioMsg = m => { fb.className = 'sp-fb err'; fb.textContent = m; };
-    const reveal = () => { const el = scr.querySelector('#spdWord'); if (el) el.style.visibility = 'visible'; };
-
-    scr.querySelector('#spdBack').onclick = () => { if (synth) synth.cancel(); goMap(); };
-    scr.querySelector('#spdPlay').onclick = () => { if (!repeat) reveal(); speakText(w.en, false); };
-    const show = scr.querySelector('#spdShow');
-    if (show) show.onclick = () => { reveal(); speakText(w.en, false); };
-    scr.querySelector('#spdNext').onclick = nextWord;
-
-    const mic = scr.querySelector('#spdMic');
-    if (mic) mic.onclick = () => listen(alts => {
-      const ok = findMatch(alts, w.accept);
-      if (ok) {
-        fb.className = 'sp-fb ok';
-        fb.textContent = '✓ Perfetto!';
-        reveal();
-        const card = scr.querySelector('#spdCard');
-        if (typeof burstAt === 'function') burstAt(card, '#00ff88');
-        if (!repeat) setTimeout(() => speakText(w.en, false), 350);
-        D.done++;
-        setTimeout(() => { if (D && D.words[D.i] === w) nextWord(); }, repeat ? 1300 : 2300);
-      } else {
-        D.tries++;
-        fb.className = 'sp-fb err';
-        if (D.tries >= 3) {
-          fb.textContent = 'Ho capito «' + (alts[0] || '') + '». Ascolta ancora una volta e poi vai avanti.';
-          reveal();
-          speakText(w.en, false);
-        } else {
-          fb.textContent = 'Ho capito «' + (alts[0] || '') + '». ' + (repeat ? 'Riascolta e riprova.' : 'Riprova, oppure premi 🔊.');
-        }
-      }
-    }, s => {
-      mic.classList.toggle('on', s === 'listening');
-      if (s !== 'idle') { fb.className = 'sp-fb'; fb.textContent = (STATE_MSG[s] || '') + (s === 'error' && lastErr ? ' (' + lastErr + ')' : ''); }
-    });
-
-    if (repeat) setTimeout(() => speakText(w.en, false), 250);
-  }
-
-  function nextWord() {
-    if (synth) synth.cancel();
-    D.i++; D.tries = 0;
-    if (D.i < D.words.length) { drawDrill(); return; }
-    const n = D.words.length;
-    scr.innerHTML = '<div class="results-card"><div class="res-pct pass">🗣️</div>'
-      + '<div class="res-label pass">ALLENAMENTO FINITO!</div>'
-      + '<div class="res-threshold">' + (SR ? 'riconosciute al microfono: ' + D.done + ' / ' + n : n + ' parole ascoltate') + '</div>'
-      + '<div class="action-bar" style="justify-content:center;margin-top:24px">'
-      + '<button class="btn btn-primary" type="button" id="spdAgain">↺ ANCORA</button>'
-      + '<button class="btn btn-green" type="button" id="spdMap">← MAPPA</button></div></div>';
-    const lv = D.lv, mode = D.mode;
-    scr.querySelector('#spdAgain').onclick = () => startDrill(lv, mode);
-    scr.querySelector('#spdMap').onclick = () => goMap();
-  }
 })();
