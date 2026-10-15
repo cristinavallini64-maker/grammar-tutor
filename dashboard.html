@@ -462,7 +462,7 @@ function scoreTxt(v, tot){
   return n + scorePill(v);
 }
 function resultsTable(levels){
-  let h = '<table class="rtbl"><thead><tr><th>Parte / livello</th><th>1° tentativo</th><th>Migliore</th><th>Volte</th></tr></thead><tbody>';
+  let h = '<table class="rtbl"><thead><tr><th>Parte / livello</th><th>Prima volta</th><th>Migliore</th><th>Volte</th></tr></thead><tbody>';
   let lastGroup = null;
   levels.forEach(l => {
     const sp = splitLevel(l.level);
@@ -475,7 +475,10 @@ function resultsTable(levels){
       '<td class="sc">' + (n > 1 ? scoreTxt(l.score, sp.tot) : '<span class="muted">—</span>') + '</td>' +
       '<td>' + n + (sospetto ? '<span class="warn" title="Primo tentativo basso e poi punteggio alto: potrebbe aver rifatto la parte dopo aver visto le soluzioni">&#9888;</span>' : '') + '</td></tr>';
   });
-  return h + '</tbody></table>';
+  h += '</tbody></table>';
+  if (levels.some(l => /\(su \d+\)/.test(l.level || '') && /^(b1-|b2-)/.test(l.page || '')))
+    h += '<div class="pstats">Nei test: <b>Prima volta</b> = risultato della prima volta che ha fatto la parte, con 1 punto per le risposte giuste subito e ½ per quelle corrette al secondo tentativo.</div>';
+  return h;
 }
 function detailRow(email){
   const pages = DATA.byPage.filter(p => p.email === email && (currentSec === "all" || sectionOf(p.page) === currentSec))
