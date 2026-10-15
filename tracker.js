@@ -110,15 +110,20 @@
     lastTick = now;
   }, 1000);
 
+  // Un'assenza piu' lunga di PAUSA non e' un'"uscita" (es. pagina lasciata aperta in background,
+  // ricreazione, tablet in standby): non si conta, altrimenti risulterebbero ore "fuori".
+  var PAUSA = 10 * 60;   // secondi
   function goOut() {
     if (out) return;
     out = true; outSince = Date.now(); lastTick = Date.now();
-    if (email) leaves++;
   }
   function comeBack() {
     if (!out) return;
     out = false; lastTick = Date.now();
-    if (email && outSince) awaySeconds += Math.round((Date.now() - outSince) / 1000);
+    if (email && outSince) {
+      var sec = Math.round((Date.now() - outSince) / 1000);
+      if (sec >= 2 && sec <= PAUSA) { leaves++; awaySeconds += sec; }
+    }
     outSince = 0;
   }
 
@@ -136,7 +141,6 @@
   }, true);
 
   function flush() {
-    if (out && email && outSince) { awaySeconds += Math.round((Date.now() - outSince) / 1000); outSince = Date.now(); }
     if (activeSeconds > 0) { post("time", activeSeconds); activeSeconds = 0; }
     if (clicks > 0)        { post("activity", clicks);    clicks = 0; }
     if (leaves > 0)        { post("uscite", leaves);      leaves = 0; }

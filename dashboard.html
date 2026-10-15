@@ -98,6 +98,18 @@ input:focus{border-color:var(--cyan);}
 .pill.low{background:rgba(255,77,109,.15);color:var(--red);}
 .pill.none{background:rgba(255,255,255,.08);color:var(--muted);}
 .lvls{display:flex;flex-direction:column;gap:6px;}
+/* dettaglio studente: una scheda per pagina */
+.pcard{border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin:10px 0;background:rgba(255,255,255,.02);}
+.phead{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;}
+.pname{font-weight:800;font-size:15px;color:var(--text);}
+.pstats{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--dim);margin-top:6px;}
+.pstats b{color:var(--text);font-weight:700;}
+.rtbl{width:100%;border-collapse:collapse;margin-top:10px;}
+.rtbl th{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;text-align:left;padding:6px 10px;border-bottom:1px solid var(--border);}
+.rtbl td{padding:6px 10px;font-size:14px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:middle;}
+.rtbl tr.grp td{font-size:12px;font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;padding-top:12px;border-bottom:none;}
+.rtbl td.sc{white-space:nowrap;}
+.warn{color:#ff3b3b;font-weight:800;margin-left:6px;cursor:help;}
 .lvl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dim);}
 
 /* ---- sections ---- */
@@ -248,13 +260,15 @@ function fetchData(fromGate){
 const SECTIONS = [
   { repo: "grammar-tutor",     name: "Grammar Quest",     color: "#00f0ff" },
   { repo: "structure",         name: "The Structure",     color: "#ffcc00" },
-  { repo: "technical-english", name: "Technical English", color: "#00ff88" }
+  { repo: "technical-english", name: "Technical English", color: "#00ff88" },
+  { repo: "final-inspection",  name: "Final Inspection",  color: "#7dff4d" }
 ];
 const OTHER = { repo: "_altro", name: "Altre pagine", color: "#b9a6ff" };
 const FALLBACK_FILES = {
   "grammar-tutor": ["defining-relatives.html", "food-quantity.html", "lessico-starter-abc.html", "lessico-starter-def.html", "lessico-u1.html", "lessico-u10.html", "lessico-u2.html", "lessico-u3.html", "lessico-u4.html", "lessico-u5.html", "lessico-u6.html", "lessico-u7.html", "lessico-u8.html", "lessico-u9.html", "past-simple.html", "present-continuous.html", "present-perfect.html", "present-simple.html", "speaking-tutor-a2.html", "speaking-tutor-b1.html", "starter1.html", "starter2.html", "unit10friends.html", "unit5.html", "unit6.html", "unit7.html", "unit8tomorrow.html"],
   "structure": ["cambridge-u1.html", "cambridge-u10.html", "cambridge-u2.html", "cambridge-u3.html", "cambridge-u4.html", "cambridge-u5.html", "cambridge-u6.html", "cambridge-u7.html", "cambridge-u8.html", "cambridge-u9.html", "first-conditional.html", "modal-deduction.html", "modals-advice.html", "passive-voice.html", "past-narrative.html", "past-perfect-relatives.html", "present-perfect-advanced.html", "reported-speech.html", "second-conditional.html", "sentence-transformation-tutor.html", "speaking-b2-l1.html", "speaking-b2-l2.html", "studia-u1-index.html", "studia-u10-index.html", "studia-u2-index.html", "studia-u3-index.html", "studia-u4-index.html", "studia-u5-index.html", "studia-u6-index.html", "studia-u7-index.html", "studia-u8-index.html", "studia-u9-index.html", "tutor-spiega.html", "verb-patterns.html", "word-formation-tutor.html"],
-  "technical-english": ["index.html", "renewable-energy.html"]
+  "technical-english": ["index.html", "renewable-energy.html"],
+  "final-inspection": ["b1-preliminary.html", "b2-first.html"]
 };
 const FILES = {};
 let currentSec = "all";
@@ -417,39 +431,72 @@ function render(){
   host.innerHTML = html;
 }
 
+/* nomi leggibili delle pagine */
+const PAGE_NAMES = {
+  "b1-preliminary": "Test B1 Preliminary", "b2-first": "Test B2 First",
+  "past-narrative": "Unit 1 · Esercitati", "present-perfect-advanced": "Unit 2 · Esercitati", "verb-patterns": "Unit 3 · Esercitati",
+  "past-perfect-relatives": "Unit 4 · Esercitati", "first-conditional": "Unit 5 · Esercitati", "second-conditional": "Unit 6 · Esercitati",
+  "modals-advice": "Unit 7 · Esercitati", "modal-deduction": "Unit 8 · Esercitati", "passive-voice": "Unit 9 · Esercitati", "reported-speech": "Unit 10 · Esercitati",
+  "word-formation-tutor": "Word Formation", "sentence-transformation-tutor": "Sentence Transformation", "tutor-spiega": "Tutor Spiega"
+};
+function pageLabel(page){
+  const f = (page || "").split("/").pop().replace(/\.html$/, "");
+  if (PAGE_NAMES[f]) return PAGE_NAMES[f];
+  let m = /^cambridge-u(\d+)$/.exec(f); if (m) return "Unit " + m[1] + " · Cambridge";
+  m = /^studia-u(\d+)-index$/.exec(f); if (m) return "Unit " + m[1] + " · Studia";
+  return f.replace(/-/g, " ").replace(/^./, c => c.toUpperCase());
+}
+/* "Cambridge PET 3 · Test 1 · reading part 3 (su 10)" -> gruppo "Cambridge PET 3 · Test 1", voce "Reading part 3", totale 10 */
+function splitLevel(level){
+  let s = level || "", tot = 0;
+  const m = /\s*\(su (\d+)\)\s*$/.exec(s); if (m) { tot = +m[1]; s = s.slice(0, m.index); }
+  const parts = s.split(" · ");
+  let group = "", item = s;
+  if (parts.length >= 3) { group = parts.slice(0, -1).join(" · "); item = parts[parts.length - 1]; }
+  item = item.replace(/^./, c => c.toUpperCase());
+  return { group, item, tot };
+}
+function scoreTxt(v, tot){
+  if (v === null || v === undefined) return '<span class="muted">—</span>';
+  const n = tot ? '<b>' + String(Math.round(v * tot / 50) / 2).replace('.', ',') + '/' + tot + '</b> ' : '';
+  return n + scorePill(v);
+}
+function resultsTable(levels){
+  let h = '<table class="rtbl"><thead><tr><th>Parte / livello</th><th>1° tentativo</th><th>Migliore</th><th>Volte</th></tr></thead><tbody>';
+  let lastGroup = null;
+  levels.forEach(l => {
+    const sp = splitLevel(l.level);
+    if (sp.group && sp.group !== lastGroup) { h += '<tr class="grp"><td colspan="4">' + esc(sp.group) + '</td></tr>'; lastGroup = sp.group; }
+    const n = +l.attempts || 1;
+    const first = (l.first_score === undefined || l.first_score === null) ? l.score : +l.first_score;
+    const sospetto = n > 1 && first < 50 && l.score >= 80;
+    h += '<tr><td>' + esc(sp.item) + '</td>' +
+      '<td class="sc">' + scoreTxt(first, sp.tot) + '</td>' +
+      '<td class="sc">' + (n > 1 ? scoreTxt(l.score, sp.tot) : '<span class="muted">—</span>') + '</td>' +
+      '<td>' + n + (sospetto ? '<span class="warn" title="Primo tentativo basso e poi punteggio alto: potrebbe aver rifatto la parte dopo aver visto le soluzioni">&#9888;</span>' : '') + '</td></tr>';
+  });
+  return h + '</tbody></table>';
+}
 function detailRow(email){
   const pages = DATA.byPage.filter(p => p.email === email && (currentSec === "all" || sectionOf(p.page) === currentSec))
-    .sort((a,b)=> currentSec === "all"
-      ? (SECTIONS.findIndex(x=>x.repo===sectionOf(a.page)) - SECTIONS.findIndex(x=>x.repo===sectionOf(b.page))) || ((+b.opens||0)-(+a.opens||0))
-      : (+b.opens||0)-(+a.opens||0));
-  let inner = '<table class="subtbl"><thead><tr>'+(currentSec === "all" ? '<th>Sezione</th>' : '')+'<th>Pagina</th><th>Aperture</th><th>Tempo</th><th>Uscite</th><th>Punteggi per livello (1\u00b0 tentativo / migliore)</th><th>Primo accesso</th><th>Ultima attività</th></tr></thead><tbody>';
-  if(pages.length === 0){
-    inner += '<tr><td colspan="8" class="muted">Nessun dettaglio.</td></tr>';
-  } else {
-    pages.forEach(p => {
-      const levels = DATA.byLevel.filter(l => l.email === email && l.page === p.page);
-      let scoreCell;
-      if(levels.length === 0){
-        scoreCell = '<span class="muted">—</span>';
-      } else {
-        scoreCell = '<div class="lvls">' + levels.map(l =>
-          lvlCell(l)
-        ).join('') + '</div>';
-      }
-      const si = secInfo(sectionOf(p.page));
-      inner += '<tr>'+
-        (currentSec === "all" ? '<td><span class="sec-tag" style="--sc:'+si.color+'">'+esc(si.name)+'</span></td>' : '')+
-        '<td>'+esc((p.page||"").split("/").pop().replace(/\.html$/,""))+'</td>'+
-        '<td class="num">'+(p.opens||0)+'</td>'+
-        '<td class="num">'+fmtTime(p.seconds)+'</td>'+
-        '<td class="num">'+fmtLeaves(p)+'</td>'+
-        '<td>'+scoreCell+'</td>'+
-        '<td class="muted">'+fmtDate(p.first_seen)+'</td>'+
-        '<td class="muted">'+fmtDate(p.last_seen)+'</td>'+
-        '</tr>';
-    });
-  }
-  inner += '</tbody></table>';
+    .sort((a,b)=> (b.last_seen || "").localeCompare(a.last_seen || ""));
+  let inner = '';
+  if (pages.length === 0) inner = '<div class="muted">Nessun dettaglio.</div>';
+  pages.forEach(p => {
+    const levels = DATA.byLevel.filter(l => l.email === email && l.page === p.page);
+    const si = secInfo(sectionOf(p.page));
+    inner += '<div class="pcard"><div class="phead">' +
+      '<span class="sec-tag" style="--sc:' + si.color + '">' + esc(si.name) + '</span>' +
+      '<span class="pname">' + esc(pageLabel(p.page)) + '</span></div>' +
+      '<div class="pstats">' +
+        '<span>Aperture <b>' + (p.opens || 0) + '</b></span>' +
+        '<span>Tempo <b>' + fmtTime(p.seconds) + '</b></span>' +
+        '<span>Uscite <b>' + fmtLeaves(p) + '</b></span>' +
+        '<span>Dal <b>' + fmtDate(p.first_seen) + '</b> al <b>' + fmtDate(p.last_seen) + '</b></span>' +
+      '</div>' +
+      (levels.length ? resultsTable(levels) : '<div class="pstats">Nessun punteggio (pagina senza punteggi o nessuna parte completata).</div>') +
+      '</div>';
+  });
   const delBtn = '<button class="del-student" onclick="deleteStudent(\''+escAttr(email)+'\')">&#x2715; Elimina i dati di questo studente</button>';
   return '<tr class="detail"><td colspan="6"><div class="detail-inner">'+delBtn+inner+'</div></td></tr>';
 }
