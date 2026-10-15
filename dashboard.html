@@ -334,7 +334,7 @@ function fmtDate(s){
 function lvlCell(l){
   const m = /\s*\(su (\d+)\)\s*$/.exec(l.level || "");
   const tot = m ? +m[1] : 0, name = m ? l.level.slice(0, m.index) : (l.level || "");
-  const frac = v => (tot && v !== null && v !== undefined) ? '<b>'+Math.round(v * tot / 100)+'/'+tot+'</b> ' : '';
+  const frac = v => (tot && v !== null && v !== undefined) ? '<b>'+String(Math.round(v * tot / 50) / 2).replace('.', ',')+'/'+tot+'</b> ' : '';   // anche mezzi punti (es. 7,5/10)
   const n = +l.attempts || 1;
   const first = (l.first_score === undefined || l.first_score === null) ? null : +l.first_score;
   // un solo tentativo (o Worker vecchio): come prima
