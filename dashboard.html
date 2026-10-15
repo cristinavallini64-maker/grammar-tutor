@@ -462,22 +462,49 @@ function scoreTxt(v, tot){
   return n + scorePill(v);
 }
 function resultsTable(levels){
-  let h = '<table class="rtbl"><thead><tr><th>Parte / livello</th><th>Prima volta</th><th>Migliore</th><th>Volte</th></tr></thead><tbody>';
-  let lastGroup = null;
+  const isTest = levels.some(l => /^(b1-|b2-)/.test((l.page || '').split('/').pop()));
+  const warnIco = '<span class="warn" title="Prima volta bassa e poi punteggio alto: potrebbe aver rifatto la parte dopo aver visto le soluzioni">&#9888;</span>';
+  if (!isTest) {
+    let h = '<table class="rtbl"><thead><tr><th>Parte / livello</th><th>Prima volta</th><th>Migliore</th><th>Volte</th></tr></thead><tbody>';
+    let lastGroup = null;
+    levels.forEach(l => {
+      const sp = splitLevel(l.level);
+      if (sp.group && sp.group !== lastGroup) { h += '<tr class="grp"><td colspan="4">' + esc(sp.group) + '</td></tr>'; lastGroup = sp.group; }
+      const n = +l.attempts || 1;
+      const first = (l.first_score === undefined || l.first_score === null) ? l.score : +l.first_score;
+      h += '<tr><td>' + esc(sp.item) + '</td><td class="sc">' + scoreTxt(first, sp.tot) + '</td>' +
+        '<td class="sc">' + (n > 1 ? scoreTxt(l.score, sp.tot) : '<span class="muted">—</span>') + '</td>' +
+        '<td>' + n + (n > 1 && first < 50 && l.score >= 80 ? warnIco : '') + '</td></tr>';
+    });
+    return h + '</tbody></table>';
+  }
+  /* TEST: per ogni parte, i due tentativi della prima volta separati */
+  const parts = {}, order = [];
   levels.forEach(l => {
-    const sp = splitLevel(l.level);
-    if (sp.group && sp.group !== lastGroup) { h += '<tr class="grp"><td colspan="4">' + esc(sp.group) + '</td></tr>'; lastGroup = sp.group; }
-    const n = +l.attempts || 1;
-    const first = (l.first_score === undefined || l.first_score === null) ? l.score : +l.first_score;
-    const sospetto = n > 1 && first < 50 && l.score >= 80;
+    const m = /\s*\[(t1|t2)\]\s*(?=\(su \d+\)\s*$)/.exec(l.level || '');
+    const base = m ? l.level.slice(0, m.index) + ' ' + l.level.slice(m.index + m[0].length) : l.level;
+    const key = base.replace(/\s+/g, ' ').trim();
+    if (!parts[key]) { parts[key] = {}; order.push(key); }
+    parts[key][m ? m[1] : 'tot'] = l;
+  });
+  const fv = l => l ? ((l.first_score === undefined || l.first_score === null) ? l.score : +l.first_score) : null;
+  let h = '<table class="rtbl"><thead><tr><th>Parte</th><th>1° tentativo</th><th>2° tentativo</th><th>Punteggio</th><th>Rifatta da capo</th></tr></thead><tbody>';
+  let lastGroup = null;
+  order.forEach(key => {
+    const p = parts[key], sp = splitLevel(key);
+    if (sp.group && sp.group !== lastGroup) { h += '<tr class="grp"><td colspan="5">' + esc(sp.group) + '</td></tr>'; lastGroup = sp.group; }
+    const tot = p.tot, first = fv(tot), n = tot ? (+tot.attempts || 1) : 1;
+    const dash = '<span class="muted">—</span>';
+    let redo = 'no';
+    if (n > 1) redo = (n - 1) + (n - 1 === 1 ? ' volta' : ' volte') + ' · migliore ' + scoreTxt(tot.score, sp.tot) + (first < 50 && tot.score >= 80 ? warnIco : '');
     h += '<tr><td>' + esc(sp.item) + '</td>' +
-      '<td class="sc">' + scoreTxt(first, sp.tot) + '</td>' +
-      '<td class="sc">' + (n > 1 ? scoreTxt(l.score, sp.tot) : '<span class="muted">—</span>') + '</td>' +
-      '<td>' + n + (sospetto ? '<span class="warn" title="Primo tentativo basso e poi punteggio alto: potrebbe aver rifatto la parte dopo aver visto le soluzioni">&#9888;</span>' : '') + '</td></tr>';
+      '<td class="sc">' + (p.t1 ? scoreTxt(fv(p.t1), sp.tot) : dash) + '</td>' +
+      '<td class="sc">' + (p.t2 ? scoreTxt(fv(p.t2), sp.tot) : dash) + '</td>' +
+      '<td class="sc">' + (tot ? scoreTxt(first, sp.tot) : dash) + '</td>' +
+      '<td>' + redo + '</td></tr>';
   });
   h += '</tbody></table>';
-  if (levels.some(l => /\(su \d+\)/.test(l.level || '') && /^(b1-|b2-)/.test(l.page || '')))
-    h += '<div class="pstats"><span>Nei test: <b>Prima volta</b> = risultato della prima volta che ha fatto la parte, con 1 punto per le risposte giuste subito e ½ per quelle corrette al secondo tentativo.</span></div>';
+  h += '<div class="pstats"><span><b>1° tentativo</b> = risposte giuste alla prima correzione · <b>2° tentativo</b> = risposte giuste dopo aver corretto le sbagliate (— se non c\'era niente da correggere o la parte non lo prevede) · <b>Punteggio</b> = 1 punto per le giuste subito + ½ per quelle corrette al 2° tentativo. I risultati fatti prima del 15/10 alle 12:30 non hanno i due tentativi separati.</span></div>';
   return h;
 }
 function detailRow(email){
