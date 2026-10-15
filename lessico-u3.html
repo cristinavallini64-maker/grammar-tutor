@@ -485,7 +485,7 @@ function buildStudyExs(s,overrideId){
     const key=`${id}_${i}`;
     if(e.type==='lv1') return {type:'fill',q:`🇮🇹  ${e.it}`,hint:'scrivi in inglese',a:e.en,accept:e.accept||[e.en],_key:key,_lv:1};
     if(e.type==='lv2') return {type:'fill',q:`📖  ${e.def}`,hint:'scrivi la parola / espressione inglese',a:e.en,accept:e.accept||[e.en],_key:key,_lv:2};
-    if(e.type==='lv3'){const re=new RegExp(e.gap.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i');return {type:'fill',q:`✍️  ${e.sentence.replace(re,'___')}`,hint:e.hint||'',a:e.gap,accept:(e.accept||[e.gap]),_key:key,_lv:3};}
+    if(e.type==='lv3'){const re=new RegExp('(^|[^A-Za-z])('+e.gap.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')(?![A-Za-z])','i');return {type:'fill',q:`✍️  ${e.sentence.replace(re,'$1___')}`,hint:e.hint||'',a:e.gap,accept:(e.accept||[e.gap]),_key:key,_lv:3};}
     return {...e,_key:key};
   });
 }

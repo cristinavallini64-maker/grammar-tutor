@@ -6,7 +6,7 @@
    Cosa aggiunge (senza toccare dati, punteggi, tracking, save code):
    1. Esercizi: 🎤 per rispondere a voce (il testo riconosciuto va nella casella);
       dopo CONTROLLA si sente la parola corretta;
-      pulsanti 🔊 / 🐢 per riascoltarla.
+      pulsante 🔊 per riascoltarla.
    2. Mappa: pannello PRONUNCIA con due modalità per ogni livello di studio:
       - ASCOLTA E RIPETI: senti la parola e la ripeti al microfono;
       - DILLO TU: vedi l'italiano e dici la parola inglese, poi la senti.
@@ -21,17 +21,18 @@
 
   // ─── Sintesi vocale ────────────────────────────────────────────────────
   const synth = window.speechSynthesis || null;
-  let voice = null;
+  let voice = null, voiceFailed = false;
   function pickVoice() {
     if (!synth) return;
-    const vs = synth.getVoices();
-    const gb = vs.filter(v => /^en[-_]GB/i.test(v.lang));
-    const en = vs.filter(v => /^en/i.test(v.lang));
-    const pref = l => l.find(v => /google|natural|online|neural|daniel|serena|kate/i.test(v.name)) || l[0];
-    voice = pref(gb) || pref(en) || null;
+    const vs = synth.getVoices().filter(v => /^en/i.test(v.lang));
+    // prima le voci installate sul dispositivo (le voci online di Chrome a volte tacciono)
+    const score = v => (/^en[-_]GB/i.test(v.lang) ? 4 : 0) + (v.localService ? 2 : 0) + (/natural|neural|daniel|serena|kate|libby|sonia|ryan/i.test(v.name) ? 1 : 0);
+    voice = vs.sort((x, y) => score(y) - score(x))[0] || null;
   }
-  if (synth) { pickVoice(); synth.onvoiceschanged = pickVoice; }
+  if (synth) { pickVoice(); if (synth.addEventListener) synth.addEventListener('voiceschanged', pickVoice); else synth.onvoiceschanged = pickVoice; }
 
+  let audioMsg = null; // dove mostrare un eventuale problema audio
+  const keep = [];     // Chrome: tenere un riferimento, altrimenti a volte non parla
   // pulizia per la lettura: (opzioni/tra/barre) e (___) via, a / b → a, b
   function clean(t) {
     return String(t)
@@ -40,20 +41,40 @@
       .replace(/_+/g, ' ')
       .replace(/\s+/g, ' ').trim();
   }
-  function speakText(t, slow) {
+  function speakText(t, slow, retry) {
     if (!synth || !t) return;
     t = clean(t);
+    if (!voice) pickVoice();
     synth.cancel();
     const u = new SpeechSynthesisUtterance(t);
-    u.lang = voice ? voice.lang : 'en-GB';
-    if (voice) u.voice = voice;
+    u.lang = 'en-GB';
+    if (voice && !voiceFailed) { u.voice = voice; u.lang = voice.lang; }
     u.rate = slow ? 0.65 : 0.95;
-    synth.speak(u);
+    let started = false;
+    u.onstart = () => { started = true; };
+    u.onerror = ev => {
+      if (ev.error === 'canceled' || ev.error === 'interrupted') return;
+      if (!retry) { voiceFailed = true; speakText(t, slow, true); return; }
+      if (audioMsg) audioMsg('⚠ L\'audio non parte (' + ev.error + '): controlla il volume o prova con Chrome / Edge');
+    };
+    keep.push(u); if (keep.length > 5) keep.shift();
+    // Chrome perde la frase se speak() arriva subito dopo cancel(): piccola attesa
+    setTimeout(() => {
+      if (synth.paused) synth.resume();
+      synth.speak(u);
+      setTimeout(() => {
+        if (started || synth.speaking) return;
+        if (!retry) { voiceFailed = true; speakText(t, slow, true); }
+        else if (audioMsg) audioMsg(synth.getVoices().some(v => /^en/i.test(v.lang))
+          ? '⚠ L\'audio non parte: controlla il volume del dispositivo'
+          : '⚠ Su questo dispositivo non c\'è una voce inglese installata: prova con Chrome o Edge');
+      }, 1500);
+    }, 80);
   }
 
   // ─── Riconoscimento vocale ─────────────────────────────────────────────
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
-  let rec = null, recBusy = false;
+  let rec = null, recBusy = false, lastErr = '';
 
   function listen(onResult, onState) {
     if (!SR) return;
@@ -74,8 +95,11 @@
     };
     rec.onerror = ev => {
       got = true;
+      lastErr = ev.error || '';
       onState(ev.error === 'not-allowed' || ev.error === 'service-not-allowed' ? 'denied'
-            : ev.error === 'no-speech' ? 'nospeech' : 'error');
+            : ev.error === 'no-speech' ? 'nospeech'
+            : ev.error === 'audio-capture' ? 'nomic'
+            : ev.error === 'network' ? 'network' : 'error');
     };
     rec.onend = () => { recBusy = false; onState(got ? 'idle' : 'nospeech'); };
     try { rec.start(); } catch (e) { recBusy = false; onState('error'); }
@@ -85,6 +109,8 @@
     listening: '🎤 Ti ascolto… parla ora',
     denied: '⚠ Il microfono è bloccato: consenti l\'uso del microfono al browser',
     nospeech: 'Non ho sentito niente: premi 🎤 e riprova',
+    nomic: '⚠ Non trovo un microfono collegato o acceso',
+    network: '⚠ Il riconoscimento vocale ha bisogno di internet: controlla la connessione',
     error: 'Il microfono non ha funzionato: riprova'
   };
 
@@ -166,7 +192,7 @@
         st.textContent = 'Ho capito: «' + (alts[0] || '') + '» — controlla e premi ▶ CONTROLLA';
       }, s => {
         mic.classList.toggle('on', s === 'listening');
-        if (s !== 'idle') st.textContent = STATE_MSG[s] || '';
+        if (s !== 'idle') st.textContent = (STATE_MSG[s] || '') + (s === 'error' && lastErr ? ' (' + lastErr + ')' : '');
       });
     };
   };
@@ -185,10 +211,10 @@
     if (!synth || !txt || !fb) return;
     const row = document.createElement('div');
     row.className = 'sp-row';
-    row.innerHTML = '<button class="sp-btn" type="button">🔊 ASCOLTA</button><button class="sp-btn" type="button">🐢 LENTO</button>';
-    const [b1, b2] = row.querySelectorAll('button');
+    row.innerHTML = '<button class="sp-btn" type="button">🔊 ASCOLTA</button><span class="sp-status"></span>';
+    const b1 = row.querySelector('button'), st = row.querySelector('.sp-status');
     b1.onclick = () => speakText(txt, false);
-    b2.onclick = () => speakText(txt, true);
+    audioMsg = m => { st.textContent = m; };
     fb.insertAdjacentElement('afterend', row);
     if (auto) speakText(txt, false);
   };
@@ -259,7 +285,6 @@
       + '<div class="sp-row sp-center">'
       + (SR ? '<button class="sp-btn mic" type="button" id="spdMic">🎤 ' + (repeat ? 'RIPETI' : 'DILLO') + '</button>' : '')
       + '<button class="sp-btn" type="button" id="spdPlay">🔊 ASCOLTA</button>'
-      + '<button class="sp-btn" type="button" id="spdSlow">🐢 LENTO</button>'
       + (!repeat ? '<button class="sp-btn" type="button" id="spdShow">👁 MOSTRA</button>' : '')
       + '</div>'
       + '<div class="sp-fb" id="spdFb"></div>'
@@ -271,11 +296,11 @@
     scr.querySelector('#spdWord').textContent = w.en;
     scr.querySelector('#spdIt').textContent = '🇮🇹 ' + w.it;
     const fb = scr.querySelector('#spdFb');
+    audioMsg = m => { fb.className = 'sp-fb err'; fb.textContent = m; };
     const reveal = () => { const el = scr.querySelector('#spdWord'); if (el) el.style.visibility = 'visible'; };
 
     scr.querySelector('#spdBack').onclick = () => { if (synth) synth.cancel(); goMap(); };
     scr.querySelector('#spdPlay').onclick = () => { if (!repeat) reveal(); speakText(w.en, false); };
-    scr.querySelector('#spdSlow').onclick = () => { if (!repeat) reveal(); speakText(w.en, true); };
     const show = scr.querySelector('#spdShow');
     if (show) show.onclick = () => { reveal(); speakText(w.en, false); };
     scr.querySelector('#spdNext').onclick = nextWord;
@@ -298,14 +323,14 @@
         if (D.tries >= 3) {
           fb.textContent = 'Ho capito «' + (alts[0] || '') + '». Ascolta ancora una volta e poi vai avanti.';
           reveal();
-          speakText(w.en, true);
+          speakText(w.en, false);
         } else {
           fb.textContent = 'Ho capito «' + (alts[0] || '') + '». ' + (repeat ? 'Riascolta e riprova.' : 'Riprova, oppure premi 🔊.');
         }
       }
     }, s => {
       mic.classList.toggle('on', s === 'listening');
-      if (s !== 'idle') { fb.className = 'sp-fb'; fb.textContent = STATE_MSG[s] || ''; }
+      if (s !== 'idle') { fb.className = 'sp-fb'; fb.textContent = (STATE_MSG[s] || '') + (s === 'error' && lastErr ? ' (' + lastErr + ')' : ''); }
     });
 
     if (repeat) setTimeout(() => speakText(w.en, false), 250);
