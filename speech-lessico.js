@@ -7,8 +7,7 @@
    1. Esercizi: 🎤 per rispondere a voce (il testo riconosciuto va nella casella);
       dopo CONTROLLA si sente la parola corretta;
       pulsante 🔊 per riascoltarla.
-   2. Mappa: pannello PRONUNCIA con due modalità per ogni livello di studio:
-      - ASCOLTA E RIPETI: senti la parola e la ripeti al microfono;
+   2. Mappa: pannello PRONUNCIA con una modalità per ogni livello di studio:
       - DILLO TU: vedi l'italiano e dici la parola inglese, poi la senti.
       Nessun voto: è allenamento. Dopo 3 tentativi si va avanti comunque.
    Usa solo le funzioni del browser (sintesi e riconoscimento vocale): gratis.
@@ -244,15 +243,13 @@
     const panel = document.createElement('div');
     panel.className = 'sp-panel';
     panel.innerHTML = '<div class="sp-panel-title">🗣️ PRONUNCIA</div>'
-      + '<div class="sp-panel-sub"><b>Ascolta e ripeti</b>: senti la parola e la ripeti. <b>Dillo tu</b>: vedi l\'italiano e dici la parola in inglese. Nessun voto, è allenamento.</div>';
+      + '<div class="sp-panel-sub"><b>Dillo tu</b>: vedi la parola in italiano e la dici in inglese, poi la senti. Nessun voto, è allenamento.</div>';
     studyLevels.forEach(lv => {
       const r = document.createElement('div');
       r.className = 'sp-lv';
-      r.innerHTML = '<span class="sp-lv-name"></span><button class="sp-btn" type="button">👂 ASCOLTA E RIPETI</button><button class="sp-btn mic" type="button">💬 DILLO TU</button>';
+      r.innerHTML = '<span class="sp-lv-name"></span><button class="sp-btn mic" type="button">💬 DILLO TU</button>';
       r.querySelector('.sp-lv-name').textContent = lv.title;
-      const [a, b] = r.querySelectorAll('button');
-      a.onclick = () => startDrill(lv, 'repeat');
-      b.onclick = () => startDrill(lv, 'say');
+      r.querySelector('button').onclick = () => startDrill(lv, 'say');
       panel.appendChild(r);
     });
     list.parentNode.insertBefore(panel, list);
