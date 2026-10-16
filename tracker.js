@@ -22,7 +22,7 @@
      Basta questo file: le pagine non vanno toccate.
      I dati gia' registrati nel database restano dove sono.
      ===================================================================== */
-  var ATTIVO = true;
+  var ATTIVO = false;   // spento il 16 ottobre 2026: dati azzerati, non serve durante l'anno
 
   if (!ATTIVO) {
     // API finta: le pagine che chiamano EFTrack.event(...) non danno errore.
