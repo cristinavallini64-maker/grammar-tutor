@@ -486,6 +486,17 @@ function selectMC(idx,val,el){if(exChecked)return;document.querySelectorAll('.mc
 function addWord(idx,el){if(exChecked||el.classList.contains('used'))return;el.classList.add('used');const word=el.textContent;reorderWords.push({idx,word});const area=document.getElementById('answerArea');const chip=document.createElement('div');chip.className='word-chip';chip.textContent=word;const ci=idx;chip.onclick=()=>{if(exChecked)return;const pos=reorderWords.findIndex(w=>w.idx===ci);if(pos>-1)reorderWords.splice(pos,1);chip.remove();document.getElementById(`chip${ci}`).classList.remove('used');};area.appendChild(chip);}
 function norm(s){return s.trim().toLowerCase().replace(/[.,!?;:]+$/,'').replace(/[—–]/g,'-').replace(/\s+/g,' ').trim();}
 
+// risposta breve che finisce con una contrazione affermativa (Yes, I'm / Really? I've): sbagliata,
+// anche se norm() equipara I'm e I am. Nei fill conta solo se dopo lo spazio la frase non continua.
+function contrFinale(val,ex){
+  const s=String(val||'').replace(/[’‘`´]/g,"'").trim();
+  const re=/\b(i'm|you're|we're|they're|he's|she's|it's|i've|you've|we've|they've)(?=\s*(?:[.!?,;:'"”—–-]|$))/i;
+  if(!re.test(s))return false;
+  if(ex.type==='errorcorrect')return true;
+  if(!/\b(i'm|you're|we're|they're|he's|she's|it's|i've|you've|we've|they've)[.!?,;:'"”\s]*$/i.test(s))return false;
+  const after=(String(ex.q||'').split('___')[1]||'');
+  return /^\s*(?:[.!?,;:'"’”—–-]|$|[A-Z])/.test(after);
+}
 function checkExercise(){
   if(exChecked)return;exChecked=true;
   const ex=exQueue[exIdx];let correct=false;
@@ -493,7 +504,7 @@ function checkExercise(){
   const fb=document.getElementById('feedbackMsg');
   if(ex.type==='fill'||ex.type==='errorcorrect'){
     const val=document.getElementById('fillInput').value;
-    const accepted=(ex.accept||[ex.a]).map(norm);correct=accepted.includes(norm(val));
+    const accepted=(ex.accept||[ex.a]).map(norm);correct=accepted.includes(norm(val));if(correct&&contrFinale(val,ex)){correct=false;setTimeout(()=>{const _f=document.getElementById('feedbackMsg');if(_f)_f.innerHTML='\u2717 In fondo alla risposta non si usa la forma contratta (I am, non I\'m). Risposta corretta: <strong>'+ex.a+'</strong>';},0);}
     const inp=document.getElementById('fillInput');inp.classList.add(correct?'correct':'wrong');inp.disabled=true;
     fb.className='feedback-msg '+(correct?'ok':'err');fb.innerHTML=correct?'&#x2713; Corretto!':'&#x2717; Risposta corretta: <strong>'+ex.a+'</strong>';
   } else if(ex.type==='mc'){
