@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agreeing and Disagreeing</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Poppins',sans-serif;background:#fff;color:#111;display:flex;flex-direction:column;height:100vh;}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:4px solid #cc0000;flex-shrink:0;}
+.title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.78rem,2.7vw,1.35rem);letter-spacing:3px;color:#cc0000;}
+.prog{font-family:'Orbitron',monospace;font-size:clamp(0.65rem,2vw,0.85rem);color:#999;letter-spacing:2px;}
+
+.dots{display:flex;gap:10px;justify-content:center;padding:7px 0;flex-shrink:0;}
+.dot{width:11px;height:11px;border-radius:50%;background:#e0e0e0;transition:background 0.3s;}
+.dot.active{background:#cc0000;}
+
+.slides{flex:1;position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:16px 24px 12px;visibility:hidden;overflow-y:auto;}
+.slide.active{visibility:visible;}
+
+.slide-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.68rem,2.2vw,0.9rem);letter-spacing:2px;color:#cc0000;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #eee;flex-shrink:0;opacity:0;transition:opacity 0.4s;}
+.slide-title.show{opacity:1;}
+
+/* ── SLIDE 0: le quattro risposte ── */
+.grid4{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex-shrink:0;}
+.cell{border-radius:10px;padding:10px 14px;background:#fafafa;border-left:5px solid #cc0000;min-height:96px;}
+.cell.no{border-color:#555;}
+.c-lab{font-family:'Orbitron',monospace;font-size:clamp(0.52rem,1.6vw,0.68rem);letter-spacing:1.5px;color:#999;font-weight:700;margin-bottom:4px;}
+.c-a{font-size:clamp(0.8rem,2.5vw,0.95rem);color:#555;font-style:italic;min-height:1.3em;}
+.c-b{font-size:clamp(1rem,3.4vw,1.25rem);font-weight:900;color:#cc0000;min-height:1.4em;}
+.cell.no .c-b{color:#333;}
+.c-it{font-size:clamp(0.72rem,2.2vw,0.86rem);color:#888;min-height:1.2em;}
+.row-head{grid-column:1/-1;font-family:'Orbitron',monospace;font-size:clamp(0.58rem,1.8vw,0.76rem);letter-spacing:2px;color:#cc0000;font-weight:700;margin-top:4px;opacity:0;transition:opacity 0.4s;}
+.row-head.show{opacity:1;}
+
+/* ── SLIDE 1: l'ausiliare ── */
+.aux-row{display:flex;align-items:center;gap:12px;padding:8px 12px;border-radius:10px;border-left:5px solid #cc0000;background:#fafafa;margin-bottom:8px;flex-wrap:wrap;}
+.aux-row.be{border-color:#e07030;}
+.aux-row.have{border-color:#005599;}
+.a-name{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(0.75rem,2.4vw,0.95rem);color:#cc0000;min-width:90px;}
+.aux-row.be .a-name{color:#e07030;}
+.aux-row.have .a-name{color:#005599;}
+.a-ex{font-size:clamp(0.85rem,2.7vw,1.02rem);color:#111;flex:1;min-width:200px;}
+/* ── SLIDE 2: frasi complete ── */
+.sent-row{display:flex;flex-direction:column;gap:2px;padding:8px 0;border-bottom:1px solid #f0f0f0;}
+.sent-row:last-child{border-bottom:none;}
+.s-en{font-size:clamp(0.9rem,3vw,1.1rem);font-weight:600;color:#111;}
+.s-it{font-size:clamp(0.8rem,2.5vw,0.94rem);color:#888;}
+.hl{font-weight:900;color:#cc0000;font-style:normal;}
+
+/* ── SLIDE 3: very much + like ── */
+.vm-section{margin-bottom:14px;}
+.vm-label{font-family:'Orbitron',monospace;font-size:clamp(0.58rem,1.8vw,0.76rem);letter-spacing:2px;color:#cc0000;font-weight:700;margin-bottom:8px;opacity:0;transition:opacity 0.4s;}
+.vm-label.show{opacity:1;}
+.vm-row{padding:5px 0;border-bottom:1px solid #f0f0f0;}
+.vm-row:last-child{border-bottom:none;}
+.vm-ex{font-size:clamp(0.88rem,2.9vw,1.06rem);color:#111;display:block;}
+.vm-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;display:block;opacity:0;transition:opacity 0.4s;}
+
+/* ── SLIDE 4: errori ── */
+.err-pair{padding:6px 0;border-bottom:1px solid #f0f0f0;}
+.err-pair:last-child{border-bottom:none;}
+.err-wrong{font-size:clamp(0.83rem,2.6vw,0.99rem);color:#c00;}
+.err-ok{font-size:clamp(0.83rem,2.6vw,0.99rem);font-weight:700;color:#007733;}
+.err-it{font-size:clamp(0.66rem,1.9vw,0.8rem);color:#999;font-style:italic;opacity:0;transition:opacity 0.4s;}
+.err-note{font-size:clamp(0.63rem,1.8vw,0.77rem);color:#bbb;margin-top:1px;opacity:0;transition:opacity 0.4s;}
+
+.warn{background:#fff5f5;border-left:5px solid #cc0000;border-radius:0 8px 8px 0;padding:11px 16px;font-size:clamp(0.82rem,2.6vw,0.98rem);color:#111;font-weight:600;line-height:1.7;flex-shrink:0;opacity:0;transition:opacity 0.5s;margin-top:12px;}
+.warn.show{opacity:1;}
+.warn strong{color:#cc0000;}
+
+.cursor{display:inline-block;width:2px;height:1em;background:#cc0000;vertical-align:middle;margin-left:1px;animation:blink 0.6s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+.nav{display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 20px 14px;flex-shrink:0;}
+.btn-nav{font-family:'Orbitron',monospace;font-size:clamp(0.55rem,1.8vw,0.72rem);font-weight:700;letter-spacing:2px;padding:10px 24px;border-radius:8px;border:2px solid #cc0000;background:#fff;color:#cc0000;cursor:pointer;transition:all 0.2s;}
+.btn-nav:hover{background:#cc0000;color:#fff;}
+.btn-nav:disabled{border-color:#ddd;color:#ccc;cursor:not-allowed;}
+.btn-nav:disabled:hover{background:#fff;color:#ccc;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="title">💬 AGREEING &amp; DISAGREEING</div>
+  <div class="prog" id="prog">1 / 6</div>
+</div>
+<div class="dots" id="dots"></div>
+
+<div class="slides">
+
+  <!-- ══ SLIDE 0: d'accordo o no ══ -->
+  <div class="slide active" id="s0">
+    <div class="slide-title">🤝 SEI D'ACCORDO O NO?</div>
+    <div class="grid4">
+      <div class="row-head">FRASE AFFERMATIVA</div>
+      <div class="cell">
+        <div class="c-lab">✅ D'ACCORDO</div>
+        <div class="c-a" data-tw="I love reggae music."></div>
+        <div class="c-b" data-tw="So do I."></div>
+        <div class="c-it" data-tw="Anche io."></div>
+      </div>
+      <div class="cell no">
+        <div class="c-lab">❌ NON D'ACCORDO</div>
+        <div class="c-a" data-tw="I love reggae music."></div>
+        <div class="c-b" data-tw="Really? I don't."></div>
+        <div class="c-it" data-tw="Davvero? Io no."></div>
+      </div>
+      <div class="row-head">FRASE NEGATIVA</div>
+      <div class="cell">
+        <div class="c-lab">✅ D'ACCORDO</div>
+        <div class="c-a" data-tw="I don't like jazz."></div>
+        <div class="c-b" data-tw="Neither do I."></div>
+        <div class="c-it" data-tw="Neanche io."></div>
+      </div>
+      <div class="cell no">
+        <div class="c-lab">❌ NON D'ACCORDO</div>
+        <div class="c-a" data-tw="I don't like jazz."></div>
+        <div class="c-b" data-tw="Really? I do."></div>
+        <div class="c-it" data-tw="Davvero? A me sì."></div>
+      </div>
+    </div>
+    <div class="warn">⚠️ Si risponde con l'<strong>ausiliare</strong>, senza ripetere il verbo:<br>
+      <strong>So do I</strong> (non <em>So love I</em>) &nbsp;·&nbsp; <strong>Really? I do</strong> (non <em>Really? I like</em>).<br>
+      Quando sei d'accordo con una negativa, il verbo resta <strong>affermativo</strong>: Neither <strong>do</strong> I.</div>
+  </div>
+
+  <!-- ══ SLIDE 1: quale ausiliare ══ -->
+  <div class="slide" id="s1">
+    <div class="slide-title">🔁 QUALE AUSILIARE? QUELLO DELLA FRASE</div>
+    <div class="aux-row">
+      <span class="a-name">DO</span>
+      <span class="a-ex" data-tw="I go to the gym. — ❮So do I.❯ &nbsp;/&nbsp; ❮Really? I don't.❯"></span>
+    </div>
+    <div class="aux-row">
+      <span class="a-name">DO</span>
+      <span class="a-ex" data-tw="I don't eat meat. — ❮Neither do I.❯ &nbsp;/&nbsp; ❮Really? I do.❯"></span>
+    </div>
+    <div class="aux-row be">
+      <span class="a-name">BE</span>
+      <span class="a-ex" data-tw="I'm hungry. — ❮So am I.❯ &nbsp;/&nbsp; ❮Really? I'm not.❯"></span>
+    </div>
+    <div class="aux-row be">
+      <span class="a-name">BE</span>
+      <span class="a-ex" data-tw="I'm not ready. — ❮Neither am I.❯ &nbsp;/&nbsp; ❮Really? I am.❯"></span>
+    </div>
+    <div class="aux-row have">
+      <span class="a-name">HAVE GOT</span>
+      <span class="a-ex" data-tw="I've got a scooter. — ❮So have I.❯ &nbsp;/&nbsp; ❮Really? I haven't.❯"></span>
+    </div>
+    <div class="aux-row have">
+      <span class="a-name">HAVE GOT</span>
+      <span class="a-ex" data-tw="I haven't got a laptop. — ❮Neither have I.❯ &nbsp;/&nbsp; ❮Really? I have.❯"></span>
+    </div>
+    <div class="warn">💡 Verbo normale (like, go, play…) → <strong>do</strong> &nbsp;·&nbsp; am / is / are → <strong>am</strong> &nbsp;·&nbsp; have got → <strong>have</strong></div>
+  </div>
+
+  <!-- ══ SLIDE 2: have got o have ══ -->
+  <div class="slide" id="s2">
+    <div class="slide-title">🔑 HAVE GOT O HAVE? CAMBIA L'AUSILIARE</div>
+    <div class="vm-section">
+      <div class="vm-label">DOMANDE E RISPOSTE BREVI</div>
+      <div class="aux-row have">
+        <span class="a-name">HAVE GOT</span>
+        <span class="a-ex" data-tw="❮Have❯ you got a pen? — Yes, I ❮have❯. / No, I ❮haven't❯."></span>
+      </div>
+      <div class="aux-row">
+        <span class="a-name">HAVE</span>
+        <span class="a-ex" data-tw="❮Do❯ you have a pen? — Yes, I ❮do❯. / No, I ❮don't❯."></span>
+      </div>
+    </div>
+    <div class="vm-section">
+      <div class="vm-label">D'ACCORDO E NON D'ACCORDO</div>
+      <div class="aux-row have">
+        <span class="a-name">HAVE GOT</span>
+        <span class="a-ex" data-tw="I've got a cat. — ❮So have I.❯ &nbsp;/&nbsp; ❮Really? I haven't.❯"></span>
+      </div>
+      <div class="aux-row">
+        <span class="a-name">HAVE</span>
+        <span class="a-ex" data-tw="I have a cat. — ❮So do I.❯ &nbsp;/&nbsp; ❮Really? I don't.❯"></span>
+      </div>
+      <div class="aux-row have">
+        <span class="a-name">HAVE GOT</span>
+        <span class="a-ex" data-tw="I haven't got a bike. — ❮Neither have I.❯ &nbsp;/&nbsp; ❮Really? I have.❯"></span>
+      </div>
+      <div class="aux-row">
+        <span class="a-name">HAVE</span>
+        <span class="a-ex" data-tw="I don't have a bike. — ❮Neither do I.❯ &nbsp;/&nbsp; ❮Really? I do.❯"></span>
+      </div>
+    </div>
+    <div class="warn">💡 Guarda come è fatta la frase: c'è <strong>got</strong> → rispondi con <strong>have</strong>; non c'è <em>got</em> → <strong>have</strong> è un verbo normale e rispondi con <strong>do</strong>.<br>
+      Con le espressioni <strong>have breakfast, have a shower, have fun</strong> il <em>got</em> non c'è mai → sempre <strong>do</strong>:<br>
+      I have breakfast at seven. — <strong>So do I.</strong> &nbsp;(non <em>So have I</em>)</div>
+  </div>
+
+  <!-- ══ SLIDE 3: in contesto ══ -->
+  <div class="slide" id="s3">
+    <div class="slide-title">✍️ IN CONTESTO</div>
+    <div class="sent-row">
+      <span class="s-en" data-tw="A: I always do my homework after dinner. — B: ❮So do I.❯ I'm too tired in the afternoon."></span>
+      <span class="s-it" data-tw="Faccio sempre i compiti dopo cena. — Anche io. Il pomeriggio sono troppo stanco."></span>
+    </div>
+    <div class="sent-row">
+      <span class="s-en" data-tw="A: I'm not keen on football. — B: ❮Really? I am.❯ I watch every match."></span>
+      <span class="s-it" data-tw="Il calcio non mi entusiasma. — Davvero? A me sì. Guardo tutte le partite."></span>
+    </div>
+    <div class="sent-row">
+      <span class="s-en" data-tw="A: I haven't got a TikTok account. — B: ❮Neither have I.❯ My parents say no."></span>
+      <span class="s-it" data-tw="Non ho un account TikTok. — Neanche io. I miei genitori dicono di no."></span>
+    </div>
+    <div class="sent-row">
+      <span class="s-en" data-tw="A: I love getting up early. — B: ❮Really? I don't.❯ I stay in bed until nine."></span>
+      <span class="s-it" data-tw="Adoro alzarmi presto. — Davvero? Io no. Resto a letto fino alle nove."></span>
+    </div>
+    <div class="sent-row">
+      <span class="s-en" data-tw="A: I'm a big fan of comics. — B: ❮So am I!❯ Let's swap some."></span>
+      <span class="s-it" data-tw="Sono un grande fan dei fumetti. — Anche io! Scambiamocene qualcuno."></span>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 4: never ══ -->
+  <div class="slide" id="s4">
+    <div class="slide-title">🪤 ATTENZIONE: NEVER E HARDLY EVER</div>
+    <div class="vm-section">
+      <div class="vm-label">NEVER / HARDLY EVER RENDONO LA FRASE NEGATIVA</div>
+      <div class="vm-row"><span class="vm-ex" data-tw="I never drink coffee. — ✅ Neither do I."></span><span class="vm-it">Non bevo mai caffè. — Neanche io.</span></div>
+      <div class="vm-row"><span class="vm-ex" data-tw="I never drink coffee. — ✅ Really? I do."></span><span class="vm-it">Non bevo mai caffè. — Davvero? Io sì.</span></div>
+      <div class="vm-row"><span class="vm-ex" data-tw="I hardly ever watch TV. — ✅ Neither do I."></span><span class="vm-it">Non guardo quasi mai la TV. — Neanche io.</span></div>
+      <div class="vm-row"><span class="vm-ex" data-tw="I never drink coffee. — ❌ So do I."></span><span class="vm-it">Il verbo è affermativo, ma il significato è negativo: niente So.</span></div>
+    </div>
+    <div class="vm-section">
+      <div class="vm-label">ALWAYS, OFTEN, SOMETIMES: LA FRASE È AFFERMATIVA</div>
+      <div class="vm-row"><span class="vm-ex" data-tw="I often cook for my family. — ✅ So do I."></span><span class="vm-it">Cucino spesso per la mia famiglia. — Anche io.</span></div>
+    </div>
+    <div class="warn">💡 Prima di rispondere chiediti: <strong>che cosa vuol dire</strong> la frase? Se vuol dire "no / mai", la frase è negativa → <strong>Neither</strong> oppure <strong>Really? I do / am / have</strong>.</div>
+  </div>
+
+  <!-- ══ SLIDE 5: errori tipici ══ -->
+  <div class="slide" id="s5">
+    <div class="slide-title">🚨 ERRORI TIPICI DA EVITARE</div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  I love pizza. — Also I."></div>
+      <div class="err-ok"    data-tw="✅  I love pizza. — So do I."></div>
+      <div class="err-it">Anche io.</div>
+      <div class="err-note">"anche io" non si traduce parola per parola</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  I love pizza. — So I do."></div>
+      <div class="err-ok"    data-tw="✅  I love pizza. — So do I."></div>
+      <div class="err-it">Anche io.</div>
+      <div class="err-note">ordine: So / Neither + ausiliare + soggetto</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  I don't like rap. — Neither I don't."></div>
+      <div class="err-ok"    data-tw="✅  I don't like rap. — Neither do I."></div>
+      <div class="err-it">Neanche io.</div>
+      <div class="err-note">neither è già negativo: l'ausiliare resta affermativo</div>
+    </div>
+    <div class="err-pair">
+      <div class="err-wrong" data-tw="❌  I'm not tired. — Really? I'm."></div>
+      <div class="err-ok"    data-tw="✅  I'm not tired. — Really? I am."></div>
+      <div class="err-it">Davvero? Io sì.</div>
+      <div class="err-note">in fondo alla risposta am / have non si contraggono (niente I'm, I've)</div>
+    </div>
+    <div class="warn">💬 Nel parlato informale si sente anche <strong>Me too</strong> (= So do I) e <strong>Me neither</strong> (= Neither do I).
+      Negli esercizi però usa sempre <strong>So / Neither / Really?</strong> + ausiliare.</div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button class="btn-nav" id="prevBtn" onclick="go(-1)" disabled>◀ INDIETRO</button>
+  <button class="btn-nav" id="nextBtn" onclick="go(1)">AVANTI ▶</button>
+</div>
+
+<script>
+const TOTAL=6;
+let cur=0,busy=false;
+
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' active':'');
+  dotsEl.appendChild(d);
+}
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const dec=t=>t.replace(/&nbsp;/g,' ');
+
+function typewrite(el,text,speed){
+  return new Promise(resolve=>{
+    text=dec(text);
+    el.textContent='';
+    const c=document.createElement('span');
+    c.className='cursor';
+    el.appendChild(c);
+    const plain=text.replace(/❮|❯/g,'');
+    let i=0;
+    function tick(){
+      if(i>=plain.length){c.remove();resolve();return;}
+      c.insertAdjacentText('beforebegin',plain[i++]);
+      setTimeout(tick,speed);
+    }
+    tick();
+  });
+}
+
+function typewriteHL(el,text,speed){
+  return new Promise(resolve=>{
+    text=dec(text);
+    const plain=text.replace(/❮|❯/g,'');
+    el.textContent='';
+    const c=document.createElement('span');
+    c.className='cursor';
+    el.appendChild(c);
+    let i=0;
+    function tick(){
+      if(i>=plain.length){
+        c.remove();
+        el.textContent='';
+        text.split(/(❮[^❯]+❯)/).forEach(p=>{
+          if(p.startsWith('❮')){const e=document.createElement('em');e.className='hl';e.textContent=p.slice(1,-1);el.appendChild(e);}
+          else el.appendChild(document.createTextNode(p));
+        });
+        resolve();return;
+      }
+      c.insertAdjacentText('beforebegin',plain[i++]);
+      setTimeout(tick,speed);
+    }
+    tick();
+  });
+}
+
+async function animateSlide(idx){
+  const slide=document.getElementById('s'+idx);
+  const title=slide.querySelector('.slide-title');
+  if(title){title.classList.remove('show');setTimeout(()=>title.classList.add('show'),100);}
+  await wait(400);
+
+  if(idx===0){
+    const grid=slide.querySelector('.grid4');
+    for(const node of grid.children){
+      if(node.classList.contains('row-head')){node.classList.add('show');await wait(250);continue;}
+      for(const el of node.querySelectorAll('[data-tw]')){
+        await typewrite(el,el.dataset.tw,el.classList.contains('c-b')?80:40);
+        await wait(60);
+      }
+      await wait(150);
+    }
+  }
+  else if(idx===1||idx===2){
+    for(const el of slide.querySelectorAll('.vm-label,.a-ex')){
+      if(el.classList.contains('vm-label')){el.classList.add('show');await wait(220);continue;}
+      await typewriteHL(el,el.dataset.tw,40);
+      await wait(180);
+    }
+  }
+  else if(idx===3){
+    for(const row of slide.querySelectorAll('.sent-row')){
+      const en=row.querySelector('.s-en');
+      const it=row.querySelector('.s-it');
+      if(en) await typewriteHL(en,en.dataset.tw,40);
+      await wait(80);
+      if(it) await typewrite(it,it.dataset.tw,30);
+      await wait(240);
+    }
+  }
+  else if(idx===4){
+    for(const sec of slide.querySelectorAll('.vm-section')){
+      const lbl=sec.querySelector('.vm-label');
+      if(lbl){lbl.classList.add('show');await wait(260);}
+      for(const row of sec.querySelectorAll('.vm-row')){
+        const ex=row.querySelector('.vm-ex'),it=row.querySelector('.vm-it');
+        if(ex) await typewrite(ex,ex.dataset.tw,45);
+        if(it){it.style.transition='opacity 0.4s';setTimeout(()=>it.style.opacity='1',80);}
+        await wait(200);
+      }
+      await wait(180);
+    }
+  }
+  else if(idx===5){
+    for(const pair of slide.querySelectorAll('.err-pair')){
+      const wrong=pair.querySelector('.err-wrong');
+      const ok=pair.querySelector('.err-ok');
+      const it=pair.querySelector('.err-it');
+      const note=pair.querySelector('.err-note');
+      if(wrong) await typewrite(wrong,wrong.dataset.tw,45);
+      await wait(120);
+      if(ok) await typewrite(ok,ok.dataset.tw,45);
+      if(it){it.style.transition='opacity 0.4s';setTimeout(()=>it.style.opacity='1',80);}
+      if(note) setTimeout(()=>note.style.opacity='1',220);
+      await wait(300);
+    }
+  }
+  const warn=slide.querySelector('.warn');
+  if(warn){await wait(200);warn.classList.add('show');}
+}
+
+function go(dir){
+  if(busy)return;
+  const prev=cur;
+  cur=Math.max(0,Math.min(TOTAL-1,cur+dir));
+  if(cur===prev)return;
+  busy=true;
+
+  const oldSlide=document.getElementById('s'+prev);
+  const newSlide=document.getElementById('s'+cur);
+
+  oldSlide.querySelectorAll('.warn,.vm-label,.row-head').forEach(w=>w.classList.remove('show'));
+  oldSlide.querySelectorAll('[data-tw]').forEach(e=>e.textContent='');
+  oldSlide.querySelectorAll('.vm-it,.err-it,.err-note').forEach(n=>n.style.opacity='0');
+
+  oldSlide.style.transition='opacity 0.25s ease';
+  oldSlide.style.opacity='0';
+
+  setTimeout(()=>{
+    oldSlide.style.cssText='';
+    oldSlide.classList.remove('active');
+    newSlide.style.opacity='0';
+    newSlide.classList.add('active');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      newSlide.style.transition='opacity 0.25s ease';
+      newSlide.style.opacity='1';
+      setTimeout(()=>{newSlide.style.cssText='';busy=false;},260);
+    }));
+    animateSlide(cur);
+    dotsEl.children[prev].classList.remove('active');
+    dotsEl.children[cur].classList.add('active');
+    document.getElementById('prog').textContent=(cur+1)+' / '+TOTAL;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===TOTAL-1;
+  },260);
+}
+
+let tx=0;
+const sl=document.querySelector('.slides');
+sl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+
+animateSlide(0);
+</script>
+</body>
+</html>
