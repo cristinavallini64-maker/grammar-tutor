@@ -126,7 +126,7 @@ td select{font:inherit;font-size:13px;padding:3px 4px;border-radius:5px;border:1
 <script>
 /* ================= CONTENT ================= */
 const TEST_LABEL="MOCK SECONDA – UNIT 5";
-const MAX={1:10,2:10,3:12,4:10,5:8,6:10,7:10}, TOTAL=70;
+const MAX={1:10,2:10,3:12,4:8,5:10,6:10,7:10}, TOTAL=70;
 // 1 Vocabulary: [definition, accepted]
 const EX1=[
   ["A vehicle smaller than a lorry, used for example to deliver parcels.",["van"]],
@@ -176,8 +176,6 @@ const EX4=[
   ["Paolo is talking to [[his teacher]].",["who is paolo talking to","who's paolo talking to"]],
   ["[[The red line]] goes to the airport.",["which line goes to the airport","what line goes to the airport"]],
   ["[[The storm]] closed the motorway.",["what closed the motorway"]],
-  ["They're looking at [[the map]].",["what are they looking at"]],
-  ["She visited [[four museums]] in Paris.",["how many museums did she visit in paris"]],
   ["It's [[about 5 kilometres]] from the station to the beach.",["how far is it from the station to the beach"]],
   ["It takes [[two hours]] to get to Milan by train.",["how long does it take to get to milan by train"]],
 ];
@@ -191,6 +189,8 @@ const EX5=[
   ["What you saw at the museum?",["what did you see at the museum"]],
   ["My grandparents live at Spain.",["my grandparents live in spain"]],
   ["She went to the gym for doing some exercise.",["she went to the gym to do some exercise"]],
+  ["Paolo went to the station for meet his cousin.",["paolo went to the station to meet his cousin"]],
+  ["I opened the app for check the timetable.",["i opened the app to check the timetable"]],
 ];
 // 6 Translation: [it, model, key-structure regexes, rest regexes, forbidden regexes]
 const EX6=[
