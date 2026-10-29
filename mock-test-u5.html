@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 5 · Mock Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Sora:wght@700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4efe2; --paper2:#fffdf7; --ink:#1b1d17; --sub:#55584a; --mut:#7a7d6c;
+  --line:rgba(27,29,23,0.14); --line2:rgba(27,29,23,0.28);
+  --teal:#0a9a3c; --teal2:#077a2f; --plum:#7a3b8f; --plum2:#5a2a6b;
+  --done:#1f9d57; --done-soft:rgba(31,157,87,.13); --bad:#cc3b3b; --bad-soft:rgba(204,59,59,.11); --half:#b8860b; --half-soft:rgba(184,134,11,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{min-height:100vh;font-family:'Inter',sans-serif;font-size:16px;line-height:1.55;color:var(--ink);
+  background:radial-gradient(ellipse 80% 50% at 50% 0%,#16201a,transparent 60%),linear-gradient(160deg,#0f1310,#0c0f0b);padding:0 0 40px;}
+header{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 18px;background:rgba(15,19,16,0.94);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);}
+.logo{font-family:'Sora',sans-serif;font-weight:800;font-size:15px;color:#f4f1e8;}
+.logo-sub{display:block;font-family:'Space Grotesk',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(242,241,232,0.45);}
+.hbtn{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;padding:8px 13px;border-radius:8px;cursor:pointer;
+  border:1px solid rgba(255,255,255,0.18);background:transparent;color:rgba(242,241,232,0.7);text-decoration:none;}
+.hbtn:hover{border-color:#fff;color:#fff;}
+.sheet{max-width:780px;margin:18px auto 0;background:var(--paper);border-radius:18px;box-shadow:0 26px 70px rgba(0,0,0,.55);
+  background-image:radial-gradient(circle at 1px 1px,rgba(27,29,23,0.05) 1px,transparent 0);background-size:22px 22px;padding:26px 30px 30px;}
+@media (max-width:600px){.sheet{margin:12px 10px 0;padding:20px 16px 24px;}}
+.hero h2{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--plum2);margin-bottom:6px;}
+.hero h1{font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(28px,7vw,42px);line-height:1.05;letter-spacing:-1px;}
+.intro{background:var(--paper2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:16px 0 6px;font-size:14px;color:var(--sub);}
+.intro b{color:var(--ink);}
+.ex{background:var(--paper2);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;margin-top:20px;}
+.ex-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px;}
+.ex-title{font-family:'Sora',sans-serif;font-weight:800;font-size:16px;line-height:1.35;}
+.ex-title .n{display:inline-block;min-width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;text-align:center;line-height:26px;font-size:13px;margin-right:8px;}
+.ex-score{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;white-space:nowrap;background:rgba(27,29,23,.06);border-radius:20px;padding:5px 12px;color:var(--sub);}
+.ex-score.got{background:var(--teal);color:#fff;}
+.items{list-style:none;}
+.items li{padding:9px 0;border-top:1px dashed var(--line);}
+.items li:first-child{border-top:none;}
+.num{font-weight:700;color:var(--teal2);margin-right:6px;}
+.it{font-style:italic;color:var(--sub);display:block;margin-bottom:4px;}
+input.gap{font:inherit;font-size:15px;border:none;border-bottom:2px solid var(--line2);background:rgba(10,154,60,.06);padding:2px 6px;width:150px;max-width:100%;
+  border-radius:4px 4px 0 0;outline:none;color:var(--ink);transition:.2s;}
+input.gap.w{width:240px;}
+input.gap:focus{border-bottom-color:var(--teal);background:rgba(10,154,60,.12);}
+input.gap.ok{border-bottom-color:var(--done);background:var(--done-soft);}
+input.gap.half{border-bottom-color:var(--half);background:var(--half-soft);}
+input.gap:disabled,textarea:disabled,select:disabled{color:var(--ink);opacity:1;-webkit-text-fill-color:var(--ink);}
+input.gap.no{border-bottom-color:var(--bad);background:var(--bad-soft);}
+.sol{display:block;font-size:13px;color:var(--done);font-weight:600;margin-top:3px;}
+.sol.inline{display:inline;margin:0 4px 0 2px;}
+.story{line-height:2.25;font-size:15.5px;}
+.story .vb{font-style:italic;color:var(--sub);}
+textarea{font:inherit;font-size:15px;width:100%;min-height:64px;overflow:hidden;border:1.5px solid var(--line2);border-radius:9px;padding:9px 11px;background:#fff;resize:vertical;outline:none;margin-top:6px;}
+textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(10,154,60,.12);}
+.model{display:none;margin-top:8px;background:var(--done-soft);border-left:4px solid var(--done);border-radius:6px;padding:8px 11px;font-size:14px;}
+.model.show{display:block;}
+.self{display:none;margin-top:8px;font-size:13px;color:var(--sub);align-items:center;gap:8px;flex-wrap:wrap;}
+.self.show{display:flex;}
+.self label{display:inline-flex;align-items:center;gap:4px;background:#fff;border:1px solid var(--line2);border-radius:20px;padding:4px 11px;cursor:pointer;font-weight:600;color:var(--ink);}
+.self input{accent-color:var(--teal);}
+.crit{font-size:13px;color:var(--sub);background:rgba(27,29,23,.04);border-radius:8px;padding:8px 11px;margin-bottom:10px;}
+.btns{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px;}
+.btn{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:.4px;border:none;border-radius:20px;padding:9px 18px;cursor:pointer;transition:.2s;}
+.btn.main{background:var(--teal);color:#fff;}
+.btn.main:hover{background:var(--teal2);}
+.btn.sec{background:transparent;border:1.5px solid var(--line2);color:var(--sub);}
+.btn.sec:hover{border-color:var(--ink);color:var(--ink);}
+.btn.big{font-size:15px;padding:12px 26px;background:var(--plum);color:#fff;}
+.btn.armed{background:var(--half)!important;color:#fff!important;}
+.btn.big:hover{background:var(--plum2);}
+.opening{text-align:center;font-weight:700;font-style:italic;margin:6px 0 4px;}
+.wc{font-size:12px;color:var(--mut);text-align:right;margin-top:3px;}
+.wc.good{color:var(--done);font-weight:700;}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:8px;background:#fff;}
+th,td{border:1px solid var(--line2);padding:6px 8px;text-align:left;vertical-align:middle;}
+th{background:rgba(10,154,60,.12);font-family:'Space Grotesk',sans-serif;}
+td select{font:inherit;font-size:13px;padding:3px 4px;border-radius:5px;border:1px solid var(--line2);}
+.conv{max-width:380px;}
+.conv td,.conv th{text-align:center;}
+.conv tr.hit td{background:var(--teal);color:#fff;font-weight:700;}
+.result{display:none;margin-top:18px;background:var(--ink);color:#f4f1e8;border-radius:14px;padding:18px 20px;}
+.result.show{display:block;}
+.result .big{font-family:'Sora',sans-serif;font-size:30px;font-weight:800;}
+.result .rows{font-size:14px;margin-top:8px;color:rgba(244,241,232,.8);}
+.result .note{font-size:12.5px;margin-top:10px;color:rgba(244,241,232,.6);}
+.footer{text-align:center;font-size:11.5px;font-style:italic;color:rgba(242,241,232,.5);margin-top:16px;padding:0 16px;}
+</style></head>
+<body>
+<header>
+  <div><span class="logo">Unit 5 · On the road</span><span class="logo-sub">Foundations · Mock test</span></div>
+  <a href="javascript:window.close()" class="hbtn">✕ Chiudi</a>
+</header>
+
+<main class="sheet">
+  <div class="hero">
+    <h2>Mock test · seconda</h2>
+    <h1>Prova la verifica</h1>
+  </div>
+  <div class="intro">
+    Questa prova ha <b>la stessa struttura della verifica</b>, ma frasi e lessico sono diversi: non serve impararla a memoria, serve a capire <b>se sai usare le strutture</b>.
+    Fai tutto senza guardare gli appunti, poi correggi esercizio per esercizio. Gli esercizi 1–6 si correggono da soli; il writing lo valuti tu con la griglia, con onestà. <b>Attenzione:</b> quando premi «Correggi» le risposte di quell'esercizio si bloccano e non puoi più cambiarle, quindi correggi solo quando hai finito.
+  </div>
+
+  <section class="ex" id="ex1"></section>
+  <section class="ex" id="ex2"></section>
+  <section class="ex" id="ex3"></section>
+  <section class="ex" id="ex4"></section>
+  <section class="ex" id="ex5"></section>
+  <section class="ex" id="ex6"></section>
+  <section class="ex" id="ex7"></section>
+
+  <div class="btns" style="justify-content:center;margin-top:24px;">
+    <button class="btn big" id="calcBtn" onclick="confirmThen(this,finalScore)">Calcola il voto</button>
+  </div>
+  <div class="result" id="result"></div>
+
+  <div class="ex">
+    <div class="ex-title" style="margin-bottom:6px;">Tabella di conversione punti / voto <span style="font-weight:600;font-size:13px;color:var(--mut)">(sufficienza: 42/70)</span></div>
+    <table class="conv" id="convTable"></table>
+  </div>
+</main>
+<p class="footer">Materiali predisposti a cura dell'insegnante utilizzando strumenti digitali avanzati</p>
+
+<script>
+/* ================= CONTENT ================= */
+const TEST_LABEL="MOCK SECONDA – UNIT 5";
+const MAX={1:10,2:10,3:12,4:10,5:8,6:10,7:10}, TOTAL=70;
+// 1 Vocabulary: [definition, accepted]
+const EX1=[
+  ["A vehicle smaller than a lorry, used for example to deliver parcels.",["van"]],
+  ["Red, yellow and green lights that tell cars when to stop and when to go.",["traffic lights","traffic light"]],
+  ["A shop where they make and sell bread and cakes.",["bakery","baker's","bakers"]],
+  ["A building where you can borrow books and study for free.",["library"]],
+  ["An aircraft with long blades on top: it can go straight up and land almost anywhere.",["helicopter"]],
+  ["To get on a bus or a train in time, before it leaves.",["catch"]],
+  ["A large open space in a town, often with cafés and a statue in the middle.",["square"]],
+  ["Food that you buy in a restaurant or a shop and eat at home.",["takeaway","take-away","take away"]],
+  ["A big sports ground with seats all round it, where you watch football matches.",["stadium"]],
+  ["If someone steals your bike, you go here to tell the police.",["police station"]],
+];
+// 2 Past simple: {s:[text, gap, text...], keys:[[accepted] per gap], v:"(verb)"}
+const EX2=[
+  {s:["I ",0," my keys on the table, but now I can't find them."],v:"put",keys:[["put"]]},
+  {s:["We ",0," together on the plane because the flight was full."],v:"not / sit",keys:[["did not sit"]]},
+  {s:["“",0," you ",1," to the receptionist in English?” “Yes, and she understood me!”"],v:"speak",keys:[["did"],["speak"]]},
+  {s:["My aunt ",0," me a map of the city before I left."],v:"give",keys:[["gave"]]},
+  {s:["I ",0," the museum was closed on Mondays, but it was open."],v:"think",keys:[["thought"]]},
+  {s:["Elena ",0," her passport at the airport last summer."],v:"lose",keys:[["lost"]]},
+  {s:["“Where ",0," you ",1," that jacket?” “At the market in Florence.”"],v:"buy",keys:[["did"],["buy"]]},
+  {s:["They ",0," the bus: they walked all the way."],v:"not / take",keys:[["did not take"]]},
+  {s:["We ",0," to the beach at about ten o'clock."],v:"get",keys:[["got"]]},
+  {s:["Grandpa ",0," for the first time when he was seventy."],v:"fly",keys:[["flew"]]},
+];
+// 3 Prepositions: [before, after, accepted]
+const EX3=[
+  ["The dog ran "," the field, from one side to the other.",["across"]],
+  ["There's a path "," the canal: you can cycle by the water all the way to the next town.",["along"]],
+  ["We drove "," the forest: there were trees on both sides of the road for miles.",["through"]],
+  ["My phone is "," my bag.",["in"]],
+  ["I'll meet you "," the bus stop outside the school.",["at"]],
+  ["The plane flew "," the Alps – we could see the snow below us.",["over"]],
+  ["Walk "," the hill to the castle: it's steep, but the view from the top is amazing.",["up"]],
+  ["The car park is "," the shopping centre: you can't see it from the street because it's at the back.",["behind"]],
+  ["The post office is "," the bank: the two buildings share a wall.",["next to","beside"]],
+  ["A small boat went "," the bridge.",["under"]],
+  ["This bus goes "," the city centre to the airport every hour.",["from"]],
+  ["There's a lovely picture of the town "," the wall of my classroom.",["on"]],
+];
+// 4 Questions: [sentence with [[underlined]], accepted]
+const EX4=[
+  ["[[Luca]] won the photography competition.",["who won the photography competition"]],
+  ["Anna bought [[a guidebook]] before the trip.",["what did anna buy before the trip"]],
+  ["[[Twelve people]] missed the last train.",["how many people missed the last train"]],
+  ["Paolo is talking to [[his teacher]].",["who is paolo talking to","who's paolo talking to"]],
+  ["[[The red line]] goes to the airport.",["which line goes to the airport","what line goes to the airport"]],
+  ["[[The storm]] closed the motorway.",["what closed the motorway"]],
+  ["They're looking at [[the map]].",["what are they looking at"]],
+  ["She visited [[four museums]] in Paris.",["how many museums did she visit in paris"]],
+  ["It's [[about 5 kilometres]] from the station to the beach.",["how far is it from the station to the beach"]],
+  ["It takes [[two hours]] to get to Milan by train.",["how long does it take to get to milan by train"]],
+];
+// 5 Error correction: [wrong, accepted (normalised)]
+const EX5=[
+  ["I'm saving money for to buy a new bike.",["i'm saving money to buy a new bike","i am saving money to buy a new bike"]],
+  ["We arrived to the station just in time.",["we arrived at the station just in time"]],
+  ["Who did break the vase?",["who broke the vase"]],
+  ["How long it takes to walk to the park?",["how long does it take to walk to the park"]],
+  ["There were no seats in the train, so we stood all the way.",["there were no seats on the train so we stood all the way"]],
+  ["What you saw at the museum?",["what did you see at the museum"]],
+  ["My grandparents live at Spain.",["my grandparents live in spain"]],
+  ["She went to the gym for doing some exercise.",["she went to the gym to do some exercise"]],
+];
+// 6 Translation: [it, model, key-structure regexes, rest regexes, forbidden regexes]
+const EX6=[
+  ["Mio padre è andato in stazione per comprare i biglietti.","My dad (father) went to the station to buy the tickets.",
+   [/\bwent\b/,/\bto buy\b/],[/\b(dad|father)\b/,/\bto the (train |railway )?station\b/,/\btickets\b/],[/\bfor (to )?buy/]],
+  ["Quanto è lontano il museo dal tuo albergo?","How far is the museum from your hotel? / How far is it from your hotel to the museum?",
+   [/^how far is\b/],[/\bmuseum\b/,/\bfrom your hotel\b|\bfrom the hotel\b/],[]],
+  ["Chi ha telefonato a tua madre stamattina?","Who phoned (called) your mum this morning?",
+   [/^who (phoned|called|rang|telephoned)\b/],[/\byour (mum|mother|mom)\b/,/\bthis morning\b/],[/\bwho did\b/]],
+  ["La fermata dell'autobus è davanti alla chiesa, vicino al ponte.","The bus stop is in front of the church, near the bridge.",
+   [/\bin front of the church\b/,/\b(near|next to|close to|by) the bridge\b/],[/\bthe bus stop is\b/],[]],
+  ["Non abbiamo preso il treno perché era troppo caro: siamo andati in macchina.","We didn't take (catch) the train because it was too expensive: we went by car (we drove).",
+   [/\bwe did not (take|catch|get)\b/,/\bwe (went|travelled|traveled|came) (there )?by car\b|\bwe drove\b/],[/\bthe train\b/,/\bbecause it was too expensive\b/],[]],
+];
+const COMMON=("a an the i you he she it we they me my your his her our their him us them this that is are was were be been am do does did not no " +
+ "have has had can could and but or so because when then also too very really much in on at to from for with by of into back home up out over s d ll re ve m t").split(" ");
+const EX6_WORDS=[
+  "my dad father went go to the train railway station buy bought tickets ticket some",
+  "how far is it the museum from your hotel to",
+  "who phoned called rang telephoned your mum mother mom this morning",
+  "the bus stop is in front of church near next to close by bridge",
+  "we take took catch caught get the train because it was too expensive dear went by car drove travelled traveled came there so",
+];
+const WPROMPT="Write a post for your class blog (80–100 words) about a journey you made last year. How did you travel? What happened on the way? What did you do when you arrived?";
+const GRID=[
+  ["Contenuto","Rispetta la consegna (tipo di testo, lunghezza, informazioni richieste); il testo è coerente",2],
+  ["Uso del Past simple","Verbi regolari e irregolari, forme affermative, negative e interrogative corrette",3],
+  ["Lessico e preposizioni","Lessico vario e preciso su trasporti e luoghi della città; preposizioni di luogo e di movimento corrette",3],
+  ["Organizzazione e correttezza formale","Testo ordinato e ben collegato; ortografia, punteggiatura, ordine delle parole",2],
+];
+const CONV=[["70–68","10",68],["67–65","9½",65],["64–61","9",61],["60–58","8½",58],["57–54","8",54],["53–51","7½",51],["50–47","7",47],["46–45","6½",45],["44–42","6",42],
+  ["41–38","5½",38],["37–35","5",35],["34–31","4½",31],["30–28","4",28],["27–24","3½",24],["23–0","3",0]];
+
+/* ================= HELPERS ================= */
+function norm(s){
+  s=(s||"").toLowerCase().replace(/[’‘`´]/g,"'").replace(/[«»"“”.,!?;:–—]/g," ");
+  s=s.replace(/\bcan't\b/g,"can not").replace(/\bcannot\b/g,"can not").replace(/\bwon't\b/g,"will not").replace(/n't\b/g," not");
+  return s.replace(/\s+/g," ").trim();
+}
+const fmt=n=>(Math.round(n*2)/2).toString().replace(".",",");
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const under=s=>esc(s).replace(/\[\[(.*?)\]\]/g,'<u><b>$1</b></u>');
+const plain=s=>s.replace(/\[\[|\]\]/g,"");
+const score={1:null,2:null,3:null,4:null,5:null,6:null};
+function head(n,title){return `<div class="ex-head"><div class="ex-title"><span class="n">${n}</span>${title}</div><div class="ex-score" id="sc${n}">___ / ${MAX[n]}</div></div>`;}
+function setScore(n,val){const e=document.getElementById("sc"+n);e.textContent=`${fmt(val)} / ${MAX[n]}`;e.classList.add("got");}
+function clearMarks(sec){sec.querySelectorAll("input.gap").forEach(i=>i.classList.remove("ok","no","half"));sec.querySelectorAll(".sol").forEach(s=>s.remove());}
+function showSol(el,txt,inline){const s=document.createElement("span");s.className="sol"+(inline?" inline":"");s.textContent="→ "+txt;el.after(s);}
+function cap(s){return s.replace(/^(\w)/,c=>c.toUpperCase());}
+function pretty(k){return cap(k.replace(/\bdid not\b/g,"didn't").replace(/\bi'm\b/g,"I'm").replace(/\bi\b/g,"I").replace(/\b(paolo|anna|milan|paris|spain)\b/g,w=>cap(w)));}
+const btn=n=>`<div class="btns"><button class="btn main" onclick="confirmThen(this,check${n})">Correggi</button></div>`;
+const inp=(cls,attrs)=>`<input class="gap ${cls}" ${attrs} autocomplete="off" autocapitalize="off" spellcheck="false">`;
+
+/* ================= RENDER ================= */
+function render(){
+  let h=head(1,"Vocabulary. Read the definitions and write the word.")+'<ol class="items">';
+  EX1.forEach((e,i)=>h+=`<li><span class="num">${i+1}</span>${esc(e[0])}<br>→ ${inp("w",`data-i="${i}"`)}</li>`);
+  document.getElementById("ex1").innerHTML=h+'</ol>'+btn(1);
+
+  h=head(2,"Complete the sentences with the Past simple of the verbs in brackets (affirmative, negative or question).")+'<ol class="items">';
+  EX2.forEach((e,i)=>{h+=`<li><span class="num">${i+1}</span>`;
+    e.s.forEach(p=>h+=typeof p==="number"?inp("",`data-i="${i}" data-g="${p}"`):esc(p));
+    h+=` <span class="it" style="display:inline;font-style:italic">(${e.v})</span></li>`;});
+  document.getElementById("ex2").innerHTML=h+'</ol><p class="crit" style="margin-top:10px;">1 punto per frase: quando gli spazi sono due, devono essere giusti tutti e due.</p>'+btn(2);
+
+  h=head(3,"Complete the sentences with a suitable preposition of place or movement.")+'<ol class="items">';
+  EX3.forEach((e,i)=>h+=`<li><span class="num">${i+1}</span>${esc(e[0])}${inp("",`data-i="${i}"`)}${esc(e[1])}</li>`);
+  document.getElementById("ex3").innerHTML=h+'</ol>'+btn(3);
+
+  h=head(4,"Write questions for the underlined words.")+'<ol class="items">';
+  EX4.forEach((e,i)=>h+=`<li><span class="num">${i+1}</span>${under(e[0])}<textarea rows="1" data-i="${i}" spellcheck="false"></textarea><div class="model"></div></li>`);
+  document.getElementById("ex4").innerHTML=h+'</ol>'+btn(4);
+
+  h=head(5,"There is one mistake in each sentence. Rewrite the sentences correctly.")+'<ol class="items">';
+  EX5.forEach((e,i)=>h+=`<li><span class="num">${i+1}</span>${esc(e[0])}<textarea rows="1" data-i="${i}" spellcheck="false"></textarea><div class="model"></div></li>`);
+  document.getElementById("ex5").innerHTML=h+'</ol><p class="crit" style="margin-top:10px;">Riscrivi tutta la frase. 1 punto se la frase è completamente corretta.</p>'+btn(5);
+
+  h=head(6,"Translate into English.")+'<ol class="items">';
+  EX6.forEach((e,i)=>h+=`<li><span class="num">${i+1}</span><span class="it" style="font-style:normal;color:var(--ink)">${esc(e[0])}</span><textarea rows="2" data-i="${i}" spellcheck="false"></textarea><div class="model"></div></li>`);
+  document.getElementById("ex6").innerHTML=h+'</ol><p class="crit" style="margin-top:10px;">2 punti per frase: 1 per la struttura chiave, 1 per il resto della frase. Ogni parola scritta male toglie mezzo punto dal resto della frase.</p>'+btn(6);
+
+  h=`<div class="ex-head"><div class="ex-title"><span class="n">7</span>Writing</div><div class="ex-score" id="sc7">___ / 10</div></div>
+    <p>${esc(WPROMPT)}</p>
+    <textarea id="wtext" rows="9" oninput="countWords()" style="min-height:220px"></textarea><div class="wc" id="wc">0 parole</div>
+    <p style="font-size:14px;margin-top:12px;font-weight:700;">Griglia di valutazione – Writing (10 punti)</p>
+    <p style="font-size:13px;color:var(--sub);">Quando hai finito, rileggi il tuo testo e valutalo con la griglia.</p>
+    <table><tr><th>Criterio</th><th>Descrittori</th><th>Punti</th></tr>`;
+  GRID.forEach((g,i)=>{let o="";for(let v=0;v<=g[2];v++)o+=`<option value="${v}">${v}</option>`;
+    h+=`<tr><td><b>${g[0]}</b></td><td>${g[1]}</td><td style="white-space:nowrap"><select data-i="${i}" onchange="updW()"><option value="">–</option>${o}</select> / ${g[2]}</td></tr>`;});
+  h+=`<tr><td></td><td style="text-align:right"><b>Totale writing</b></td><td id="wtot"><b>___ / 10</b></td></tr></table>`;
+  document.getElementById("ex7").innerHTML=h;
+
+  let t='<tr><th>Punti</th><th>Voto</th><th>Punti</th><th>Voto</th></tr>';
+  for(let i=0;i<8;i++){const a=CONV[i],b=CONV[i+8];t+=`<tr><td data-c="${i}">${a[0]}</td><td data-c="${i}">${a[1]}</td><td data-c="${i+8}">${b?b[0]:""}</td><td data-c="${i+8}">${b?b[1]:""}</td></tr>`;}
+  document.getElementById("convTable").innerHTML=t;
+}
+
+/* ================= CHECKING ================= */
+function simpleCheck(n,list,keyOf){
+  const sec=document.getElementById("ex"+n);clearMarks(sec);let tot=0;
+  sec.querySelectorAll("input.gap").forEach(inp=>{
+    const acc=keyOf(list[+inp.dataset.i]), ok=acc.includes(norm(inp.value));
+    if(ok)tot++;inp.classList.add(ok?"ok":"no");if(!ok)showSol(inp,acc.join(" / "),n!==1);
+  });
+  score[n]=tot;setScore(n,tot);lock(n);
+}
+function check1(){simpleCheck(1,EX1,e=>e[1]);}
+function check3(){simpleCheck(3,EX3,e=>e[2]);}
+function check2(){
+  const sec=document.getElementById("ex2");clearMarks(sec);let tot=0;
+  sec.querySelectorAll("li").forEach((li,i)=>{
+    const ins=[...li.querySelectorAll("input.gap")];let all=true;
+    ins.forEach(inp=>{const acc=EX2[i].keys[+inp.dataset.g],ok=acc.includes(norm(inp.value));if(!ok)all=false;inp.classList.add(ok?"ok":"no");});
+    if(all)tot++;else{const sol=EX2[i].keys.map(k=>k[0].replace(/\bdid not\b/,"didn't")).join(" … ");showSol(ins[ins.length-1],sol,true);}
+  });
+  score[2]=tot;setScore(2,tot);lock(2);
+}
+function markBox(ta,p,max,html){
+  ta.style.borderColor=p===max?"var(--done)":p?"var(--half)":"var(--bad)";
+  const m=ta.nextElementSibling;m.classList.add("show");
+  m.style.background=p===max?"var(--done-soft)":p?"var(--half-soft)":"var(--bad-soft)";
+  m.style.borderLeftColor=p===max?"var(--done)":p?"var(--half)":"var(--bad)";
+  m.innerHTML=html;
+}
+function sentCheck(n,list,acc,model){
+  let tot=0;
+  document.querySelectorAll(`#ex${n} textarea`).forEach(ta=>{
+    const e=list[+ta.dataset.i],ok=acc(e).includes(norm(ta.value).replace(/'s\b/g,m=>m));
+    const p=ok?1:0;tot+=p;
+    markBox(ta,p,1,`<b>${p} / 1</b>`+(ok?"":`<br><b>Soluzione:</b> ${esc(model(e))}`));
+  });
+  score[n]=tot;setScore(n,tot);lock(n);
+}
+function check4(){sentCheck(4,EX4,e=>e[1],e=>pretty(e[1][0])+"?");}
+function check5(){sentCheck(5,EX5,e=>e[1],e=>pretty(e[1][0])+(/^(who|what|how)/.test(e[1][0])?"?":"."));}
+function lev(a,b){const m=a.length,n=b.length;if(Math.abs(m-n)>2)return 9;let pr=[...Array(n+1).keys()];
+  for(let i=1;i<=m;i++){const c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(pr[j]+1,c[j-1]+1,pr[j-1]+(a[i-1]===b[j-1]?0:1));pr=c;}return pr[n];}
+function check6(){
+  let tot=0;
+  document.querySelectorAll("#ex6 textarea").forEach(ta=>{
+    const e=EX6[+ta.dataset.i], a=norm(ta.value);
+    const ok=new Set(COMMON.concat(EX6_WORDS[+ta.dataset.i].split(" ")));
+    const words=a.replace(/'/g," ").split(" ").filter(Boolean);
+    const unknown=[...new Set(words.filter(w=>!ok.has(w)))];
+    const fixed=words.map(w=>{if(ok.has(w))return w;let best=w,bd=3;ok.forEach(o=>{const d=lev(w,o);if(d<bd){bd=d;best=o;}});return best;}).join(" ");
+    const f=a&&e[2].every(r=>r.test(fixed))&&!e[4].some(r=>r.test(fixed))?1:0, r0=a&&e[3].every(x=>x.test(fixed))?1:0;
+    const r=r0?Math.max(0,1-0.5*unknown.length):0, p=f+r; tot+=p;
+    markBox(ta,p,2,`<b>${fmt(p)} / 2</b> · struttura chiave ${f?"✓":"✗"} · resto della frase ${r===1?"✓":r?"½":"✗"}`+
+      (unknown.length?`<br>Parole da controllare (ortografia o parola non adatta): <b>${unknown.map(esc).join(", ")}</b>${r0?` → −${fmt(0.5*unknown.length)}`:""}`:"")+
+      `<br><b>Soluzione:</b> ${esc(e[1])}`);
+  });
+  score[6]=tot;setScore(6,tot);lock(6);
+}
+function wScore(){let tot=0,done=0;document.querySelectorAll("#ex7 select").forEach(s=>{if(s.value!==""){tot+=+s.value;done++;}});return {tot,done};}
+function updW(){const r=wScore();document.getElementById("wtot").innerHTML=`<b>${r.tot} / 10</b>`;setScore(7,r.tot);}
+function countWords(){const n=(document.getElementById("wtext").value.match(/[A-Za-z’'-]+/g)||[]).length;const e=document.getElementById("wc");
+  e.textContent=n+" parole";e.classList.toggle("good",n>=80&&n<=100);}
+
+function confirmThen(btn,fn){
+  if(btn.dataset.armed==="1"){clearTimeout(btn._t);btn.dataset.armed="";btn.textContent=btn.dataset.label;btn.classList.remove("armed");fn();return;}
+  btn.dataset.label=btn.textContent;btn.dataset.armed="1";btn.classList.add("armed");
+  btn.textContent="Sicuro? Dopo non puoi più cambiare – tocca di nuovo";
+  btn._t=setTimeout(()=>{btn.dataset.armed="";btn.textContent=btn.dataset.label;btn.classList.remove("armed");},4000);
+}
+function lock(n){
+  if(!state.locked.includes(n)){state.locked.push(n);save();}
+  const sec=document.getElementById("ex"+n);
+  sec.querySelectorAll("input,textarea,select").forEach(e=>e.disabled=true);
+  const b=sec.querySelector(".btn.main");
+  if(b){b.disabled=true;b.textContent="Corretto ✓ – risposte bloccate";b.style.background="var(--mut)";b.style.cursor="default";}
+}
+const NAMES=["","Lessico","Past simple","Preposizioni","Domande","Correzione errori","Traduzione","Writing"];
+function finalScore(){
+  const ch={1:check1,2:check2,3:check3,4:check4,5:check5,6:check6};
+  for(let n=1;n<=6;n++)if(score[n]===null)ch[n]();
+  const w=wScore(),missing=w.done<GRID.length?["writing"]:[];
+  let tot=w.tot;for(let n=1;n<=6;n++)tot+=score[n];
+  const idx=CONV.findIndex(c=>Math.floor(tot)>=c[2]);
+  document.querySelectorAll("#convTable td").forEach(td=>{td.style.background="";td.style.color="";td.style.fontWeight="";});
+  document.querySelectorAll(`#convTable td[data-c="${idx}"]`).forEach(td=>{td.style.background="var(--teal)";td.style.color="#fff";td.style.fontWeight="700";});
+  const r=document.getElementById("result");
+  r.innerHTML=`<div class="big">${fmt(tot)} / ${TOTAL} · voto ${CONV[idx][1]}</div>
+    <div class="rows">${[1,2,3,4,5,6].map(n=>`${n} ${NAMES[n].toLowerCase()} ${fmt(score[n])}/${MAX[n]}`).join(" · ")} · 7 writing ${fmt(w.tot)}/10</div>
+    ${missing.length?`<div class="note">⚠ Non hai ancora dato il punteggio al writing: il voto è calcolato senza.</div>`:""}
+    <div class="note">È un voto indicativo: il writing l'hai valutato tu. Guarda dove hai perso più punti: è lì che devi ripassare.</div>
+    <div id="sendBox" style="margin-top:14px;border-top:1px solid rgba(244,241,232,.15);padding-top:12px;">
+      <div style="font-weight:700;margin-bottom:6px;">Invia il risultato all'insegnante</div>
+      <input id="stName" placeholder="Nome e cognome" autocomplete="off" style="font:inherit;font-size:15px;padding:8px 10px;border-radius:8px;border:none;width:100%;max-width:320px;">
+      <div class="btns"><button class="btn main" id="sendBtn" onclick="sendResult()">📨 Invia all'insegnante</button></div>
+      <div class="note" id="sendNote"></div>
+    </div>`;
+  state.result={tot,voto:CONV[idx][1]};
+  lock(7);document.getElementById("calcBtn").disabled=true;state.final=true;save();
+  r.classList.add("show");r.scrollIntoView({behavior:"smooth",block:"center"});
+}
+/* ================= SEND TO THE TEACHER'S GOOGLE FORM ================= */
+const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLScPCTyBFuDDSGQ5jpD0Nglo1Lcq9evSnjZp-swLeFqNIutK4Q/formResponse";
+const FORM_FIELDS={name:"entry.987123579",voto:"entry.1256142069",punti:"entry.1261436354",errori:"entry.1496790676",writing:"entry.1216252690"};
+function errorsText(){
+  const out=[TEST_LABEL];
+  for(let n=1;n<=6;n++){
+    const rows=[];
+    if(n<=3){
+      document.querySelectorAll(`#ex${n} li`).forEach((li,i)=>{
+        const ins=[...li.querySelectorAll("input.gap")];if(ins.every(x=>x.classList.contains("ok")))return;
+        const s=li.querySelector(".sol");rows.push(`  ${i+1}. ${ins.map(x=>x.value||"[vuoto]").join(" … ")} → ${s?s.textContent.replace(/^→\s*/,""):""}`);
+      });
+    } else {
+      document.querySelectorAll(`#ex${n} li`).forEach((li,i)=>{
+        const ta=li.querySelector("textarea"),m=li.querySelector(".model");
+        if(m&&/^(1 \/ 1|2 \/ 2)/.test(m.innerText.trim()))return;
+        const det=m?m.innerText.split("\n").filter(l=>!/^Soluzione/.test(l)).join(" | "):"";
+        rows.push(`  ${i+1}. ${ta.value||"[vuoto]"}  [${det}]`);
+      });
+    }
+    out.push(`${n}. ${NAMES[n]} ${fmt(score[n]||0)}/${MAX[n]}`+(rows.length?"\n"+rows.join("\n"):" – tutto giusto"));
+  }
+  return out.join("\n\n");
+}
+async function sendResult(){
+  const nm=document.getElementById("stName"),note=document.getElementById("sendNote"),btn=document.getElementById("sendBtn");
+  const name=nm.value.trim();
+  if(name.length<3||!/\s/.test(name)){note.textContent="Scrivi nome e cognome.";note.style.color="#ff9aa8";nm.focus();return;}
+  const R=state.result||{},w=wScore();
+  const writing=`Autovalutazione: ${w.tot}/10 (`+[...document.querySelectorAll("#ex7 select")].map((s,i)=>`${GRID[i][0]} ${s.value===""?"-":s.value}/${GRID[i][2]}`).join(", ")+`)\n\n`+(document.getElementById("wtext").value.trim()||"[vuoto]");
+  const body=new URLSearchParams();
+  body.append(FORM_FIELDS.name,name);
+  body.append(FORM_FIELDS.voto,String(R.voto||""));
+  body.append(FORM_FIELDS.punti,`${fmt(R.tot||0)}/${TOTAL} · ${TEST_LABEL}`);
+  body.append(FORM_FIELDS.errori,errorsText());
+  body.append(FORM_FIELDS.writing,writing);
+  btn.disabled=true;btn.textContent="Invio in corso…";
+  try{await fetch(FORM_URL,{method:"POST",mode:"no-cors",body});state.sent=name;save();showSent(name);}
+  catch(e){btn.disabled=false;btn.textContent="📨 Invia all'insegnante";note.textContent="Invio non riuscito: controlla la connessione e riprova.";note.style.color="#ff9aa8";}
+}
+function showSent(name){
+  const box=document.getElementById("sendBox");if(!box)return;
+  box.innerHTML=`<div style="font-weight:700;color:#7ee2a8;">✓ Risultato inviato all'insegnante (${esc(name)}).</div><div class="note">Ora su Classroom apri il compito e premi «Segna come completato».</div>`;
+}
+/* ================= SAVE / RESTORE ================= */
+const KEY="mocktest-y2-u5-v1";
+const state={values:[],locked:[],final:false};
+const fields=()=>[...document.querySelectorAll("main input.gap, main textarea, main select")];
+function save(){state.values=fields().map(f=>f.value);try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function grow(t){t.style.height="auto";t.style.height=(t.scrollHeight+4)+"px";}
+function restore(){
+  if(new URLSearchParams(location.search).get("azzera")==="docente"){
+    try{localStorage.removeItem(KEY);}catch(e){}
+    history.replaceState(null,"",location.pathname);
+    const n=document.createElement("div");n.className="intro";n.style.cssText="background:var(--done-soft);border-color:var(--done);color:var(--ink);font-weight:700";
+    n.textContent="Mock test azzerato su questo dispositivo: puoi rifarlo da capo.";document.querySelector(".hero").after(n);return;
+  }
+  let d=null;try{d=JSON.parse(localStorage.getItem(KEY));}catch(e){}
+  if(!d||!Array.isArray(d.values))return;
+  const fs=fields();d.values.forEach((v,i)=>{if(fs[i])fs[i].value=v;});
+  const checks={1:check1,2:check2,3:check3,4:check4,5:check5,6:check6};
+  (d.locked||[]).forEach(n=>{if(checks[n])checks[n]();});
+  if(document.getElementById("wtext").value)countWords();
+  if([...document.querySelectorAll("#ex7 select")].some(x=>x.value!==""))updW();
+  if(d.final)finalScore();
+  if(d.sent){state.sent=d.sent;showSent(d.sent);}
+}
+render();
+restore();
+/* ================= TEACHER MODE: tap the title 5 times, then the secret word ================= */
+const SECRET="framework";
+let taps=0,tapTimer=null;
+document.querySelector(".hero h1").addEventListener("click",()=>{taps++;clearTimeout(tapTimer);tapTimer=setTimeout(()=>taps=0,2000);if(taps>=5){taps=0;openTeacher();}});
+function openTeacher(){
+  if(document.getElementById("tpanel"))return;
+  const d=document.createElement("div");d.id="tpanel";d.className="intro";d.style.cssText="border:2px solid var(--plum);";
+  d.innerHTML=`<b>Area docente</b><br><input id="tpw" type="password" class="gap" style="width:180px;margin-top:6px" placeholder="parola segreta">
+    <button class="btn main" style="margin-left:6px" onclick="teacherLogin()">Entra</button> <button class="btn sec" onclick="this.parentElement.remove()">Chiudi</button>
+    <div id="tmsg" style="font-size:13px;margin-top:6px"></div>`;
+  document.querySelector(".hero").after(d);document.getElementById("tpw").focus();
+}
+function teacherLogin(){
+  const m=document.getElementById("tmsg");
+  if(document.getElementById("tpw").value.trim().toLowerCase()!==SECRET){m.textContent="Parola sbagliata.";m.style.color="var(--bad)";return;}
+  const d=document.getElementById("tpanel");
+  d.innerHTML=`<b>Area docente</b><br>Accanto a ogni esercizio corretto trovi «Sblocca questo esercizio». Oppure:
+    <div class="btns"><button class="btn big" onclick="teacherReset()">Azzera tutto il mock test</button><button class="btn sec" onclick="location.reload()">Esci</button></div>`;
+  state.locked.filter(n=>n<=6).forEach(n=>{const b=document.createElement("button");b.className="btn big";b.textContent="🔓 Sblocca questo esercizio";b.onclick=()=>teacherUnlock(n);document.querySelector(`#ex${n} .btns`).appendChild(b);});
+}
+function teacherUnlock(n){save();state.locked=state.locked.filter(x=>x!==n&&x!==7);state.final=false;try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}location.reload();}
+function teacherReset(){try{localStorage.removeItem(KEY);}catch(e){}location.href=location.pathname+"?azzera=docente";}
+document.addEventListener("input",e=>{if(e.target.matches("textarea"))grow(e.target);if(e.target.closest("main"))save();});
+document.querySelectorAll("main textarea").forEach(grow);
+document.addEventListener("change",e=>{if(e.target.closest("main"))save();});
+</script>
+</body>
+</html>
