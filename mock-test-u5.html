@@ -387,7 +387,7 @@ function finalScore(){
   r.classList.add("show");r.scrollIntoView({behavior:"smooth",block:"center"});
 }
 /* ================= SEND TO THE TEACHER'S GOOGLE FORM ================= */
-const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLScPCTyBFuDDSGQ5jpD0Nglo1Lcq9evSnjZp-swLeFqNIutK4Q/formResponse";
+const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSfm6ngt6eybSY9TGVyIp5UNG_1G5FRIJ5dzGu13hgR8ArDdnw/formResponse";
 const FORM_FIELDS={name:"entry.987123579",voto:"entry.1256142069",punti:"entry.1261436354",errori:"entry.1496790676",writing:"entry.1216252690"};
 function errorsText(){
   const out=[TEST_LABEL];
@@ -419,7 +419,7 @@ async function sendResult(){
   const body=new URLSearchParams();
   body.append(FORM_FIELDS.name,name);
   body.append(FORM_FIELDS.voto,String(R.voto||""));
-  body.append(FORM_FIELDS.punti,`${fmt(R.tot||0)}/${TOTAL} · ${TEST_LABEL}`);
+  body.append(FORM_FIELDS.punti,`${fmt(R.tot||0)}/${TOTAL}`);
   body.append(FORM_FIELDS.errori,errorsText());
   body.append(FORM_FIELDS.writing,writing);
   btn.disabled=true;btn.textContent="Invio in corso…";
