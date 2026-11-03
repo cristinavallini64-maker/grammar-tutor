@@ -86,6 +86,16 @@ td select{font:inherit;font-size:13px;padding:3px 4px;border-radius:5px;border:1
 .result .rows{font-size:14px;margin-top:8px;color:rgba(244,241,232,.8);}
 .result .note{font-size:12.5px;margin-top:10px;color:rgba(244,241,232,.6);}
 .footer{text-align:center;font-size:11.5px;font-style:italic;color:rgba(242,241,232,.5);margin-top:16px;padding:0 16px;}
+@media print{
+  header,.btns,.hbtn,#tpanel,.intro{display:none!important;}
+  body{background:#fff!important;}
+  .sheet{box-shadow:none!important;margin:0 auto!important;background:#fff!important;}
+  .result{display:block!important;}
+  li,.model,tr{break-inside:avoid;}
+  .ex{margin-bottom:10px!important;}
+  textarea{overflow:visible!important;height:auto!important;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
 </style></head>
 <body>
 <header>
@@ -353,6 +363,7 @@ function finalScore(){
     <div class="rows">${[1,2,3,4,5,6].map(n=>`${n} ${NAMES[n].toLowerCase()} ${fmt(score[n])}/${MAX[n]}`).join(" · ")} · 7 writing ${fmt(w.tot)}/10</div>
     ${missing.length?`<div class="note">⚠ Non hai ancora dato il punteggio al writing: il voto è calcolato senza.</div>`:""}
     <div class="note">È un voto indicativo: il writing l'hai valutato tu. Guarda dove hai perso più punti: è lì che devi ripassare.</div>
+    <div class="btns" style="display:flex!important"><button class="btn main" onclick="salvaPDF()">📄 Salva il mio test in PDF</button></div>
     <div id="sendBox" style="margin-top:14px;border-top:1px solid rgba(244,241,232,.15);padding-top:12px;">
       <div style="font-weight:700;margin-bottom:6px;">Invia il risultato all'insegnante</div>
       <input id="stName" placeholder="Nome e cognome" autocomplete="off" style="font:inherit;font-size:15px;padding:8px 10px;border-radius:8px;border:none;width:100%;max-width:320px;">
@@ -405,7 +416,11 @@ async function sendResult(){
 }
 function showSent(name){
   const box=document.getElementById("sendBox");if(!box)return;
-  box.innerHTML=`<div style="font-weight:700;color:#7ee2a8;">✓ Risultato inviato all'insegnante (${esc(name)}).</div><div class="note">Ora su Classroom apri il compito e premi «Segna come completato».</div>`;
+  box.innerHTML=`<div style="font-weight:700;color:#7ee2a8;">✓ Risultato inviato all'insegnante (${esc(name)}).</div><div class="note">Per rivedere il test a casa: premi «Salva il mio test in PDF» (qui sopra) e scegli <b>Salva come PDF</b>. Poi su Classroom apri il compito, <b>Aggiungi → File</b>, scegli il PDF e premi <b>Consegna</b>.</div>`;
+}
+function salvaPDF(){
+  const t=document.title;document.title=("Mock - "+(state.sent||"")).trim();
+  document.querySelectorAll("main textarea").forEach(grow);window.print();setTimeout(()=>document.title=t,1000);
 }
 /* ================= SAVE / RESTORE ================= */
 const KEY="mocktest-y2-u5-om-v1";
