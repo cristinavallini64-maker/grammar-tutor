@@ -181,6 +181,17 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
 .btn-save-sm{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.07);color:var(--text-dim);cursor:pointer;transition:all 0.2s;}
 .btn-save-sm:hover{border-color:rgba(255,255,255,0.45);color:#fff;}
 .wb-sol{margin-top:6px;}.wb-sol div{margin:3px 0;}
+
+.mq-btn{font-family:inherit;font-size:11px;font-weight:700;letter-spacing:.5px;padding:7px 12px;border-radius:8px;cursor:pointer;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:#fff;margin-right:8px;}
+.mq-ov{position:fixed;inset:0;z-index:9999;background:rgba(5,8,20,.75);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;}
+.mq-box{background:#f4efe2;color:#1b1d17;border-radius:16px;padding:26px;max-width:400px;width:100%;text-align:center;font-family:Inter,system-ui,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,.6);}
+.mq-box h2{font-size:22px;font-weight:800;margin:0 0 8px;color:#1b1d17;font-family:inherit;letter-spacing:0;text-transform:none;}
+.mq-box p{font-size:15px;color:#55584a;margin:0 0 18px;}
+.mq-ch{display:block;width:100%;text-align:left;padding:14px 16px;margin-top:12px;border-radius:12px;border:2px solid rgba(27,29,23,.26);background:#fffdf7;cursor:pointer;font-family:inherit;}
+.mq-ch:hover{border-color:#3f5bd6;}
+.mq-ch b{display:block;font-size:18px;color:#1b1d17;margin-bottom:3px;}
+.mq-ch span{font-size:14px;color:#55584a;line-height:1.4;}
+.mq-num{display:inline-block;font-weight:800;font-size:15px;color:#fff;background:#3f5bd6;border-radius:8px;padding:4px 11px;margin-bottom:10px;}
 </style>
 <script src="https://cristinavallini64-maker.github.io/grammar-tutor/tracker.js"></script>
 </head>
@@ -189,7 +200,7 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
 <canvas id="particleCanvas"></canvas>
 <header>
   <div><div class="logo">Past Simple</div><span class="logo-sub">grammar quest</span></div>
-  <button class="btn-reset" onclick="confirmReset()">&#x27F3; RESET</button>
+  <div style="display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:6px"><button class="mq-btn" id="modoBtn" onclick="apriModo()">—</button><button class="btn-reset" onclick="confirmReset()">&#x27F3; RESET</button></div>
 </header>
 <div id="screen-map" class="screen active">
   <div class="map-hero"><h1>PAST SIMPLE</h1><h2>grammar quest</h2><p>from vinyl to viral &middot; unit 4</p></div>
@@ -233,6 +244,11 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
   </div>
 </div>
 <div id="screen-results" class="screen"></div>
+<div id="modoModal" class="mq-ov"><div class="mq-box">
+  <h2>Come lavori oggi?</h2><p>Scegli la modalità indicata dall'insegnante.</p>
+  <button class="mq-ch" onclick="setModo('classe')"><b>🏫 Lavoro in classe</b><span>Esercizi in ordine fisso e numerati, uguali per tutti.</span></button>
+  <button class="mq-ch" onclick="setModo('casa')"><b>🏠 Lavoro a casa</b><span>Esercizi in ordine casuale.</span></button>
+</div></div>
 <div id="resetModal" class="modal-overlay" style="display:none">
   <div class="modal">
     <h2>&#x26A0; RESET</h2>
@@ -607,12 +623,17 @@ let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,is
 function openLevel(s){
   currentLevel=s;let exs;
   if(s.type==='study'){exs=s.exercises.map((e,i)=>({...e,_key:`${s.id}_${i}`}));}
-  else if(s.type==='revision'){if(s.exercises){exs=s.exercises.map((e,i)=>({...e,_key:`${s.id}_${i}`}));}else{exs=[];s.revises.forEach(id=>{const sec=LEVELS.find(x=>x.id===id);if(sec&&sec.exercises)exs=exs.concat(sec.exercises.map((e,i)=>({...e,_key:`${id}_${i}`})));});exs=shuffle(exs).slice(0,Math.min(exs.length,16));}}
+  else if(s.type==='revision'){if(s.exercises){exs=s.exercises.map((e,i)=>({...e,_key:`${s.id}_${i}`}));}else{exs=[];s.revises.forEach(id=>{const sec=LEVELS.find(x=>x.id===id);if(sec&&sec.exercises)exs=exs.concat(sec.exercises.map((e,i)=>({...e,_key:`${id}_${i}`})));});exs=(MODO==='classe'?exs:shuffle(exs)).slice(0,Math.min(exs.length,16));}}
   else{exs=getErrors(s.revises);if(!exs.length){state[s.id]='completed';unlockNext(s.id);saveState();goMap();return;}}
-  exQueue=shuffle(exs);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=false;_firstTotal=exQueue.length;_firstDone=false;
+  exQueue=MODO==='classe'?exs.map((e,i)=>({...e,_n:i+1})):shuffle(exs);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=false;_firstTotal=exQueue.length;_firstDone=false;
   document.getElementById('exTitle').textContent=currentLevel.title;
   showScreen('exercise');renderExercise();
 }
+let MODO=null;
+function apriModo(){document.getElementById('modoModal').style.display='flex';}
+function setModo(m){MODO=m;document.getElementById('modoModal').style.display='none';document.getElementById('modoBtn').textContent=m==='classe'?'🏫 In classe':'🏠 A casa';}
+function numHtml(){const e=exQueue[exIdx];return MODO==='classe'&&e&&e._n?`<div class="mq-num">Esercizio ${e._n}</div>`:'';}
+function mix(a,seme){let h=2166136261;for(const c of String(seme))h=Math.imul(h^c.charCodeAt(0),16777619);const r=()=>{h=Math.imul(h^(h>>>15),2246822507);h=Math.imul(h^(h>>>13),3266489909);h^=h>>>16;return (h>>>0)/4294967296;};const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 function renderExercise(){
   exChecked=false;selectedMC=-1;reorderWords=[];
@@ -631,7 +652,7 @@ function renderExercise(){
     const hintHtml=ex.hint?`<span style="color:var(--text-muted);font-size:14px;font-weight:400"> ${ex.hint}</span>`:'';
     cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// FILL IN THE BLANK</div><div class="ex-question">${ex.q}${hintHtml}</div><input class="fill-input" id="fillInput" autocomplete="off" spellcheck="false" placeholder="scrivi qui..."><div class="feedback-msg" id="feedbackMsg"></div></div>`;
   } else if(ex.type==='reorder'){
-    const shuffledIdx=shuffle(ex.words.map((_,i)=>i));
+    const shuffledIdx=(MODO==='classe'?mix(ex.words.map((_,i)=>i),ex.words.join(' ')):shuffle(ex.words.map((_,i)=>i)));
     const chips=shuffledIdx.map(i=>`<div class="word-chip" id="chip${i}" onclick="addWord(${i},this)">${ex.words[i]}</div>`).join('');
     cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// WORD ORDER</div><div class="ex-question">${ex.instruction}</div><div class="reorder-hint">Clicca le parole nell'ordine corretto &middot; clicca sulla risposta per rimuovere</div><div class="word-bank" id="wordBank">${chips}</div><div class="answer-area" id="answerArea"></div><div class="feedback-msg" id="feedbackMsg"></div></div>`;
   } else if(ex.type==='wordbox'){
@@ -640,7 +661,7 @@ function renderExercise(){
   } else if(ex.type==='errorcorrect'){
     cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// ERROR CORRECTION</div><div class="ex-question">${ex.instruction}</div><div class="ec-wrong">&#x274C; ${ex.wrong}</div><div class="ec-label">Scrivi la frase corretta:</div><input class="fill-input" id="fillInput" autocomplete="off" spellcheck="false" placeholder="scrivi qui..." style="width:100%"><div class="feedback-msg" id="feedbackMsg"></div></div>`;
   }
-  document.getElementById('exerciseArea').innerHTML=ruleHtml+retryHtml+cardHtml;
+  document.getElementById('exerciseArea').innerHTML=ruleHtml+retryHtml+numHtml()+cardHtml;
   if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);
 }
 function addWord(idx,el){
@@ -695,7 +716,7 @@ function checkExercise(){
 }
 function nextExercise(){
   exIdx++;
-  if(exIdx>=exQueue.length){if(!isRetry&&!_firstDone){_firstDone=true;var _fp=_firstTotal>0?Math.round((okCount/_firstTotal)*100):0;if(window.EFTrack)EFTrack.event('punteggio:'+currentLevel.title,_fp);}if(retryQueue.length>0){exQueue=shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();}
+  if(exIdx>=exQueue.length){if(!isRetry&&!_firstDone){_firstDone=true;var _fp=_firstTotal>0?Math.round((okCount/_firstTotal)*100):0;if(window.EFTrack)EFTrack.event('punteggio:'+currentLevel.title,_fp);}if(retryQueue.length>0){exQueue=MODO==='classe'?retryQueue.slice().sort((a,b)=>(a._n||0)-(b._n||0)):shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();}
   else renderExercise();
 }
 function showExResults(){
@@ -712,6 +733,7 @@ function doReset(){localStorage.removeItem(SK);localStorage.removeItem(EK);state
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(`screen-${id}`).classList.add('active');}
 function goMap(){renderMap();showScreen('map');}
 document.addEventListener('keydown',function(e){
+  if(document.getElementById('modoModal').style.display==='flex')return;
   if(e.key!=='Enter')return;
   var rm=document.getElementById('resetModal'); if(rm&&rm.style.display==='flex')return;
   var sc=document.getElementById('screen-exercise'); if(!sc||!sc.classList.contains('active'))return;
@@ -720,7 +742,7 @@ document.addEventListener('keydown',function(e){
   if(nb&&nb.style.display!=='none')nextExercise();
   else if(cb&&cb.style.display!=='none')checkExercise();
 });
-loadState();renderMap();
+loadState();renderMap();apriModo();
 </script>
 </body>
 </html>
