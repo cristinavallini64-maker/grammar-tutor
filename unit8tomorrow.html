@@ -756,8 +756,8 @@ document.addEventListener('keydown',function(e){
   var sc=document.getElementById('screen-exercise'); if(!sc||!sc.classList.contains('active'))return;
   e.preventDefault();
   var nb=document.getElementById('nextBtn'), cb=document.getElementById('checkBtn');
-  if(nb&&nb.style.display!=='none')nextExercise();
-  else if(cb&&cb.style.display!=='none')checkExercise();
+  if(nb&&nb.style.display!=='none'){if(!e.repeat)nextExercise();}
+  else if(cb&&cb.style.display!=='none'){if(e.repeat)return;var fi=document.getElementById('fillInput');if(fi&&!fi.disabled&&!fi.value.trim())return;checkExercise();}
 });
 
 </script>
