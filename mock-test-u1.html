@@ -269,6 +269,7 @@ function finalScore(){
     <div class="rows">${CFG.ex.map((e,i)=>`${i+1} ${e.short} ${fmt(score[i+1])}/${e.pts}`).join(" · ")} · ${WN} writing ${fmt(w.tot)}/${CFG.writing.pts}</div>
     ${w.done<CFG.writing.grid.length?`<div class="note">⚠ Non hai ancora dato il punteggio al writing: il voto è calcolato senza.</div>`:""}
     <div class="note">È un voto indicativo: il writing l'hai valutato tu. Guarda dove hai perso più punti: è lì che devi ripassare.</div>
+    <div class="btns"><button class="btn main" onclick="salvaPDF()">📄 Salva il mio test in PDF</button></div>
     <div id="sendBox" style="margin-top:14px;border-top:1px solid rgba(244,241,232,.15);padding-top:12px;">
       <div style="font-weight:700;margin-bottom:6px;">Invia il risultato all'insegnante</div>
       <input id="stName" placeholder="Nome e cognome" autocomplete="off" style="font:inherit;font-size:15px;padding:8px 10px;border-radius:8px;border:none;width:100%;max-width:320px;">
@@ -321,7 +322,7 @@ async function sendResult(){
 }
 function showSent(name){
   const box=document.getElementById("sendBox");if(!box)return;
-  box.innerHTML=`<div style="font-weight:700;color:#7ee2a8;">✓ Risultato inviato all'insegnante (${esc(name)}).</div><div class="note">Per rivedere il test a casa: premi «Salva il mio test in PDF» e scegli <b>Salva come PDF</b>. Poi su Classroom apri il compito, <b>Aggiungi → File</b>, scegli il PDF e premi <b>Consegna</b>. Così lo ritrovi su Classroom da qualsiasi dispositivo.</div><div class="btns"><button class="btn main" onclick="salvaPDF()">📄 Salva il mio test in PDF</button></div>`;
+  box.innerHTML=`<div style="font-weight:700;color:#7ee2a8;">✓ Risultato inviato all'insegnante (${esc(name)}).</div><div class="note">Per rivedere il test a casa: premi «Salva il mio test in PDF» (qui sopra) e scegli <b>Salva come PDF</b>. Poi su Classroom apri il compito, <b>Aggiungi → File</b>, scegli il PDF e premi <b>Consegna</b>. Così lo ritrovi su Classroom da qualsiasi dispositivo.</div>`;
 }
 function salvaPDF(){
   const t=document.title;document.title=("Mock Unit 1 - "+(state.sent||"")).trim();
