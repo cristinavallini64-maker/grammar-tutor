@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Unit 5 · Mock Test · Obiettivi minimi</title>
+<title>Unit 5 · Mock Test · Apprendimento personalizzato</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Sora:wght@700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -60,6 +60,7 @@ textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(10,154,60,.12)
 .self.show{display:flex;}
 .self label{display:inline-flex;align-items:center;gap:4px;background:#fff;border:1px solid var(--line2);border-radius:20px;padding:4px 11px;cursor:pointer;font-weight:600;color:var(--ink);}
 .self input{accent-color:var(--teal);}
+.guide{margin:6px 0 10px 20px;padding:0;}.guide li{margin:3px 0;}
 .crit{font-size:13px;color:var(--sub);background:rgba(27,29,23,.04);border-radius:8px;padding:8px 11px;margin-bottom:10px;}
 .btns{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px;}
 .btn{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:.4px;border:none;border-radius:20px;padding:9px 18px;cursor:pointer;transition:.2s;}
@@ -99,13 +100,13 @@ td select{font:inherit;font-size:13px;padding:3px 4px;border-radius:5px;border:1
 </style></head>
 <body>
 <header>
-  <div><span class="logo">Unit 5 · On the road</span><span class="logo-sub">Foundations · Mock test · obiettivi minimi</span></div>
+  <div><span class="logo">Unit 5 · On the road</span><span class="logo-sub">Foundations · Mock test · apprendimento personalizzato</span></div>
   <a href="javascript:window.close()" class="hbtn">✕ Chiudi</a>
 </header>
 
 <main class="sheet">
   <div class="hero">
-    <h2>Mock test · seconda · obiettivi minimi</h2>
+    <h2>Mock test · seconda · apprendimento personalizzato</h2>
     <h1>Prova la verifica</h1>
   </div>
   <div class="intro">
@@ -135,7 +136,7 @@ td select{font:inherit;font-size:13px;padding:3px 4px;border-radius:5px;border:1
 
 <script>
 /* ================= CONTENT ================= */
-const TEST_LABEL="MOCK SECONDA – UNIT 5 – OBIETTIVI MINIMI";
+const TEST_LABEL="MOCK SECONDA – UNIT 5 – APPRENDIMENTO PERSONALIZZATO";
 const MAX={1:8,2:8,3:8,4:6,5:6,6:4,7:10}, TOTAL=50;
 // 1 Vocabulary: [parola italiana, accepted]
 const EX1=[
@@ -201,7 +202,8 @@ const EX6_WORDS=[
   "we went go to the train railway station catch caught take took get got",
   "the car park parking lot is opposite in front of library",
 ];
-const WPROMPT="Last weekend you went on a day out. Write a post for your class blog (50–70 words). Write about: where you went, how you travelled, what you did and what you liked.";
+const WPROMPT="Lo scorso fine settimana hai fatto una gita di un giorno. Scrivi un post per il blog della classe (50–70 parole). Nel post rispondi a queste domande guida:";
+const WGUIDE=["Where did you go, and who did you go with?","How did you travel there?","Which places did you see?","Which part of the day was your favourite? Was there anything you didn’t like?"];
 const GRID=[
   ["Contenuto","Rispetta la consegna (tipo di testo, lunghezza, informazioni richieste); il testo è coerente",2],
   ["Uso del Past simple","Verbi regolari e irregolari, forme affermative, negative e interrogative corrette",3],
@@ -220,6 +222,7 @@ function norm(s){s=String(s==null?'':s).replace(/[—–]/g,' ').replace(/\s-\s/
 const fmt=n=>(Math.round(n*2)/2).toString().replace(".",",");
 const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
 const under=s=>esc(s).replace(/\[\[(.*?)\]\]/g,'<u><b>$1</b></u>');
+const exNote=t=>`<p class="crit"><b>Esempio:</b> ${under(t)}</p>`;
 const plain=s=>s.replace(/\[\[|\]\]/g,"");
 const score={1:null,2:null,3:null,4:null,5:null,6:null};
 function head(n,title){return `<div class="ex-head"><div class="ex-title"><span class="n">${n}</span>${title}</div><div class="ex-score" id="sc${n}">___ / ${MAX[n]}</div></div>`;}
@@ -233,34 +236,34 @@ const inp=(cls,attrs)=>`<input class="gap ${cls}" ${attrs} autocomplete="off" au
 
 /* ================= RENDER ================= */
 function render(){
-  let h=head(1,"Vocabulary. Write the English word.")+'<ol class="items">';
+  let h=head(1,"Lessico. Scrivi la parola inglese.")+exNote("aeroporto  →  airport")+'<ol class="items">';
   EX1.forEach((e,i)=>h+=`<li><span class="num">${i+1}</span>${esc(e[0])}<br>→ ${inp("w",`data-i="${i}"`)}</li>`);
   document.getElementById("ex1").innerHTML=h+'</ol>'+btn(1);
 
-  h=head(2,"Complete the sentences with the Past simple of the verbs in brackets (affirmative, negative or question).")+'<ol class="items">';
+  h=head(2,"Completa le frasi con il Past simple dei verbi tra parentesi (forma affermativa, negativa o interrogativa).")+exNote("My brother ___ (fly) to Paris last month.  →  flew")+'<ol class="items">';
   EX2.forEach((e,i)=>{h+=`<li><span class="num">${i+1}</span>`;
     e.s.forEach(p=>h+=typeof p==="number"?inp("",`data-i="${i}" data-g="${p}"`):esc(p));
     h+=` <span class="it" style="display:inline;font-style:italic">(${e.v})</span></li>`;});
   document.getElementById("ex2").innerHTML=h+'</ol><p class="crit" style="margin-top:10px;">1 punto per frase: quando gli spazi sono due, devono essere giusti tutti e due.</p>'+btn(2);
 
-  h=head(3,"Complete the sentences with a suitable preposition of place or movement.")+'<ol class="items">';
+  h=head(3,"Completa le frasi con una preposizione di luogo o di movimento adatta.")+exNote("Our school is ___ the park: they’re side by side.  →  next to")+'<ol class="items">';
   EX3.forEach((e,i)=>h+=`<li><span class="num">${i+1}</span>${esc(e[0])}${inp("",`data-i="${i}"`)}${esc(e[1])}</li>`);
   document.getElementById("ex3").innerHTML=h+'</ol>'+btn(3);
 
-  h=head(4,"Write questions for the underlined words. The first word of the question is given.")+'<ol class="items">';
+  h=head(4,"Scrivi la domanda sulla parte sottolineata. La prima parola della domanda è già scritta.")+exNote("Paul arrived [[at eight o’clock]].  →  When did Paul arrive?")+'<ol class="items">';
   EX4.forEach((e,i)=>h+=`<li><span class="num">${i+1}</span>${under(e[0])}<br><b>${e[2]}</b> …<textarea rows="1" data-i="${i}" spellcheck="false"></textarea><div class="model"></div></li>`);
   document.getElementById("ex4").innerHTML=h+'</ol>'+btn(4);
 
-  h=head(5,"There is one mistake in each sentence. Rewrite the sentences correctly.")+'<ol class="items">';
+  h=head(5,"In ogni frase c’è un errore. Riscrivi le frasi in modo corretto.")+exNote("She goed to school by bus.  →  She went to school by bus.")+'<ol class="items">';
   EX5.forEach((e,i)=>h+=`<li><span class="num">${i+1}</span>${esc(e[0])}<textarea rows="1" data-i="${i}" spellcheck="false"></textarea><div class="model"></div></li>`);
   document.getElementById("ex5").innerHTML=h+'</ol><p class="crit" style="margin-top:10px;">Riscrivi tutta la frase. 1 punto se la frase è completamente corretta.</p>'+btn(5);
 
-  h=head(6,"Translate into English.")+'<ol class="items">';
+  h=head(6,"Traduci in inglese.")+'<ol class="items">';
   EX6.forEach((e,i)=>h+=`<li><span class="num">${i+1}</span><span class="it" style="font-style:normal;color:var(--ink)">${esc(e[0])}</span><textarea rows="2" data-i="${i}" spellcheck="false"></textarea><div class="model"></div></li>`);
   document.getElementById("ex6").innerHTML=h+'</ol><p class="crit" style="margin-top:10px;">2 punti per frase: 1 per la struttura chiave, 1 per il resto della frase. Ogni parola scritta male toglie mezzo punto dal resto della frase.</p>'+btn(6);
 
   h=`<div class="ex-head"><div class="ex-title"><span class="n">7</span>Writing</div><div class="ex-score" id="sc7">___ / 10</div></div>
-    <p>${esc(WPROMPT)}</p>
+    <p>${esc(WPROMPT)}</p><ul class="guide">${WGUIDE.map(g=>`<li>${esc(g)}</li>`).join("")}</ul>
     <textarea id="wtext" rows="9" oninput="countWords()" style="min-height:220px"></textarea><div class="wc" id="wc">0 parole</div>
     <p style="font-size:14px;margin-top:12px;font-weight:700;">Griglia di valutazione – Writing (10 punti)</p>
     <p style="font-size:13px;color:var(--sub);">Quando hai finito, rileggi il tuo testo e valutalo con la griglia.</p>
