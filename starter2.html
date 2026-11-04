@@ -574,7 +574,7 @@ function addWord(idx,el){
   const ci=idx;chip.onclick=()=>{if(exChecked)return;const pos=reorderWords.findIndex(w=>w.idx===ci);if(pos>-1)reorderWords.splice(pos,1);chip.remove();document.getElementById(`chip${ci}`).classList.remove('used');};
   area.appendChild(chip);
 }
-function norm(s){return s.trim().toLowerCase().replace(/[.,!?;:'"]/g,'').replace(/\s+/g,' ').trim();}
+function norm(s){return s.trim().toLowerCase().replace(/[’‘`´]/g,"'").replace(/[—–\-\/]/g,' ').replace(/[.,!?;:'"]/g,'').replace(/\s+/g,' ').trim();}
 // risposta breve che finisce con una contrazione affermativa (Yes, I'm / Really? I've): sbagliata,
 // anche se norm() equipara I'm e I am. Nei fill conta solo se dopo lo spazio la frase non continua.
 function contrFinale(val,ex){

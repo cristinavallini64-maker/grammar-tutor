@@ -274,7 +274,7 @@ Risposte brevi: <em>Yes, I am.</em> · <em>No, I'm not.</em> · <em>Yes, you are
     {type:'fill',q:"___ from Aberdeen. I'm fifteen.",hint:'(I\'m / I am)',a:"I'm",accept:["I'm","I am"]},
     {type:'fill',q:"___ not British. I'm Polish.",hint:'(I\'m)',a:"I'm",accept:["I'm","I am"]},
     {type:'fill',q:"___ you from Italy? — Yes, I ___.",hint:'(Are / am)',a:"Are — am",accept:["Are — am","Are, am"]},
-    {type:'fill',q:"___ you a student? — No, I ___.",hint:'(Are / am not / aren\'t)',a:"Are — am not",accept:["Are — am not","Are — aren't"]},
+    {type:'fill',q:"___ you a student? — No, I ___.",hint:'(Are / am not / aren\'t)',a:"Are — am not",accept:["Are — am not","Are — 'm not"]},
     {type:'fill',q:"My name ___ Laila. Nice to meet you.",hint:"(is / 'm / 're)",a:"is",accept:["is","'s"]},
     {type:'mc',q:"'___ from Dublin, I'm Spanish.' Scegli la forma corretta.",opts:["I are","I'm","I is"],correct:1},
     {type:'mc',q:"'___ you British?' — 'No, I'm not.'",opts:["Am","Is","Are"],correct:2},
@@ -687,7 +687,7 @@ function addWord(idx,el){
   const ci=idx;chip.onclick=()=>{if(exChecked)return;const pos=reorderWords.findIndex(w=>w.idx===ci);if(pos>-1)reorderWords.splice(pos,1);chip.remove();document.getElementById(`chip${ci}`).classList.remove('used');};
   area.appendChild(chip);
 }
-function norm(s){return s.trim().toLowerCase().replace(/[.,!?;:'"]/g,'').replace(/\s+/g,' ').trim();}
+function norm(s){return s.trim().toLowerCase().replace(/[’‘`´]/g,"'").replace(/[—–\-\/]/g,' ').replace(/[.,!?;:'"]/g,'').replace(/\s+/g,' ').trim();}
 // risposta breve che finisce con una contrazione affermativa (Yes, I'm / Really? I've): sbagliata,
 // anche se norm() equipara I'm e I am. Nei fill conta solo se dopo lo spazio la frase non continua.
 function contrFinale(val,ex){
