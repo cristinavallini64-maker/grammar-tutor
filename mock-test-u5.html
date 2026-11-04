@@ -235,7 +235,7 @@ const CONV=[["70–68","10",68],["67–65","9½",65],["64–61","9",61],["60–5
   ["41–38","5½",38],["37–35","5",35],["34–31","4½",31],["30–28","4",28],["27–24","3½",24],["23–0","3",0]];
 
 /* ================= HELPERS ================= */
-function norm(s){
+function norm(s){s=String(s==null?'':s).replace(/[—–]/g,' ').replace(/\s-\s/g,' ');
   s=(s||"").toLowerCase().replace(/[’‘`´]/g,"'").replace(/[«»"“”.,!?;:–—]/g," ");
   s=s.replace(/\bcan't\b/g,"can not").replace(/\bcannot\b/g,"can not").replace(/\bwon't\b/g,"will not").replace(/n't\b/g," not");
   return s.replace(/\s+/g," ").trim();

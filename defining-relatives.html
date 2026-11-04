@@ -505,7 +505,7 @@ function renderExercise(){
 
 function selectMC(idx,val,el){if(exChecked)return;document.querySelectorAll('.mc-option').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');selectedMC=val;}
 function addWord(idx,el){if(exChecked||el.classList.contains('used'))return;el.classList.add('used');const word=el.textContent;reorderWords.push({idx,word});const area=document.getElementById('answerArea');const chip=document.createElement('div');chip.className='word-chip';chip.textContent=word;const ci=idx;chip.onclick=()=>{if(exChecked)return;const pos=reorderWords.findIndex(w=>w.idx===ci);if(pos>-1)reorderWords.splice(pos,1);chip.remove();document.getElementById(`chip${ci}`).classList.remove('used');};area.appendChild(chip);}
-function norm(s){return s.trim().toLowerCase().replace(/[.,!?;:]+$/,'').replace(/[—–]/g,'-').replace(/\s+/g,' ').trim();}
+function norm(s){s=String(s==null?'':s).replace(/[—–]/g,' ').replace(/\s-\s/g,' ');return s.trim().toLowerCase().replace(/[.,!?;:]+$/,'').replace(/[—–]/g,'-').replace(/\s+/g,' ').trim();}
 
 // risposta breve che finisce con una contrazione affermativa (Yes, I'm / Really? I've): sbagliata,
 // anche se norm() equipara I'm e I am. Nei fill conta solo se dopo lo spazio la frase non continua.

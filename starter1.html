@@ -678,6 +678,7 @@ function renderExercise(){
   }
   document.getElementById('exerciseArea').innerHTML=ruleHtml+retryHtml+numHtml()+cardHtml;
   if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);
+  if(ex.type==='fill'&&(String(ex.q).match(/___/g)||[]).length>1)multiGap();
 }
 function selectMC(i){if(exChecked)return;selectedMC=i;document.querySelectorAll('.mc-btn').forEach((b,j)=>b.classList.toggle('selected',j===i));}
 function addWord(idx,el){
@@ -774,6 +775,26 @@ function burstAt(el,color){if(!el)return;const r=el.getBoundingClientRect();spaw
 function animParticles(){pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);particles=particles.filter(p=>p.life>0);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.12;p.life-=0.022;pCtx.globalAlpha=Math.max(0,p.life);pCtx.fillStyle=p.color;pCtx.beginPath();pCtx.arc(p.x,p.y,p.size,0,Math.PI*2);pCtx.fill();});pCtx.globalAlpha=1;requestAnimationFrame(animParticles);}
 window.addEventListener('resize',resizeCanvases);resizeCanvases();animParticles();
 loadState();renderMap();apriModo();
+
+/* frasi con due o più spazi: una casella per ogni spazio, niente trattini da scrivere */
+function multiGap(){
+  const ex=exQueue[exIdx],main=document.getElementById('fillInput'),qEl=document.querySelector('#exCard .ex-question');if(!main||!qEl)return;
+  const parts=qEl.innerHTML.split('___');if(parts.length<3)return;
+  qEl.innerHTML=parts.map((p,i)=>i<parts.length-1?p+`<input class="fill-input gap-in" data-g="${i}" autocomplete="off" spellcheck="false" style="width:9em;margin:2px 4px;padding:5px 9px;display:inline-block">`:p).join('');
+  main.style.display='none';
+  const gs=[...qEl.querySelectorAll('.gap-in')];
+  const sync=()=>{main.value=gs.map(g=>g.value.trim()).join(' — ');};
+  gs.forEach((g,i)=>{g.addEventListener('input',sync);g.addEventListener('keydown',e=>{if(e.key!=='Enter')return;e.preventDefault();e.stopPropagation();
+    if(exChecked){nextExercise();return;}if(i<gs.length-1&&!gs[i+1].value.trim()){gs[i+1].focus();return;}if(gs.every(x=>x.value.trim()))checkExercise();});});
+  setTimeout(()=>gs[0].focus(),60);
+}
+(function(){const _ce=checkExercise;checkExercise=function(){
+  const gs=[...document.querySelectorAll('#exCard .gap-in')];
+  if(gs.length){if(!gs.every(x=>x.value.trim()))return;document.getElementById('fillInput').value=gs.map(g=>g.value.trim()).join(' — ');}
+  _ce();
+  if(gs.length){const ok=document.getElementById('fillInput').classList.contains('correct');gs.forEach(g=>{g.disabled=true;g.classList.add(ok?'correct':'wrong');});
+    const fb=document.getElementById('feedbackMsg');if(fb)fb.innerHTML=fb.innerHTML.replace(/ — /g,' … ');}
+};})();
 </script>
 </body>
 </html>

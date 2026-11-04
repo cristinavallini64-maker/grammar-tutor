@@ -212,7 +212,7 @@ const CONV=[["50–49","10",49],["48–46","9½",46],["45–44","9",44],["43–4
   ["29–27","5½",27],["26–25","5",25],["24–22","4½",22],["21–20","4",20],["19–17","3½",17],["16–0","3",0]];
 
 /* ================= HELPERS ================= */
-function norm(s){
+function norm(s){s=String(s==null?'':s).replace(/[—–]/g,' ').replace(/\s-\s/g,' ');
   s=(s||"").toLowerCase().replace(/[’‘`´]/g,"'").replace(/[«»"“”.,!?;:–—]/g," ");
   s=s.replace(/\bcan't\b/g,"can not").replace(/\bcannot\b/g,"can not").replace(/\bwon't\b/g,"will not").replace(/n't\b/g," not");
   return s.replace(/\s+/g," ").trim();
