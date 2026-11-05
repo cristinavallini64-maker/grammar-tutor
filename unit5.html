@@ -362,7 +362,7 @@ rule:`<strong>PREPOSITIONS OF MOVEMENT — unit 5:</strong><br>
 &#x2714; <code>past</code> → oltre, passando davanti: <em>past</em> the bank / the supermarket<br>
 &#x2714; <code>through</code> → attraverso (spazio 3D): <em>through</em> the park / the tunnel<br>
 &#x2714; <code>under</code> → sotto (in movimento): <em>under</em> the bridge<br>
-&#x2714; <code>up/down</code> → su/giù: <em>up/down</em> the hill / the stairs`,
+&#x2714; <code>up/down</code> → su/giù: <em>up/down</em> the hill / the stairs<br>&#x2714; <code>over</code> → sopra / al di là: <em>over</em> the bridge / the wall<br>&#x2714; <code>towards</code> → verso: <em>towards</em> the station<br>&#x2714; <code>into</code> / <code>out of</code> → dentro / fuori da: <em>into</em> the shop &nbsp;·&nbsp; <em>out of</em> the car`,
 exercises:[
 {"type": "fill", "q": "<em>Completa con la preposizione giusta.</em><br>The fox jumped ___ the garden wall and disappeared into the night.", "hint": "...", "a": "over", "accept": ["over"]},
 {"type": "fill", "q": "<em>Completa con la preposizione giusta.</em><br>A cold wind came ___ the open window and the papers flew off my desk.", "hint": "...", "a": "through", "accept": ["through"]},
@@ -394,7 +394,7 @@ rule:`<strong>INFINITIVE OF PURPOSE — unit 5:</strong><br>
 &nbsp;&nbsp;&nbsp;<em>Where's Mum?</em> — <em>She went out <strong>to get</strong> milk.</em><br>
 &nbsp;&nbsp;&nbsp;<em>I went to the butcher's <strong>to buy</strong> some meat.</em><br>
 &#x26A0; NON si usa <em>for</em> + infinito: <del>She went out for get milk.</del><br>
-&#x26A0; NON si usa <em>for</em> + -ing per scopo: <del>She went out for getting milk.</del>`,
+&#x26A0; NON si usa <em>for</em> + -ing per scopo: <del>She went out for getting milk.</del><br>&#x2714; Scopo negativo: <code>in order not to</code> + infinito: <em>I left early <strong>in order not to</strong> miss the bus.</em>`,
 exercises:[
 {"type": "fill", "q": "<em>Unisci le due frasi in una sola frase che esprima lo scopo.</em><br>Marco went to the sports centre. He wanted to book a tennis court.<div style=\"display:grid;margin-top:8px\">___</div>", "hint": "...", "a": "Marco went to the sports centre to book a tennis court.", "accept": ["Marco went to the sports centre to book a tennis court.", "Marco went to the sports centre in order to book a tennis court."]},
 {"type": "fill", "q": "<em>Unisci le due frasi in una sola frase che esprima lo scopo.</em><br>We stopped at a petrol station. We needed to buy some water.<div style=\"display:grid;margin-top:8px\">___</div>", "hint": "...", "a": "We stopped at a petrol station to buy some water.", "accept": ["We stopped at a petrol station to buy some water.", "We stopped at a petrol station in order to buy some water."]},
@@ -592,7 +592,7 @@ function renderExercise(){
   if(ex.type!=='revision'&&currentLevel.type==='study'&&currentLevel.rule&&exIdx===0)ruleHtml=`<div class="rule-box">${currentLevel.rule}</div>`;
   if(isRetry)retryHtml=`<div class="retry-notice">&#x21BA; SECONDO TENTATIVO &mdash; CONCENTRATI!</div>`;
   if(ex.type==='fill'){
-    cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// FILL IN THE BLANK</div><div class="ex-question">${ex.q.replace('___','<input class="fill-input" id="fillInput" autocomplete="off" spellcheck="false" placeholder="${ex.hint||\'...\'}">')}</div>${ex.hint?'':'<div class="ec-label">'+ex.hint+'</div>'}<div class="feedback-msg" id="feedbackMsg"></div></div>`;
+    cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// FILL IN THE BLANK</div><div class="ex-question">${ex.q.replace('___','<input class="fill-input" id="fillInput" autocomplete="off" spellcheck="false" placeholder="'+(ex.hint||'...')+'">')}</div><div class="feedback-msg" id="feedbackMsg"></div></div>`;
   } else if(ex.type==='mc'){
     const opts=ex.options.map((o,i)=>`<button class="mc-option" id="mc${i}" onclick="selectMC(${i},'${o.replace(/'/g,"\\'")}',this)">${o}</button>`).join('');
     cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// MULTIPLE CHOICE</div><div class="ex-question">${ex.q}</div><div class="mc-options">${opts}</div><div class="feedback-msg" id="feedbackMsg"></div></div>`;
@@ -607,7 +607,7 @@ function renderExercise(){
     cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// ERROR CORRECTION</div><div class="ex-question">${ex.instruction}</div><div class="ec-wrong">&#x274C; ${ex.wrong}</div><div class="ec-label">Scrivi la frase corretta:</div><input class="fill-input" id="fillInput" autocomplete="off" spellcheck="false" placeholder="scrivi qui..." style="width:100%"><div class="feedback-msg" id="feedbackMsg"></div></div>`;
   }
   document.getElementById('exerciseArea').innerHTML=ruleHtml+retryHtml+numHtml()+cardHtml;
-  if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);
+  if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);{const _fi=document.getElementById('fillInput');if(_fi&&ex.type==='fill'&&String(ex.a||'').length>20){_fi.style.display='block';_fi.style.width='100%';_fi.style.maxWidth='100%';_fi.style.boxSizing='border-box';_fi.style.margin='10px 0 0';}}
 }
 function selectMC(idx,val,el){
   if(exChecked)return;

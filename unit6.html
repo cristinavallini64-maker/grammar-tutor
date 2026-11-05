@@ -332,13 +332,13 @@ exercises:[
 ]},
 {id:3,type:"study",title:"LEVEL 03 — COMPARATIVE: MINORANZA & UGUAGLIANZA",desc:"less ... than · as ... as · not as ... as",
 rule:`<strong>COMPARATIVO DI MINORANZA & UGUAGLIANZA — unit 6:</strong><br>
-&#x2714; Minoranza: <code>less + aggettivo + than</code> &nbsp;→&nbsp; uguale per tutti gli aggettivi<br>
+&#x2714; Minoranza: <code>less + aggettivo + than</code> &nbsp;→&nbsp; soprattutto con gli aggettivi lunghi<br>
 &nbsp;&nbsp;&nbsp;<em>Science fiction films are <strong>less boring</strong> than war films.</em><br>
 &#x2714; Uguaglianza: <code>as + aggettivo + as</code><br>
 &nbsp;&nbsp;&nbsp;<em>Black Panther is <strong>as brave as</strong> Thor.</em><br>
 &#x2714; Negazione uguaglianza: <code>not as + aggettivo + as</code><br>
 &nbsp;&nbsp;&nbsp;<em>Rome isn't <strong>as big as</strong> London.</em><br>
-&#x26A0; Con monosillabici si preferisce <em>-er than</em> a <em>more ... than</em> ma si usa <em>not as ... as</em> per la negazione`,
+&#x26A0; Con gli aggettivi corti (big, old, good…) per la minoranza si usa di solito <em>not as … as</em>: <em>not as big as</em> (non <em>less big than</em>)`,
 exercises:[
 {"type": "fill", "q": "<em>Completa con la forma giusta dell'aggettivo tra parentesi, verbo compreso. Leggi tutta la frase per decidere.</em><br>My phone ___ yours: the two phones cost €299 each.", "hint": "(expensive)", "a": "is as expensive as", "accept": ["is as expensive as"]},
 {"type": "fill", "q": "<em>Completa con la forma giusta dell'aggettivo tra parentesi, verbo compreso. Leggi tutta la frase per decidere.</em><br>Our new flat ___ the old one: we've only got two bedrooms now, and before we had three.", "hint": "(big)", "a": "isn't as big as", "accept": ["isn't as big as", "is not as big as"]},
@@ -600,7 +600,7 @@ function renderExercise(){
     cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// ERROR CORRECTION</div><div class="ex-question">${ex.instruction}</div><div class="ec-wrong">&#x274C; ${ex.wrong}</div><div class="ec-label">Scrivi la frase corretta:</div><input class="fill-input" id="fillInput" autocomplete="off" spellcheck="false" placeholder="scrivi qui..." style="width:100%"><div class="feedback-msg" id="feedbackMsg"></div></div>`;
   }
   document.getElementById('exerciseArea').innerHTML=ruleHtml+retryHtml+numHtml()+cardHtml;
-  if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);
+  if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);{const _fi=document.getElementById('fillInput');if(_fi&&ex.type==='fill'&&String(ex.a||'').length>20){_fi.style.display='block';_fi.style.width='100%';_fi.style.maxWidth='100%';_fi.style.boxSizing='border-box';_fi.style.margin='10px 0 0';}}
 }
 let _mcVal='';
 function selectMC(idx,el){

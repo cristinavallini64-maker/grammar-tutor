@@ -320,7 +320,7 @@ exercises:[
 rule:`<strong>WH- QUESTIONS:</strong> wh-word + <code>do/does</code> + subject + base verb?<br>
 <em>When</em> do you do your homework? &nbsp;&middot;&nbsp; <em>Where</em> does she live?<br>
 <strong>What is she like?</strong> → personalità &nbsp;&middot;&nbsp; <strong>What does she look like?</strong> → aspetto fisico<br>
-<strong>FREQUENZA:</strong> always &middot; usually &middot; often &middot; sometimes &middot; rarely &middot; never &nbsp;&middot;&nbsp; once/twice a week &middot; three times a day`,
+<strong>FREQUENZA:</strong> always &middot; usually &middot; often &middot; sometimes &middot; rarely &middot; hardly ever &middot; never &nbsp;&middot;&nbsp; once/twice a week &middot; three times a day`,
 exercises:[
 {type:"fill",q:"<em>Scrivi la domanda per la parte sottolineata:</em><br>Martina gets up <u>at 6.45</u> on school days.",a:"What time does Martina get up on school days?",accept:["What time does Martina get up on school days?","When does Martina get up on school days?"]},
 {type:"fill",q:"<em>Scrivi la domanda per la parte sottolineata:</em><br>Davide's grandparents live <u>in a small village near Verona</u>.",a:"Where do Davide's grandparents live?",accept:["Where do Davide's grandparents live?"]},
@@ -744,7 +744,7 @@ function renderExercise(){
     cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// ERROR CORRECTION</div><div class="ex-question">${ex.instruction}</div><div class="ec-wrong">&#x274C; ${ex.wrong}</div><div class="ec-label">Scrivi la frase corretta:</div><input class="fill-input" id="fillInput" autocomplete="off" spellcheck="false" placeholder="scrivi qui..." style="width:100%"><div class="feedback-msg" id="feedbackMsg"></div></div>`;
   }
   document.getElementById('exerciseArea').innerHTML=ruleHtml+retryHtml+numHtml()+cardHtml;
-  if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);
+  if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);{const _fi=document.getElementById('fillInput');if(_fi&&ex.type==='fill'&&String(ex.a||'').length>20){_fi.style.display='block';_fi.style.width='100%';_fi.style.maxWidth='100%';_fi.style.boxSizing='border-box';_fi.style.margin='10px 0 0';}}
 }
 function selectMC(i){if(exChecked)return;selectedMC=i;document.querySelectorAll('.mc-btn').forEach((b,j)=>b.classList.toggle('selected',j===i));}
 function addWord(idx,el){

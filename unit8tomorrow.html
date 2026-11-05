@@ -281,7 +281,7 @@ rule:`<strong>WILL / WON'T — unit 8:</strong><br>
 &#x2714; <code>will + base form</code> (forma invariabile — no <em>-s</em> alla 3a persona):<br>
 &nbsp;&nbsp;&nbsp;– previsione: <em>Robots <strong>will</strong> do most jobs.</em><br>
 &nbsp;&nbsp;&nbsp;– decisione spontanea: <em>I'm hungry. I think I<strong>'ll</strong> make myself a sandwich.</em><br>
-&nbsp;&nbsp;&nbsp;– promessa / offerta: <em>I<strong>'ll</strong> help you fix it. &nbsp;|&nbsp; <strong>Will</strong> you be at the party?</em><br>
+&nbsp;&nbsp;&nbsp;– promessa / offerta: <em>I<strong>'ll</strong> help you fix it. &nbsp;|&nbsp; I<strong>'ll</strong> carry your bag.</em><br>&nbsp;&nbsp;&nbsp;– domande sul futuro: <em><strong>Will</strong> you be at the party?</em><br>
 &#x2714; <code>won't</code> = will not → negativa:<br>
 &nbsp;&nbsp;&nbsp;<em>I'm sure Ruby <strong>won't</strong> come to the concert.</em><br>
 &#x26A0; Spesso usato con: <em>maybe, probably, definitely, I think, I don't think, I hope, I'm sure</em><br>
@@ -458,7 +458,7 @@ rule:`<strong>BE ABOUT TO = STARE PER</strong> (azione imminente, sta per succed
 &#x2714; soggetto + <code>am / is / are</code> + <code>about to</code> + <strong>verbo base</strong><br>
 &nbsp;&nbsp;<em>I'm about to leave.</em> = Sto per andare.<br>
 &nbsp;&nbsp;<em>The film is about to start.</em> = Il film sta per iniziare.<br>
-&#x2714; Negativa: + <code>not</code> &rarr; <em>I'm not about to give up.</em><br>
+&#x2714; Negativa: + <code>not</code> &rarr; <em>Relax, the train isn't about to leave: we've got ten minutes.</em><br>
 &#x26A0; Dopo <code>about to</code> sempre il <strong>verbo base</strong> (NON -ing): <em>about to leave</em> (NON <s>about to leaving</s>).`,
 exercises:[
 {"type": "fill", "q": "Completa con be about to:<br>Turn off your phones, everyone – the film ___ (start).", "a": "is about to start", "accept": ["is about to start", "'s about to start"]},
@@ -655,7 +655,7 @@ function renderExercise(){
     cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// ERROR CORRECTION</div><div class="ex-question">${ex.instruction}</div><div class="ec-wrong">&#x274C; ${ex.wrong}</div><div class="ec-label">Scrivi la frase corretta:</div><input class="fill-input" id="fillInput" autocomplete="off" spellcheck="false" placeholder="scrivi qui..." style="width:100%"><div class="feedback-msg" id="feedbackMsg"></div></div>`;
   }
   document.getElementById('exerciseArea').innerHTML=ruleHtml+retryHtml+numHtml()+cardHtml;
-  if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);
+  if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);{const _fi=document.getElementById('fillInput');if(_fi&&ex.type==='fill'&&String(ex.a||'').length>20){_fi.style.display='block';_fi.style.width='100%';_fi.style.maxWidth='100%';_fi.style.boxSizing='border-box';_fi.style.margin='10px 0 0';}}
 }
 let _mcVal='';
 function selectMC(idx,el){

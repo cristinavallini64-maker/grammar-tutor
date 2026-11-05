@@ -378,7 +378,7 @@ exercises:[
 rule:`<strong>A LOT OF / LOTS OF</strong> → grande quantità, affermative e interrogative (C e U): <em>She eats a lot of crisps.</em><br>
 <strong>MUCH</strong> → nelle frasi negative e interrogative con <em>uncountable</em>: <em>There isn't much honey.</em><br>
 <strong>MANY</strong> → nelle frasi negative e interrogative con <em>countable</em>: <em>There aren't many tins.</em><br>
-&#x26A0; In inglese formale/scritto <em>many</em> si usa anche nelle affermative`,
+&#x26A0; In inglese formale/scritto <em>many</em> e <em>much</em> si usano anche nelle affermative`,
 exercises:[
 {"type": "fill", "q": "<small>Completa con il verbo tra parentesi (affermativo o negativo?) e <b>a lot of</b>, <b>much</b> o <b>many</b> + il nome. Nelle affermative usa <b>a lot of</b>, nelle negative <b>much</b> o <b>many</b>.</small><br>My grandma is almost vegetarian: she ___ (eat / meat) – just a little chicken on Sundays.", "a": "doesn't eat much meat", "accept": ["doesn't eat much meat"]},
 {"type": "fill", "q": "<small>Completa con il verbo tra parentesi (affermativo o negativo?) e <b>a lot of</b>, <b>much</b> o <b>many</b> + il nome. Nelle affermative usa <b>a lot of</b>, nelle negative <b>much</b> o <b>many</b>.</small><br>My cousin ___ (drink / fizzy drinks) – three or four cans a day! It's not healthy.", "a": "drinks a lot of fizzy drinks", "accept": ["drinks a lot of fizzy drinks", "drinks lots of fizzy drinks"]},
@@ -437,7 +437,7 @@ exercises:[
 rule:`<strong>TOO MUCH</strong> → troppo/a con <em>uncountable</em>: <em>Don't add too much oil.</em><br>
 <strong>TOO MANY</strong> → troppi/e con <em>countable</em>: <em>There are too many people.</em><br>
 <strong>ENOUGH</strong> → abbastanza — viene DOPO l'aggettivo, PRIMA del sostantivo: <em>Is there enough pizza?</em><br>
-<strong>NOT ENOUGH / TOO LITTLE</strong> → stesso significato: <em>There isn't enough time.</em> = <em>There's too little time.</em>`,
+<strong>NOT ENOUGH / TOO LITTLE</strong> (con <em>uncountable</em>) → stesso significato: <em>There isn't enough time.</em> = <em>There's too little time.</em>`,
 exercises:[
 {"type": "fill", "q": "<small>Completa con il verbo tra parentesi (affermativo o negativo?) e <b>too much</b>, <b>too many</b> o <b>enough</b>.</small><br>Ugh! There ___ (be / sugar) in this coffee – it's like syrup!", "a": "is too much sugar", "accept": ["is too much sugar"]},
 {"type": "fill", "q": "<small>Completa con il verbo tra parentesi (affermativo o negativo?) e <b>too much</b>, <b>too many</b> o <b>enough</b>.</small><br>We can't play a proper match: there ___ (be / player) – we're only seven.", "a": "aren't enough players", "accept": ["aren't enough players"]},
@@ -597,7 +597,7 @@ function renderExercise(){
     cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// ERROR CORRECTION</div><div class="ex-question">${ex.instruction}</div><div class="ec-wrong">&#x274C; ${ex.wrong}</div><div class="ec-label">Scrivi la frase corretta:</div><input class="fill-input" id="fillInput" autocomplete="off" spellcheck="false" placeholder="scrivi qui..." style="width:100%"><div class="feedback-msg" id="feedbackMsg"></div></div>`;
   }
   document.getElementById('exerciseArea').innerHTML=ruleHtml+retryHtml+numHtml()+cardHtml;
-  if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);
+  if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);{const _fi=document.getElementById('fillInput');if(_fi&&ex.type==='fill'&&String(ex.a||'').length>20){_fi.style.display='block';_fi.style.width='100%';_fi.style.maxWidth='100%';_fi.style.boxSizing='border-box';_fi.style.margin='10px 0 0';}}
 }
 function selectMC(i){if(exChecked)return;selectedMC=i;document.querySelectorAll('.mc-btn').forEach((b,j)=>b.classList.toggle('selected',j===i));}
 function addWord(idx,el){

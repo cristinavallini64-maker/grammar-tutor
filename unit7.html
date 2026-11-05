@@ -405,7 +405,7 @@ rule:`<strong>RIEPILOGO MODALI — unit 7:</strong><br>
 &#x2714; <code>don't/doesn't have to</code> = non è necessario (nessun obbligo)<br>
 &#x2714; <code>should</code> = consiglio, cosa giusta da fare<br>
 &#x2714; <code>shouldn't</code> = non è una buona idea<br>
-&#x26A0; Tutti seguiti dalla <strong>base form</strong> senza <em>to</em>`,
+&#x26A0; Tutti seguiti dalla <strong>base form</strong>: <em>must go</em>, <em>should go</em>, <em>have to go</em> (il <em>to</em> fa parte di <em>have to</em>; NON <s>must to go</s>)`,
 exercises:[
 {"type": "mc", "q": "<small>Quale frase significa «Non è necessario che tu prenda l'ombrello»?</small>", "options": ["You don't have to take an umbrella.", "You mustn't take an umbrella.", "You shouldn't take an umbrella.", "You didn't have to take an umbrella."], "a": "You don't have to take an umbrella."},
 {"type": "fill", "q": "<small>Completa con <b>must, mustn't, have to, don't have to, should</b> o <b>shouldn't</b> nella forma giusta (presente o passato) e il verbo tra parentesi.</small><br>At my school we ___ (wear) a uniform: we can wear jeans and T-shirts.", "a": "don't have to wear", "accept": ["don't have to wear"]},
@@ -651,7 +651,7 @@ function renderExercise(){
     cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// ERROR CORRECTION</div><div class="ex-question">${ex.instruction}</div><div class="ec-wrong">&#x274C; ${ex.wrong}</div><div class="ec-label">Scrivi la frase corretta:</div><input class="fill-input" id="fillInput" autocomplete="off" spellcheck="false" placeholder="scrivi qui..." style="width:100%"><div class="feedback-msg" id="feedbackMsg"></div></div>`;
   }
   document.getElementById('exerciseArea').innerHTML=ruleHtml+retryHtml+numHtml()+cardHtml;
-  if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);
+  if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);{const _fi=document.getElementById('fillInput');if(_fi&&ex.type==='fill'&&String(ex.a||'').length>20){_fi.style.display='block';_fi.style.width='100%';_fi.style.maxWidth='100%';_fi.style.boxSizing='border-box';_fi.style.margin='10px 0 0';}}
 }
 let _mcVal='';
 function selectMC(idx,el){

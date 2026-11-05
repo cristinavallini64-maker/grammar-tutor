@@ -355,7 +355,7 @@ exercises:[
 rule:`<strong>PRESENT SIMPLE</strong> → azioni abituali, fatti sempre veri, orari fissi<br>
 I usually <em>eat</em> a sandwich for lunch. &nbsp;·&nbsp; My cousin <em>lives</em> in London.<br>
 <strong>PRESENT CONTINUOUS</strong> → azioni in corso ora, situazioni temporanee<br>
-I <em>can't come out</em> — I'm <em>eating</em> my lunch right now. &nbsp;·&nbsp; He <em>is working</em> in Paris this month.<br>
+I can't come out — <em>I'm eating</em> my lunch right now. &nbsp;·&nbsp; He <em>is working</em> in Paris this month.<br>
 <small>Parole chiave PS: <em>usually · always · every day · often · never</em> &nbsp;·&nbsp; PC: <em>now · at the moment · today · this week · these days</em></small>`,
 exercises:[
 {type: "fill", q: "<em>Scrivi la parte mancante, dal primo all'ultimo spazio:</em><br>Usually my uncle ___ (drive) to work, but this week he ___ (take) the train because his car is at the garage.", a: "drives to work, but this week he is taking", accept: ["drives to work, but this week he is taking"]},
@@ -670,7 +670,7 @@ function renderExercise(){
     cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// ERROR CORRECTION</div><div class="ex-question">${ex.instruction}</div><div class="ec-wrong">&#x274C; ${ex.wrong}</div><div class="ec-label">Scrivi la frase corretta:</div><input class="fill-input" id="fillInput" autocomplete="off" spellcheck="false" placeholder="scrivi qui..." style="width:100%"><div class="feedback-msg" id="feedbackMsg"></div></div>`;
   }
   document.getElementById('exerciseArea').innerHTML=ruleHtml+retryHtml+numHtml()+cardHtml;
-  if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);
+  if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);{const _fi=document.getElementById('fillInput');if(_fi&&ex.type==='fill'&&String(ex.a||'').length>20){_fi.style.display='block';_fi.style.width='100%';_fi.style.maxWidth='100%';_fi.style.boxSizing='border-box';_fi.style.margin='10px 0 0';}}
 }
 function selectMC(i){if(exChecked)return;selectedMC=i;document.querySelectorAll('.mc-btn').forEach((b,j)=>b.classList.toggle('selected',j===i));}
 function addWord(idx,el){
