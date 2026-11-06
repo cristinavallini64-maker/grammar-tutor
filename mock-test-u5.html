@@ -426,7 +426,7 @@ async function sendResult(){
   const name=nm.value.trim();
   if(name.length<3||!/\s/.test(name)){note.textContent="Scrivi nome e cognome.";note.style.color="#ff9aa8";nm.focus();return;}
   const R=state.result||{},w=wScore();
-  const writing=`Autovalutazione: ${w.tot}/10 (`+[...document.querySelectorAll("#ex7 select")].map((s,i)=>`${GRID[i][0]} ${s.value===""?"-":s.value}/${GRID[i][2]}`).join(", ")+`)\n\n`+(document.getElementById("wtext").value.trim()||"[vuoto]");
+  const writing=`Autovalutazione: ${w.tot}/10 (`+[...document.querySelectorAll("#ex7 select")].map((s,i)=>`${GRID[i][0]} ${s.value===""?"-":s.value}/${GRID[i][2]}`).join(", ")+`)\n\n`+(state.incolla?"⚠ Ha provato a incollare del testo ("+state.incolla+(state.incolla>1?" volte":" volta")+")\n\n":"")+(document.getElementById("wtext").value.trim()||"[vuoto]");
   const body=new URLSearchParams();
   body.append(FORM_FIELDS.name,name);
   body.append(FORM_FIELDS.voto,String(R.voto||""));
@@ -473,6 +473,7 @@ function restore(){
   }
   let d=null;try{d=JSON.parse(localStorage.getItem(KEY));}catch(e){}
   if(!d||!Array.isArray(d.values))return;
+  if(d.incolla)state.incolla=d.incolla;
   if(d.tentativo>1){state.tentativo=d.tentativo;if(!d.values.length&&!d.sent){const n=document.createElement("div");n.className="intro";n.style.cssText="background:var(--done-soft);border-color:var(--done);color:var(--ink);font-weight:700";n.textContent=`Stai rifacendo il mock test (${d.tentativo}° tentativo): parti da capo.`;document.querySelector(".hero").after(n);}}
   const fs=fields();d.values.forEach((v,i)=>{if(fs[i])fs[i].value=v;});
   const checks={1:check1,2:check2,3:check3,4:check4,5:check5,6:check6};
@@ -509,6 +510,33 @@ function teacherReset(){try{localStorage.removeItem(KEY);}catch(e){}location.hre
 document.addEventListener("input",e=>{if(e.target.matches("textarea"))grow(e.target);if(e.target.closest("main"))save();});
 document.querySelectorAll("main textarea").forEach(grow);
 document.addEventListener("change",e=>{if(e.target.closest("main"))save();});
+</script>
+<script>
+/* ================= NIENTE COPIA-INCOLLA nelle risposte ================= */
+(function(){
+  const sel="main input.gap, main textarea";
+  const last=new WeakMap();
+  function warn(el){
+    try{state.incolla=(state.incolla||0)+1;save();}catch(e){}
+    let n=el.parentElement.querySelector(".nopaste");
+    if(!n){n=document.createElement("div");n.className="nopaste";n.style.cssText="font-size:13px;font-weight:700;color:#c0392b;margin:4px 0";el.insertAdjacentElement("afterend",n);}
+    n.textContent="✋ Qui non si può incollare: scrivi tu la risposta.";
+    clearTimeout(n._t);n._t=setTimeout(()=>n.remove(),4000);
+  }
+  ["paste","drop"].forEach(ev=>document.addEventListener(ev,e=>{const el=e.target.closest&&e.target.closest(sel);if(el){e.preventDefault();warn(el);}},true));
+  document.addEventListener("focusin",e=>{if(e.target.matches&&e.target.matches(sel))last.set(e.target,e.target.value);});
+  document.addEventListener("beforeinput",e=>{
+    const el=e.target;if(!el.matches||!el.matches(sel))return;
+    last.set(el,el.value);
+    if(/^insertFrom(Paste|Drop)/.test(e.inputType)||((e.data||"").length>30)){e.preventDefault();warn(el);}
+  },true);
+  document.addEventListener("input",e=>{
+    const el=e.target;if(!el.matches||!el.matches(sel))return;
+    const prev=last.has(el)?last.get(el):"";
+    if(el.value.length-prev.length>30){el.value=prev;warn(el);e.stopImmediatePropagation();try{save();}catch(x){}}
+    else last.set(el,el.value);
+  },true);
+})();
 </script>
 </body>
 </html>
