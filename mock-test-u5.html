@@ -430,7 +430,7 @@ async function sendResult(){
   const body=new URLSearchParams();
   body.append(FORM_FIELDS.name,name);
   body.append(FORM_FIELDS.voto,String(R.voto||""));
-  body.append(FORM_FIELDS.punti,`${fmt(R.tot||0)}/${TOTAL}`);
+  body.append(FORM_FIELDS.punti,`${fmt(R.tot||0)}/${TOTAL}`+((state.tentativo||1)>1?` · ${state.tentativo}° tentativo`:""));
   body.append(FORM_FIELDS.errori,errorsText());
   body.append(FORM_FIELDS.writing,writing);
   btn.disabled=true;btn.textContent="Invio in corso…";
@@ -439,7 +439,20 @@ async function sendResult(){
 }
 function showSent(name){
   const box=document.getElementById("sendBox");if(!box)return;
+  setTimeout(addRedo,0);
   box.innerHTML=`<div style="font-weight:700;color:#7ee2a8;">✓ Risultato inviato all'insegnante (${esc(name)}).</div><div class="note">Per rivedere il test a casa: premi «Salva il mio test in PDF» (qui sopra) e scegli <b>Salva come PDF</b>. Poi su Classroom apri il compito, <b>Aggiungi → File</b>, scegli il PDF e premi <b>Consegna</b>.</div>`;
+}
+function addRedo(){
+  const box=document.getElementById("sendBox");if(!box||document.getElementById("redoBtn"))return;
+  const w=document.createElement("div");w.style.marginTop="12px";
+  w.innerHTML=`<button id="redoBtn" class="btn sec">🔁 Rifai da capo per esercitarti</button><div class="note" id="redoNote"></div>`;
+  box.appendChild(w);let armed=false;
+  document.getElementById("redoBtn").onclick=()=>{
+    const n=document.getElementById("redoNote");
+    if(!armed){armed=true;n.textContent="Tutte le risposte di questa prova verranno cancellate da questo dispositivo (il risultato che hai già inviato resta). Se vuoi tenerla, prima salvala in PDF. Premi di nuovo per ricominciare.";n.style.color="#ffd27a";return;}
+    try{localStorage.setItem(KEY,JSON.stringify({values:[],locked:[],final:false,tentativo:(state.tentativo||1)+1}));}catch(e){}
+    location.reload();
+  };
 }
 function salvaPDF(){
   const t=document.title;document.title=("Mock - "+(state.sent||"")).trim();
@@ -460,6 +473,7 @@ function restore(){
   }
   let d=null;try{d=JSON.parse(localStorage.getItem(KEY));}catch(e){}
   if(!d||!Array.isArray(d.values))return;
+  if(d.tentativo>1){state.tentativo=d.tentativo;if(!d.values.length&&!d.sent){const n=document.createElement("div");n.className="intro";n.style.cssText="background:var(--done-soft);border-color:var(--done);color:var(--ink);font-weight:700";n.textContent=`Stai rifacendo il mock test (${d.tentativo}° tentativo): parti da capo.`;document.querySelector(".hero").after(n);}}
   const fs=fields();d.values.forEach((v,i)=>{if(fs[i])fs[i].value=v;});
   const checks={1:check1,2:check2,3:check3,4:check4,5:check5,6:check6};
   (d.locked||[]).forEach(n=>{if(checks[n])checks[n]();});
