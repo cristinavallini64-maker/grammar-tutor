@@ -553,5 +553,19 @@ function wCheck(btn){
   return false;
 }
 </script>
+<style>main, main *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;} main input, main textarea{-webkit-user-select:text;user-select:text;}</style>
+<script>
+/* ================= NIENTE COPIA del testo degli esercizi ================= */
+(function(){
+  const inField=el=>el&&el.closest&&el.closest("input,textarea");
+  ["copy","cut"].forEach(ev=>document.addEventListener(ev,e=>{
+    const a=document.activeElement;
+    if(inField(a)&&a.closest("main"))return;      /* dentro la propria risposta si può */
+    if(e.target.closest&&e.target.closest("main")||document.getSelection().toString()){e.preventDefault();}
+  },true));
+  document.addEventListener("contextmenu",e=>{if(e.target.closest&&e.target.closest("main")&&!inField(e.target))e.preventDefault();},true);
+  document.addEventListener("selectstart",e=>{if(e.target.closest&&e.target.closest("main")&&!inField(e.target))e.preventDefault();},true);
+})();
+</script>
 </body>
 </html>
