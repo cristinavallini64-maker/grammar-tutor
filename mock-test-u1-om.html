@@ -125,7 +125,7 @@ td select{font:inherit;font-size:13px;padding:3px 4px;border-radius:5px;border:1
   <section class="ex" id="ex10"></section>
   <section class="ex" id="ex11"></section>
   <div class="btns" style="justify-content:center;margin-top:24px;">
-    <button class="btn big" id="calcBtn" onclick="confirmThen(this,finalScore)">Calcola il voto</button>
+    <button class="btn big" id="calcBtn" onclick="if(wCheck(this))confirmThen(this,finalScore)">Calcola il voto</button>
   </div>
   <div class="result" id="result"></div>
   <div class="ex">
@@ -418,6 +418,21 @@ document.addEventListener("change",e=>{if(e.target.closest("main"))save();});
     else last.set(el,el.value);
   },true);
 })();
+</script>
+<script>
+/* ================= AUTOVALUTAZIONE DEL WRITING OBBLIGATORIA ================= */
+function wCheck(btn){
+  const t=document.getElementById("wtext"),box=t&&t.closest('[id^="ex"]');
+  const sels=box?[...box.querySelectorAll("select")]:[];
+  const empty=sels.filter(s=>s.value==="");
+  const old=btn.parentElement.querySelector(".wcheck");if(old)old.remove();
+  if(!t||!t.value.trim()||!empty.length)return true;
+  const n=document.createElement("div");n.className="wcheck";n.style.cssText="font-size:14px;font-weight:700;color:#c0392b;margin-top:6px";
+  n.textContent="✋ Prima autovaluta il tuo writing con la griglia: mancano "+empty.length+(empty.length>1?" voci":" voce")+". Altrimenti il writing vale 0.";
+  btn.insertAdjacentElement("afterend",n);
+  empty[0].scrollIntoView({behavior:"smooth",block:"center"});empty.forEach(s=>{s.style.outline="3px solid #c0392b";s.addEventListener("change",()=>s.style.outline="",{once:true});});
+  return false;
+}
 </script>
 </body>
 </html>
