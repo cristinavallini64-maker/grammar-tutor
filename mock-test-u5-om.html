@@ -439,7 +439,7 @@ function salvaPDF(){
   document.querySelectorAll("main textarea").forEach(grow);window.print();setTimeout(()=>document.title=t,1000);
 }
 /* ================= SAVE / RESTORE ================= */
-const KEY="mocktest-y2-u5-om-v1";
+const KEY="mocktest-y2-u5-om-v2";
 const state={values:[],locked:[],final:false};
 const fields=()=>[...document.querySelectorAll("main input.gap, main textarea, main select")];
 function save(){state.values=fields().map(f=>f.value);try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
