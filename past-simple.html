@@ -219,7 +219,7 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;ba
       <button class="btn-save" onclick="copyCode()" id="copyBtn">&#x2398; COPIA CODICE</button>
     </div>
     <div class="save-import-row">
-      <input class="save-import-input" id="importInput" type="text" maxlength="200" placeholder="incolla codice da altro dispositivo..." oninput="this.value=this.value.replace(/[^A-Za-z0-9._-]/g,'')">
+      <input class="save-import-input" id="importInput" type="text" placeholder="incolla codice da altro dispositivo..." oninput="this.value=this.value.replace(/[^A-Za-z0-9._-]/g,'')">
       <button class="btn-save-sm" onclick="importCode()">&#x21B5; CARICA</button>
     </div>
     <div class="save-import-msg" id="importMsg"></div>
