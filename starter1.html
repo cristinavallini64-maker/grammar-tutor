@@ -760,11 +760,17 @@ function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classL
 function goMap(){renderMap();showScreen('map');}
 
 // Save code
-function stateToCode(){const s=JSON.stringify({s:state,e:errorMap});return btoa(unescape(encodeURIComponent(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');}
-function codeToState(code){try{const s=decodeURIComponent(escape(atob(code.replace(/-/g,'+').replace(/_/g,'/'))));const obj=JSON.parse(s);return obj;}catch(e){return null;}}
+/* codice breve: segna solo i livelli completati */
+const SC_A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const SC_DONE=v=>v==='completed'||v==='revision-done'||v==='difficult-done'||v==='skipped';
+function scSum(t){let h=7;for(const c of String(t))h=(h*31+c.charCodeAt(0))%1000003;return SC_A[h%32];}
+function scMake(list,seed){const b=list.map(x=>SC_DONE(state[x.id])?1:0);while(b.length%5)b.push(0);let o='';for(let i=0;i<b.length;i+=5){let v=0;for(let k=0;k<5;k++)v=v*2+b[i+k];o+=SC_A[v];}return o+scSum(seed+o);}
+function scRead(code,list,seed){const c=String(code).toUpperCase().replace(/[^A-Z0-9]/g,'');if(c.length!==Math.ceil(list.length/5)+1)return null;for(const ch of c)if(SC_A.indexOf(ch)<0)return null;const body=c.slice(0,-1);if(scSum(seed+body)!==c.slice(-1))return null;const out=[];let n=0;for(const ch of body){const v=SC_A.indexOf(ch);for(let k=4;k>=0;k--){if(n<list.length&&(v>>k)&1)out.push(list[n]);n++;}}return out;}
+function stateToCode(){return scMake(LEVELS,SK);}
+function codeToState(code){const _sc=scRead(code,LEVELS,SK);if(_sc){const s={};LEVELS.forEach((x,i)=>{s[x.id]=_sc.includes(x)?(x.type==='revision'?'revision-done':x.type==='difficult'?'difficult-done':'completed'):((i===0||SC_DONE(s[LEVELS[i-1].id]))?'unlocked':'locked');});return {s,e:null};}if(String(code).trim().length<=12)return null;try{const s=decodeURIComponent(escape(atob(code.replace(/-/g,'+').replace(/_/g,'/'))));const obj=JSON.parse(s);return obj;}catch(e){return null;}}
 function updateSaveCode(){const code=stateToCode();document.getElementById('saveCodeDisplay').textContent=code;}
 function copyCode(){const code=document.getElementById('saveCodeDisplay').textContent;if(navigator.clipboard){navigator.clipboard.writeText(code).then(()=>{const btn=document.getElementById('copyBtn');btn.textContent='✓ COPIATO!';setTimeout(()=>{btn.textContent='⌘ COPIA CODICE';},2000);});}else{const ta=document.createElement('textarea');ta.value=code;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);}}
-function importCode(){const code=document.getElementById('importInput').value.trim();const msg=document.getElementById('importMsg');if(!code){msg.className='save-import-msg err';msg.textContent='Incolla prima un codice!';return;}const obj=codeToState(code);if(!obj||!obj.s){msg.className='save-import-msg err';msg.textContent='Codice non valido.';return;}state=obj.s||{};errorMap=obj.e||{};saveState();msg.className='save-import-msg ok';msg.textContent='✓ Progressi caricati!';setTimeout(()=>{msg.textContent='';},3000);goMap();}
+function importCode(){const code=document.getElementById('importInput').value.trim();const msg=document.getElementById('importMsg');if(!code){msg.className='save-import-msg err';msg.textContent='Incolla prima un codice!';return;}const obj=codeToState(code);if(!obj||!obj.s){msg.className='save-import-msg err';msg.textContent='Codice non valido.';return;}state=obj.s||{};errorMap=obj.e||errorMap;saveState();msg.className='save-import-msg ok';msg.textContent='✓ Progressi caricati!';setTimeout(()=>{msg.textContent='';},3000);goMap();}
 
 // Particles
 const pCanvas=document.getElementById('particleCanvas');const pCtx=pCanvas.getContext('2d');let particles=[];

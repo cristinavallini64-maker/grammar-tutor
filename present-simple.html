@@ -618,16 +618,14 @@ exercises:[
 
 const SK='gq_ps6_s_v5',EK='gq_ps6_e_v5';
 let state={},errorMap={};
-function encodeState(){
-  try{
-    const comp=Object.keys(state).filter(k=>state[k]==='completed');
-    const errs=Object.keys(errorMap).filter(k=>errorMap[k]>=2);
-    const raw=comp.join(',')+'|'+errs.join(',');
-    const b64=btoa(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
-    return 'GQS.'+b64;
-  }catch(e){return null;}
-}
-function decodeState(code){
+/* codice breve: segna solo i livelli completati */
+const SC_A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const SC_DONE=v=>v==='completed'||v==='revision-done'||v==='difficult-done'||v==='skipped';
+function scSum(t){let h=7;for(const c of String(t))h=(h*31+c.charCodeAt(0))%1000003;return SC_A[h%32];}
+function scMake(list,seed){const b=list.map(x=>SC_DONE(state[x.id])?1:0);while(b.length%5)b.push(0);let o='';for(let i=0;i<b.length;i+=5){let v=0;for(let k=0;k<5;k++)v=v*2+b[i+k];o+=SC_A[v];}return o+scSum(seed+o);}
+function scRead(code,list,seed){const c=String(code).toUpperCase().replace(/[^A-Z0-9]/g,'');if(c.length!==Math.ceil(list.length/5)+1)return null;for(const ch of c)if(SC_A.indexOf(ch)<0)return null;const body=c.slice(0,-1);if(scSum(seed+body)!==c.slice(-1))return null;const out=[];let n=0;for(const ch of body){const v=SC_A.indexOf(ch);for(let k=4;k>=0;k--){if(n<list.length&&(v>>k)&1)out.push(list[n]);n++;}}return out;}
+function encodeState(){return scMake(LEVELS,SK);}
+function decodeState(code){const _sc=scRead(code,LEVELS,SK);if(_sc){const s={};_sc.forEach(x=>{s[x.id]='completed';});return {s,e:null};}if(String(code).indexOf('.')<0)return null;
   try{
     const b64=code.trim().replace(/^[A-Za-z]+\./,'').replace(/-/g,'+').replace(/_/g,'/');
     const pad=b64.length%4?b64+'='.repeat(4-b64.length%4):b64;
@@ -664,7 +662,7 @@ function importCode(){
   if(!val){msg.className='save-import-msg err';msg.textContent='Inserisci un codice.';return;}
   const obj=decodeState(val);
   if(!obj){msg.className='save-import-msg err';msg.textContent='Codice non valido — controlla di averlo copiato per intero.';return;}
-  state=obj.s;errorMap=obj.e;
+  state=obj.s;errorMap=obj.e||errorMap;
   LEVELS.forEach(s=>{if(state[s.id]===undefined)state[s.id]='locked';});
   if(state[LEVELS[0].id]==='locked')state[LEVELS[0].id]='unlocked';
   rebuildUnlocks();
