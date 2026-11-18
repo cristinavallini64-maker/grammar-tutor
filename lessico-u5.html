@@ -670,5 +670,45 @@ function animParticles(){pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);partic
 window.addEventListener('resize',resizeCanvases);resizeCanvases();animParticles();
 loadState();renderMap();
 </script>
+<style>body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;} input, textarea, [class*="save"], [class*="save"] *, [id*="save"], [id*="Save"]{-webkit-user-select:text;user-select:text;}</style>
+<script>
+/* ================= NIENTE COPIA-INCOLLA negli esercizi (tutto il sito) ================= */
+(function(){
+  const FIELD='input:not([type=password]):not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]):not(.save-import-input):not(#importInput):not(#impInput):not([placeholder*="codice"]), textarea';
+  const FREE='[class*="save"],[id*="save"],[id*="Save"]';   /* codice di salvataggio: si copia e si incolla */
+  const last=new WeakMap();
+  const isField=el=>el&&el.matches&&el.matches(FIELD)&&!el.closest(FREE);
+  const anyField=el=>el&&el.closest&&el.closest("input,textarea");
+  function warn(el){
+    let n=el.parentElement&&el.parentElement.querySelector(".nopaste");
+    if(!n){n=document.createElement("div");n.className="nopaste";n.style.cssText="font-size:13px;font-weight:700;color:#c0392b;margin:4px 0";el.insertAdjacentElement("afterend",n);}
+    n.textContent="\u270B Qui non si può incollare: scrivi tu la risposta.";
+    clearTimeout(n._t);n._t=setTimeout(()=>n.remove(),4000);
+  }
+  ["paste","drop"].forEach(ev=>document.addEventListener(ev,e=>{const el=e.target.closest&&e.target.closest("input,textarea");if(isField(el)){e.preventDefault();warn(el);}},true));
+  document.addEventListener("focusin",e=>{if(isField(e.target))last.set(e.target,e.target.value);});
+  document.addEventListener("beforeinput",e=>{
+    const el=e.target;if(!isField(el))return;
+    last.set(el,el.value);
+    if(/^insertFrom(Paste|Drop)/.test(e.inputType)||((e.data||"").length>30)){e.preventDefault();warn(el);}
+  },true);
+  document.addEventListener("input",e=>{
+    const el=e.target;if(!isField(el))return;
+    const prev=last.has(el)?last.get(el):"";
+    if(el.value.length-prev.length>30){el.value=prev;warn(el);e.stopImmediatePropagation();}
+    else last.set(el,el.value);
+  },true);
+  /* niente copia del testo della pagina (consegne, frasi, testi); dentro le proprie risposte e il codice di salvataggio si può */
+  ["copy","cut"].forEach(ev=>document.addEventListener(ev,e=>{
+    if(anyField(document.activeElement)||anyField(e.target))return;
+    const s=document.getSelection(),a=s&&s.anchorNode&&(s.anchorNode.nodeType===1?s.anchorNode:s.anchorNode.parentElement);
+    if(a&&a.closest&&(a.closest(FREE)||anyField(a)))return;
+    if(e.target.closest&&e.target.closest(FREE))return;
+    e.preventDefault();
+  },true));
+  document.addEventListener("contextmenu",e=>{if(!anyField(e.target)&&!(e.target.closest&&e.target.closest(FREE)))e.preventDefault();},true);
+  document.addEventListener("selectstart",e=>{const t=e.target.nodeType===1?e.target:e.target.parentElement;if(t&&!anyField(t)&&!t.closest(FREE))e.preventDefault();},true);
+})();
+</script>
 </body>
 </html>
