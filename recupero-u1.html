@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 1 · Recupero — Present simple</title>
+<meta property="og:title" content="Present Simple — Grammar Quest">
+<meta property="og:description" content="Esercizi interattivi di Present Simple">
+<meta property="og:type" content="website">
+<meta name="description" content="Esercizi interattivi di Present Simple">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a1628;--surface:rgba(255,255,255,0.09);--border:rgba(255,255,255,0.18);--text:#ffffff;--text-dim:rgba(255,255,255,0.75);--text-muted:rgba(255,255,255,0.45);--cyan:#00f0ff;--cyan-dim:rgba(0,240,255,0.15);--cyan-glow:rgba(0,240,255,0.6);--green:#00ff88;--green-dim:rgba(0,255,136,0.15);--green-glow:rgba(0,255,136,0.6);--red:#ff4d6d;--gold:#ffcc00;--gold-dim:rgba(255,204,0,0.18);--gold-glow:rgba(255,204,0,0.6);--purple:#cc77ff;--purple-dim:rgba(204,119,255,0.18);--purple-glow:rgba(204,119,255,0.6);--orange:#ff8c42;--radius:12px;--radius-sm:6px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{min-height:100vh;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:16px;overflow-x:hidden;position:relative;background:linear-gradient(160deg,#060d1e 0%,#0e1a3a 35%,#161030 65%,#060d1e 100%);}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 55% 45% at 15% 25%,rgba(0,100,220,0.35) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 85% 75%,rgba(80,20,160,0.3) 0%,transparent 70%),radial-gradient(ellipse 40% 35% at 55% 5%,rgba(0,180,255,0.2) 0%,transparent 65%);pointer-events:none;z-index:0;}
+#starCanvas{position:fixed;inset:0;z-index:1;pointer-events:none;}
+#particleCanvas{position:fixed;inset:0;z-index:3;pointer-events:none;}
+header{position:relative;z-index:10;padding:0 24px;height:62px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,13,30,0.85);border-bottom:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(16px);}
+header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);opacity:0.9;}
+.logo{font-family:'Orbitron',monospace;font-weight:900;font-size:18px;letter-spacing:4px;background:linear-gradient(135deg,#00f0ff,#ffffff,#cc77ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 10px rgba(0,240,255,0.5));}
+.logo-sub{font-size:10px;letter-spacing:2px;color:var(--text-muted);font-family:'Rajdhani',sans-serif;-webkit-text-fill-color:var(--text-muted);display:block;margin-top:-3px;}
+.btn-reset{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:1px;padding:7px 14px;border:1px solid rgba(255,77,109,0.35);background:rgba(255,77,109,0.07);color:rgba(255,255,255,0.45);border-radius:var(--radius-sm);cursor:pointer;transition:all 0.25s;}
+.btn-reset:hover{border-color:var(--red);color:var(--red);background:rgba(255,77,109,0.14);}
+.screen{display:none;position:relative;z-index:2;padding:24px;max-width:860px;margin:0 auto;}
+.screen.active{display:block;}
+.map-hero{text-align:center;padding:28px 0 20px;}
+.map-hero h1{font-family:'Orbitron',monospace;font-weight:900;font-size:36px;letter-spacing:6px;background:linear-gradient(135deg,#00f0ff 0%,#ffffff 50%,#cc77ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:titleGlow 3s ease-in-out infinite;margin-bottom:6px;}
+.map-hero h2{font-family:'Orbitron',monospace;font-weight:600;font-size:13px;letter-spacing:4px;color:var(--cyan);opacity:0.7;margin-bottom:8px;}
+@keyframes titleGlow{0%,100%{filter:drop-shadow(0 0 14px rgba(0,240,255,0.5));}50%{filter:drop-shadow(0 0 32px rgba(0,240,255,0.9));}}
+.map-hero p{color:var(--text-muted);font-size:13px;letter-spacing:3px;text-transform:uppercase;}
+.xp-panel{background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius);padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;gap:14px;backdrop-filter:blur(10px);}
+.xp-label{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--text-muted);min-width:24px;}
+.xp-track{flex:1;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:4px;height:14px;overflow:hidden;position:relative;}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--cyan),#8800ff,var(--purple));background-size:200% 100%;border-radius:4px;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);animation:xpShimmer 2.5s linear infinite;box-shadow:0 0 10px var(--cyan-glow);}
+@keyframes xpShimmer{0%{background-position:0% 0%;}100%{background-position:200% 0%;}}
+.xp-fill::after{content:'';position:absolute;top:0;right:0;width:8px;height:100%;background:white;opacity:0.7;filter:blur(2px);}
+.xp-num{font-family:'Orbitron',monospace;font-size:12px;color:#fff;white-space:nowrap;font-weight:700;}
+.sections-list{display:flex;flex-direction:column;gap:9px;}
+.section-card{border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;gap:14px;transition:all 0.25s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden;border:2px solid;}
+.section-card::after{content:'';position:absolute;top:0;left:0;right:0;height:42%;background:linear-gradient(180deg,rgba(255,255,255,0.07) 0%,transparent 100%);pointer-events:none;border-radius:10px 10px 0 0;}
+.section-card.locked{background:linear-gradient(135deg,rgba(100,90,130,0.35) 0%,rgba(70,60,100,0.3) 100%);border-color:rgba(180,170,210,0.25);cursor:not-allowed;filter:saturate(0.3) brightness(0.7);}
+.section-card.unlocked{background:linear-gradient(135deg,rgba(0,180,255,0.28) 0%,rgba(60,30,180,0.35) 100%);border-color:var(--cyan);cursor:pointer;animation:unlockBreath 3s ease-in-out infinite;}
+@keyframes unlockBreath{0%,100%{box-shadow:0 4px 20px rgba(0,0,0,0.4),0 0 12px rgba(0,240,255,0.25);}50%{box-shadow:0 4px 24px rgba(0,0,0,0.4),0 0 28px rgba(0,240,255,0.55);}}
+.section-card.unlocked:hover{transform:translateX(7px) scale(1.01);border-color:#55ffff;box-shadow:0 6px 28px rgba(0,0,0,0.5),0 0 42px rgba(0,240,255,0.65)!important;animation:none;}
+.section-card.completed{background:linear-gradient(135deg,rgba(0,140,70,0.55) 0%,rgba(0,80,40,0.45) 100%);border-color:var(--green);opacity:0.8;}
+.section-card.revision{background:linear-gradient(135deg,rgba(200,140,0,0.5) 0%,rgba(120,80,0,0.45) 100%);border-color:var(--gold);cursor:pointer;animation:revPulse 2s ease-in-out infinite;}
+@keyframes revPulse{0%,100%{box-shadow:0 4px 20px rgba(0,0,0,0.4),0 0 14px rgba(255,204,0,0.3);}50%{box-shadow:0 4px 24px rgba(0,0,0,0.4),0 0 32px rgba(255,204,0,0.65);}}
+.section-card.revision:hover{transform:translateX(7px) scale(1.01);border-color:#ffee44;box-shadow:0 6px 28px rgba(0,0,0,0.5),0 0 44px rgba(255,204,0,0.75)!important;animation:none;}
+.section-card.revision-done{background:linear-gradient(135deg,rgba(0,140,70,0.5),rgba(0,80,40,0.4));border-color:var(--green);opacity:0.65;}
+.section-card.difficult{background:linear-gradient(135deg,rgba(150,40,220,0.55) 0%,rgba(90,10,150,0.5) 100%);border-color:var(--purple);cursor:pointer;animation:bossPulse 1.6s ease-in-out infinite;}
+@keyframes bossPulse{0%,100%{box-shadow:0 4px 20px rgba(0,0,0,0.4),0 0 16px rgba(204,119,255,0.3);}50%{box-shadow:0 4px 24px rgba(0,0,0,0.4),0 0 38px rgba(204,119,255,0.7);}}
+.section-card.difficult:hover{transform:translateX(7px) scale(1.01);border-color:#ee88ff;box-shadow:0 6px 28px rgba(0,0,0,0.5),0 0 50px rgba(204,119,255,0.8)!important;animation:none;}
+.section-card.difficult-done{background:linear-gradient(135deg,rgba(0,140,70,0.5),rgba(0,80,40,0.4));border-color:var(--green);opacity:0.65;}
+.sc-icon{font-family:'Orbitron',monospace;font-weight:900;font-size:20px;min-width:46px;text-align:center;flex-shrink:0;}
+.section-card.locked .sc-icon{color:rgba(200,190,220,0.5);}
+.section-card.unlocked .sc-icon{color:#ffffff;text-shadow:0 0 16px var(--cyan-glow);}
+.section-card.completed .sc-icon{color:var(--green);text-shadow:0 0 12px var(--green-glow);}
+.section-card.revision .sc-icon{color:#fff8aa;text-shadow:0 0 16px var(--gold-glow);}
+.section-card.revision-done .sc-icon{color:var(--green);}
+.section-card.difficult .sc-icon{color:#ffffff;text-shadow:0 0 20px var(--purple-glow);font-size:22px;}
+.section-card.difficult-done .sc-icon{color:var(--green);}
+.sc-body{flex:1;min-width:0;}
+.sc-title{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.section-card.locked .sc-title{color:rgba(200,190,220,0.55);}
+.section-card.unlocked .sc-title{color:#ffffff;}
+.section-card.completed .sc-title{color:#aaffcc;}
+.section-card.revision .sc-title{color:#fff8aa;}
+.section-card.revision-done .sc-title{color:#aaffcc;}
+.section-card.difficult .sc-title{color:#f0ccff;}
+.section-card.difficult-done .sc-title{color:#aaffcc;}
+.sc-desc{font-size:13px;color:rgba(255,255,255,0.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.section-card.unlocked .sc-desc{color:rgba(255,255,255,0.65);}
+.section-card.revision .sc-desc{color:rgba(255,248,170,0.65);}
+.section-card.difficult .sc-desc{color:rgba(240,204,255,0.65);}
+.sc-badge{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:1px;padding:5px 11px;border-radius:4px;white-space:nowrap;border:1px solid;flex-shrink:0;font-weight:700;}
+.badge-locked{border-color:rgba(200,190,220,0.3);color:rgba(200,190,220,0.45);background:rgba(100,90,130,0.2);}
+.badge-todo{border-color:var(--cyan);color:#ffffff;background:rgba(0,180,255,0.35);}
+.badge-done{border-color:var(--green);color:#aaffcc;background:rgba(0,160,80,0.3);}
+.badge-required{border-color:var(--gold);color:#fff8aa;background:rgba(180,130,0,0.4);}
+.badge-required-purple{border-color:var(--purple);color:#f0ccff;background:rgba(130,40,200,0.4);}
+.ex-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.12);flex-wrap:wrap;gap:10px;}
+.ex-title{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--cyan);text-shadow:0 0 12px var(--cyan-glow);}
+.hud{display:flex;align-items:center;gap:12px;margin-bottom:16px;background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius);padding:11px 16px;flex-wrap:wrap;backdrop-filter:blur(10px);}
+.hud-track{flex:1;min-width:120px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.1);border-radius:3px;height:10px;overflow:hidden;}
+.hud-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:3px;transition:width 0.4s ease;box-shadow:0 0 8px var(--cyan-glow);}
+.hud-text{font-family:'Orbitron',monospace;font-size:11px;color:#fff;font-weight:700;white-space:nowrap;}
+.hud-ok{font-family:'Orbitron',monospace;font-size:12px;color:var(--green);font-weight:700;}
+.hud-bad{font-family:'Orbitron',monospace;font-size:12px;color:var(--red);font-weight:700;}
+.rule-box{background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.22);border-radius:var(--radius);padding:14px 18px;margin-bottom:16px;font-size:14px;color:var(--text-dim);line-height:1.7;}
+.rule-box strong{color:var(--cyan);font-weight:700;}
+.rule-box code{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.15);border-radius:4px;padding:2px 8px;font-family:'Rajdhani',sans-serif;font-size:13px;color:#ffffff;letter-spacing:0.5px;}
+.rule-box .rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+.rule-box .rule-col{background:rgba(0,0,0,0.2);border-radius:6px;padding:10px 12px;font-size:13px;}
+.rule-box .rule-col h4{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--gold);margin-bottom:6px;}
+.ex-card{background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.22);border-radius:var(--radius);padding:24px 28px;margin-bottom:14px;position:relative;overflow:hidden;animation:cardIn 0.3s cubic-bezier(0.4,0,0.2,1);backdrop-filter:blur(14px);box-shadow:0 8px 32px rgba(0,0,0,0.35);}
+.ex-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.ex-type-badge{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:2px;color:var(--text-muted);margin-bottom:10px;}
+.ex-question{font-size:17px;font-weight:600;color:#ffffff;line-height:1.7;margin-bottom:18px;}
+.fill-input{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.25);border-radius:var(--radius-sm);padding:9px 14px;font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:600;color:#ffffff;outline:none;transition:all 0.2s;letter-spacing:0.5px;min-width:180px;max-width:100%;}
+.fill-input:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,240,255,0.2),0 0 14px rgba(0,240,255,0.2);background:rgba(0,240,255,0.05);}
+.fill-input.correct{border-color:var(--green);background:rgba(0,255,136,0.1);color:var(--green);box-shadow:0 0 0 2px rgba(0,255,136,0.2),0 0 14px var(--green-glow);}
+.fill-input.wrong{border-color:var(--red);background:rgba(255,77,109,0.1);color:var(--red);}
+.mc-options{display:flex;flex-direction:column;gap:9px;margin-bottom:4px;}
+.mc-btn{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius-sm);padding:11px 18px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;color:var(--text-dim);cursor:pointer;transition:all 0.2s;text-align:left;}
+.mc-btn:hover:not(:disabled){border-color:var(--cyan);color:#ffffff;background:rgba(0,240,255,0.08);}
+.mc-btn.selected{border-color:var(--cyan);color:#ffffff;background:rgba(0,240,255,0.12);}
+.mc-btn.correct{border-color:var(--green)!important;color:var(--green)!important;background:rgba(0,255,136,0.12)!important;box-shadow:0 0 12px rgba(0,255,136,0.3);}
+.mc-btn.wrong{border-color:var(--red)!important;color:var(--red)!important;background:rgba(255,77,109,0.12)!important;}
+.mc-btn:disabled{cursor:not-allowed;}
+.word-bank{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;min-height:42px;}
+.word-chip{background:rgba(0,180,255,0.15);border:1px solid rgba(0,180,255,0.4);border-radius:6px;padding:6px 14px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;color:#ffffff;cursor:pointer;transition:all 0.18s;user-select:none;}
+.word-chip:hover{background:rgba(0,180,255,0.28);border-color:var(--cyan);transform:translateY(-1px);}
+.word-chip.used{opacity:0.3;cursor:not-allowed;background:rgba(100,100,100,0.15);border-color:rgba(255,255,255,0.1);}
+.answer-area{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius-sm);padding:10px 14px;min-height:48px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px;}
+.answer-area .word-chip{background:rgba(60,30,180,0.3);border-color:rgba(120,80,255,0.5);}
+.answer-area .word-chip:hover{background:rgba(80,40,200,0.4);border-color:var(--purple);}
+.answer-area.correct{border-color:var(--green);background:rgba(0,255,136,0.05);}
+.answer-area.wrong{border-color:var(--red);background:rgba(255,77,109,0.05);}
+.reorder-hint{font-size:13px;color:var(--text-muted);margin-bottom:10px;font-style:italic;}
+.word-box{background:rgba(0,240,255,0.07);border:1px solid rgba(0,240,255,0.3);border-radius:var(--radius-sm);padding:10px 16px;margin-bottom:14px;font-size:15px;font-weight:600;color:var(--cyan);letter-spacing:0.5px;}
+.word-box span{color:var(--text-muted);font-size:12px;letter-spacing:2px;font-family:'Orbitron',monospace;display:block;margin-bottom:6px;}
+.wb-sentences{display:flex;flex-direction:column;gap:10px;margin-bottom:4px;}
+.wb-item{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600;color:#ffffff;flex-wrap:wrap;}
+.wb-item .fill-input{min-width:140px;}
+.ec-wrong{font-size:16px;color:var(--red);text-decoration:line-through;margin-bottom:10px;padding:8px 12px;background:rgba(255,77,109,0.08);border-radius:var(--radius-sm);border:1px solid rgba(255,77,109,0.2);}
+.ec-label{font-size:13px;color:var(--text-muted);margin-bottom:8px;}
+.feedback-msg{margin-top:10px;font-size:14px;font-weight:600;min-height:20px;}
+.feedback-msg.ok{color:var(--green);}
+.feedback-msg.err{color:var(--red);}
+.action-bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+.btn{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;padding:11px 22px;border-radius:var(--radius-sm);border:1px solid;cursor:pointer;transition:all 0.2s;backdrop-filter:blur(8px);}
+.btn-primary{background:rgba(0,200,255,0.2);border-color:var(--cyan);color:#ffffff;}
+.btn-primary:hover{background:rgba(0,200,255,0.32);box-shadow:0 0 22px rgba(0,240,255,0.5);transform:translateY(-2px);}
+.btn-secondary{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.22);color:var(--text-dim);}
+.btn-secondary:hover{border-color:rgba(255,255,255,0.5);color:#ffffff;}
+.btn-green{background:rgba(0,200,100,0.22);border-color:var(--green);color:#aaffcc;}
+.btn-green:hover{background:rgba(0,200,100,0.34);box-shadow:0 0 22px rgba(0,255,136,0.5);transform:translateY(-2px);}
+.btn-back{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:1px;padding:7px 14px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.07);color:var(--text-dim);border-radius:var(--radius-sm);cursor:pointer;transition:all 0.2s;}
+.btn-back:hover{border-color:var(--cyan);color:var(--cyan);}
+.results-card{background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius);padding:36px;text-align:center;backdrop-filter:blur(14px);box-shadow:0 8px 40px rgba(0,0,0,0.4);position:relative;overflow:hidden;}
+.results-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--green),var(--purple),transparent);}
+.res-pct{font-family:'Orbitron',monospace;font-weight:900;font-size:72px;line-height:1;margin-bottom:8px;}
+.res-pct.pass{color:var(--green);text-shadow:0 0 30px var(--green-glow);animation:winGlow 1.5s ease-in-out infinite;}
+@keyframes winGlow{0%,100%{text-shadow:0 0 20px var(--green-glow);}50%{text-shadow:0 0 50px var(--green-glow),0 0 80px rgba(0,255,136,0.4);}}
+.res-pct.fail{color:var(--red);}
+.res-label{font-family:'Orbitron',monospace;font-size:12px;letter-spacing:4px;margin-bottom:6px;}
+.res-label.pass{color:var(--green);}.res-label.fail{color:var(--red);}
+.res-threshold{font-size:12px;color:var(--text-muted);letter-spacing:1px;margin-bottom:24px;}
+.res-breakdown{display:flex;justify-content:center;gap:36px;margin-bottom:24px;flex-wrap:wrap;}
+.rb-item{text-align:center;}
+.rb-num{font-family:'Orbitron',monospace;font-weight:900;font-size:34px;}
+.rb-num.g{color:var(--green);text-shadow:0 0 14px var(--green-glow);}.rb-num.r{color:var(--red);}
+.rb-label{font-size:9px;letter-spacing:2px;color:var(--text-muted);font-family:'Orbitron',monospace;}
+.retry-notice{background:rgba(255,140,66,0.12);border:1px solid rgba(255,140,66,0.3);border-radius:var(--radius-sm);padding:9px 14px;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--orange);margin-bottom:12px;}
+.completion-banner{background:rgba(255,255,255,0.09);border:2px solid rgba(255,204,0,0.55);border-radius:var(--radius);padding:40px;text-align:center;backdrop-filter:blur(14px);box-shadow:0 8px 40px rgba(255,204,0,0.2);position:relative;overflow:hidden;}
+.completion-banner::before{content:'';position:absolute;top:0;left:-200%;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:scanGold 2s linear infinite;}
+@keyframes scanGold{to{left:200%;}}
+.cb-emoji{font-size:60px;margin-bottom:14px;display:block;animation:trophy 1s ease-in-out infinite;}
+@keyframes trophy{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-8px) scale(1.05);}}
+.cb-title{font-family:'Orbitron',monospace;font-weight:900;font-size:22px;letter-spacing:4px;color:var(--gold);text-shadow:0 0 25px var(--gold-glow);margin-bottom:8px;}
+.cb-text{color:var(--text-muted);font-size:13px;letter-spacing:2px;}
+.ex-card.flash-correct{animation:fCorrect 0.5s ease forwards!important;}
+.ex-card.flash-wrong{animation:fWrong 0.4s ease forwards!important;}
+@keyframes fCorrect{0%{border-color:rgba(255,255,255,0.22)}40%{border-color:var(--green);box-shadow:0 0 40px var(--green-glow),inset 0 0 30px rgba(0,255,136,0.1)}100%{border-color:rgba(255,255,255,0.22)}}
+@keyframes fWrong{0%{border-color:rgba(255,255,255,0.22)}40%{border-color:var(--red);box-shadow:0 0 25px rgba(255,77,109,0.5)}100%{border-color:rgba(255,255,255,0.22)}}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,10,0.85);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;backdrop-filter:blur(8px);}
+.modal{background:rgba(10,18,40,0.97);border:1px solid rgba(255,255,255,0.18);border-radius:var(--radius);padding:32px;max-width:380px;width:100%;text-align:center;position:relative;}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent);}
+.modal h2{font-family:'Orbitron',monospace;font-size:14px;letter-spacing:2px;color:var(--red);margin-bottom:12px;}
+.modal p{color:var(--text-dim);font-size:14px;margin-bottom:24px;line-height:1.7;}
+.modal-actions{display:flex;gap:10px;justify-content:center;}
+.save-panel{background:rgba(0,0,0,0.35);border:1px solid rgba(0,240,255,0.25);border-radius:var(--radius);padding:14px 20px;margin-bottom:20px;backdrop-filter:blur(10px);}
+.save-panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.save-panel-label{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--cyan);opacity:0.75;}
+.save-code-display{font-family:'Orbitron',monospace;font-size:17px;font-weight:700;letter-spacing:4px;color:#ffffff;background:rgba(0,0,0,0.45);border:1px solid rgba(0,240,255,0.3);border-radius:var(--radius-sm);padding:9px 18px;text-align:center;word-break:break-all;text-shadow:0 0 10px rgba(0,240,255,0.4);margin-bottom:10px;}
+.save-panel-hint{font-size:12px;color:var(--text-muted);margin-bottom:10px;line-height:1.5;}
+.save-panel-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.save-import-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);}
+.save-import-input{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius-sm);padding:8px 14px;font-family:'Orbitron',monospace;font-size:13px;letter-spacing:2px;color:#ffffff;outline:none;flex:1;min-width:180px;transition:border-color 0.2s;}
+.save-import-input:focus{border-color:var(--cyan);}
+.save-import-input::placeholder{color:rgba(255,255,255,0.2);font-size:11px;}
+.save-import-msg{font-size:12px;margin-top:6px;min-height:16px;}
+.save-import-msg.ok{color:var(--green);}
+.save-import-msg.err{color:var(--red);}
+.btn-save{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid rgba(0,240,255,0.45);background:rgba(0,180,255,0.15);color:var(--cyan);cursor:pointer;transition:all 0.2s;}
+.btn-save:hover{background:rgba(0,180,255,0.28);border-color:var(--cyan);box-shadow:0 0 14px rgba(0,240,255,0.35);}
+.btn-save-sm{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.07);color:var(--text-dim);cursor:pointer;transition:all 0.2s;}
+.btn-save-sm:hover{border-color:rgba(255,255,255,0.45);color:#fff;}
+.wb-sol{margin-top:6px;}.wb-sol div{margin:3px 0;}
+
+.mq-btn{font-family:inherit;font-size:11px;font-weight:700;letter-spacing:.5px;padding:7px 12px;border-radius:8px;cursor:pointer;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:#fff;margin-right:8px;}
+.mq-ov{position:fixed;inset:0;z-index:9999;background:rgba(5,8,20,.75);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;}
+.mq-box{background:#f4efe2;color:#1b1d17;border-radius:16px;padding:26px;max-width:400px;width:100%;text-align:center;font-family:Inter,system-ui,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,.6);}
+.mq-box h2{font-size:22px;font-weight:800;margin:0 0 8px;color:#1b1d17;font-family:inherit;letter-spacing:0;text-transform:none;}
+.mq-box p{font-size:15px;color:#55584a;margin:0 0 18px;}
+.mq-ch{display:block;width:100%;text-align:left;padding:14px 16px;margin-top:12px;border-radius:12px;border:2px solid rgba(27,29,23,.26);background:#fffdf7;cursor:pointer;font-family:inherit;}
+.mq-ch:hover{border-color:#3f5bd6;}
+.mq-ch b{display:block;font-size:18px;color:#1b1d17;margin-bottom:3px;}
+.mq-ch span{font-size:14px;color:#55584a;line-height:1.4;}
+.mq-num{display:inline-block;font-weight:800;font-size:15px;color:#fff;background:#3f5bd6;border-radius:8px;padding:4px 11px;margin-bottom:10px;}
+.why-box{margin-top:10px;padding:9px 12px;border-left:4px solid #ffd166;background:rgba(255,209,102,.12);border-radius:6px;font-size:14.5px;line-height:1.5;}
+.rec-links{margin-top:10px;font-size:14px;line-height:1.7;}
+.rec-links a{font-weight:700;color:inherit;}
+</style>
+</head>
+<body>
+<canvas id="starCanvas"></canvas>
+<canvas id="particleCanvas"></canvas>
+<header>
+  <div><div class="logo">GRAMMAR QUEST</div><span class="logo-sub">unit 1 · recupero</span></div>
+  <div style="display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:6px"><button class="mq-btn" id="modoBtn" onclick="apriModo()">—</button><button class="btn-reset" onclick="confirmReset()">&#x27F3; RESET</button></div>
+</header>
+<div id="screen-map" class="screen active">
+  <div class="map-hero"><h1>GRAMMAR QUEST</h1><h2>UNIT 1 · RECUPERO</h2><p>gli stessi tipi di esercizio della verifica di recupero &middot; un livello alla volta, nell'ordine</p><p class="rec-links">Non ti ricordi la regola? <a href="https://cristinavallini64-maker.github.io/grammar-tutor/unit1-index.html" target="_blank">📖 Ripassa</a></p></div>
+  <div class="xp-panel">
+    <div class="xp-label">XP</div>
+    <div class="xp-track"><div class="xp-fill" id="overallBar" style="width:0%"></div></div>
+    <div class="xp-num" id="overallText">0/0</div>
+  </div>
+  <div class="save-panel">
+    <div class="save-panel-header">
+      <span class="save-panel-label">&#x1F4BE; SAVE CODE &mdash; riprendi su qualsiasi dispositivo</span>
+    </div>
+    <div class="save-code-display" id="saveCodeDisplay">&mdash;</div>
+    <div class="save-panel-hint">Copia o fotografa questo codice. Incollalo su un altro dispositivo per riprendere da qui.</div>
+    <div class="save-panel-actions">
+      <button class="btn-save" onclick="copyCode()" id="copyBtn">&#x2398; COPIA CODICE</button>
+    </div>
+    <div class="save-import-row">
+      <input class="save-import-input" id="importInput" type="text" placeholder="incolla codice da altro dispositivo..." oninput="this.value=this.value.replace(/[^A-Za-z0-9._-]/g,'')">
+      <button class="btn-save-sm" onclick="importCode()">&#x21B5; CARICA</button>
+    </div>
+    <div class="save-import-msg" id="importMsg"></div>
+  </div>
+  <div class="sections-list" id="sectionsList"></div>
+</div>
+<div id="screen-exercise" class="screen">
+  <div class="ex-header">
+    <div class="ex-title" id="exTitle"></div>
+    <button class="btn-back" onclick="goMap()">&larr; MAP</button>
+  </div>
+  <div class="hud">
+    <div class="hud-track"><div class="hud-fill" id="hudFill" style="width:0%"></div></div>
+    <div class="hud-text" id="hudText">0/0</div>
+    <span class="hud-ok" id="hudOk">&#x2713; 0</span>
+    <span class="hud-bad" id="hudBad">&#x2717; 0</span>
+  </div>
+  <div id="exerciseArea"></div>
+  <div class="action-bar">
+    <button class="btn btn-primary" id="checkBtn" onclick="checkExercise()">&#x25B6; CONTROLLA</button>
+    <button class="btn btn-secondary" id="nextBtn" onclick="nextExercise()" style="display:none">AVANTI &rarr;</button>
+  </div>
+</div>
+<div id="screen-results" class="screen"></div>
+<div id="modoModal" class="mq-ov"><div class="mq-box">
+  <h2>Come lavori oggi?</h2><p>Scegli la modalità indicata dall'insegnante.</p>
+  <button class="mq-ch" onclick="setModo('classe')"><b>🏫 Lavoro in classe</b><span>Esercizi in ordine fisso e numerati, uguali per tutti.</span></button>
+  <button class="mq-ch" onclick="setModo('casa')"><b>🏠 Lavoro a casa</b><span>Esercizi in ordine casuale.</span></button>
+</div></div>
+<div id="resetModal" class="modal-overlay" style="display:none">
+  <div class="modal">
+    <h2>&#x26A0; RESET</h2>
+    <p>Tutti i progressi verranno cancellati.</p>
+    <div class="modal-actions">
+      <button class="btn" style="background:rgba(255,77,109,0.18);border-color:var(--red);color:var(--red)" onclick="doReset()">CONFERMA</button>
+      <button class="btn btn-secondary" onclick="closeModal()">ANNULLA</button>
+    </div>
+  </div>
+</div>
+<script>
+const sc=document.getElementById('starCanvas'),sctx=sc.getContext('2d');let stars=[];
+function resizeSC(){sc.width=innerWidth;sc.height=innerHeight;stars=[];for(let i=0;i<240;i++)stars.push({x:Math.random()*sc.width,y:Math.random()*sc.height,r:Math.random()*2+0.3,alpha:Math.random()*0.9+0.1,twinkle:Math.random()*Math.PI*2,ts:Math.random()*0.02+0.005,vy:Math.random()*0.08+0.01,color:['#ffffff','#ffffff','#aaddff','#ddaaff','#ffffcc'][Math.floor(Math.random()*5)]});}
+function animStars(){sctx.clearRect(0,0,sc.width,sc.height);stars.forEach(s=>{s.twinkle+=s.ts;const a=s.alpha*(0.4+0.6*Math.sin(s.twinkle));sctx.globalAlpha=a;if(s.r>1.3){sctx.save();sctx.translate(s.x,s.y);sctx.fillStyle=s.color;sctx.beginPath();for(let i=0;i<8;i++){const ang=(i*Math.PI)/4-Math.PI/2,r=i%2===0?s.r*1.6:s.r*0.35;i===0?sctx.moveTo(Math.cos(ang)*r,Math.sin(ang)*r):sctx.lineTo(Math.cos(ang)*r,Math.sin(ang)*r);}sctx.closePath();sctx.fill();sctx.restore();}else{sctx.beginPath();sctx.arc(s.x,s.y,s.r,0,Math.PI*2);sctx.fillStyle=s.color;sctx.fill();}sctx.globalAlpha=1;s.y+=s.vy;if(s.y>sc.height+5){s.y=-5;s.x=Math.random()*sc.width;}});requestAnimationFrame(animStars);}
+window.addEventListener('resize',resizeSC);resizeSC();animStars();
+const pc=document.getElementById('particleCanvas'),pctx=pc.getContext('2d');let particles=[];
+function resizePC(){pc.width=innerWidth;pc.height=innerHeight;}window.addEventListener('resize',resizePC);resizePC();
+function spawnBurst(x,y,color,count=28){for(let i=0;i<count;i++){const a=Math.random()*Math.PI*2,sp=Math.random()*7+2;particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-2.5,r:Math.random()*4+1,alpha:1,color,gravity:0.18,decay:Math.random()*0.022+0.014,star:false});}const sc2=['#ffffff','#ffffaa','#aaffff'];for(let i=0;i<12;i++){const a=Math.random()*Math.PI*2,sp=Math.random()*11+5;particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-4,r:Math.random()*3+1.5,alpha:1,color:sc2[Math.floor(Math.random()*sc2.length)],gravity:0.12,decay:Math.random()*0.028+0.018,star:true});}}
+function drawSpk(ctx,x,y,r){ctx.beginPath();for(let i=0;i<8;i++){const a=(i*Math.PI)/4-Math.PI/2,rad=i%2===0?r:r*0.35;i===0?ctx.moveTo(x+Math.cos(a)*rad,y+Math.sin(a)*rad):ctx.lineTo(x+Math.cos(a)*rad,y+Math.sin(a)*rad);}ctx.closePath();ctx.fill();}
+function animParticles(){pctx.clearRect(0,0,pc.width,pc.height);particles=particles.filter(p=>p.alpha>0);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.gravity;p.alpha-=p.decay;pctx.globalAlpha=Math.max(0,p.alpha);pctx.fillStyle=p.color;if(p.star)drawSpk(pctx,p.x,p.y,p.r);else{pctx.beginPath();pctx.arc(p.x,p.y,p.r,0,Math.PI*2);pctx.fill();}});pctx.globalAlpha=1;requestAnimationFrame(animParticles);}
+animParticles();
+function burstAt(el,color){const r=el.getBoundingClientRect();spawnBurst(r.left+r.width/2,r.top+r.height/2,color);}
+
+const LEVELS=[
+{
+"id": 1,
+"type": "study",
+"title": "LIVELLO 01 — PRESENT SIMPLE",
+"desc": "affermativa o negativa? · decide il contesto · -s, -es, -ies",
+"rule": "<strong>PRESENT SIMPLE</strong><br>&#x2714; I / you / we / they + <code>verbo</code> &middot; he / she / it + <code>verbo + s</code><br>&#x2714; Negativa: <code>don't</code> / <code>doesn't</code> + forma base (dopo doesn't niente -s)<br>&#x2714; -ch, -sh, -ss, -x, -o → <code>-es</code> (watches, goes) &middot; consonante + y → <code>-ies</code> (studies)<br>&#x26A0; Leggi tutta la frase: la seconda parte ti dice se va la forma affermativa o negativa.",
+"exercises": [
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>My uncle ___ (fix) cars in his garage – he's a mechanic.",
+"a": "fixes",
+"accept": [
+"fixes"
+],
+"why": "He / she / it con un verbo che finisce in -ch, -sh, -ss, -x, -o → aggiungi -es."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>We ___ (go) to school on Saturdays – it's our day off.",
+"a": "don't go",
+"accept": [
+"don't go"
+],
+"why": "Soggetto I / you / we / they e il contesto dice che non succede → don't + forma base."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>Anna ___ (study) every evening – she wants to be a doctor.",
+"a": "studies",
+"accept": [
+"studies"
+],
+"why": "He / she / it: consonante + y → -ies (study → studies, try → tries)."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>My dad ___ (drink) coffee – he only drinks tea.",
+"a": "doesn't drink",
+"accept": [
+"doesn't drink"
+],
+"why": "Soggetto he / she / it e il contesto dice che non succede → doesn't + forma base, senza -s."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>The film ___ (start) at nine, so we have dinner at seven.",
+"a": "starts",
+"accept": [
+"starts"
+],
+"why": "Soggetto he / she / it (una persona, un animale, una cosa) → verbo + -s."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>Tim ___ (brush) his teeth after every meal – his teeth are perfect.",
+"a": "brushes",
+"accept": [
+"brushes"
+],
+"why": "He / she / it con un verbo che finisce in -ch, -sh, -ss, -x, -o → aggiungi -es."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>My friends ___ (like) Maths – they think it's boring.",
+"a": "don't like",
+"accept": [
+"don't like"
+],
+"why": "Soggetto I / you / we / they e il contesto dice che non succede → don't + forma base."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>Our cat ___ (sleep) on my bed every night.",
+"a": "sleeps",
+"accept": [
+"sleeps"
+],
+"why": "Soggetto he / she / it (una persona, un animale, una cosa) → verbo + -s."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>Mum ___ (work) on Wednesdays, so she picks me up from school.",
+"a": "doesn't work",
+"accept": [
+"doesn't work"
+],
+"why": "Soggetto he / she / it e il contesto dice che non succede → doesn't + forma base, senza -s."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>Ben ___ (try) to make his bed every morning, but he's always in a hurry.",
+"a": "tries",
+"accept": [
+"tries"
+],
+"why": "He / she / it: consonante + y → -ies (study → studies, try → tries)."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>My brother ___ (watch) horror films – he's scared of them!",
+"a": "doesn't watch",
+"accept": [
+"doesn't watch"
+],
+"why": "Soggetto he / she / it e il contesto dice che non succede → doesn't + forma base, senza -s."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>Emma ___ (miss) the bus when she gets up late.",
+"a": "misses",
+"accept": [
+"misses"
+],
+"why": "He / she / it con un verbo che finisce in -ch, -sh, -ss, -x, -o → aggiungi -es."
+},
+{
+"type": "errorcorrect",
+"wrong": "My sister don't like History.",
+"a": "My sister doesn't like History.",
+"accept": [
+"My sister doesn't like History."
+],
+"why": "Con he / she / it il negativo si fa con doesn't, non don't.",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+},
+{
+"type": "errorcorrect",
+"wrong": "He doesn't plays tennis on Mondays.",
+"a": "He doesn't play tennis on Mondays.",
+"accept": [
+"He doesn't play tennis on Mondays."
+],
+"why": "La -s è già in doesn't: dopo doesn't il verbo resta alla forma base.",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+},
+{
+"type": "mc",
+"q": "<em>Scegli la risposta giusta.</em><br>Perché in « She doesn't play » il verbo non ha la -s?",
+"opts": [
+"Perché la -s è già in doesn't: dopo doesn't il verbo resta alla forma base.",
+"Perché nelle frasi negative la -s va sempre sul soggetto.",
+"Perché play è un verbo irregolare."
+],
+"correct": 0
+}
+]
+},
+{
+"id": 2,
+"type": "study",
+"title": "LIVELLO 02 — HAVE O HAVE GOT?",
+"desc": "possesso o espressione fissa? · affermativa, negativa o domanda",
+"rule": "<strong>HAVE GOT</strong> = possesso: <em>I've got a dog · She hasn't got a phone · Have you got a bike?</em><br><strong>HAVE</strong> = possesso <u>e</u> espressioni fisse (have breakfast / lunch / dinner / a snack · a shower / a bath · a break · a rest / a nap / a lie-down · fun / a good time / a party)<br>&#x2714; Con have negativo e domanda si fanno con <code>do / does</code>: <em>I don't have lunch at school · Does she have a pet?</em><br>&#x26A0; Con le espressioni fisse mai have got: <em>I have breakfast</em>, non <em>I've got breakfast</em>.",
+"exercises": [
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>My aunt ___ three cats and a parrot.",
+"a": "has got",
+"accept": [
+"has got",
+"has"
+],
+"why": "Possesso (avere una cosa, un animale, un parente): have got (has got con he/she/it), oppure have con do / does."
+},
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>I always ___ a shower after PE.",
+"a": "have",
+"accept": [
+"have"
+],
+"why": "Espressione fissa con have (have breakfast, a shower, a break, fun, a rest…): si usa solo have, e negativo e domanda si fanno con do / does."
+},
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>___ (you) a pet?",
+"a": "Have you got",
+"accept": [
+"Have you got",
+"Do you have"
+],
+"why": "Possesso (avere una cosa, un animale, un parente): have got (has got con he/she/it), oppure have con do / does."
+},
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>My parents ___ breakfast together on Sundays.",
+"a": "have",
+"accept": [
+"have"
+],
+"why": "Espressione fissa con have (have breakfast, a shower, a break, fun, a rest…): si usa solo have, e negativo e domanda si fanno con do / does."
+},
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>Carlo ___ a sister – he's an only child.",
+"a": "hasn't got",
+"accept": [
+"hasn't got",
+"doesn't have"
+],
+"why": "Possesso (avere una cosa, un animale, un parente): have got (has got con he/she/it), oppure have con do / does."
+},
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>What time ___ (your brother) dinner?",
+"a": "does your brother have",
+"accept": [
+"does your brother have"
+],
+"why": "Espressione fissa con have (have breakfast, a shower, a break, fun, a rest…): si usa solo have, e negativo e domanda si fanno con do / does."
+},
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>We ___ a break at eleven every day.",
+"a": "have",
+"accept": [
+"have"
+],
+"why": "Espressione fissa con have (have breakfast, a shower, a break, fun, a rest…): si usa solo have, e negativo e domanda si fanno con do / does."
+},
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>Sorry, I ___ a pen. Can I use yours?",
+"a": "haven't got",
+"accept": [
+"haven't got",
+"don't have"
+],
+"why": "Possesso (avere una cosa, un animale, un parente): have got (has got con he/she/it), oppure have con do / does."
+},
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>___ (your school) a gym?",
+"a": "Has your school got",
+"accept": [
+"Has your school got",
+"Does your school have"
+],
+"why": "Possesso (avere una cosa, un animale, un parente): have got (has got con he/she/it), oppure have con do / does."
+},
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>My best friend ___ fun at parties – he's very shy.",
+"a": "doesn't have",
+"accept": [
+"doesn't have"
+],
+"why": "Espressione fissa con have (have breakfast, a shower, a break, fun, a rest…): si usa solo have, e negativo e domanda si fanno con do / does."
+},
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>Gina ___ a nap after lunch – she's never tired.",
+"a": "doesn't have",
+"accept": [
+"doesn't have"
+],
+"why": "Espressione fissa con have (have breakfast, a shower, a break, fun, a rest…): si usa solo have, e negativo e domanda si fanno con do / does."
+},
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>My grandparents ___ a big house in the country.",
+"a": "have got",
+"accept": [
+"have got",
+"have"
+],
+"why": "Possesso (avere una cosa, un animale, un parente): have got (has got con he/she/it), oppure have con do / does."
+},
+{
+"type": "errorcorrect",
+"wrong": "She hasn't a lunch at school.",
+"a": "She doesn't have lunch at school.",
+"accept": [
+"She doesn't have lunch at school."
+],
+"why": "Have lunch è un'espressione fissa: negativo con doesn't have, e senza a.",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+},
+{
+"type": "errorcorrect",
+"wrong": "Has he got a shower every morning?",
+"a": "Does he have a shower every morning?",
+"accept": [
+"Does he have a shower every morning?"
+],
+"why": "Have a shower è un'azione (espressione fissa): solo have, domanda con does.",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+},
+{
+"type": "mc",
+"q": "<em>Scegli la risposta giusta.</em><br>Perché si dice « I have breakfast » e mai « I've got breakfast »?",
+"opts": [
+"Perché breakfast è singolare.",
+"Perché have breakfast è un'espressione fissa (un'azione): si usa solo have, con do / does.",
+"Perché have got si usa solo con he e she."
+],
+"correct": 1
+}
+]
+},
+{
+"id": "rA",
+"type": "revision",
+"title": "⟳ RIPASSO A — present simple e have / have got",
+"desc": "livelli 01–02 insieme · frasi nuove",
+"exercises": [
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>My grandpa ___ (go) for a walk every morning.",
+"a": "goes",
+"accept": [
+"goes"
+],
+"why": "He / she / it con un verbo che finisce in -ch, -sh, -ss, -x, -o → aggiungi -es."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>Lucy ___ (eat) meat – she's vegetarian.",
+"a": "doesn't eat",
+"accept": [
+"doesn't eat"
+],
+"why": "Soggetto he / she / it e il contesto dice che non succede → doesn't + forma base, senza -s."
+},
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>___ (your cousins) a car?",
+"a": "Have your cousins got",
+"accept": [
+"Have your cousins got",
+"Do your cousins have"
+],
+"why": "Possesso (avere una cosa, un animale, un parente): have got (has got con he/she/it), oppure have con do / does."
+},
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>We ___ a party at the end of the school year.",
+"a": "have",
+"accept": [
+"have"
+],
+"why": "Espressione fissa con have (have breakfast, a shower, a break, fun, a rest…): si usa solo have, e negativo e domanda si fanno con do / does."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>The shop ___ (open) on Sundays, so we go there on Saturdays.",
+"a": "doesn't open",
+"accept": [
+"doesn't open"
+],
+"why": "Soggetto he / she / it e il contesto dice che non succede → doesn't + forma base, senza -s."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>My little brother ___ (wash) the dishes – he's only five.",
+"a": "doesn't wash",
+"accept": [
+"doesn't wash"
+],
+"why": "Soggetto he / she / it e il contesto dice che non succede → doesn't + forma base, senza -s."
+},
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>Mark always ___ a lie-down when he gets home from work.",
+"a": "has",
+"accept": [
+"has"
+],
+"why": "Espressione fissa con have (have breakfast, a shower, a break, fun, a rest…): si usa solo have, e negativo e domanda si fanno con do / does."
+},
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>I ___ a computer – I use my dad's laptop.",
+"a": "haven't got",
+"accept": [
+"haven't got",
+"don't have"
+],
+"why": "Possesso (avere una cosa, un animale, un parente): have got (has got con he/she/it), oppure have con do / does."
+},
+{
+"type": "errorcorrect",
+"wrong": "Does your sister has a bike?",
+"a": "Does your sister have a bike?",
+"accept": [
+"Does your sister have a bike?",
+"Has your sister got a bike?"
+],
+"why": "Dopo does il verbo resta alla forma base: have, non has.",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+},
+{
+"type": "errorcorrect",
+"wrong": "My teacher teach Maths and Physics.",
+"a": "My teacher teaches Maths and Physics.",
+"accept": [
+"My teacher teaches Maths and Physics."
+],
+"why": "He / she: verbo + -s; teach finisce in -ch → teaches.",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+}
+]
+},
+{
+"id": 3,
+"type": "study",
+"title": "LIVELLO 03 — DOMANDE SULLA PARTE SOTTOLINEATA",
+"desc": "What time · Where · How · How often · When · What",
+"rule": "<strong>DOMANDE CON LA PAROLA INTERROGATIVA</strong><br>&#x2714; <code>parola interrogativa + do / does + soggetto + forma base?</code> &middot; <em>Where does Anna live?</em><br>&#x2714; What time? (l'ora) &middot; When? (giorno, momento) &middot; Where? (luogo) &middot; How? (modo, mezzo) &middot; How often? (frequenza) &middot; What? (cosa)<br>&#x26A0; Dopo does niente -s: <em>Where does she live?</em>, non <em>lives</em>.",
+"exercises": [
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda per la parte sottolineata.</em><br>My sister gets home <u>at five o'clock</u>.<br>→ ___",
+"a": "What time does your sister get home?",
+"accept": [
+"What time does your sister get home?",
+"When does your sister get home?"
+],
+"why": "Per « at five o'clock » la parola interrogativa è What time; poi do / does + soggetto + forma base (niente -s dopo does)."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda per la parte sottolineata.</em><br>Paolo plays <u>tennis</u> on Fridays.<br>→ ___",
+"a": "What does Paolo play on Fridays?",
+"accept": [
+"What does Paolo play on Fridays?"
+],
+"why": "Per « tennis » la parola interrogativa è What; poi do / does + soggetto + forma base (niente -s dopo does)."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda per la parte sottolineata.</em><br>We have lunch <u>in the school canteen</u>.<br>→ ___",
+"a": "Where do you have lunch?",
+"accept": [
+"Where do you have lunch?"
+],
+"why": "Per « in the school canteen » la parola interrogativa è Where; poi do / does + soggetto + forma base (niente -s dopo does)."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda per la parte sottolineata.</em><br>My mum goes to work <u>by bike</u>.<br>→ ___",
+"a": "How does your mum go to work?",
+"accept": [
+"How does your mum go to work?"
+],
+"why": "Per « by bike » la parola interrogativa è How; poi do / does + soggetto + forma base (niente -s dopo does)."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda per la parte sottolineata.</em><br>Ella checks her messages <u>ten times a day</u>.<br>→ ___",
+"a": "How often does Ella check her messages?",
+"accept": [
+"How often does Ella check her messages?"
+],
+"why": "Per « ten times a day » la parola interrogativa è How often; poi do / does + soggetto + forma base (niente -s dopo does)."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda per la parte sottolineata.</em><br>They go skateboarding <u>on Sunday afternoons</u>.<br>→ ___",
+"a": "When do they go skateboarding?",
+"accept": [
+"When do they go skateboarding?"
+],
+"why": "Per « on Sunday afternoons » la parola interrogativa è When; poi do / does + soggetto + forma base (niente -s dopo does)."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda per la parte sottolineata.</em><br>My brother studies <u>French</u> at school.<br>→ ___",
+"a": "What does your brother study at school?",
+"accept": [
+"What does your brother study at school?"
+],
+"why": "Per « French » la parola interrogativa è What; poi do / does + soggetto + forma base (niente -s dopo does)."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda per la parte sottolineata.</em><br>I go to bed <u>at half past ten</u>.<br>→ ___",
+"a": "What time do you go to bed?",
+"accept": [
+"What time do you go to bed?",
+"When do you go to bed?"
+],
+"why": "Per « at half past ten » la parola interrogativa è What time; poi do / does + soggetto + forma base (niente -s dopo does)."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda per la parte sottolineata.</em><br>My friends meet <u>in the park</u> after school.<br>→ ___",
+"a": "Where do your friends meet after school?",
+"accept": [
+"Where do your friends meet after school?"
+],
+"why": "Per « in the park » la parola interrogativa è Where; poi do / does + soggetto + forma base (niente -s dopo does)."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda per la parte sottolineata.</em><br>Giorgio has <u>two</u> brothers.<br>→ ___",
+"a": "How many brothers has Giorgio got?",
+"accept": [
+"How many brothers has Giorgio got?",
+"How many brothers does Giorgio have?"
+],
+"why": "Per « two » la parola interrogativa è How many; poi do / does + soggetto + forma base (niente -s dopo does)."
+},
+{
+"type": "errorcorrect",
+"wrong": "Where does your sister lives?",
+"a": "Where does your sister live?",
+"accept": [
+"Where does your sister live?"
+],
+"why": "Dopo does il verbo resta alla forma base: live.",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+},
+{
+"type": "errorcorrect",
+"wrong": "What time you get up?",
+"a": "What time do you get up?",
+"accept": [
+"What time do you get up?"
+],
+"why": "Manca l'ausiliare: What time + do + you + get up?",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+}
+]
+},
+{
+"id": 4,
+"type": "study",
+"title": "LIVELLO 04 — DOMANDE E RISPOSTE BREVI",
+"desc": "do / does o have got? · Yes, she does · No, I haven't",
+"rule": "<strong>DOMANDE E RISPOSTE BREVI</strong><br>&#x2714; Verbo normale: <code>Do / Does + soggetto + forma base?</code> → <em>Yes, I do. / No, she doesn't.</em><br>&#x2714; Possesso: <code>Have / Has + soggetto + got?</code> → <em>Yes, I have. / No, he hasn't.</em> (oppure <em>Do you have…? Yes, I do.</em>)<br>&#x2714; Espressioni con have: <code>Do / Does … have lunch / a shower…?</code><br>&#x26A0; Nella risposta breve non ripeti il verbo: <em>Yes, she does</em>, non <em>Yes, she likes</em>.",
+"exercises": [
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda e la risposta breve. Scegli la forma giusta del verbo. (✓) = sì, (✗) = no.</em><br>your sister / like / pizza? (✓)<br>→ ___",
+"a": "Does your sister like pizza? Yes, she does.",
+"accept": [
+"Does your sister like pizza? Yes, she does."
+],
+"why": "Scegli l'ausiliare: verbo normale → Do / Does…? · possesso → Have / Has… got? (oppure Do / Does… have?) · espressione con have (lunch, a shower…) → Do / Does… have? Nella risposta breve ripeti l'ausiliare: Yes, she does / No, I haven't."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda e la risposta breve. Scegli la forma giusta del verbo. (✓) = sì, (✗) = no.</em><br>you / have / a brother? (✗)<br>→ ___",
+"a": "Have you got a brother? No, I haven't.",
+"accept": [
+"Have you got a brother? No, I haven't.",
+"Do you have a brother? No, I don't."
+],
+"why": "Scegli l'ausiliare: verbo normale → Do / Does…? · possesso → Have / Has… got? (oppure Do / Does… have?) · espressione con have (lunch, a shower…) → Do / Does… have? Nella risposta breve ripeti l'ausiliare: Yes, she does / No, I haven't."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda e la risposta breve. Scegli la forma giusta del verbo. (✓) = sì, (✗) = no.</em><br>your parents / work / at the weekend? (✗)<br>→ ___",
+"a": "Do your parents work at the weekend? No, they don't.",
+"accept": [
+"Do your parents work at the weekend? No, they don't."
+],
+"why": "Scegli l'ausiliare: verbo normale → Do / Does…? · possesso → Have / Has… got? (oppure Do / Does… have?) · espressione con have (lunch, a shower…) → Do / Does… have? Nella risposta breve ripeti l'ausiliare: Yes, she does / No, I haven't."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda e la risposta breve. Scegli la forma giusta del verbo. (✓) = sì, (✗) = no.</em><br>Luca / have / breakfast at home? (✓)<br>→ ___",
+"a": "Does Luca have breakfast at home? Yes, he does.",
+"accept": [
+"Does Luca have breakfast at home? Yes, he does."
+],
+"why": "Scegli l'ausiliare: verbo normale → Do / Does…? · possesso → Have / Has… got? (oppure Do / Does… have?) · espressione con have (lunch, a shower…) → Do / Does… have? Nella risposta breve ripeti l'ausiliare: Yes, she does / No, I haven't."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda e la risposta breve. Scegli la forma giusta del verbo. (✓) = sì, (✗) = no.</em><br>your school / have / a swimming pool? (✗)<br>→ ___",
+"a": "Has your school got a swimming pool? No, it hasn't.",
+"accept": [
+"Has your school got a swimming pool? No, it hasn't.",
+"Does your school have a swimming pool? No, it doesn't."
+],
+"why": "Scegli l'ausiliare: verbo normale → Do / Does…? · possesso → Have / Has… got? (oppure Do / Does… have?) · espressione con have (lunch, a shower…) → Do / Does… have? Nella risposta breve ripeti l'ausiliare: Yes, she does / No, I haven't."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda e la risposta breve. Scegli la forma giusta del verbo. (✓) = sì, (✗) = no.</em><br>you and your friends / go / to the cinema on Saturdays? (✓)<br>→ ___",
+"a": "Do you and your friends go to the cinema on Saturdays? Yes, we do.",
+"accept": [
+"Do you and your friends go to the cinema on Saturdays? Yes, we do."
+],
+"why": "Scegli l'ausiliare: verbo normale → Do / Does…? · possesso → Have / Has… got? (oppure Do / Does… have?) · espressione con have (lunch, a shower…) → Do / Does… have? Nella risposta breve ripeti l'ausiliare: Yes, she does / No, I haven't."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda e la risposta breve. Scegli la forma giusta del verbo. (✓) = sì, (✗) = no.</em><br>your teacher / give / a lot of homework? (✓)<br>→ ___",
+"a": "Does your teacher give a lot of homework? Yes, she does.",
+"accept": [
+"Does your teacher give a lot of homework? Yes, she does.",
+"Does your teacher give a lot of homework? Yes, he does."
+],
+"why": "Scegli l'ausiliare: verbo normale → Do / Does…? · possesso → Have / Has… got? (oppure Do / Does… have?) · espressione con have (lunch, a shower…) → Do / Does… have? Nella risposta breve ripeti l'ausiliare: Yes, she does / No, I haven't."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda e la risposta breve. Scegli la forma giusta del verbo. (✓) = sì, (✗) = no.</em><br>Max / have / a shower after PE? (✗)<br>→ ___",
+"a": "Does Max have a shower after PE? No, he doesn't.",
+"accept": [
+"Does Max have a shower after PE? No, he doesn't."
+],
+"why": "Scegli l'ausiliare: verbo normale → Do / Does…? · possesso → Have / Has… got? (oppure Do / Does… have?) · espressione con have (lunch, a shower…) → Do / Does… have? Nella risposta breve ripeti l'ausiliare: Yes, she does / No, I haven't."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda e la risposta breve. Scegli la forma giusta del verbo. (✓) = sì, (✗) = no.</em><br>your cousins / live / in Milan? (✓)<br>→ ___",
+"a": "Do your cousins live in Milan? Yes, they do.",
+"accept": [
+"Do your cousins live in Milan? Yes, they do."
+],
+"why": "Scegli l'ausiliare: verbo normale → Do / Does…? · possesso → Have / Has… got? (oppure Do / Does… have?) · espressione con have (lunch, a shower…) → Do / Does… have? Nella risposta breve ripeti l'ausiliare: Yes, she does / No, I haven't."
+},
+{
+"type": "errorcorrect",
+"wrong": "Do you have got a tablet?",
+"a": "Have you got a tablet?",
+"accept": [
+"Have you got a tablet?",
+"Do you have a tablet?"
+],
+"why": "O have got (Have you got…?) o have con do (Do you have…?): mai insieme.",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+},
+{
+"type": "errorcorrect",
+"wrong": "Does she plays volleyball? Yes, she plays.",
+"a": "Does she play volleyball? Yes, she does.",
+"accept": [
+"Does she play volleyball? Yes, she does."
+],
+"why": "Dopo does forma base (play); nella risposta breve ripeti l'ausiliare: Yes, she does.",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+}
+]
+},
+{
+"id": "rB",
+"type": "revision",
+"title": "⟳ RIPASSO B — tutte le domande",
+"desc": "livelli 03–04 insieme · frasi nuove",
+"exercises": [
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda per la parte sottolineata.</em><br>Marta has lunch <u>at half past one</u>.<br>→ ___",
+"a": "What time does Marta have lunch?",
+"accept": [
+"What time does Marta have lunch?",
+"When does Marta have lunch?"
+],
+"why": "Per « at half past one » la parola interrogativa è What time; poi do / does + soggetto + forma base (niente -s dopo does)."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda per la parte sottolineata.</em><br>Tom tidies his room <u>once a week</u>.<br>→ ___",
+"a": "How often does Tom tidy his room?",
+"accept": [
+"How often does Tom tidy his room?"
+],
+"why": "Per « once a week » la parola interrogativa è How often; poi do / does + soggetto + forma base (niente -s dopo does)."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda e la risposta breve. Scegli la forma giusta del verbo. (✓) = sì, (✗) = no.</em><br>you / have / a tablet? (✓)<br>→ ___",
+"a": "Have you got a tablet? Yes, I have.",
+"accept": [
+"Have you got a tablet? Yes, I have.",
+"Do you have a tablet? Yes, I do."
+],
+"why": "Scegli l'ausiliare: verbo normale → Do / Does…? · possesso → Have / Has… got? (oppure Do / Does… have?) · espressione con have (lunch, a shower…) → Do / Does… have? Nella risposta breve ripeti l'ausiliare: Yes, she does / No, I haven't."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda e la risposta breve. Scegli la forma giusta del verbo. (✓) = sì, (✗) = no.</em><br>your brother / play / video games every day? (✗)<br>→ ___",
+"a": "Does your brother play video games every day? No, he doesn't.",
+"accept": [
+"Does your brother play video games every day? No, he doesn't."
+],
+"why": "Scegli l'ausiliare: verbo normale → Do / Does…? · possesso → Have / Has… got? (oppure Do / Does… have?) · espressione con have (lunch, a shower…) → Do / Does… have? Nella risposta breve ripeti l'ausiliare: Yes, she does / No, I haven't."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda e la risposta breve. Scegli la forma giusta del verbo. (✓) = sì, (✗) = no.</em><br>Sara and Leo / walk / to school? (✓)<br>→ ___",
+"a": "Do Sara and Leo walk to school? Yes, they do.",
+"accept": [
+"Do Sara and Leo walk to school? Yes, they do."
+],
+"why": "Scegli l'ausiliare: verbo normale → Do / Does…? · possesso → Have / Has… got? (oppure Do / Does… have?) · espressione con have (lunch, a shower…) → Do / Does… have? Nella risposta breve ripeti l'ausiliare: Yes, she does / No, I haven't."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda per la parte sottolineata.</em><br>We go shopping <u>at the shopping centre</u>.<br>→ ___",
+"a": "Where do you go shopping?",
+"accept": [
+"Where do you go shopping?"
+],
+"why": "Per « at the shopping centre » la parola interrogativa è Where; poi do / does + soggetto + forma base (niente -s dopo does)."
+},
+{
+"type": "errorcorrect",
+"wrong": "How often do you plays football?",
+"a": "How often do you play football?",
+"accept": [
+"How often do you play football?"
+],
+"why": "Dopo do / does il verbo resta alla forma base.",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+},
+{
+"type": "errorcorrect",
+"wrong": "Has she a big family?",
+"a": "Has she got a big family?",
+"accept": [
+"Has she got a big family?",
+"Does she have a big family?"
+],
+"why": "Con il possesso: Has she got…? oppure Does she have…?",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+}
+]
+},
+{
+"id": 5,
+"type": "study",
+"title": "LIVELLO 05 — AVVERBI ED ESPRESSIONI DI FREQUENZA",
+"desc": "always … never · once / twice a week · la posizione",
+"rule": "<strong>FREQUENZA</strong><br>&#x2714; always (100%) &middot; usually &middot; often &middot; sometimes &middot; hardly ever &middot; never (0%)<br>&#x2714; L'avverbio va <strong>prima del verbo</strong>: <em>I usually walk to school</em> &middot; ma <strong>dopo be</strong>: <em>She is never late</em><br>&#x2714; Espressioni alla fine: <em>every day · once a week · twice a month · three times a year</em><br>&#x1F4A1; Mai = never: con never il verbo è affermativo (<em>He never plays</em>, non <em>doesn't never</em>).",
+"exercises": [
+{
+"type": "fill",
+"q": "<em>Riscrivi la frase con un avverbio o un'espressione di frequenza, senza cambiare il significato.</em><br>I check my emails every day, without exception.<br>→ ___",
+"a": "I always check my emails.",
+"accept": [
+"I always check my emails.",
+"I check my emails every day.",
+"I always check my emails every day."
+],
+"why": "Frequenza: always (100%) · usually · often · sometimes · hardly ever · never (0%) · espressioni: once / twice / three times a week. L'avverbio va prima del verbo, ma dopo be."
+},
+{
+"type": "fill",
+"q": "<em>Riscrivi la frase con un avverbio o un'espressione di frequenza, senza cambiare il significato.</em><br>Our team trains on Tuesdays and Thursdays.<br>→ ___",
+"a": "Our team trains twice a week.",
+"accept": [
+"Our team trains twice a week."
+],
+"why": "Frequenza: always (100%) · usually · often · sometimes · hardly ever · never (0%) · espressioni: once / twice / three times a week. L'avverbio va prima del verbo, ma dopo be."
+},
+{
+"type": "fill",
+"q": "<em>Riscrivi la frase con un avverbio o un'espressione di frequenza, senza cambiare il significato.</em><br>We eat fish on some Fridays, but not every Friday.<br>→ ___",
+"a": "We sometimes eat fish on Fridays.",
+"accept": [
+"We sometimes eat fish on Fridays.",
+"Sometimes we eat fish on Fridays.",
+"We sometimes eat fish on Friday."
+],
+"why": "Frequenza: always (100%) · usually · often · sometimes · hardly ever · never (0%) · espressioni: once / twice / three times a week. L'avverbio va prima del verbo, ma dopo be."
+},
+{
+"type": "fill",
+"q": "<em>Riscrivi la frase con un avverbio o un'espressione di frequenza, senza cambiare il significato.</em><br>Sara isn't late for school. Not one single time!<br>→ ___",
+"a": "Sara is never late for school.",
+"accept": [
+"Sara is never late for school."
+],
+"why": "Frequenza: always (100%) · usually · often · sometimes · hardly ever · never (0%) · espressioni: once / twice / three times a week. L'avverbio va prima del verbo, ma dopo be."
+},
+{
+"type": "fill",
+"q": "<em>Riscrivi la frase con un avverbio o un'espressione di frequenza, senza cambiare il significato.</em><br>My parents go to the theatre once a year, or even less.<br>→ ___",
+"a": "My parents hardly ever go to the theatre.",
+"accept": [
+"My parents hardly ever go to the theatre."
+],
+"why": "Frequenza: always (100%) · usually · often · sometimes · hardly ever · never (0%) · espressioni: once / twice / three times a week. L'avverbio va prima del verbo, ma dopo be."
+},
+{
+"type": "fill",
+"q": "<em>Riscrivi la frase con un avverbio o un'espressione di frequenza, senza cambiare il significato.</em><br>My dad cooks on most evenings.<br>→ ___",
+"a": "My dad usually cooks in the evening.",
+"accept": [
+"My dad usually cooks in the evening.",
+"My dad usually cooks in the evenings.",
+"My dad usually cooks.",
+"My dad often cooks in the evening."
+],
+"why": "Frequenza: always (100%) · usually · often · sometimes · hardly ever · never (0%) · espressioni: once / twice / three times a week. L'avverbio va prima del verbo, ma dopo be."
+},
+{
+"type": "fill",
+"q": "<em>Riscrivi la frase con un avverbio o un'espressione di frequenza, senza cambiare il significato.</em><br>We clean the windows on the second Saturday of every month.<br>→ ___",
+"a": "We clean the windows once a month.",
+"accept": [
+"We clean the windows once a month."
+],
+"why": "Frequenza: always (100%) · usually · often · sometimes · hardly ever · never (0%) · espressioni: once / twice / three times a week. L'avverbio va prima del verbo, ma dopo be."
+},
+{
+"type": "fill",
+"q": "<em>Riscrivi la frase con un avverbio o un'espressione di frequenza, senza cambiare il significato.</em><br>Are you tired on most mornings?<br>→ ___",
+"a": "Are you usually tired in the morning?",
+"accept": [
+"Are you usually tired in the morning?",
+"Are you usually tired in the mornings?",
+"Are you usually tired?"
+],
+"why": "Frequenza: always (100%) · usually · often · sometimes · hardly ever · never (0%) · espressioni: once / twice / three times a week. L'avverbio va prima del verbo, ma dopo be."
+},
+{
+"type": "fill",
+"q": "<em>Riscrivi la frase con un avverbio o un'espressione di frequenza, senza cambiare il significato.</em><br>Emma goes swimming on Mondays, Wednesdays and Fridays.<br>→ ___",
+"a": "Emma goes swimming three times a week.",
+"accept": [
+"Emma goes swimming three times a week."
+],
+"why": "Frequenza: always (100%) · usually · often · sometimes · hardly ever · never (0%) · espressioni: once / twice / three times a week. L'avverbio va prima del verbo, ma dopo be."
+},
+{
+"type": "fill",
+"q": "<em>Riscrivi la frase con un avverbio o un'espressione di frequenza, senza cambiare il significato.</em><br>My cat is hungry on every single day.<br>→ ___",
+"a": "My cat is always hungry.",
+"accept": [
+"My cat is always hungry.",
+"My cat is hungry every day."
+],
+"why": "Frequenza: always (100%) · usually · often · sometimes · hardly ever · never (0%) · espressioni: once / twice / three times a week. L'avverbio va prima del verbo, ma dopo be."
+},
+{
+"type": "errorcorrect",
+"wrong": "I go always to school by bus.",
+"a": "I always go to school by bus.",
+"accept": [
+"I always go to school by bus."
+],
+"why": "L'avverbio va prima del verbo principale: I always go.",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+},
+{
+"type": "errorcorrect",
+"wrong": "She always is happy.",
+"a": "She is always happy.",
+"accept": [
+"She is always happy."
+],
+"why": "Con be l'avverbio va dopo: she is always.",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+}
+]
+},
+{
+"id": 6,
+"type": "study",
+"title": "LIVELLO 06 — PRONOMI COMPLEMENTO",
+"desc": "me · you · him · her · it · us · them",
+"rule": "<strong>PRONOMI COMPLEMENTO</strong><br>&#x2714; I → <code>me</code> &middot; you → <code>you</code> &middot; he → <code>him</code> &middot; she → <code>her</code> &middot; it → <code>it</code> &middot; we → <code>us</code> &middot; they → <code>them</code><br>&#x2714; Vanno dopo il verbo o dopo una preposizione: <em>I like him · Come with us</em><br>&#x26A0; Le cose al plurale (shoes, keys, glasses) → <code>them</code>.",
+"exercises": [
+{
+"type": "fill",
+"q": "<em>Completa con il pronome complemento giusto.</em><br>I love my new trainers. I wear ___ every day.",
+"a": "them",
+"accept": [
+"them"
+],
+"why": "loro, persone o cose al plurale → them: dopo il verbo o una preposizione va il pronome complemento."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il pronome complemento giusto.</em><br>Mr Bianchi is very funny. All the students like ___.",
+"a": "him",
+"accept": [
+"him"
+],
+"why": "lui (un uomo, un ragazzo) → him: dopo il verbo o una preposizione va il pronome complemento."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il pronome complemento giusto.</em><br>Grandma makes great cakes. We visit ___ every Sunday.",
+"a": "her",
+"accept": [
+"her"
+],
+"why": "lei (una donna, una ragazza) → her: dopo il verbo o una preposizione va il pronome complemento."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il pronome complemento giusto.</em><br>This song is fantastic! Listen to ___!",
+"a": "it",
+"accept": [
+"it"
+],
+"why": "una cosa o un animale → it: dopo il verbo o una preposizione va il pronome complemento."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il pronome complemento giusto.</em><br>My brother and I are at the station. Can you pick ___ up?",
+"a": "us",
+"accept": [
+"us"
+],
+"why": "noi → us: dopo il verbo o una preposizione va il pronome complemento."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il pronome complemento giusto.</em><br>Sorry, I can't hear you. Can you call ___ later?",
+"a": "me",
+"accept": [
+"me"
+],
+"why": "io → me: dopo il verbo o una preposizione va il pronome complemento."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il pronome complemento giusto.</em><br>My friends are at the park. I often play football with ___.",
+"a": "them",
+"accept": [
+"them"
+],
+"why": "loro, persone o cose al plurale → them: dopo il verbo o una preposizione va il pronome complemento."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il pronome complemento giusto.</em><br>Where's my school bag? I can't find ___.",
+"a": "it",
+"accept": [
+"it"
+],
+"why": "una cosa o un animale → it: dopo il verbo o una preposizione va il pronome complemento."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il pronome complemento giusto.</em><br>You're my best friend. I tell ___ everything.",
+"a": "you",
+"accept": [
+"you"
+],
+"why": "tu/voi → you: dopo il verbo o una preposizione va il pronome complemento."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il pronome complemento giusto.</em><br>Look at that boy over there! Do you know ___?",
+"a": "him",
+"accept": [
+"him"
+],
+"why": "lui (un uomo, un ragazzo) → him: dopo il verbo o una preposizione va il pronome complemento."
+},
+{
+"type": "errorcorrect",
+"wrong": "My sister is nice. I like she very much.",
+"a": "My sister is nice. I like her very much.",
+"accept": [
+"My sister is nice. I like her very much."
+],
+"why": "Dopo il verbo va il pronome complemento: she → her.",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+},
+{
+"type": "errorcorrect",
+"wrong": "Can you help we with the homework?",
+"a": "Can you help us with the homework?",
+"accept": [
+"Can you help us with the homework?"
+],
+"why": "Dopo il verbo va il pronome complemento: we → us.",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+}
+]
+},
+{
+"id": 7,
+"type": "study",
+"title": "LIVELLO 07 — LOVE / LIKE / DON'T MIND / HATE + -ING",
+"desc": "verbi di preferenza + -ing · prefer",
+"rule": "<strong>LOVE / LIKE / DON'T MIND / HATE + -ING</strong><br>&#x2714; ++ love &middot; + like &middot; = don't mind &middot; – don't like &middot; – – hate / can't stand &middot; e <em>prefer</em><br>&#x2714; Dopo questi verbi: <code>verbo + -ing</code> &middot; make → making &middot; swim → swimming &middot; take → taking<br>&#x2714; Con he / she: <em>She loves dancing · He doesn't mind cooking · He prefers reading</em><br>&#x1F4A1; Risposta con il pronome: <em>Do you like comics? – Yes, I really like them.</em>",
+"exercises": [
+{
+"type": "fill",
+"q": "<em>Scrivi la frase. Simboli: ++ = love · + = like · = = don't mind · – = don't like · – – = hate / can't stand</em><br>my sister / dance (++)<br>→ ___",
+"a": "My sister loves dancing.",
+"accept": [
+"My sister loves dancing."
+],
+"why": "Dopo love / like / don't mind / hate / can't stand / prefer il verbo va in -ing (make → making, swim → swimming). Con he / she il verbo di preferenza prende la -s: she loves, he doesn't mind."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la frase. Simboli: ++ = love · + = like · = = don't mind · – = don't like · – – = hate / can't stand</em><br>I / wash the dishes (– –)<br>→ ___",
+"a": "I hate washing the dishes.",
+"accept": [
+"I hate washing the dishes.",
+"I can't stand washing the dishes."
+],
+"why": "Dopo love / like / don't mind / hate / can't stand / prefer il verbo va in -ing (make → making, swim → swimming). Con he / she il verbo di preferenza prende la -s: she loves, he doesn't mind."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la frase. Simboli: ++ = love · + = like · = = don't mind · – = don't like · – – = hate / can't stand</em><br>my dad / cook on Sundays (+)<br>→ ___",
+"a": "My dad likes cooking on Sundays.",
+"accept": [
+"My dad likes cooking on Sundays."
+],
+"why": "Dopo love / like / don't mind / hate / can't stand / prefer il verbo va in -ing (make → making, swim → swimming). Con he / she il verbo di preferenza prende la -s: she loves, he doesn't mind."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la frase. Simboli: ++ = love · + = like · = = don't mind · – = don't like · – – = hate / can't stand</em><br>we / get up early (–)<br>→ ___",
+"a": "We don't like getting up early.",
+"accept": [
+"We don't like getting up early."
+],
+"why": "Dopo love / like / don't mind / hate / can't stand / prefer il verbo va in -ing (make → making, swim → swimming). Con he / she il verbo di preferenza prende la -s: she loves, he doesn't mind."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la frase. Simboli: ++ = love · + = like · = = don't mind · – = don't like · – – = hate / can't stand</em><br>Tom / take out the rubbish (=)<br>→ ___",
+"a": "Tom doesn't mind taking out the rubbish.",
+"accept": [
+"Tom doesn't mind taking out the rubbish."
+],
+"why": "Dopo love / like / don't mind / hate / can't stand / prefer il verbo va in -ing (make → making, swim → swimming). Con he / she il verbo di preferenza prende la -s: she loves, he doesn't mind."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la frase. Simboli: ++ = love · + = like · = = don't mind · – = don't like · – – = hate / can't stand</em><br>my friends / swim in the lake (++)<br>→ ___",
+"a": "My friends love swimming in the lake.",
+"accept": [
+"My friends love swimming in the lake."
+],
+"why": "Dopo love / like / don't mind / hate / can't stand / prefer il verbo va in -ing (make → making, swim → swimming). Con he / she il verbo di preferenza prende la -s: she loves, he doesn't mind."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la frase. Simboli: ++ = love · + = like · = = don't mind · – = don't like · – – = hate / can't stand</em><br>Lucy / clear the table after dinner (– –)<br>→ ___",
+"a": "Lucy hates clearing the table after dinner.",
+"accept": [
+"Lucy hates clearing the table after dinner.",
+"Lucy can't stand clearing the table after dinner."
+],
+"why": "Dopo love / like / don't mind / hate / can't stand / prefer il verbo va in -ing (make → making, swim → swimming). Con he / she il verbo di preferenza prende la -s: she loves, he doesn't mind."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la frase. Simboli: ++ = love · + = like · = = don't mind · – = don't like · – – = hate / can't stand</em><br>my grandpa / work in the garden (+)<br>→ ___",
+"a": "My grandpa likes working in the garden.",
+"accept": [
+"My grandpa likes working in the garden."
+],
+"why": "Dopo love / like / don't mind / hate / can't stand / prefer il verbo va in -ing (make → making, swim → swimming). Con he / she il verbo di preferenza prende la -s: she loves, he doesn't mind."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la frase. Simboli: ++ = love · + = like · = = don't mind · – = don't like · – – = hate / can't stand</em><br>Do you like comics? – Yes, I / really (+)<br>→ ___",
+"a": "Yes, I really like them.",
+"accept": [
+"Yes, I really like them."
+],
+"why": "Dopo love / like / don't mind / hate / can't stand / prefer il verbo va in -ing (make → making, swim → swimming). Con he / she il verbo di preferenza prende la -s: she loves, he doesn't mind."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la frase. Simboli: ++ = love · + = like · = = don't mind · – = don't like · – – = hate / can't stand</em><br>Marco doesn't like swimming. He / play basketball (prefer)<br>→ ___",
+"a": "He prefers playing basketball.",
+"accept": [
+"He prefers playing basketball."
+],
+"why": "Dopo love / like / don't mind / hate / can't stand / prefer il verbo va in -ing (make → making, swim → swimming). Con he / she il verbo di preferenza prende la -s: she loves, he doesn't mind."
+},
+{
+"type": "errorcorrect",
+"wrong": "My mum loves make cakes.",
+"a": "My mum loves making cakes.",
+"accept": [
+"My mum loves making cakes."
+],
+"why": "Dopo love il verbo va in -ing: making.",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+},
+{
+"type": "errorcorrect",
+"wrong": "He don't mind tidying his room.",
+"a": "He doesn't mind tidying his room.",
+"accept": [
+"He doesn't mind tidying his room."
+],
+"why": "Con he il negativo è doesn't: he doesn't mind.",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+}
+]
+},
+{
+"id": 8,
+"type": "study",
+"title": "LIVELLO 08 — DALL'ITALIANO",
+"desc": "traduzione · tutto il present simple",
+"rule": "<strong>PRIMA DI TRADURRE</strong><br>&#x2714; Chi è il soggetto? (he / she / it → -s, doesn't, does)<br>&#x2714; Frase negativa o domanda? → don't / doesn't · Do / Does<br>&#x2714; « Avere » è possesso (have got / have) o un'espressione (have breakfast, a shower)?<br>&#x2714; Avverbio di frequenza prima del verbo, dopo be &middot; dopo like / love / hate il verbo in -ing.",
+"exercises": [
+{
+"type": "fill",
+"q": "<em>Traduci in inglese.</em><br>« Mio padre non guarda mai la TV a cena. »<br>→ ___",
+"a": "My dad never watches TV at dinner.",
+"accept": [
+"My dad never watches TV at dinner.",
+"My father never watches TV at dinner.",
+"My dad never watches TV during dinner.",
+"My father never watches TV during dinner.",
+"My dad never watches TV at dinnertime."
+],
+"why": "Never + verbo affermativo; he → watches (-es dopo -ch)."
+},
+{
+"type": "fill",
+"q": "<em>Traduci in inglese.</em><br>« Quante volte alla settimana vai in palestra? »<br>→ ___",
+"a": "How many times a week do you go to the gym?",
+"accept": [
+"How many times a week do you go to the gym?",
+"How often do you go to the gym?"
+],
+"why": "How many times a week / How often + do + you + go."
+},
+{
+"type": "fill",
+"q": "<em>Traduci in inglese.</em><br>« Mia sorella ha i capelli lunghi. »<br>→ ___",
+"a": "My sister has got long hair.",
+"accept": [
+"My sister has got long hair.",
+"My sister has long hair."
+],
+"why": "Possesso: has got (o has). In inglese hair è singolare e non vuole the."
+},
+{
+"type": "fill",
+"q": "<em>Traduci in inglese.</em><br>« Non facciamo colazione a scuola. »<br>→ ___",
+"a": "We don't have breakfast at school.",
+"accept": [
+"We don't have breakfast at school."
+],
+"why": "« Fare colazione » = have breakfast, espressione fissa: negativo con don't have."
+},
+{
+"type": "fill",
+"q": "<em>Traduci in inglese.</em><br>« Ti piace cucinare? »<br>→ ___",
+"a": "Do you like cooking?",
+"accept": [
+"Do you like cooking?",
+"Do you like to cook?"
+],
+"why": "Domanda con do; dopo like il verbo in -ing."
+},
+{
+"type": "fill",
+"q": "<em>Traduci in inglese.</em><br>« A che ora finiscono le lezioni? »<br>→ ___",
+"a": "What time do lessons finish?",
+"accept": [
+"What time do lessons finish?",
+"What time do the lessons finish?",
+"When do lessons finish?",
+"What time do lessons end?",
+"What time do the lessons end?"
+],
+"why": "What time + do + soggetto plurale + forma base."
+},
+{
+"type": "fill",
+"q": "<em>Traduci in inglese.</em><br>« Mio fratello odia alzarsi presto. »<br>→ ___",
+"a": "My brother hates getting up early.",
+"accept": [
+"My brother hates getting up early.",
+"My brother can't stand getting up early."
+],
+"why": "He → hates; dopo hate il verbo in -ing."
+},
+{
+"type": "fill",
+"q": "<em>Traduci in inglese.</em><br>« Di solito pranziamo all'una. »<br>→ ___",
+"a": "We usually have lunch at one.",
+"accept": [
+"We usually have lunch at one.",
+"We usually have lunch at one o'clock.",
+"We usually have lunch at 1 o'clock.",
+"We usually have lunch at 1."
+],
+"why": "Usually prima del verbo; « pranzare » = have lunch."
+},
+{
+"type": "fill",
+"q": "<em>Traduci in inglese.</em><br>« Mia nonna non ha un computer. »<br>→ ___",
+"a": "My grandma hasn't got a computer.",
+"accept": [
+"My grandma hasn't got a computer.",
+"My grandma doesn't have a computer.",
+"My grandmother hasn't got a computer.",
+"My grandmother doesn't have a computer."
+],
+"why": "Possesso negativo: hasn't got, oppure doesn't have."
+},
+{
+"type": "fill",
+"q": "<em>Traduci in inglese.</em><br>« Lo chiamo ogni sera. »<br>→ ___",
+"a": "I call him every evening.",
+"accept": [
+"I call him every evening.",
+"I phone him every evening.",
+"I call him every night.",
+"I phone him every night."
+],
+"why": "Lo (lui) → him, dopo il verbo; every evening alla fine."
+}
+]
+},
+{
+"id": "final",
+"type": "revision",
+"title": "★ SFIDA FINALE — tutto insieme",
+"desc": "tutti i tipi di esercizio della verifica, mescolati",
+"exercises": [
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>My uncle ___ (live) in London – he lives in Manchester.",
+"a": "doesn't live",
+"accept": [
+"doesn't live"
+],
+"why": "Soggetto he / she / it e il contesto dice che non succede → doesn't + forma base, senza -s."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il present simple del verbo: affermativa o negativa? Leggi tutta la frase per decidere.</em><br>Ada always ___ (finish) her homework before dinner.",
+"a": "finishes",
+"accept": [
+"finishes"
+],
+"why": "He / she / it con un verbo che finisce in -ch, -sh, -ss, -x, -o → aggiungi -es."
+},
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>___ (your dad) a beard?",
+"a": "Has your dad got",
+"accept": [
+"Has your dad got",
+"Does your dad have"
+],
+"why": "Possesso (avere una cosa, un animale, un parente): have got (has got con he/she/it), oppure have con do / does."
+},
+{
+"type": "fill",
+"q": "<em>Completa con la forma corretta di have o have got: affermativa, negativa o domanda? Leggi tutta la frase per decidere.</em><br>I always ___ a rest after school – I'm really tired!",
+"a": "have",
+"accept": [
+"have"
+],
+"why": "Espressione fissa con have (have breakfast, a shower, a break, fun, a rest…): si usa solo have, e negativo e domanda si fanno con do / does."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda per la parte sottolineata.</em><br>Maria goes to the gym <u>three times a week</u>.<br>→ ___",
+"a": "How often does Maria go to the gym?",
+"accept": [
+"How often does Maria go to the gym?"
+],
+"why": "Per « three times a week » la parola interrogativa è How often; poi do / does + soggetto + forma base (niente -s dopo does)."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda per la parte sottolineata.</em><br>Leo starts work <u>at eight</u>.<br>→ ___",
+"a": "What time does Leo start work?",
+"accept": [
+"What time does Leo start work?",
+"When does Leo start work?"
+],
+"why": "Per « at eight » la parola interrogativa è What time; poi do / does + soggetto + forma base (niente -s dopo does)."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la domanda e la risposta breve. Scegli la forma giusta del verbo. (✓) = sì, (✗) = no.</em><br>your cousin / have / a dog? (✓)<br>→ ___",
+"a": "Has your cousin got a dog? Yes, she has.",
+"accept": [
+"Has your cousin got a dog? Yes, she has.",
+"Has your cousin got a dog? Yes, he has.",
+"Does your cousin have a dog? Yes, she does.",
+"Does your cousin have a dog? Yes, he does."
+],
+"why": "Scegli l'ausiliare: verbo normale → Do / Does…? · possesso → Have / Has… got? (oppure Do / Does… have?) · espressione con have (lunch, a shower…) → Do / Does… have? Nella risposta breve ripeti l'ausiliare: Yes, she does / No, I haven't."
+},
+{
+"type": "fill",
+"q": "<em>Riscrivi la frase con un avverbio o un'espressione di frequenza, senza cambiare il significato.</em><br>Dad is tired on most evenings, but not every evening.<br>→ ___",
+"a": "Dad is usually tired in the evening.",
+"accept": [
+"Dad is usually tired in the evening.",
+"Dad is usually tired in the evenings.",
+"Dad is usually tired."
+],
+"why": "Frequenza: always (100%) · usually · often · sometimes · hardly ever · never (0%) · espressioni: once / twice / three times a week. L'avverbio va prima del verbo, ma dopo be."
+},
+{
+"type": "fill",
+"q": "<em>Completa con il pronome complemento giusto.</em><br>I need my keys. Can you give ___ to me?",
+"a": "them",
+"accept": [
+"them"
+],
+"why": "loro, persone o cose al plurale → them: dopo il verbo o una preposizione va il pronome complemento."
+},
+{
+"type": "fill",
+"q": "<em>Scrivi la frase. Simboli: ++ = love · + = like · = = don't mind · – = don't like · – – = hate / can't stand</em><br>our cat / sleep on the sofa (++)<br>→ ___",
+"a": "Our cat loves sleeping on the sofa.",
+"accept": [
+"Our cat loves sleeping on the sofa."
+],
+"why": "Dopo love / like / don't mind / hate / can't stand / prefer il verbo va in -ing (make → making, swim → swimming). Con he / she il verbo di preferenza prende la -s: she loves, he doesn't mind."
+},
+{
+"type": "fill",
+"q": "<em>Traduci in inglese.</em><br>« Mio fratello non fa mai il letto. »<br>→ ___",
+"a": "My brother never makes his bed.",
+"accept": [
+"My brother never makes his bed."
+],
+"why": "Never + verbo affermativo; « fare il letto » = make the bed; he → makes."
+},
+{
+"type": "errorcorrect",
+"wrong": "Does he likes playing chess?",
+"a": "Does he like playing chess?",
+"accept": [
+"Does he like playing chess?"
+],
+"why": "Dopo does il verbo resta alla forma base: like.",
+"instruction": "Trova l'errore e riscrivi la frase corretta."
+}
+]
+}
+];
+
+const SK='gq_u1rec_s_v1',EK='gq_u1rec_e_v1';
+let state={},errorMap={};
+/* codice breve: segna solo i livelli completati */
+const SC_A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const SC_DONE=v=>v==='completed'||v==='revision-done'||v==='difficult-done'||v==='skipped';
+function scSum(t){let h=7;for(const c of String(t))h=(h*31+c.charCodeAt(0))%1000003;return SC_A[h%32];}
+function scMake(list,seed){const b=list.map(x=>SC_DONE(state[x.id])?1:0);while(b.length%5)b.push(0);let o='';for(let i=0;i<b.length;i+=5){let v=0;for(let k=0;k<5;k++)v=v*2+b[i+k];o+=SC_A[v];}return o+scSum(seed+o);}
+function scRead(code,list,seed){const c=String(code).toUpperCase().replace(/[^A-Z0-9]/g,'');if(c.length!==Math.ceil(list.length/5)+1)return null;for(const ch of c)if(SC_A.indexOf(ch)<0)return null;const body=c.slice(0,-1);if(scSum(seed+body)!==c.slice(-1))return null;const out=[];let n=0;for(const ch of body){const v=SC_A.indexOf(ch);for(let k=4;k>=0;k--){if(n<list.length&&(v>>k)&1)out.push(list[n]);n++;}}return out;}
+function encodeState(){return scMake(LEVELS,SK);}
+function decodeState(code){const _sc=scRead(code,LEVELS,SK);if(_sc){const s={};_sc.forEach(x=>{s[x.id]='completed';});return {s,e:null};}if(String(code).indexOf('.')<0)return null;
+  try{
+    const b64=code.trim().replace(/^[A-Za-z]+\./,'').replace(/-/g,'+').replace(/_/g,'/');
+    const pad=b64.length%4?b64+'='.repeat(4-b64.length%4):b64;
+    const raw=atob(pad);
+    const parts=raw.split('|');
+    const comp=parts[0]?parts[0].split(',').filter(Boolean):[];
+    const errs=parts[1]?parts[1].split(',').filter(Boolean):[];
+    const s={};comp.forEach(k=>{s[k]='completed';});
+    const e={};errs.forEach(k=>{e[k]=2;});
+    return {s,e};
+  }catch(ex){return null;}
+}
+function updateSaveCode(){
+  const code=encodeState();
+  const el=document.getElementById('saveCodeDisplay');
+  if(el)el.textContent=code||'—';
+}
+function copyCode(){
+  const code=document.getElementById('saveCodeDisplay').textContent;
+  if(!code||code==='—')return;
+  navigator.clipboard?.writeText(code).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=code;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+  });
+  const btn=document.getElementById('copyBtn');
+  if(btn){const orig=btn.innerHTML;btn.innerHTML='&#x2713; COPIATO!';setTimeout(()=>btn.innerHTML=orig,2000);}
+}
+function rebuildUnlocks(){
+  LEVELS.forEach((s,i)=>{if(state[s.id]==='completed'&&i+1<LEVELS.length){if(state[LEVELS[i+1].id]==='locked')state[LEVELS[i+1].id]='unlocked';}});
+  autoComplete();
+}
+function importCode(){
+  const val=(document.getElementById('importInput').value||'').trim();
+  const msg=document.getElementById('importMsg');
+  if(!val){msg.className='save-import-msg err';msg.textContent='Inserisci un codice.';return;}
+  const obj=decodeState(val);
+  if(!obj){msg.className='save-import-msg err';msg.textContent='Codice non valido — controlla di averlo copiato per intero.';return;}
+  state=obj.s;errorMap=obj.e||errorMap;
+  LEVELS.forEach(s=>{if(state[s.id]===undefined)state[s.id]='locked';});
+  if(state[LEVELS[0].id]==='locked')state[LEVELS[0].id]='unlocked';
+  rebuildUnlocks();
+  saveState();
+  msg.className='save-import-msg ok';msg.textContent='Progresso caricato! Bentornato/a ✓';
+  document.getElementById('importInput').value='';
+  renderMap();
+}
+function loadState(){try{state=JSON.parse(localStorage.getItem(SK))||{};}catch(e){state={};}try{errorMap=JSON.parse(localStorage.getItem(EK))||{};}catch(e){errorMap={};}LEVELS.forEach(s=>{if(state[s.id]!=='completed')state[s.id]='unlocked';});saveState();}
+function saveState(){try{localStorage.setItem(SK,JSON.stringify(state));}catch(e){}try{localStorage.setItem(EK,JSON.stringify(errorMap));}catch(e){}updateSaveCode();}
+function recordError(key){errorMap[key]=(errorMap[key]||0)+1;saveState();}
+function getErrors(ids){let exs=[];ids.forEach(id=>{const s=LEVELS.find(x=>x.id===id);if(s&&s.exercises)exs=exs.concat(s.exercises.map((e,i)=>({...e,_key:`${id}_${i}`})));});return exs.filter(e=>(errorMap[e._key]||0)>=2);}
+function unlockNext(cid){const idx=LEVELS.findIndex(s=>s.id===cid);if(idx<0)return;if(idx+1<LEVELS.length){const n=LEVELS[idx+1];if(state[n.id]==='locked')state[n.id]='unlocked';}autoComplete();saveState();}
+function autoComplete(){let changed=true;while(changed){changed=false;LEVELS.forEach((s,i)=>{if(s.type==='difficult'&&state[s.id]==='unlocked'&&getErrors(s.revises).length===0){state[s.id]='completed';if(i+1<LEVELS.length&&state[LEVELS[i+1].id]==='locked'){state[LEVELS[i+1].id]='unlocked';changed=true;}}});}}
+function renderMap(){
+  const list=document.getElementById('sectionsList');list.innerHTML='';
+  const total=LEVELS.length,done=LEVELS.filter(s=>state[s.id]==='completed').length;
+  document.getElementById('overallBar').style.width=`${(done/total)*100}%`;
+  document.getElementById('overallText').textContent=`${done} / ${total}`;
+  if(done===total){const b=document.createElement('div');b.className='completion-banner';b.innerHTML=`<span class="cb-emoji">&#x1F3C6;</span><div class="cb-title">GRAMMAR MASTER!</div><div class="cb-text">hai completato il recupero &middot; ora sei pronto per la verifica</div>`;list.appendChild(b);setTimeout(()=>{for(let i=0;i<8;i++)setTimeout(()=>spawnBurst(Math.random()*innerWidth,Math.random()*innerHeight*0.6,['#00f0ff','#00ff88','#ffcc00','#cc77ff'][i%4],20),i*250);},100);return;}
+  LEVELS.forEach(s=>{
+    const st=state[s.id];const card=document.createElement('div');
+    let cls='section-card ',badge='',icon='';
+    if(typeof s.id==='number')icon=String(s.id).padStart(2,'0');
+    else if(s.type==='revision')icon='&#x21BA;';else icon='&#x2605;';
+    if(st==='completed'){cls+=s.type==='difficult'?'difficult-done':s.type==='revision'?'revision-done':'completed';badge=`<span class="sc-badge badge-done">&#x2713; DONE</span>`;}
+    else if(st==='unlocked'){if(s.type==='revision'){cls+='revision';badge=`<span class="sc-badge badge-required">&#x26A0; OBB.</span>`;}else if(s.type==='difficult'){cls+='difficult';badge=`<span class="sc-badge badge-required-purple">&#x2605; ${getErrors(s.revises).length}</span>`;}else{cls+='unlocked';badge=`<span class="sc-badge badge-todo">&#x25B6; PLAY</span>`;}}
+    else{cls+='locked';badge=`<span class="sc-badge badge-locked">&#x1F512;</span>`;}
+    card.className=cls;card.innerHTML=`<div class="sc-icon">${icon}</div><div class="sc-body"><div class="sc-title">${s.title}</div><div class="sc-desc">${s.desc}</div></div>${badge}`;
+    if(st!=='locked')card.onclick=()=>openLevel(s);
+    list.appendChild(card);
+  });
+}
+let currentLevel=null,exQueue=[],exIdx=0,okCount=0,badCount=0,exChecked=false,isRetry=false,retryQueue=[],selectedMC=-1,reorderWords=[],_firstTotal=0,_firstDone=false;
+function openLevel(s){
+  currentLevel=s;let exs;
+  if(s.type==='study'){exs=s.exercises.map((e,i)=>({...e,_key:`${s.id}_${i}`}));}
+  else if(s.type==='revision'){if(s.exercises){exs=s.exercises.map((e,i)=>({...e,_key:`${s.id}_${i}`}));}else{exs=[];s.revises.forEach(id=>{const sec=LEVELS.find(x=>x.id===id);if(sec&&sec.exercises)exs=exs.concat(sec.exercises.map((e,i)=>({...e,_key:`${id}_${i}`})));});exs=(MODO==='classe'?exs:shuffle(exs)).slice(0,Math.min(exs.length,16));}}
+  else{exs=getErrors(s.revises);if(!exs.length){state[s.id]='completed';unlockNext(s.id);saveState();goMap();return;}}
+  exQueue=MODO==='classe'?exs.map((e,i)=>({...e,_n:i+1})):shuffle(exs);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=false;_firstTotal=exQueue.length;_firstDone=false;
+  document.getElementById('exTitle').textContent=currentLevel.title;
+  showScreen('exercise');renderExercise();
+}
+let MODO=null;
+function apriModo(){document.getElementById('modoModal').style.display='flex';}
+function setModo(m){MODO=m;document.getElementById('modoModal').style.display='none';document.getElementById('modoBtn').textContent=m==='classe'?'🏫 In classe':'🏠 A casa';}
+function numHtml(){const e=exQueue[exIdx];return MODO==='classe'&&e&&e._n?`<div class="mq-num">Esercizio ${e._n}</div>`:'';}
+function mix(a,seme){let h=2166136261;for(const c of String(seme))h=Math.imul(h^c.charCodeAt(0),16777619);const r=()=>{h=Math.imul(h^(h>>>15),2246822507);h=Math.imul(h^(h>>>13),3266489909);h^=h>>>16;return (h>>>0)/4294967296;};const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function renderExercise(){
+  exChecked=false;selectedMC=-1;reorderWords=[];
+  const ex=exQueue[exIdx];
+  const pct=exQueue.length>0?(exIdx/exQueue.length)*100:0;
+  document.getElementById('hudFill').style.width=`${pct}%`;
+  document.getElementById('hudText').textContent=`${exIdx+1}/${exQueue.length}`;
+  document.getElementById('hudOk').innerHTML=`&#x2713; ${okCount}`;
+  document.getElementById('hudBad').innerHTML=`&#x2717; ${badCount}`;
+  document.getElementById('checkBtn').style.display='inline-block';
+  document.getElementById('nextBtn').style.display='none';
+  const ruleHtml=currentLevel.type==='study'&&currentLevel.rule?`<div class="rule-box">${currentLevel.rule}</div>`:'';
+  const retryHtml=isRetry?`<div class="retry-notice">&#x26A0; ROUND DI RECUPERO &mdash; ${exQueue.length} esercizi</div>`:'';
+  let cardHtml='';
+  if(ex.type==='fill'){
+    const hintHtml=ex.hint?`<span style="color:var(--text-muted);font-size:14px;font-weight:400"> ${ex.hint}</span>`:'';
+    cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// FILL IN THE BLANK</div><div class="ex-question">${ex.q}${hintHtml}</div><input class="fill-input" id="fillInput" autocomplete="off" spellcheck="false" placeholder="scrivi qui..."><div class="feedback-msg" id="feedbackMsg"></div></div>`;
+  } else if(ex.type==='mc'){
+    const opts=ex.opts.map((o,i)=>`<button class="mc-btn" id="mcBtn${i}" onclick="selectMC(${i})">${o}</button>`).join('');
+    cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// MULTIPLE CHOICE</div><div class="ex-question">${ex.q}</div><div class="mc-options">${opts}</div><div class="feedback-msg" id="feedbackMsg"></div></div>`;
+  } else if(ex.type==='reorder'){
+    const shuffledIdx=(MODO==='classe'?mix(ex.words.map((_,i)=>i),ex.words.join(' ')):shuffle(ex.words.map((_,i)=>i)));
+    const chips=shuffledIdx.map(i=>`<div class="word-chip" id="chip${i}" onclick="addWord(${i},this)">${ex.words[i]}</div>`).join('');
+    cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// WORD ORDER</div><div class="ex-question">${ex.instruction}</div><div class="reorder-hint">Clicca le parole nell'ordine corretto &middot; clicca sulla risposta per rimuovere</div><div class="word-bank" id="wordBank">${chips}</div><div class="answer-area" id="answerArea"></div><div class="feedback-msg" id="feedbackMsg"></div></div>`;
+  } else if(ex.type==='wordbox'){
+    const items=ex.sentences.map((s,i)=>`<div class="wb-item">${s.pre||''}<input class="fill-input" id="wb${i}" autocomplete="off" spellcheck="false" placeholder="...">${s.post||''}</div>`).join('');
+    cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// WORD BOX</div><div class="ex-question">${ex.instruction}</div><div class="word-box"><span>// VERBI</span>${ex.verbs.join(' &nbsp;&middot;&nbsp; ')}</div><div class="wb-sentences">${items}</div><div class="feedback-msg" id="feedbackMsg"></div></div>`;
+  } else if(ex.type==='errorcorrect'){
+    cardHtml=`<div class="ex-card" id="exCard"><div class="ex-type-badge">// ERROR CORRECTION</div><div class="ex-question">${ex.instruction}</div><div class="ec-wrong">&#x274C; ${ex.wrong}</div><div class="ec-label">Scrivi la frase corretta:</div><input class="fill-input" id="fillInput" autocomplete="off" spellcheck="false" placeholder="scrivi qui..." style="width:100%"><div class="feedback-msg" id="feedbackMsg"></div></div>`;
+  }
+  document.getElementById('exerciseArea').innerHTML=ruleHtml+retryHtml+numHtml()+cardHtml;
+  if(ex.type==='fill'||ex.type==='errorcorrect')setTimeout(()=>{const i=document.getElementById('fillInput');if(i)i.focus();},50);{const _fi=document.getElementById('fillInput');if(_fi&&ex.type==='fill'&&String(ex.a||'').length>20){_fi.style.display='block';_fi.style.width='100%';_fi.style.maxWidth='100%';_fi.style.boxSizing='border-box';_fi.style.margin='10px 0 0';}}
+}
+function selectMC(i){if(exChecked)return;selectedMC=i;document.querySelectorAll('.mc-btn').forEach((b,j)=>b.classList.toggle('selected',j===i));}
+function addWord(idx,el){
+  if(exChecked||el.classList.contains('used'))return;
+  el.classList.add('used');const word=el.textContent;reorderWords.push({idx,word});
+  const area=document.getElementById('answerArea');const chip=document.createElement('div');chip.className='word-chip';chip.textContent=word;
+  const ci=idx;chip.onclick=()=>{if(exChecked)return;const pos=reorderWords.findIndex(w=>w.idx===ci);if(pos>-1)reorderWords.splice(pos,1);chip.remove();document.getElementById(`chip${ci}`).classList.remove('used');};
+  area.appendChild(chip);
+}
+function norm(s){s=String(s||'').toLowerCase().replace(/[’‘`´]/g,"'").replace(/'ll\b/g,' will');var c=[['what\'s','what is'],['that\'s','that is'],['it\'s','it is'],['she\'s','she is'],['he\'s','he is'],['i\'m','i am'],['you\'re','you are'],['we\'re','we are'],['they\'re','they are'],['isn\'t','is not'],['aren\'t','are not'],['wasn\'t','was not'],['weren\'t','were not'],['doesn\'t','does not'],['don\'t','do not'],['didn\'t','did not'],['hasn\'t','has not'],['haven\'t','have not'],['hadn\'t','had not'],['can\'t','cannot'],['won\'t','will not'],['wouldn\'t','would not'],['shouldn\'t','should not'],['couldn\'t','could not']];for(var i=0;i<c.length;i++){s=s.split(c[i][0]).join(c[i][1]);}return s.replace(/[—–-]/g,' ').replace(/[.,!?;:"“”()\[\]']/g,'').replace(/\s+/g,' ').trim();}
+// risposta breve che finisce con una contrazione affermativa (Yes, I'm / Really? I've): sbagliata,
+// anche se norm() equipara I'm e I am. Nei fill conta solo se dopo lo spazio la frase non continua.
+function contrFinale(val,ex){
+  const s=String(val||'').replace(/[’‘`´]/g,"'").trim();
+  const re=/\b(i'm|you're|we're|they're|he's|she's|it's|i've|you've|we've|they've)(?=\s*(?:[.!?,;:'"”—–-]|$))/i;
+  if(!re.test(s))return false;
+  if(ex.type==='errorcorrect')return true;
+  if(!/\b(i'm|you're|we're|they're|he's|she's|it's|i've|you've|we've|they've)[.!?,;:'"”\s]*$/i.test(s))return false;
+  const after=(String(ex.q||'').split('___')[1]||'');
+  return /^\s*(?:[.!?,;:'"’”—–-]|$|[A-Z])/.test(after);
+}
+function checkExercise(){
+  if(exChecked)return;exChecked=true;
+  const ex=exQueue[exIdx];let correct=false;
+  const card=document.getElementById('exCard');const fb=document.getElementById('feedbackMsg');
+  if(ex.type==='fill'||ex.type==='errorcorrect'){
+    const val=document.getElementById('fillInput').value;
+    const accepted=(ex.accept||[ex.a]).map(norm);correct=accepted.includes(norm(val));
+    const _cf=correct&&contrFinale(val,ex);if(_cf)correct=false;
+    const inp=document.getElementById('fillInput');inp.classList.add(correct?'correct':'wrong');inp.disabled=true;
+    fb.className='feedback-msg '+(correct?'ok':'err');fb.innerHTML=correct?'&#x2713; Corretto!':(_cf?'&#x2717; In fondo alla risposta non si usa la forma contratta (I am, non I\'m). Risposta corretta: ':'&#x2717; Risposta corretta: ')+ex.a;
+  } else if(ex.type==='wordbox'){
+    let allCorrect=true;
+    ex.sentences.forEach((s,i)=>{
+      const inp=document.getElementById(`wb${i}`);if(!inp)return;
+      const accepted=(s.accept||[s.a]).map(norm);
+      const ok=accepted.includes(norm(inp.value));
+      inp.classList.add(ok?'correct':'wrong');inp.disabled=true;
+      if(!ok)allCorrect=false;
+    });
+    correct=allCorrect;
+    fb.className='feedback-msg '+(correct?'ok':'err');
+    fb.innerHTML=correct?'&#x2713; Corretto!':'&#x2717; Soluzioni:<div class="wb-sol">'+ex.sentences.map(s=>`<div>${s.pre||''} <strong>${s.a}</strong> ${s.post||''}</div>`).join('')+'</div>';
+  } else if(ex.type==='mc'){
+    if(selectedMC<0){exChecked=false;return;}correct=selectedMC===ex.correct;
+    document.querySelectorAll('.mc-btn').forEach((b,i)=>{b.disabled=true;if(i===ex.correct)b.classList.add('correct');else if(i===selectedMC&&!correct)b.classList.add('wrong');});
+    fb.className='feedback-msg '+(correct?'ok':'err');fb.innerHTML=correct?'&#x2713; Corretto!':'&#x2717; Risposta corretta: '+ex.opts[ex.correct];
+  } else if(ex.type==='reorder'){
+    const given=reorderWords.map(w=>w.word).join(' ');const _acc=(ex.accept||[ex.answer]).map(norm);correct=_acc.includes(norm(given));
+    const area=document.getElementById('answerArea');area.classList.add(correct?'correct':'wrong');
+    fb.className='feedback-msg '+(correct?'ok':'err');fb.innerHTML=correct?'&#x2713; Corretto!':'&#x2717; Risposta corretta: '+ex.answer;
+  }
+  if(!correct&&ex.why&&fb)fb.innerHTML+='<div class="why-box">\u{1F4A1} <strong>Perch\u00e9:</strong> '+ex.why+'</div>';
+  if(correct){okCount++;if(card){card.classList.add('flash-correct');setTimeout(()=>card.classList.remove('flash-correct'),500);}burstAt(card,'#00ff88');}
+  else{badCount++;retryQueue.push(ex);if(!isRetry)recordError(ex._key);if(card){card.classList.add('flash-wrong');setTimeout(()=>card.classList.remove('flash-wrong'),400);}}
+  document.getElementById('hudOk').innerHTML=`&#x2713; ${okCount}`;document.getElementById('hudBad').innerHTML=`&#x2717; ${badCount}`;
+  document.getElementById('checkBtn').style.display='none';document.getElementById('nextBtn').style.display='inline-block';
+}
+function nextExercise(){
+  exIdx++;
+  if(exIdx>=exQueue.length){if(!isRetry&&!_firstDone){_firstDone=true;var _fp=_firstTotal>0?Math.round((okCount/_firstTotal)*100):0;if(window.EFTrack)EFTrack.event('punteggio:'+currentLevel.title,_fp);}if(retryQueue.length>0){exQueue=MODO==='classe'?retryQueue.slice().sort((a,b)=>(a._n||0)-(b._n||0)):shuffle(retryQueue);retryQueue=[];exIdx=0;okCount=0;badCount=0;exChecked=false;isRetry=true;renderExercise();}else showExResults();}
+  else renderExercise();
+}
+function showExResults(){
+  const total=exQueue.length,pct=Math.round((okCount/total)*100),passed=pct>=80;
+  if(passed){state[currentLevel.id]='completed';unlockNext(currentLevel.id);saveState();setTimeout(()=>{for(let i=0;i<6;i++)setTimeout(()=>spawnBurst(Math.random()*innerWidth,Math.random()*innerHeight*0.5,['#00f0ff','#00ff88','#ffcc00','#cc77ff'][i%4],22),i*200);},100);}
+  const btnHtml=passed?`<button class="btn btn-green" onclick="goMap()">&larr; MAPPA</button>`:`<button class="btn btn-primary" onclick="retryLevel()">&#x21BA; RIPROVA</button><button class="btn btn-secondary" onclick="goMap()">&larr; MAPPA</button>`;
+  document.getElementById('screen-results').innerHTML=`<div class="results-card"><div class="res-pct ${passed?'pass':'fail'}">${pct}%</div><div class="res-label ${passed?'pass':'fail'}">${passed?'&#x2713; LEVEL COMPLETED!':'&#x2717; TRY AGAIN'}</div><div class="res-threshold">soglia: 80% &middot; ${okCount}/${total} corretti</div><div class="res-breakdown"><div class="rb-item"><div class="rb-num g">${okCount}</div><div class="rb-label">CORRETTI</div></div><div class="rb-item"><div class="rb-num r">${badCount}</div><div class="rb-label">ERRORI</div></div></div><div class="action-bar" style="justify-content:center;margin-top:24px">${btnHtml}</div></div>`;
+  showScreen('results');
+}
+function retryLevel(){openLevel(currentLevel);}
+function confirmReset(){document.getElementById('resetModal').style.display='flex';}
+function closeModal(){document.getElementById('resetModal').style.display='none';}
+function doReset(){localStorage.removeItem(SK);localStorage.removeItem(EK);state={};errorMap={};closeModal();loadState();goMap();updateSaveCode();}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(`screen-${id}`).classList.add('active');}
+function goMap(){renderMap();showScreen('map');}
+document.addEventListener('keydown',function(e){
+  if(document.getElementById('modoModal').style.display==='flex')return;
+  if(e.key!=='Enter')return;
+  var rm=document.getElementById('resetModal'); if(rm&&rm.style.display==='flex')return;
+  var sc=document.getElementById('screen-exercise'); if(!sc||!sc.classList.contains('active'))return;
+  e.preventDefault();
+  var nb=document.getElementById('nextBtn'), cb=document.getElementById('checkBtn');
+  if(nb&&nb.style.display!=='none'){if(!e.repeat)nextExercise();}
+  else if(cb&&cb.style.display!=='none'){if(e.repeat)return;var fi=document.getElementById('fillInput');if(fi&&!fi.disabled&&!fi.value.trim())return;checkExercise();}
+});
+loadState();renderMap();apriModo();
+</script>
+<style>body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;} input, textarea, [class*="save"], [class*="save"] *, [id*="save"], [id*="Save"]{-webkit-user-select:text;user-select:text;}</style>
+<script>
+/* ================= NIENTE COPIA-INCOLLA negli esercizi (tutto il sito) ================= */
+(function(){
+  const FIELD='input:not([type=password]):not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]):not(.save-import-input):not(#importInput):not(#impInput):not([placeholder*="codice"]), textarea';
+  const FREE='[class*="save"],[id*="save"],[id*="Save"]';   /* codice di salvataggio: si copia e si incolla */
+  const last=new WeakMap();
+  const isField=el=>el&&el.matches&&el.matches(FIELD)&&!el.closest(FREE);
+  const anyField=el=>el&&el.closest&&el.closest("input,textarea");
+  function warn(el){
+    let n=el.parentElement&&el.parentElement.querySelector(".nopaste");
+    if(!n){n=document.createElement("div");n.className="nopaste";n.style.cssText="font-size:13px;font-weight:700;color:#c0392b;margin:4px 0";el.insertAdjacentElement("afterend",n);}
+    n.textContent="\u270B Qui non si può incollare: scrivi tu la risposta.";
+    clearTimeout(n._t);n._t=setTimeout(()=>n.remove(),4000);
+  }
+  ["paste","drop"].forEach(ev=>document.addEventListener(ev,e=>{const el=e.target.closest&&e.target.closest("input,textarea");if(isField(el)){e.preventDefault();warn(el);}},true));
+  document.addEventListener("focusin",e=>{if(isField(e.target))last.set(e.target,e.target.value);});
+  document.addEventListener("beforeinput",e=>{
+    const el=e.target;if(!isField(el))return;
+    last.set(el,el.value);
+    if(/^insertFrom(Paste|Drop)/.test(e.inputType)||((e.data||"").length>30)){e.preventDefault();warn(el);}
+  },true);
+  document.addEventListener("input",e=>{
+    const el=e.target;if(!isField(el))return;
+    const prev=last.has(el)?last.get(el):"";
+    if(el.value.length-prev.length>30){el.value=prev;warn(el);e.stopImmediatePropagation();}
+    else last.set(el,el.value);
+  },true);
+  /* niente copia del testo della pagina (consegne, frasi, testi); dentro le proprie risposte e il codice di salvataggio si può */
+  ["copy","cut"].forEach(ev=>document.addEventListener(ev,e=>{
+    if(anyField(document.activeElement)||anyField(e.target))return;
+    const s=document.getSelection(),a=s&&s.anchorNode&&(s.anchorNode.nodeType===1?s.anchorNode:s.anchorNode.parentElement);
+    if(a&&a.closest&&(a.closest(FREE)||anyField(a)))return;
+    if(e.target.closest&&e.target.closest(FREE))return;
+    e.preventDefault();
+  },true));
+  document.addEventListener("contextmenu",e=>{if(!anyField(e.target)&&!(e.target.closest&&e.target.closest(FREE)))e.preventDefault();},true);
+  document.addEventListener("selectstart",e=>{const t=e.target.nodeType===1?e.target:e.target.parentElement;if(t&&!anyField(t)&&!t.closest(FREE))e.preventDefault();},true);
+})();
+</script>
+</body>
+</html>
