@@ -314,7 +314,7 @@ async function sendResult(){
   const writing=`Autovalutazione: ${w.tot}/${CFG.writing.pts} (`+[...document.querySelectorAll(`#ex${WN} select`)].map((s,i)=>`${G[i][0]} ${s.value===""?"-":fmt(+s.value)}/${fmt(G[i][2])}`).join(", ")+`)\n\n`+(state.incolla?"⚠ Ha provato a incollare del testo ("+state.incolla+(state.incolla>1?" volte":" volta")+")\n\n":"")+(document.getElementById("wtext").value.trim()||"[vuoto]");
   const body=new URLSearchParams();
   body.append(FORM_FIELDS.name,name);body.append(FORM_FIELDS.voto,String(R.voto||""));
-  body.append(FORM_FIELDS.punti,`${fmt(R.tot||0)}/${CFG.total}`+(CFG.tag?` · ${CFG.tag}`:"")+((state.tentativo||1)>1?` · ${state.tentativo}° tentativo`:""));
+  body.append(FORM_FIELDS.punti,`${fmt(R.tot||0)}/${CFG.total}`+(CFG.tag?` · ${CFG.tag}`:"")+(state.sbloccato?" · dopo sblocco docente":"")+((state.tentativo||1)>1?` · ${state.tentativo}° tentativo`:""));
   body.append(FORM_FIELDS.errori,errorsText());body.append(FORM_FIELDS.writing,writing);
   b.disabled=true;b.textContent="Invio in corso…";
   try{await fetch(CFG.form,{method:"POST",mode:"no-cors",body});state.sent=name;save();showSent(name);}
@@ -354,7 +354,7 @@ function restore(){
     n.textContent="Mock test azzerato su questo dispositivo: puoi rifarlo da capo.";document.querySelector(".hero").after(n);return;
   }
   let d=null;try{d=JSON.parse(localStorage.getItem(CFG.key));}catch(e){}
-  if(!d||!Array.isArray(d.values))return;
+  if(!d||!Array.isArray(d.values))return;if(d.sbloccato)state.sbloccato=1;
   if(d.incolla)state.incolla=d.incolla;
   if(d.tentativo>1){state.tentativo=d.tentativo;if(!d.values.length&&!d.sent){const n=document.createElement("div");n.className="intro";n.style.cssText="background:var(--done-soft);border-color:var(--done);color:var(--ink);font-weight:700";n.textContent=`Stai rifacendo il mock test (${d.tentativo}° tentativo): parti da capo.`;document.querySelector(".hero").after(n);}}
   const fs=fields();d.values.forEach((v,i)=>{if(fs[i])fs[i].value=v;});
@@ -384,7 +384,7 @@ function teacherLogin(){
     <div class="btns"><button class="btn big" onclick="teacherReset()">Azzera tutto il mock test</button><button class="btn sec" onclick="location.reload()">Esci</button></div>`;
   state.locked.filter(n=>n<=NEX).forEach(n=>{const b=document.createElement("button");b.className="btn big";b.textContent="🔓 Sblocca questo esercizio";b.onclick=()=>teacherUnlock(n);document.querySelector(`#ex${n} .btns`).appendChild(b);});
 }
-function teacherUnlock(n){save();state.locked=state.locked.filter(x=>x!==n&&x!==WN);state.final=false;try{localStorage.setItem(CFG.key,JSON.stringify(state));}catch(e){}location.reload();}
+function teacherUnlock(n){save();state.locked=state.locked.filter(x=>x!==n&&x!==WN);state.final=false;delete state.sent;state.sbloccato=1;try{localStorage.setItem(CFG.key,JSON.stringify(state));}catch(e){}location.reload();}
 function teacherReset(){try{localStorage.removeItem(CFG.key);}catch(e){}location.href=location.pathname+"?azzera=docente"+(CLASSE?"&classe="+CLASSE:"");}
 document.addEventListener("input",e=>{if(e.target.matches("textarea"))grow(e.target);if(e.target.closest("main"))save();});
 document.querySelectorAll("main textarea").forEach(grow);
