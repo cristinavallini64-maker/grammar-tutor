@@ -260,7 +260,26 @@
       );
       google.accounts.id.prompt();
     };
+    s.onerror = function () { senzaPulsante(); };
     document.head.appendChild(s);
+    // Se dopo 8 secondi il pulsante Google non c'e' (finestra in incognito, cookie bloccati,
+    // rete della scuola), la pagina non deve restare bloccata: si spiega cosa fare e si lascia entrare.
+    setTimeout(function () {
+      var b = document.getElementById("ef-gbtn");
+      if (document.getElementById("ef-login-overlay") && b && !b.querySelector("iframe")) senzaPulsante();
+    }, 8000);
+  }
+
+  function senzaPulsante() {
+    var err = document.getElementById("ef-login-err");
+    if (!err || document.getElementById("ef-skip")) return;
+    err.innerHTML = "Il pulsante di accesso non si &egrave; caricato.<br>Non usare la finestra in incognito e ricarica la pagina.";
+    var a = document.createElement("button");
+    a.id = "ef-skip";
+    a.textContent = "Entra lo stesso (il lavoro non verrà registrato)";
+    a.style.cssText = "font-size:.9rem;padding:8px 14px;border-radius:8px;border:1px solid #888;background:transparent;color:#fff;cursor:pointer;";
+    a.onclick = function () { var ov = document.getElementById("ef-login-overlay"); if (ov) ov.remove(); };
+    err.parentNode.appendChild(a);
   }
 
   function onCredential(resp) {
