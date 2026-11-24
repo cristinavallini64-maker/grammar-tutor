@@ -242,7 +242,7 @@ function fetchData(fromGate){
       DATA = { byStudent: d.byStudent || [], byPage: d.byPage || [], byLevel: d.byLevel || [] };
       document.getElementById('gate').style.display = "none";
       document.getElementById('app').style.display = "block";
-      (Object.keys(FILES).length ? Promise.resolve() : loadSectionFiles()).then(render);
+      (Object.keys(FILES).length ? Promise.resolve() : loadSectionFiles()).then(loadLevelLists).then(render);
     })
     .catch(() => {
       const msg = "Impossibile contattare il server. Controlla la connessione.";
@@ -284,6 +284,7 @@ function loadSectionFiles(){
 }
 function sectionOf(page){
   page = page || "";
+  if (typeof TRACKED !== "undefined" && TRACKED[page]) { const m = /github\.io\/([^\/]+)\//.exec(TRACKED[page]); if (m) return m[1]; }
   if (page.indexOf("/") >= 0) {
     const repo = page.split("/")[0];
     if (SECTIONS.some(s => s.repo === repo)) return repo;
@@ -408,10 +409,9 @@ function render(){
 
   let html = '<table class="tbl"><thead><tr>'+
     '<th '+arrow('email')+'>Studente</th>'+
-    '<th '+arrow('opens')+'>Aperture</th>'+
+    '<th>Avanzamento</th>'+
     '<th class="hide-sm" '+arrow('seconds')+'>Tempo</th>'+
     '<th '+arrow('leaves')+' title="Quante volte ha lasciato la pagina (altra scheda, finestra o app) e per quanto tempo">Uscite</th>'+
-    '<th class="hide-sm" '+arrow('first_seen')+'>Primo accesso</th>'+
     '<th '+arrow('last_seen')+'>Ultima attività</th>'+
     '</tr></thead><tbody>';
 
@@ -419,10 +419,9 @@ function render(){
     const isOpen = openRows.has(r.email);
     html += '<tr class="row-main'+(isOpen?' open':'')+'" onclick="toggle(\''+escAttr(r.email)+'\')">'+
       '<td class="email"><span class="caret">&#9654;</span>'+esc(r.email)+'</td>'+
-      '<td class="num">'+(r.opens||0)+'</td>'+
+      '<td>'+progressHtml(r.email)+'</td>'+
       '<td class="num hide-sm">'+fmtTime(r.seconds)+'</td>'+
       '<td class="num">'+fmtLeaves(r)+'</td>'+
-      '<td class="muted hide-sm">'+fmtDate(r.first_seen)+'</td>'+
       '<td class="muted">'+fmtDate(r.last_seen)+'</td>'+
       '</tr>';
     if(isOpen) html += detailRow(r.email);
@@ -507,6 +506,46 @@ function resultsTable(levels){
   h += '<div class="pstats"><span><b>1° tentativo</b> = risposte giuste alla prima correzione · <b>2° tentativo</b> = risposte giuste dopo aver corretto le sbagliate (— se non c\'era niente da correggere o la parte non lo prevede) · <b>Punteggio</b> = 1 punto per le giuste subito + ½ per quelle corrette al 2° tentativo. I risultati fatti prima del 15/10 alle 12:30 non hanno i due tentativi separati.</span></div>';
   return h;
 }
+/* ===== AVANZAMENTO (24 nov 2026) =====
+   Pagine col tracker: nome registrato -> indirizzo della pagina. I livelli si leggono
+   dalla pagina stessa, cosi' se cambiano non c'e' niente da aggiornare qui.
+   Pagina nuova col tracker: aggiungere una riga qui sotto. */
+const TRACKED = {
+  "Unit 4 S – Esercizi":     "https://cristinavallini64-maker.github.io/structure/past-perfect-relatives.html",
+  "Unit 4 S – Lessico":      "https://cristinavallini64-maker.github.io/structure/lessico-u4.html",
+  "Recupero Unit 1 – prima": "https://cristinavallini64-maker.github.io/grammar-tutor/recupero-u1.html",
+  "Recupero Unit 1 – terza": "https://cristinavallini64-maker.github.io/structure/recupero-u1.html"
+};
+let LEVELS_OF = {};
+function loadLevelLists(){
+  return Promise.all(Object.keys(TRACKED).map(name =>
+    fetch(TRACKED[name], {cache: "no-store"}).then(r => r.text()).then(t => {
+      const re = /"?title"?\s*:\s*"((?:LIVELLO|⟳|★)[^"]*)"/g; const out = []; let m;
+      while ((m = re.exec(t))) out.push(m[1]);
+      if (out.length) LEVELS_OF[name] = out;
+    }).catch(() => {})
+  ));
+}
+function lvlKey(s){ return String(s || "").replace(/\s*\(su \d+\)\s*$/, "").trim().toUpperCase(); }
+function shortLvl(s){ return String(s).split(" — ")[0].replace(/^⟳\s*|^★\s*/, "").trim(); }
+function progressOf(email, page){
+  const all = LEVELS_OF[page]; if (!all) return null;
+  const done = new Set(DATA.byLevel.filter(l => l.email === email && l.page === page).map(l => lvlKey(l.level)));
+  const fatti = all.filter(t => done.has(lvlKey(t)));
+  return { n: fatti.length, tot: all.length, mancano: all.filter(t => !done.has(lvlKey(t))).map(shortLvl) };
+}
+function progressHtml(email){
+  const pages = DATA.byPage.filter(p => p.email === email && LEVELS_OF[p.page]);
+  if (!pages.length) return '<span class="muted">—</span>';
+  return pages.map(p => {
+    const g = progressOf(email, p.page);
+    const col = g.n === g.tot ? 'var(--green)' : (g.n === 0 ? 'var(--red)' : 'var(--gold)');
+    const sq = c => '<span style="display:inline-block;width:9px;height:14px;margin-right:2px;border-radius:2px;vertical-align:-2px;background:'+c+'"></span>';
+    const bar = sq(col).repeat(g.n) + sq('rgba(255,255,255,.15)').repeat(g.tot - g.n);
+    return '<div class="prog" style="white-space:nowrap">' + esc(p.page) + ' &nbsp;' + bar + ' <b style="color:'+col+'">' + g.n + '/' + g.tot + '</b>' + (g.n === g.tot ? ' ✓' : '') + '</div>';
+  }).join('');
+}
+
 function detailRow(email){
   const pages = DATA.byPage.filter(p => p.email === email && (currentSec === "all" || sectionOf(p.page) === currentSec))
     .sort((a,b)=> (b.last_seen || "").localeCompare(a.last_seen || ""));
@@ -524,11 +563,12 @@ function detailRow(email){
         '<span>Uscite <b>' + fmtLeaves(p) + '</b></span>' +
         '<span>Dal <b>' + fmtDate(p.first_seen) + '</b> al <b>' + fmtDate(p.last_seen) + '</b></span>' +
       '</div>' +
+      (function(){ const g = progressOf(email, p.page); if (!g) return ''; return '<div class="pstats"><span>Livelli finiti <b>' + g.n + ' su ' + g.tot + '</b></span>' + (g.mancano.length ? '<span>Mancano: <b>' + esc(g.mancano.join(', ')) + '</b></span>' : '<span><b>tutto fatto ✓</b></span>') + '</div>'; })() +
       (levels.length ? resultsTable(levels) : '<div class="pstats">Nessun punteggio (pagina senza punteggi o nessuna parte completata).</div>') +
       '</div>';
   });
   const delBtn = '<button class="del-student" onclick="deleteStudent(\''+escAttr(email)+'\')">&#x2715; Elimina i dati di questo studente</button>';
-  return '<tr class="detail"><td colspan="6"><div class="detail-inner">'+delBtn+inner+'</div></td></tr>';
+  return '<tr class="detail"><td colspan="5"><div class="detail-inner">'+delBtn+inner+'</div></td></tr>';
 }
 
 function toggle(email){
