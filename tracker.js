@@ -24,6 +24,13 @@
      ===================================================================== */
   var ATTIVO = false;   // spento il 16 ottobre 2026: dati azzerati, non serve durante l'anno
 
+  /* ACCENSIONE PER SINGOLA PAGINA (24 nov 2026)
+     Con l'interruttore generale spento, il tracking si accende solo nelle pagine
+     che prima di includere questo file contengono:
+       <script>window.EF_TRACKER_ON=true;</script>
+     Ora: recupero-u1 di prima (grammar-tutor) e di terza (structure). */
+  if (window.EF_TRACKER_ON === true) ATTIVO = true;
+
   if (!ATTIVO) {
     // API finta: le pagine che chiamano EFTrack.event(...) non danno errore.
     window.EFTrack = { event: function () {} };
@@ -103,6 +110,7 @@
   var email = null;
 
   function pageName() {
+    if (window.EF_PAGE_NAME) return String(window.EF_PAGE_NAME);  // nome leggibile (es. due recupero-u1 in repo diversi)
     return (location.pathname.split("/").pop() || location.pathname);
   }
 
