@@ -7,245 +7,42 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #0d0d0d; font-family: 'Nunito', sans-serif; color: #eee; min-height: 100vh; padding: 24px 16px 60px; font-size: 1.12rem; line-height: 1.6; }
-  .wrap { max-width: 860px; margin: 0 auto; }
-  .back { display: block; width: fit-content; margin: 0 auto 16px; color: #000; font-weight: 700; text-decoration: none; font-size: 0.9rem; background: #FF0000; padding: 7px 18px; border-radius: 20px; }
-  .header { background: #FF0000; border-radius: 14px; padding: 20px 28px; margin-bottom: 18px; }
-  .header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 3px; color: #000; }
+  body { background: #0d0d0d; font-family: 'Nunito', sans-serif; min-height: 100vh; padding: 24px 16px; }
+  .header { max-width: 700px; margin: 0 auto 28px; background: #FF0000; border-radius: 14px; padding: 20px 28px; }
+  .header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 3px; color: #000; }
   .header p { font-size: 0.95rem; color: #111; font-weight: 700; margin-top: 4px; }
-  .civica { display: inline-block; background: #000; color: #fff; font-weight: 900; font-size: 0.8rem; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; margin-bottom: 8px; text-transform: uppercase; }
-  .tabs { display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; }
-  .tab { flex: 1; min-width: 200px; background: #1a1a1a; color: #fff; border: 2px solid #333; border-radius: 12px; padding: 12px 16px; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 900; cursor: pointer; text-align: left; }
-  .tab small { display: block; font-weight: 700; color: #999; font-size: 0.82rem; }
-  .tab.on { border-color: #FF0000; background: #2a0000; }
-  .lesson { display: none; }
-  .lesson.on { display: block; }
-  .step { background: #1a1a1a; border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; border-left: 5px solid #FF0000; }
-  .step h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 2px; color: #FF4d4d; margin-bottom: 2px; }
-  .step .it { font-size: 0.88rem; color: #999; font-style: italic; margin-bottom: 12px; }
-  .step ol, .step ul { padding-left: 24px; }
-  .step li { margin-bottom: 8px; }
-  .text { background: #f6f1e7; color: #111; border-radius: 10px; padding: 22px 26px; font-size: 1.15rem; line-height: 1.75; }
-  .text h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px; margin-bottom: 8px; color: #8a0000; }
-  .text p { margin-bottom: 12px; }
-  .text ul { margin: 0 0 12px 22px; }
-  .plate-row { display: flex; gap: 26px; align-items: center; flex-wrap: wrap; }
-  .plate { width: 210px; height: 210px; border-radius: 50%; border: 10px solid #ddd; background: conic-gradient(#3fae49 0 50%, #e8b04a 50% 75%, #d9534f 75% 100%); position: relative; flex-shrink: 0; }
-  .plate span { position: absolute; color: #000; font-weight: 900; font-size: 1.6rem; }
-  .legend div { margin-bottom: 6px; font-weight: 700; }
-  .dot { display: inline-block; width: 16px; height: 16px; border-radius: 50%; margin-right: 8px; vertical-align: middle; }
-  .labels { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin: 10px 0 14px; }
-  .label { background: #fff; color: #000; border: 3px solid #000; border-radius: 6px; padding: 10px 12px; font-size: 0.92rem; }
-  .label b { display: block; font-size: 1rem; border-bottom: 2px solid #000; margin-bottom: 6px; }
-  .label .row { display: flex; justify-content: space-between; border-bottom: 1px solid #bbb; }
-  table.diary { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.95rem; }
-  table.diary th, table.diary td { border: 1px solid #444; padding: 8px; text-align: left; }
-  table.diary th { background: #2a0000; }
-  .goal { display: inline-block; font-weight: 900; padding: 3px 10px; border-radius: 6px; color: #fff; margin-right: 6px; font-size: 0.9rem; }
-  .g3 { background: #4c9f38; } .g12 { background: #bf8b2e; }
-  .note { font-size: 0.9rem; color: #aaa; margin-top: 10px; }
+  .list { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+  .item { background: #1a1a1a; border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border-left: 5px solid #FF0000; }
+  .item-name { font-weight: 900; font-size: 1.05rem; color: #fff; }
+  .item-args { font-size: 0.82rem; color: #888; margin-top: 3px; }
+  .btn { border-radius: 20px; padding: 8px 20px; font-size: 0.9rem; font-weight: 700; text-decoration: none; white-space: nowrap; background: #FF0000; color: #000; }
+  .btn:hover { opacity: 0.85; }
+  .back { display: block; width: fit-content; margin: 0 auto 16px; color: #000; font-weight: 700; text-decoration: none; font-size: 0.9rem; background: #FF0000; padding: 7px 18px; border-radius: 20px; }
 </style>
 </head>
 <body>
-<div class="wrap">
+<div style="max-width:700px;margin:0 auto 16px;">
   <a href="javascript:window.close()" class="back">✕ Chiudi questa scheda</a>
-
-  <div class="header">
-    <div class="civica">🏛️ Educazione civica</div>
-    <h1>🥗 Unit 2 · Healthy Food</h1>
-    <p>Salute, alimentazione e spreco alimentare · Agenda 2030 – Goal 3 e Goal 12</p>
+</div>
+<div class="header">
+  <h1>🏛️ Educazione civica · Healthy Food</h1>
+  <p>Unit 2 · Salute, alimentazione e spreco alimentare · Agenda 2030 (Goal 3 e 12)</p>
+</div>
+<div class="list">
+  <div class="item">
+    <div>
+      <div class="item-name">Lesson 1 · What's on your plate?</div>
+      <div class="item-args">scene animate · testo · esercizi · il piatto sano, bevande, equilibrio</div>
+    </div>
+    <a href="healthy-food-1.html" class="btn">▶ Apri</a>
   </div>
-
-  <div class="tabs">
-    <button class="tab on" onclick="show(1)">Lesson 1<small>What's on your plate?</small></button>
-    <button class="tab" onclick="show(2)">Lesson 2<small>Read the label · Don't waste it!</small></button>
-  </div>
-
-  <!-- ===================== LESSON 1 ===================== -->
-  <div class="lesson on" id="l1">
-
-    <div class="step">
-      <h2>1 · Warm-up</h2>
-      <div class="it">A coppie: fatevi le domande e rispondete con frasi complete.</div>
-      <ol>
-        <li>What do you usually have for breakfast?</li>
-        <li>How many glasses of water do you drink a day?</li>
-        <li>How much fruit do you eat in a week?</li>
-        <li>Is there any food you never eat? Why?</li>
-        <li>Is your diet healthy? Why? / Why not?</li>
-      </ol>
+  <div class="item">
+    <div>
+      <div class="item-name">Lesson 2 · Don't throw it away!</div>
+      <div class="item-args">scene animate · testo · esercizi · spreco alimentare, etichette, Agenda 2030</div>
     </div>
-
-    <div class="step">
-      <h2>2 · Before you read</h2>
-      <div class="it">Guarda il piatto. Che cibi metteresti in ogni parte? Scrivi almeno tre cibi per colore.</div>
-      <div class="plate-row">
-        <div class="plate">
-          <span style="left:20px; top:78px;">A</span>
-          <span style="right:52px; bottom:40px;">B</span>
-          <span style="right:52px; top:40px;">C</span>
-        </div>
-        <div class="legend">
-          <div><span class="dot" style="background:#3fae49"></span>A = ½ of the plate</div>
-          <div><span class="dot" style="background:#e8b04a"></span>B = ¼ of the plate</div>
-          <div><span class="dot" style="background:#d9534f"></span>C = ¼ of the plate</div>
-          <div style="margin-top:10px; color:#bbb; font-weight:400;">Then read the text and check your ideas.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="step">
-      <h2>3 · Reading</h2>
-      <div class="it">Leggi il testo.</div>
-      <div class="text">
-        <h3>What's on your plate?</h3>
-        <p>Food gives us energy to study, play sport and grow. But which food is good for us, and how much of it do we need?</p>
-        <p>Many doctors use a simple picture: the <b>healthy plate</b>. Imagine your plate for lunch or dinner. Half of the plate is for vegetables and fruit: carrots, tomatoes, courgettes, apples, oranges… Try to eat food of different colours every day, because every colour gives your body something different.</p>
-        <p>A quarter of the plate is for bread, rice, cereal or potatoes. This food gives you energy for the whole morning or afternoon.</p>
-        <p>The last quarter is for fish, chicken, eggs, beans or nuts. Beans and nuts are a good choice because they come from plants. You don't need a lot of meat: two or three times a week is enough. Dairy products like milk, yoghurt and cheese are important too, because they are good for your bones and teeth.</p>
-        <p>What about drinks? The best drink is water: six to eight glasses a day is a good idea. Fizzy drinks and many fruit juices contain a lot of sugar, so they are not a good choice for every day.</p>
-        <p>Of course, nobody eats a perfect plate every day! A slice of cake at a birthday party or a few crisps with friends is not a problem. The problem starts when we eat too much sugar, too many chips and sausages, and not enough fruit and vegetables – every day, for months and years.</p>
-        <p>Remember: a healthy diet isn't about eating less. It's about eating <i>well</i>.</p>
-      </div>
-    </div>
-
-    <div class="step">
-      <h2>4 · Comprehension</h2>
-      <div class="it">Rispondi alle domande con frasi complete, usando parole tue dove puoi.</div>
-      <ol>
-        <li>What is the "healthy plate"?</li>
-        <li>Why is it a good idea to eat food of different colours?</li>
-        <li>Why are beans and nuts a good choice?</li>
-        <li>How much water do you need every day?</li>
-        <li>Why aren't fizzy drinks a good choice for every day?</li>
-        <li>According to the text, when does an unhealthy diet become a problem?</li>
-      </ol>
-    </div>
-
-    <div class="step">
-      <h2>5 · Language focus</h2>
-      <div class="it">Osserva il testo e scopri la regola.</div>
-      <ol>
-        <li>Find in the text: two expressions with <b>too</b>, one with <b>enough</b>, one with <b>a few</b>, two with <b>a lot of</b>.</li>
-        <li>Copy them in your notebook and underline the noun after each one.</li>
-        <li>Look at the nouns. Why does the text say <i>too ___ sugar</i> but <i>too ___ chips</i>? Can you explain the difference?</li>
-        <li>Now write two true sentences about <b>you</b> with <i>too much / too many</i> and two with <i>not enough</i>.</li>
-      </ol>
-    </div>
-
-    <div class="step">
-      <h2>6 · Speaking · Healthy plate survey</h2>
-      <div class="it">Intervista un compagno con <i>How much…? / How many…?</i>, poi scrivi tre frasi su di lui/lei.</div>
-      <ul>
-        <li>…packets of crisps / eat / a week?</li>
-        <li>…fruit / eat / a day?</li>
-        <li>…cans of fizzy drinks / drink / a week?</li>
-        <li>…water / drink / a day?</li>
-        <li>…vegetables / eat / at dinner?</li>
-        <li>…times a week / eat / fish?</li>
-      </ul>
-      <p class="note">Example of a report sentence: <i>Giulia eats a lot of fruit, but she doesn't drink enough water.</i></p>
-    </div>
-
-    <div class="step">
-      <h2>7 · Homework · My food diary</h2>
-      <div class="it">Per tre giorni scrivi tutto quello che mangi e bevi, con le quantità (a glass of…, a slice of…, a packet of…). Servirà nella Lesson 2.</div>
-      <table class="diary">
-        <tr><th></th><th>Breakfast</th><th>Lunch</th><th>Snacks</th><th>Dinner</th><th>Drinks</th></tr>
-        <tr><td>Day 1</td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Day 2</td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Day 3</td><td></td><td></td><td></td><td></td><td></td></tr>
-      </table>
-    </div>
-  </div>
-
-  <!-- ===================== LESSON 2 ===================== -->
-  <div class="lesson" id="l2">
-
-    <div class="step">
-      <h2>1 · Warm-up · Your food diary</h2>
-      <div class="it">A coppie: confrontate i vostri diari. Ognuno dice tre frasi su di sé.</div>
-      <ul>
-        <li>I eat a lot of… / I don't eat much… / I don't eat many…</li>
-        <li>I drink too much… / I eat too many…</li>
-        <li>I don't eat enough… / I don't drink enough…</li>
-      </ul>
-      <p class="note">Then: Is your partner's diet similar to the healthy plate? What's different?</p>
-    </div>
-
-    <div class="step">
-      <h2>2 · Read the label</h2>
-      <div class="it">Etichette di esempio. Ricorda: 1 cucchiaino (teaspoon) di zucchero = circa 4 g.</div>
-      <div class="labels">
-        <div class="label"><b>FIZZY ORANGE · 1 can (330 ml)</b><div class="row"><span>Sugar</span><span>33 g</span></div><div class="row"><span>Salt</span><span>0 g</span></div></div>
-        <div class="label"><b>FRUIT YOGHURT · 1 pot (125 g)</b><div class="row"><span>Sugar</span><span>16 g</span></div><div class="row"><span>Salt</span><span>0.1 g</span></div></div>
-        <div class="label"><b>CRISPS · 1 packet (30 g)</b><div class="row"><span>Sugar</span><span>0.2 g</span></div><div class="row"><span>Salt</span><span>0.4 g</span></div></div>
-        <div class="label"><b>CHOCOLATE BISCUITS · 2 biscuits</b><div class="row"><span>Sugar</span><span>12 g</span></div><div class="row"><span>Salt</span><span>0.2 g</span></div></div>
-      </div>
-      <ol>
-        <li>How many teaspoons of sugar are there in each product?</li>
-        <li>The American Heart Association says: <b>less than 6 teaspoons (25 g) of added sugar a day</b> for children and teenagers. Which product alone is more than half of this?</li>
-        <li>Write four sentences about the products with <i>a lot of / not much / too much / very little</i>.</li>
-        <li>At home: find a real label in your kitchen and write two sentences about it.</li>
-      </ol>
-    </div>
-
-    <div class="step">
-      <h2>3 · Reading</h2>
-      <div class="it">Leggi il testo.</div>
-      <div class="text">
-        <h3>Don't throw it away!</h3>
-        <p>Every day, people all over the world throw away a lot of food. According to the United Nations, people lose or waste about a third of all the food in the world, and a big part of this waste happens at home – not in shops or restaurants. At the same time, millions of people haven't got enough food to eat.</p>
-        <p>Why do we waste so much food? Often we buy too many things at the supermarket, or we cook too much rice and then throw away the food that's left. Sometimes we forget a carton of milk or a packet of ham at the back of the fridge, and then it's too late.</p>
-        <p>Here are a few simple ideas:</p>
-        <ul>
-          <li>Before you go shopping, look in the fridge and write a list.</li>
-          <li>Read the label. <b>"Best before"</b> means that the food is at its best before that date, but you can often eat it after. <b>"Use by"</b> is about safety: don't eat the food after that date.</li>
-          <li>Don't cook too much. A cup of rice is enough for about three people.</li>
-          <li>Use old food in new recipes: old bananas, for example, are great in a cake.</li>
-          <li>At school or at a party, take only the food you can eat.</li>
-        </ul>
-        <p>The 2030 Agenda of the United Nations has 17 goals for a better world. Goal 12 asks every country to cut food waste in half by 2030. Goal 3 is about good health for everyone. What we put on our plate – and in the bin – is connected to both.</p>
-      </div>
-    </div>
-
-    <div class="step">
-      <h2>4 · Comprehension</h2>
-      <div class="it">Rispondi alle domande con frasi complete.</div>
-      <ol>
-        <li>Where does a big part of food waste happen?</li>
-        <li>Give two reasons why people waste food.</li>
-        <li>What's the difference between "best before" and "use by"?</li>
-        <li>What can you do with old bananas?</li>
-        <li>What does Goal 12 of the 2030 Agenda ask countries to do?</li>
-        <li>Which idea in the text is easy for you and your family? Which is difficult? Why?</li>
-      </ol>
-    </div>
-
-    <div class="step">
-      <h2>5 · Task · Our Class Food Charter</h2>
-      <div class="it">In gruppo: scrivete 6 regole per una classe più sana e con meno spreco. Usate l'imperativo e le espressioni di quantità della Unit 2. Poi presentatele alla classe e votate le 6 migliori per il poster.</div>
-      <ul>
-        <li>3 rules about <b>health</b> <span class="goal g3">Goal 3</span></li>
-        <li>3 rules about <b>food waste</b> <span class="goal g12">Goal 12</span></li>
-      </ul>
-      <p class="note">Example: <i>Don't buy too many packets of crisps for the class party.</i></p>
-    </div>
-
-    <div class="step">
-      <h2>6 · Exit ticket</h2>
-      <div class="it">Prima di uscire, scrivi su un foglietto:</div>
-      <p>One thing I can change this week is… because…</p>
-    </div>
+    <a href="healthy-food-2.html" class="btn">▶ Apri</a>
   </div>
 </div>
-
-<script>
-function show(n){
-  document.querySelectorAll('.lesson').forEach((l,i)=>l.classList.toggle('on', i===n-1));
-  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on', i===n-1));
-  window.scrollTo(0,0);
-}
-</script>
 </body>
 </html>

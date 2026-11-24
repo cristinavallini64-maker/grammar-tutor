@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What's on your plate? – The Foundations · Unit 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fbf8f2; --surface: #ffffff; --ink: #1d2433; --muted: #5b6475; --line: #e3e0d8;
+    --hero-a: #c40000; --hero-b: #ff4d4d;
+    --c: #f08c00; --soft: #ffe3a1; --strong: #a85400;
+    --ok: #1f7a4d; --ok-soft: #e3f1e9; --ko: #b23a2e; --ko-soft: #f8e3e0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12151c; --surface: #1b202b; --ink: #e9ecf2; --muted: #a3abbb; --line: #2c3342;
+      --hero-a: #8f0000; --hero-b: #d93636;
+      --c: #ffb21f; --soft: #4a3510; --strong: #ffc24d;
+      --ok: #5cc48c; --ok-soft: #1f3a2c; --ko: #f08a7e; --ko-soft: #42231f;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Source Sans 3', system-ui, sans-serif; font-size: 17px; line-height: 1.6; }
+  a { color: var(--strong); }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+  h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; line-height: 1.2; }
+
+  header.hero {
+    color: #fff;
+    background:
+      radial-gradient(circle at 88% 22%, rgba(255,255,255,.14) 0 90px, transparent 91px),
+      radial-gradient(circle at 95% 80%, rgba(255,255,255,.08) 0 150px, transparent 151px),
+      linear-gradient(135deg, var(--hero-a), var(--hero-b));
+    padding: 22px 0 32px;
+  }
+  .back {
+    display: inline-block; margin-bottom: 22px; text-decoration: none;
+    font-size: 15px; font-weight: 700; color: #fff;
+    background: rgba(255,255,255,.16); padding: 6px 16px; border-radius: 999px;
+  }
+  .back:hover { background: rgba(255,255,255,.28); }
+  .hero-title { display: flex; align-items: center; gap: 16px; }
+  .hero-icon {
+    flex: none; width: 64px; height: 64px; border-radius: 20px; display: grid; place-items: center;
+    background: #ffb21f; color: #fff; box-shadow: 0 8px 20px -10px rgba(0,0,0,.4);
+  }
+  .hero-icon svg { width: 36px; height: 36px; }
+  h1 { font-size: clamp(30px, 6.5vw, 48px); margin: 0; }
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 12px; }
+  .badge { font-size: 13px; font-weight: 700; padding: 3px 12px; border-radius: 999px; background: rgba(255,255,255,.16); color: #fff; }
+  .lead { margin: 0; max-width: 640px; opacity: .92; }
+
+  nav.toc { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+  nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-top: 10px; padding-bottom: 10px; }
+  nav.toc a {
+    flex: none; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: var(--ink);
+    font-size: 14px; font-weight: 600; padding: 6px 12px 6px 10px;
+    border: 1px solid var(--line); border-radius: 999px; background: var(--surface);
+  }
+  nav.toc a svg { width: 16px; height: 16px; color: var(--c); }
+  nav.toc a:hover { border-color: var(--c); }
+
+  section { padding: 34px 0 10px; scroll-margin-top: 56px; }
+  .sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .sec-head .ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--c); color: #fff; flex: none; }
+  .sec-head .ico svg { width: 22px; height: 22px; }
+  h2 { font-size: 27px; margin: 0; }
+  h3 { font-size: 20px; margin: 0 0 8px; }
+  h4 { margin: 0 0 8px; font-size: 16px; }
+
+  .card {
+    position: relative; overflow: hidden;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+    padding: 24px 20px 20px; margin: 16px 0;
+  }
+  .card::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 8px; background: var(--c); }
+  .meta { font-size: 15px; color: var(--muted); }
+
+  .text-body p { margin: 0 0 12px; }
+  .text-body em { font-style: normal; font-weight: 700; color: var(--strong); }
+  .text-body .sub { font-weight: 700; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; }
+
+  button {
+    font: inherit; font-size: 15px; font-weight: 700;
+    padding: 8px 16px; border-radius: 999px; cursor: pointer;
+    border: 1.5px solid var(--ink); background: var(--ink); color: var(--bg);
+  }
+  button.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  button.ghost:hover { border-color: var(--c); }
+  button:hover { filter: brightness(1.1); }
+  button:disabled { opacity: .5; cursor: default; }
+
+  textarea, input[type=text] {
+    width: 100%; font: inherit; font-size: 16px; color: var(--ink);
+    background: var(--bg); border: 1.5px solid var(--line); border-radius: 10px; padding: 8px 12px;
+  }
+  textarea:focus, input[type=text]:focus { outline: none; border-color: var(--c); }
+  textarea { min-height: 70px; resize: vertical; }
+  .model { display: none; margin-top: 8px; padding: 10px 14px; border-radius: 10px; background: var(--soft); font-size: 15px; }
+  .model.show { display: block; }
+
+  .ex-item { margin: 16px 0; }
+  .ex-item .prompt { font-weight: 600; margin-bottom: 6px; }
+  .ex-item .hint { font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+  .fb { font-size: 14px; margin-top: 4px; min-height: 1.2em; }
+  input.right, textarea.right { border-color: var(--ok); background: var(--ok-soft); }
+  input.wrong, textarea.wrong { border-color: var(--ko); background: var(--ko-soft); }
+  .fb.right { color: var(--ok); font-weight: 600; }
+  .fb.wrong { color: var(--ko); }
+  .score { font-weight: 700; margin-left: 6px; padding: 4px 12px; border-radius: 999px; background: var(--soft); color: var(--strong); }
+  .score:empty { display: none; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  td:first-child { font-weight: 700; color: var(--strong); }
+  tbody tr:hover { background: var(--soft); }
+  .table-scroll { overflow-x: auto; }
+  #glossSearch { margin: 14px 0 8px; }
+
+  /* ---------- Scenes (animation without audio) ---------- */
+  .card.scenes { width: min(1180px, calc(100vw - 32px)); margin-left: calc((100% - min(1180px, calc(100vw - 32px))) / 2); }
+  .sgrid { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 20px; align-items: start; }
+  @media (max-width: 820px) { .sgrid { grid-template-columns: 1fr; } }
+  .stage { position: relative; width: 100%; aspect-ratio: 5 / 3; border-radius: 12px; overflow: hidden; background: #cfe8ff; border: 1px solid var(--line); }
+  .stage svg { display: block; width: 100%; height: 100%; }
+  .cap {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 16px;
+    background: rgba(15, 23, 42, .84); color: #fff; font-size: 18px; line-height: 1.4; font-weight: 600;
+    transition: opacity .3s;
+  }
+  .cap:empty { display: none; }
+  .cap.hide { opacity: 0; }
+  .sbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+  .sprog { flex: 1; min-width: 120px; height: 10px; border-radius: 999px; background: var(--soft); position: relative; overflow: hidden; }
+  .sprog i { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--c); border-radius: 999px; }
+  .qbox input:disabled { opacity: .6; }
+  .steps { font-size: 14px; font-weight: 700; color: var(--strong); }
+  .sstatus { font-size: 15px; color: var(--muted); margin-top: 8px; }
+  .qbox { display: none; padding: 16px; border-radius: 14px; background: var(--soft); }
+  .qbox.show { display: block; }
+  .qhint { padding: 16px; border-radius: 14px; border: 2px dashed var(--soft); color: var(--muted); font-size: 15px; }
+  .squest:has(.qbox.show) .qhint, .squest:has(.done.show) .qhint { display: none; }
+  .done { display: none; margin-top: 14px; padding: 14px 16px; border-radius: 14px; background: var(--ok-soft); color: var(--ok); font-weight: 700; }
+  .done.show { display: block; }
+
+  .schema { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 22px; }
+  @media (max-width: 620px) { .schema { grid-template-columns: 1fr; } }
+  .scol h4 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-family: 'Source Sans 3', sans-serif; margin: 0 0 8px; }
+  .scol h4::after { content: ' →'; color: var(--c); }
+  .scol:last-child h4::after { content: ''; }
+  .sbox {
+    min-height: 40px; margin: 0 0 8px; padding: 8px 12px; border-radius: 10px;
+    border: 2px dashed var(--line); color: var(--muted); font-weight: 700; font-size: 15px;
+    display: flex; align-items: center; transition: background .3s, border-color .3s;
+  }
+  .sbox.cur { border-color: var(--c); background: var(--soft); }
+  .sbox.filled { border-style: solid; border-color: var(--ok); background: var(--ok-soft); color: var(--ok); }
+
+  /* animations: they run only while the scene plays */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes flow { to { stroke-dashoffset: -32; } }
+  @keyframes puff { 0% { transform: translate(0, 0) scale(.6); opacity: .9; } 100% { transform: translate(12px, -60px) scale(1.9); opacity: 0; } }
+  @keyframes flick { to { transform: scaleY(.7); } }
+  @keyframes glow { from { opacity: .35; } to { opacity: 1; } }
+  @keyframes photon { 0% { transform: translate(0, 0); opacity: 0; } 10% { opacity: 1; } 100% { transform: translate(170px, 80px); opacity: .9; } }
+  @keyframes ray { 0% { opacity: 0; } 30%, 100% { opacity: 1; } }
+  @keyframes belt { 0% { transform: translate(0, 0); opacity: 1; } 85% { opacity: 1; } 100% { transform: translate(150px, 0); opacity: 0; } }
+  @keyframes rock { from { transform: rotate(-14deg); } to { transform: rotate(14deg); } }
+  @keyframes neutron { 0% { transform: translate(-46px, 0); opacity: 1; } 35% { transform: translate(-12px, 0); opacity: 1; } 40%, 100% { transform: translate(-12px, 0); opacity: 0; } }
+  @keyframes splitL { 0%, 38% { transform: translate(0, 0); } 70%, 100% { transform: translate(-22px, -14px); } }
+  @keyframes splitR { 0%, 38% { transform: translate(0, 0); } 70%, 100% { transform: translate(22px, 14px); } }
+  @keyframes flash { 0%, 38% { opacity: 0; transform: scale(.3); } 50% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0; transform: scale(1.6); } }
+  @keyframes wave { from { transform: translate(0, 0); } to { transform: translate(-40px, 0); } }
+  .spin { transform-box: fill-box; transform-origin: center; animation: spin 2.4s linear infinite; }
+  .spin.slow { animation-duration: 4s; }
+  .flow { stroke-dasharray: 10 6; animation: flow .9s linear infinite; }
+  .puff { transform-box: fill-box; transform-origin: center; animation: puff 3s ease-out infinite; }
+  .flick { transform-box: fill-box; transform-origin: 50% 100%; animation: flick .35s ease-in-out infinite alternate; }
+  .glow { animation: glow 1.4s ease-in-out infinite alternate; }
+  .photon { animation: photon 1.8s linear infinite; }
+  .ray { animation: ray 1.5s ease-out both; }
+  .belt { animation: belt 4.5s linear infinite; }
+  .rock { transform-box: fill-box; transform-origin: center; animation: rock 1.4s ease-in-out infinite alternate; }
+  .neutron { animation: neutron 3s linear infinite; }
+  .splitL { animation: splitL 3s ease-in-out infinite; }
+  .splitR { animation: splitR 3s ease-in-out infinite; }
+  .flash { transform-box: fill-box; transform-origin: center; animation: flash 3s ease-out infinite; }
+  .wave { animation: wave 2s linear infinite; }
+  .stage.paused * { animation-play-state: paused !important; }
+
+  .locknote { display: none; margin: 4px 0 10px; padding: 10px 14px; border-radius: 10px; background: var(--soft); color: var(--strong); font-weight: 700; font-size: 15px; }
+  #textCard.locked .locknote { display: block; }
+  #textCard.locked .text-body { filter: blur(7px); user-select: none; pointer-events: none; }
+  #glossary.locked .locknote { display: block; }
+  #glossary.locked .table-scroll, #glossary.locked #glossSearch { filter: blur(7px); pointer-events: none; user-select: none; }
+  #glossary.locked button,
+  #textCard.locked button { pointer-events: none; opacity: .4; }
+  main > section { display: none; }
+  main > section.on { display: block; }
+  nav.toc a.on { border-color: var(--c); background: var(--soft); }
+  .excard { display: none; }
+  .excard.active { display: block; }
+  .exnav { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 14px 0; }
+  .exnav .where { font-weight: 700; color: var(--strong); font-size: 15px; }
+  .gate { font-size: 14px; color: var(--muted); }
+  footer { padding: 40px 0; color: var(--muted); font-size: 14px; }
+
+  /* flashcards */
+  .fc-wrap { max-width: 600px; margin: 18px auto 0; }
+  .fc-info { display: flex; justify-content: space-between; font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+  .fc-bar { height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; margin-bottom: 12px; }
+  .fc-fill { height: 100%; width: 0; background: var(--c); transition: width .4s ease; }
+  .fc-dots { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 14px; }
+  .fc-dots button { width: 32px; height: 32px; padding: 0; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--muted); font-size: 13px; font-weight: 600; }
+  .fc-dots button.seen { border-color: var(--c); color: var(--strong); }
+  .fc-dots button.active { background: var(--c); border-color: transparent; color: #fff; font-weight: 700; }
+  .fc-scene { height: 300px; perspective: 1200px; cursor: pointer; margin-bottom: 14px; }
+  .fc-card { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+  .fc-card.flipped { transform: rotateY(180deg); }
+  .fc-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 16px; border: 1px solid var(--line); background: var(--surface); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px; text-align: center; }
+  .fc-back { transform: rotateY(180deg); background: var(--soft); }
+  .fc-tag { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--strong); margin-bottom: 12px; }
+  .fc-q { font-family: 'Fraunces', Georgia, serif; font-size: 21px; line-height: 1.4; }
+  .fc-a { font-size: 17px; line-height: 1.6; }
+  .fc-a strong { color: var(--strong); }
+  .fc-hint { font-size: 13px; color: var(--muted); margin-top: 14px; }
+  .fc-ctrl { display: flex; gap: 8px; }
+  .fc-ctrl button { flex: 1; }
+  .fc-ctrl .fc-flip { flex: 2; }
+  .fc-say { position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; padding: 0; border-radius: 50%; font-size: 20px; line-height: 1; display: grid; place-items: center; }
+  .fc-say.on { background: var(--strong); }
+  .fc-done { display: none; text-align: center; padding: 24px 0; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <a href="unit2-healthy-food.html" class="back">← Healthy Food</a>
+    <div class="hero-title">
+      <span class="hero-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></svg></span>
+      <h1>What's on your plate?</h1>
+    </div>
+    <div class="badges">
+      <span class="badge">Educazione civica</span><span class="badge">Unit 2 · Healthy Food · Lesson 1</span>
+    </div>
+    <p class="lead">First watch the scenes: the text appears as subtitles and there is a question after each sentence. Then read the complete text and do the exercises.</p>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#scenes" data-sec="scenes" onclick="event.preventDefault(); goStep(stepOf('scenes'))"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/></svg>Scenes</a>
+    <a href="#text" data-sec="text" onclick="event.preventDefault(); goStep(stepOf('text'))"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2zM22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/></svg>Text</a>
+    <a href="#exercises" data-sec="exercises" onclick="event.preventDefault(); goStep(stepOf('exercises'))"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Exercises</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <div class="exnav" id="stepTop"></div>
+
+  <section id="scenes">
+    <div class="sec-head"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/></svg></span><h2>Scenes</h2></div>
+    <p class="meta">Watch each scene and read the text that appears. When a sentence disappears, a question appears: answer it. If the answer is wrong, the sentence appears again. When you finish a scene, a box of the diagram below is completed.</p>
+    <div class="card scenes">
+      <div class="sgrid">
+        <div>
+          <div class="stage" id="stage"></div>
+          <div class="sbar">
+            <button id="playBtn" onclick="startScene()">▶ Start</button>
+            <div class="sprog" id="sprog"><i></i></div>
+            <span class="steps" id="steps"></span>
+          </div>
+          <div class="sstatus" id="sstatus">Press Start to watch the first scene.</div>
+        </div>
+        <div class="squest">
+          <div class="qhint">The question will appear here when the text disappears.</div>
+          <div class="qbox" id="qbox"></div>
+          <div class="done" id="sdone">Well done! The diagram is complete. Now read the text and do the exercises.</div>
+        </div>
+      </div>
+      <div class="schema" id="schema"></div>
+    </div>
+  </section>
+
+  <section id="text">
+    <div class="sec-head"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2zM22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/></svg></span><h2>Text</h2></div>
+    <p class="meta">Here is the complete text of the scenes. It is hidden while you are doing the scenes and becomes available again when you finish.</p>
+    <article class="card" id="textCard">
+      <div class="locknote">The text is hidden while you are doing the scenes. Finish the scenes to read it.</div>
+      <h3>What's on your plate?</h3>
+      <div class="text-body" id="textBody"></div>
+      <div class="row"><button class="ghost" onclick="downloadText()">Download text (Word)</button></div>
+    </article>
+  </section>
+
+  <section id="exercises">
+    <div class="sec-head"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span><h2>Exercises</h2></div>
+    <p class="meta">Type your answers, then press <strong>Check</strong>. Wrong answers are marked in red: try again. The solution of a sentence is shown only after you have tried it at least twice.</p>
+
+    <div class="card excard">
+      <h3>1. Key words</h3>
+      <p class="meta">Write the English word from the text (in orange) that corresponds to each Italian word.</p>
+      <div id="keyEx"></div>
+      <div class="row">
+        <button onclick="checkEx('key')">Check</button>
+        <button class="ghost" onclick="showSolutions('key')">Show solutions</button>
+        <button class="ghost" onclick="resetEx('key')">Reset</button>
+        <span class="score" id="keyScore"></span>
+      </div>
+    </div>
+    <div class="card excard">
+      <h3>2. Food words</h3>
+      <p class="meta">Write the food word that matches each definition.</p>
+      <div id="vocabEx"></div>
+      <div class="row">
+        <button onclick="checkEx('vocab')">Check</button>
+        <button class="ghost" onclick="showSolutions('vocab')">Show solutions</button>
+        <button class="ghost" onclick="resetEx('vocab')">Reset</button>
+        <span class="score" id="vocabScore"></span>
+      </div>
+    </div>
+    <div class="card excard">
+      <h3>3. Complete the sentences</h3>
+      <p class="meta">Complete each sentence about the text with one word. The first letter is given.</p>
+      <div id="gapEx"></div>
+      <div class="row">
+        <button onclick="checkEx('gap')">Check</button>
+        <button class="ghost" onclick="showSolutions('gap')">Show solutions</button>
+        <button class="ghost" onclick="resetEx('gap')">Reset</button>
+        <span class="score" id="gapScore"></span>
+      </div>
+    </div>
+    <div class="card excard">
+      <h3>4. Say it in another way</h3>
+      <p class="meta">Rewrite each sentence starting with the words given, without changing its meaning.</p>
+      <div id="passiveEx"></div>
+      <div class="row">
+        <button onclick="checkEx('passive')">Check</button>
+        <button class="ghost" onclick="showSolutions('passive')">Show solutions</button>
+        <button class="ghost" onclick="resetEx('passive')">Reset</button>
+        <span class="score" id="passiveScore"></span>
+      </div>
+    </div>
+    <div class="card excard">
+      <h3>5. Questions on the text</h3>
+      <p class="meta">Answer the questions with complete sentences, then compare your answer with the model.</p>
+      <div id="transEx"></div>
+    </div>
+
+    <div class="card excard">
+      <h3>6. My plate</h3>
+      <p class="meta">Describe your usual lunch or dinner. Is it like the healthy plate? What can you change? (50–70 words) Then compare with the model.</p>
+      <textarea id="summary" style="min-height:160px" placeholder="Write here…"></textarea>
+      <div class="row"><button class="ghost" id="summaryBtn" disabled onclick="toggleModel('summaryModel', this)">Show model answer</button><span class="gate" id="summaryGate"></span></div>
+      <div class="model" id="summaryModel"></div>
+    </div>
+  </section>
+
+  <div class="exnav" id="stepBottom"></div>
+</main>
+
+<footer>
+  <div class="wrap"><div class="row" style="margin:0 0 14px"><button class="ghost" onclick="restartAll()">↺ Start everything again</button></div>The Foundations · Unit 2 · Educazione civica · What's on your plate?</div>
+</footer>
+
+<script>
+/* ---------- Drawing helpers (no words in the pictures) ---------- */
+const ROOM = '<rect width="400" height="240" fill="#e8eef6"/><rect y="200" width="400" height="40" fill="#cbd5e1"/>';
+const SKY = '<rect width="400" height="240" fill="#cfe8ff"/><rect y="190" width="400" height="50" fill="#9ccf7a"/>';
+const PUFFS = (x, y, col = '#ffffff') => [0, -1, -2].map(d => `<circle class="puff" cx="${x}" cy="${y}" r="9" fill="${col}" style="animation-delay:${d}s"/>`).join('');
+const FLAME = (x, y, k = 1) => `<path class="flick" d="M${x - 10 * k} ${y} Q${x - 12 * k} ${y - 16 * k} ${x} ${y - 28 * k} Q${x + 12 * k} ${y - 16 * k} ${x + 10 * k} ${y} Z" fill="#ff7a00"/><path class="flick" style="animation-delay:-.2s" d="M${x - 5 * k} ${y} Q${x - 6 * k} ${y - 9 * k} ${x} ${y - 16 * k} Q${x + 6 * k} ${y - 9 * k} ${x + 5 * k} ${y} Z" fill="#ffd23f"/>`;
+const WHEEL = (x, y, r, cls = 'spin') => `<g class="${cls}"><circle cx="${x}" cy="${y}" r="${r}" fill="#e2e8f0" stroke="#475569" stroke-width="3"/>${[0, 45, 90, 135].map(a => `<line x1="${x - r}" y1="${y}" x2="${x + r}" y2="${y}" stroke="#475569" stroke-width="3" transform="rotate(${a} ${x} ${y})"/>`).join('')}</g>`;
+const SPARK = (x, y, d = 0) => `<path class="flash" style="animation-delay:${d}s" d="M${x} ${y - 12} L${x + 4} ${y - 3} L${x + 12} ${y} L${x + 4} ${y + 3} L${x} ${y + 12} L${x - 4} ${y + 3} L${x - 12} ${y} L${x - 4} ${y - 3} Z" fill="#fde047"/>`;
+const BOLT = (x, y, k = 1, col = '#facc15') => `<path d="M${x + 4 * k} ${y - 16 * k} L${x - 8 * k} ${y + 2 * k} L${x} ${y + 2 * k} L${x - 4 * k} ${y + 16 * k} L${x + 8 * k} ${y - 2 * k} L${x} ${y - 2 * k} Z" fill="${col}" stroke="#a16207" stroke-width="1.5"/>`;
+const BENCH = (x, y, w) => `<rect x="${x}" y="${y}" width="${w}" height="10" fill="#a16207"/><rect x="${x + 8}" y="${y + 10}" width="8" height="${200 - y - 10}" fill="#78350f"/><rect x="${x + w - 16}" y="${y + 10}" width="8" height="${200 - y - 10}" fill="#78350f"/>`;
+const MACHINE = (x, y = 80, w = 90, h = 120) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#64748b" stroke="#334155" stroke-width="3"/><rect x="${x + 10}" y="${y + 10}" width="${w - 20}" height="14" fill="#334155"/>`;
+const BOTTLE = (x, y, col = '#a7f3d0', mark = '#f97316') => `<rect x="${x}" y="${y}" width="30" height="46" rx="5" fill="${col}" stroke="#047857" stroke-width="2"/><rect x="${x + 9}" y="${y - 10}" width="12" height="11" fill="#047857"/><path d="M${x + 15} ${y + 14} L${x + 24} ${y + 32} L${x + 6} ${y + 32} Z" fill="${mark}"/>`;
+const PERSON = (x, y, col = '#1d4ed8') => `<circle cx="${x}" cy="${y}" r="12" fill="#fcd34d" stroke="#92400e" stroke-width="2"/><path d="M${x} ${y + 12} L${x} ${y + 62} M${x} ${y + 62} L${x - 12} ${y + 108} M${x} ${y + 62} L${x + 12} ${y + 108} M${x} ${y + 26} L${x - 20} ${y + 50} M${x} ${y + 26} L${x + 20} ${y + 50}" stroke="${col}" stroke-width="7" fill="none" stroke-linecap="round"/>`;
+const LYING = (x, y) => `<circle cx="${x}" cy="${y}" r="11" fill="#fcd34d" stroke="#92400e" stroke-width="2"/><path d="M${x + 11} ${y} L${x + 60} ${y} M${x + 60} ${y} L${x + 100} ${y - 4} M${x + 60} ${y} L${x + 100} ${y + 6} M${x + 22} ${y} L${x + 40} ${y + 14}" stroke="#1d4ed8" stroke-width="7" fill="none" stroke-linecap="round"/>`;
+const ALERT = (x, y, d = 0) => `<g class="glow" style="animation-delay:${d}s"><path d="M${x} ${y - 14} L${x + 14} ${y + 10} L${x - 14} ${y + 10} Z" fill="#facc15" stroke="#a16207" stroke-width="2"/><rect x="${x - 1.5}" y="${y - 6}" width="3" height="9" fill="#1c1917"/><circle cx="${x}" cy="${y + 6}" r="1.8" fill="#1c1917"/></g>`;
+const CLIPBOARD = (x, y, rows = 4) => `<rect x="${x}" y="${y}" width="120" height="${30 + rows * 30}" rx="8" fill="#a16207"/><rect x="${x + 10}" y="${y + 14}" width="100" height="${rows * 30 + 6}" fill="#fff"/><rect x="${x + 36}" y="${y - 6}" width="48" height="16" rx="4" fill="#64748b"/>`;
+const TICK = (x, y, d = 0) => `<path class="glow" style="animation-delay:${d}s" d="M${x} ${y} l5 5 l9 -11" stroke="#16a34a" stroke-width="3" fill="none"/>`;
+/* safety signs */
+const SIGN_NO = (x, y, r = 26) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="#dc2626" stroke-width="${r / 4}"/><path d="M${x - r * .7} ${y - r * .7} L${x + r * .7} ${y + r * .7}" stroke="#dc2626" stroke-width="${r / 4}"/>`;
+const SIGN_MUST = (x, y, r = 26) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#2563eb"/>`;
+const SIGN_WARN = (x, y, s = 30) => `<path d="M${x} ${y - s} L${x + s * 1.1} ${y + s * .8} L${x - s * 1.1} ${y + s * .8} Z" fill="#facc15" stroke="#1c1917" stroke-width="3"/>`;
+const SIGN_EXIT = (x, y, w = 70, h = 40) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="#16a34a"/><circle cx="${x + w * .35}" cy="${y + h * .25}" r="4" fill="#fff"/><path d="M${x + w * .35} ${y + h * .38} L${x + w * .3} ${y + h * .65} L${x + w * .2} ${y + h * .85} M${x + w * .3} ${y + h * .65} L${x + w * .45} ${y + h * .85} M${x + w * .2} ${y + h * .45} L${x + w * .5} ${y + h * .45}" stroke="#fff" stroke-width="3" fill="none"/><path d="M${x + w * .6} ${y + h * .5} L${x + w * .85} ${y + h * .5} M${x + w * .77} ${y + h * .38} L${x + w * .87} ${y + h * .5} L${x + w * .77} ${y + h * .62}" stroke="#fff" stroke-width="3" fill="none"/>`;
+const AIDKIT = (x, y, w = 50) => `<rect x="${x}" y="${y}" width="${w}" height="${w * .75}" rx="6" fill="#16a34a"/><path d="M${x + w / 2} ${y + w * .15} L${x + w / 2} ${y + w * .6} M${x + w * .27} ${y + w * .375} L${x + w * .73} ${y + w * .375}" stroke="#fff" stroke-width="${w / 8}"/>`;
+/* PPE */
+const HELMET = (x, y, col = '#facc15') => `<path d="M${x - 26} ${y} Q${x - 26} ${y - 30} ${x} ${y - 30} Q${x + 26} ${y - 30} ${x + 26} ${y} Z" fill="${col}" stroke="#a16207" stroke-width="2"/><rect x="${x - 32}" y="${y - 3}" width="64" height="7" rx="3" fill="${col}" stroke="#a16207" stroke-width="2"/>`;
+const GOGGLES = (x, y) => `<rect x="${x - 30}" y="${y - 10}" width="60" height="22" rx="10" fill="#bae6fd" fill-opacity=".8" stroke="#334155" stroke-width="3"/><path d="M${x} ${y - 10} L${x} ${y + 12}" stroke="#334155" stroke-width="3"/>`;
+const GLOVE = (x, y, col = '#f97316') => `<path d="M${x - 14} ${y + 30} L${x - 14} ${y} Q${x - 14} ${y - 6} ${x - 9} ${y - 6} L${x - 9} ${y - 22} Q${x - 9} ${y - 26} ${x - 5} ${y - 26} Q${x - 1} ${y - 26} ${x - 1} ${y - 22} L${x - 1} ${y - 26} Q${x + 3} ${y - 30} ${x + 7} ${y - 26} L${x + 7} ${y - 20} Q${x + 11} ${y - 24} ${x + 14} ${y - 18} L${x + 14} ${y + 30} Z" fill="${col}" stroke="#7c2d12" stroke-width="2"/><path d="M${x - 14} ${y + 6} L${x - 24} ${y - 6}" stroke="${col}" stroke-width="9" stroke-linecap="round"/>`;
+const SHOE = (x, y) => `<path d="M${x - 30} ${y} L${x - 30} ${y - 26} L${x - 6} ${y - 26} Q${x} ${y - 12} ${x + 24} ${y - 12} Q${x + 34} ${y - 10} ${x + 34} ${y} Z" fill="#1f2937"/><path d="M${x + 14} ${y - 12} Q${x + 34} ${y - 10} ${x + 34} ${y}" stroke="#94a3b8" stroke-width="4" fill="none"/>`;
+const EARMUFF = (x, y) => `<path d="M${x - 24} ${y} Q${x - 24} ${y - 36} ${x} ${y - 36} Q${x + 24} ${y - 36} ${x + 24} ${y}" stroke="#334155" stroke-width="5" fill="none"/><ellipse cx="${x - 24}" cy="${y + 4}" rx="9" ry="14" fill="#dc2626"/><ellipse cx="${x + 24}" cy="${y + 4}" rx="9" ry="14" fill="#dc2626"/>`;
+const MASK = (x, y) => `<path d="M${x - 22} ${y - 10} Q${x} ${y - 20} ${x + 22} ${y - 10} L${x + 18} ${y + 12} Q${x} ${y + 22} ${x - 18} ${y + 12} Z" fill="#f8fafc" stroke="#64748b" stroke-width="2"/><circle cx="${x}" cy="${y + 2}" r="6" fill="#cbd5e1"/>`;
+/* other objects */
+const PADLOCK = (x, y) => `<path d="M${x - 9} ${y} L${x - 9} ${y - 10} Q${x - 9} ${y - 20} ${x} ${y - 20} Q${x + 9} ${y - 20} ${x + 9} ${y - 10} L${x + 9} ${y}" stroke="#475569" stroke-width="4" fill="none"/><rect x="${x - 14}" y="${y}" width="28" height="22" rx="3" fill="#dc2626"/><circle cx="${x}" cy="${y + 10}" r="3" fill="#1c1917"/>`;
+const TAG = (x, y) => `<path d="M${x} ${y} L${x + 30} ${y} L${x + 38} ${y + 10} L${x + 38} ${y + 46} L${x} ${y + 46} Z" fill="#fde047" stroke="#a16207" stroke-width="2"/><circle cx="${x + 30}" cy="${y + 8}" r="3" fill="#a16207"/>`;
+const SWITCHBOX = (x, y) => `<rect x="${x}" y="${y}" width="60" height="80" rx="4" fill="#cbd5e1" stroke="#475569" stroke-width="3"/><rect x="${x + 22}" y="${y + 22}" width="16" height="34" rx="3" fill="#334155"/><rect x="${x + 24}" y="${y + 40}" width="12" height="14" fill="#ef4444"/>`;
+const ROBOT = (x, y) => `<rect x="${x - 26}" y="${y + 80}" width="52" height="20" fill="#f97316"/><g class="rock" style="transform-origin:${x}px ${y + 80}px;transform-box:view-box"><rect x="${x - 8}" y="${y + 10}" width="16" height="72" rx="6" fill="#f97316"/><rect x="${x - 4}" y="${y}" width="60" height="14" rx="6" fill="#fb923c"/><path d="M${x + 56} ${y + 7} l12 -8 m-12 8 l12 8" stroke="#334155" stroke-width="4"/></g>`;
+const FENCE = (x1, x2, y = 200) => `<path d="M${x1} ${y} L${x1} ${y - 70} M${x2} ${y} L${x2} ${y - 70}" stroke="#facc15" stroke-width="6"/>` + Array.from({ length: Math.floor((x2 - x1) / 12) }, (_, i) => `<path d="M${x1 + i * 12} ${y - 70} L${x1 + i * 12 + 12} ${y}" stroke="#94a3b8" stroke-width="1.5"/>`).join('');
+const EXTINGUISHER = (x, y) => `<rect x="${x - 12}" y="${y}" width="24" height="60" rx="10" fill="#dc2626"/><rect x="${x - 6}" y="${y - 10}" width="12" height="12" fill="#1f2937"/><path d="M${x + 6} ${y - 6} Q${x + 24} ${y - 8} ${x + 22} ${y + 18}" stroke="#1f2937" stroke-width="4" fill="none"/>`;
+const ALARMBTN = (x, y) => `<rect x="${x}" y="${y}" width="40" height="40" rx="4" fill="#dc2626"/><rect x="${x + 8}" y="${y + 8}" width="24" height="24" fill="#f8fafc"/><circle cx="${x + 20}" cy="${y + 20}" r="6" fill="#dc2626"/>`;
+const PHONE = (x, y) => `<rect x="${x}" y="${y}" width="34" height="60" rx="6" fill="#1f2937"/><rect x="${x + 4}" y="${y + 8}" width="26" height="40" fill="#93c5fd"/>`;
+const DOOR = (x, y = 80, w = 70) => `<rect x="${x}" y="${y}" width="${w}" height="${200 - y}" fill="#a16207" stroke="#78350f" stroke-width="3"/><circle cx="${x + w - 12}" cy="${y + (200 - y) / 2}" r="4" fill="#fde68a"/>`;
+const BOX = (x, y, w = 60, h = 44) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#d6a76c" stroke="#92400e" stroke-width="2"/><path d="M${x} ${y + 12} L${x + w} ${y + 12}" stroke="#92400e" stroke-width="2"/>`;
+const SHELF = (x, y, w) => `<rect x="${x}" y="${y}" width="${w}" height="8" fill="#78350f"/><path d="M${x + 6} ${y + 8} L${x + 6} ${y + 26} M${x + w - 6} ${y + 8} L${x + w - 6} ${y + 26}" stroke="#78350f" stroke-width="3"/>`;
+const ARROW = (x1, y1, x2, y2, col = '#334155') => { const a = Math.atan2(y2 - y1, x2 - x1), h = 10; return `<path d="M${x1} ${y1} L${x2} ${y2} M${x2} ${y2} L${x2 - h * Math.cos(a - .5)} ${y2 - h * Math.sin(a - .5)} M${x2} ${y2} L${x2 - h * Math.cos(a + .5)} ${y2 - h * Math.sin(a + .5)}" stroke="${col}" stroke-width="4" fill="none" stroke-linecap="round"/>`; };
+const CROSS = (x, y, r = 24) => `<path d="M${x - r} ${y - r} L${x + r} ${y + r} M${x + r} ${y - r} L${x - r} ${y + r}" stroke="#dc2626" stroke-width="7" stroke-linecap="round"/>`;
+const BUBBLE = (x, y, w = 90, h = 50) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" fill="#fff" stroke="#334155" stroke-width="2"/><path d="M${x + 20} ${y + h} L${x + 14} ${y + h + 14} L${x + 34} ${y + h}" fill="#fff" stroke="#334155" stroke-width="2"/>`;
+const NUM = (n, x, y) => `<circle cx="${x}" cy="${y}" r="13" fill="#1d2433" stroke="#fff" stroke-width="2"/><text x="${x}" y="${y + 5}" text-anchor="middle" font-size="${n > 9 ? 12 : 15}" font-weight="700" fill="#fff" font-family="sans-serif">${n}</text>`;
+const ART = (...ws) => ws.flatMap(w => [w, 'a ' + w, 'an ' + w, 'the ' + w]);
+
+/* ---------- Food drawings (no words in the pictures) ---------- */
+const KITCHEN = '<rect width="400" height="240" fill="#fdf2e3"/><rect y="0" width="400" height="12" fill="#f1dcc0"/><rect y="196" width="400" height="44" fill="#c8a27a"/><rect y="190" width="400" height="8" fill="#a97c50"/>';
+const PLATE = (x, y, r = 70) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#ffffff" stroke="#cbd5e1" stroke-width="6"/><circle cx="${x}" cy="${y}" r="${r - 12}" fill="none" stroke="#e2e8f0" stroke-width="2"/>`;
+const APPLE = (x, y, col = '#e11d48') => `<circle cx="${x}" cy="${y}" r="13" fill="${col}"/><path d="M${x} ${y - 12} L${x + 2} ${y - 20}" stroke="#78350f" stroke-width="3"/><ellipse cx="${x + 7}" cy="${y - 18}" rx="5" ry="3" fill="#16a34a"/>`;
+const ORANGE = (x, y) => `<circle cx="${x}" cy="${y}" r="13" fill="#f97316"/><circle cx="${x + 2}" cy="${y - 11}" r="2" fill="#15803d"/>`;
+const BANANA = (x, y) => `<path d="M${x - 22} ${y - 6} Q${x} ${y + 18} ${x + 22} ${y - 6} Q${x} ${y + 8} ${x - 22} ${y - 6} Z" fill="#facc15" stroke="#a16207" stroke-width="2"/>`;
+const CARROT = (x, y) => `<path d="M${x - 7} ${y - 14} L${x + 7} ${y - 14} L${x} ${y + 22} Z" fill="#f97316"/><path d="M${x} ${y - 14} l-6 -10 M${x} ${y - 14} l0 -12 M${x} ${y - 14} l6 -10" stroke="#16a34a" stroke-width="3"/>`;
+const TOMATO = (x, y) => `<circle cx="${x}" cy="${y}" r="12" fill="#dc2626"/><path d="M${x - 6} ${y - 10} L${x} ${y - 6} L${x + 6} ${y - 10} M${x} ${y - 6} L${x} ${y - 14}" stroke="#15803d" stroke-width="3"/>`;
+const COURGETTE = (x, y) => `<rect x="${x - 24}" y="${y - 7}" width="48" height="14" rx="7" fill="#15803d"/><rect x="${x + 20}" y="${y - 3}" width="8" height="6" fill="#854d0e"/>`;
+const BREAD = (x, y) => `<rect x="${x - 26}" y="${y - 14}" width="52" height="28" rx="12" fill="#d6a76c" stroke="#92400e" stroke-width="2"/><path d="M${x - 12} ${y - 10} l-5 18 M${x} ${y - 10} l-5 18 M${x + 12} ${y - 10} l-5 18" stroke="#92400e" stroke-width="2"/>`;
+const BOWL = (x, y, fill = '#ffffff', dots = '#e5e7eb') => `<path d="M${x - 30} ${y} Q${x} ${y + 34} ${x + 30} ${y} Z" fill="#60a5fa" stroke="#1d4ed8" stroke-width="2"/><ellipse cx="${x}" cy="${y}" rx="30" ry="7" fill="${fill}" stroke="${dots}" stroke-width="2"/>`;
+const POTATO = (x, y) => `<ellipse cx="${x}" cy="${y}" rx="16" ry="11" fill="#c8a165" stroke="#8a6a35" stroke-width="2"/><circle cx="${x - 5}" cy="${y - 2}" r="1.5" fill="#8a6a35"/><circle cx="${x + 6}" cy="${y + 3}" r="1.5" fill="#8a6a35"/>`;
+const FISH = (x, y, col = '#60a5fa') => `<ellipse cx="${x}" cy="${y}" rx="24" ry="12" fill="${col}" stroke="#1e3a8a" stroke-width="2"/><path d="M${x + 22} ${y} L${x + 36} ${y - 10} L${x + 36} ${y + 10} Z" fill="${col}" stroke="#1e3a8a" stroke-width="2"/><circle cx="${x - 13}" cy="${y - 3}" r="2.5" fill="#1e3a8a"/>`;
+const EGG = (x, y) => `<ellipse cx="${x}" cy="${y}" rx="10" ry="13" fill="#fffbeb" stroke="#d6b98c" stroke-width="2"/>`;
+const CHICKEN = (x, y) => `<ellipse cx="${x}" cy="${y}" rx="20" ry="14" fill="#d97706" stroke="#92400e" stroke-width="2"/><rect x="${x + 16}" y="${y - 3}" width="16" height="6" rx="3" fill="#fef3c7" stroke="#92400e" stroke-width="1.5"/>`;
+const BEANS = (x, y) => [0, 1, 2, 3, 4].map(i => `<ellipse cx="${x - 16 + i * 8}" cy="${y + (i % 2) * 6}" rx="5" ry="3.5" fill="#9a3412"/>`).join('');
+const NUTS = (x, y) => [0, 1, 2, 3].map(i => `<ellipse cx="${x - 12 + i * 8}" cy="${y + (i % 2) * 5}" rx="5" ry="6" fill="#b45309" stroke="#78350f" stroke-width="1.5"/>`).join('');
+const GLASS = (x, y, fill = '#7dd3fc') => `<path d="M${x - 14} ${y - 30} L${x + 14} ${y - 30} L${x + 10} ${y + 10} L${x - 10} ${y + 10} Z" fill="#f8fafc" fill-opacity=".7" stroke="#64748b" stroke-width="2"/><path d="M${x - 12} ${y - 16} L${x + 12} ${y - 16} L${x + 9.5} ${y + 9} L${x - 9.5} ${y + 9} Z" fill="${fill}"/>`;
+const CAN = (x, y, col = '#ea580c') => `<rect x="${x - 14}" y="${y - 24}" width="28" height="48" rx="4" fill="${col}" stroke="#7c2d12" stroke-width="2"/><ellipse cx="${x}" cy="${y - 24}" rx="14" ry="4" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/><path d="M${x - 14} ${y - 6} L${x + 14} ${y - 6}" stroke="#fff" stroke-width="3"/>`;
+const CARTON = (x, y, col = '#e0f2fe') => `<rect x="${x - 15}" y="${y - 20}" width="30" height="44" fill="${col}" stroke="#334155" stroke-width="2"/><path d="M${x - 15} ${y - 20} L${x} ${y - 34} L${x + 15} ${y - 20} Z" fill="${col}" stroke="#334155" stroke-width="2"/><rect x="${x - 10}" y="${y - 4}" width="20" height="14" fill="#3b82f6"/>`;
+const CHEESE = (x, y) => `<path d="M${x - 24} ${y + 12} L${x + 24} ${y + 12} L${x + 24} ${y - 6} L${x - 24} ${y + 2} Z" fill="#fde047" stroke="#a16207" stroke-width="2"/><circle cx="${x + 8}" cy="${y + 5}" r="3" fill="#eab308"/><circle cx="${x - 8}" cy="${y + 7}" r="2" fill="#eab308"/>`;
+const YOGHURT = (x, y) => `<path d="M${x - 13} ${y - 16} L${x + 13} ${y - 16} L${x + 10} ${y + 14} L${x - 10} ${y + 14} Z" fill="#fbcfe8" stroke="#9d174d" stroke-width="2"/><rect x="${x - 15}" y="${y - 20}" width="30" height="5" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>`;
+const CAKE = (x, y) => `<path d="M${x - 24} ${y + 14} L${x + 24} ${y + 14} L${x + 24} ${y - 6} L${x - 24} ${y + 6} Z" fill="#f5d0a9" stroke="#92400e" stroke-width="2"/><path d="M${x - 24} ${y + 6} L${x + 24} ${y - 6} L${x + 24} ${y - 12} L${x - 24} ${y} Z" fill="#f472b6"/><circle cx="${x + 14}" cy="${y - 14}" r="4" fill="#dc2626"/>`;
+const CRISPS = (x, y, col = '#2563eb') => `<path d="M${x - 18} ${y - 26} L${x + 18} ${y - 26} L${x + 22} ${y + 26} L${x - 22} ${y + 26} Z" fill="${col}" stroke="#1e3a8a" stroke-width="2"/><circle cx="${x}" cy="${y}" r="9" fill="#fde047"/>`;
+const CHIPS = (x, y) => `<rect x="${x - 18}" y="${y - 6}" width="36" height="26" rx="3" fill="#dc2626"/>` + [0, 1, 2, 3, 4].map(i => `<rect x="${x - 15 + i * 7}" y="${y - 22 + (i % 2) * 4}" width="5" height="22" fill="#fcd34d"/>`).join('');
+const SAUSAGE = (x, y) => `<rect x="${x - 22}" y="${y - 6}" width="44" height="12" rx="6" fill="#b91c1c" stroke="#7f1d1d" stroke-width="2"/>`;
+const BONE = (x, y) => `<rect x="${x - 22}" y="${y - 5}" width="44" height="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>` + [[-22, -5], [-22, 5], [22, -5], [22, 5]].map(([dx, dy]) => `<circle cx="${x + dx}" cy="${y + dy}" r="7" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>`).join('') + `<rect x="${x - 20}" y="${y - 4}" width="40" height="8" fill="#f8fafc"/>`;
+const TOOTH = (x, y) => `<path d="M${x - 14} ${y - 14} Q${x} ${y - 22} ${x + 14} ${y - 14} Q${x + 16} ${y} ${x + 8} ${y + 18} L${x + 3} ${y + 4} L${x - 3} ${y + 4} L${x - 8} ${y + 18} Q${x - 16} ${y} ${x - 14} ${y - 14} Z" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>`;
+const SPOON = (x, y) => `<ellipse cx="${x}" cy="${y}" rx="9" ry="6" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/><path d="M${x + 8} ${y} L${x + 34} ${y - 4}" stroke="#64748b" stroke-width="3"/>`;
+const SUGAR = (x, y) => [0, 1, 2].map(i => `<rect x="${x - 15 + i * 11}" y="${y - (i === 1 ? 10 : 0)}" width="9" height="9" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>`).join('');
+const FRIDGE = (x, y = 40) => `<rect x="${x}" y="${y}" width="90" height="${196 - y}" rx="6" fill="#e2e8f0" stroke="#64748b" stroke-width="3"/><path d="M${x} ${y + 56} L${x + 90} ${y + 56}" stroke="#64748b" stroke-width="3"/><rect x="${x + 74}" y="${y + 20}" width="5" height="22" rx="2" fill="#64748b"/><rect x="${x + 74}" y="${y + 70}" width="5" height="30" rx="2" fill="#64748b"/>`;
+const FRIDGE_OPEN = (x, y = 40) => `<rect x="${x}" y="${y}" width="90" height="${196 - y}" rx="6" fill="#f8fafc" stroke="#64748b" stroke-width="3"/><path d="M${x + 6} ${y + 50} L${x + 84} ${y + 50} M${x + 6} ${y + 96} L${x + 84} ${y + 96}" stroke="#94a3b8" stroke-width="3"/><rect x="${x + 90}" y="${y}" width="22" height="${196 - y}" fill="#e2e8f0" stroke="#64748b" stroke-width="3"/>`;
+const BIN = (x, y = 130) => `<path d="M${x - 24} ${y} L${x + 24} ${y} L${x + 18} ${y + 66} L${x - 18} ${y + 66} Z" fill="#475569" stroke="#1f2937" stroke-width="2"/><rect x="${x - 28}" y="${y - 8}" width="56" height="9" rx="3" fill="#334155"/><path d="M${x - 8} ${y + 12} L${x - 6} ${y + 56} M${x + 8} ${y + 12} L${x + 6} ${y + 56}" stroke="#94a3b8" stroke-width="2"/>`;
+const TROLLEY = (x, y) => `<path d="M${x - 50} ${y - 40} L${x - 36} ${y - 40} L${x - 26} ${y + 10} L${x + 40} ${y + 10} L${x + 48} ${y - 28} L${x - 32} ${y - 28}" stroke="#334155" stroke-width="4" fill="none"/><circle cx="${x - 18}" cy="${y + 22}" r="7" fill="#334155"/><circle cx="${x + 32}" cy="${y + 22}" r="7" fill="#334155"/>`;
+const LABEL = (x, y) => `<rect x="${x}" y="${y}" width="80" height="60" fill="#ffffff" stroke="#111827" stroke-width="3"/><path d="M${x + 8} ${y + 16} L${x + 72} ${y + 16}" stroke="#111827" stroke-width="3"/><path d="M${x + 8} ${y + 30} L${x + 50} ${y + 30} M${x + 8} ${y + 42} L${x + 60} ${y + 42} M${x + 8} ${y + 52} L${x + 44} ${y + 52}" stroke="#94a3b8" stroke-width="3"/>`;
+const CALENDAR = (x, y) => `<rect x="${x}" y="${y}" width="64" height="60" rx="6" fill="#ffffff" stroke="#334155" stroke-width="3"/><rect x="${x}" y="${y}" width="64" height="16" rx="4" fill="#dc2626"/>` + [0, 1, 2, 3].map(r => [0, 1, 2, 3].map(c => `<rect x="${x + 8 + c * 13}" y="${y + 22 + r * 9}" width="8" height="5" fill="#cbd5e1"/>`).join('')).join('');
+const COIN = (x, y) => `<circle cx="${x}" cy="${y}" r="10" fill="#facc15" stroke="#a16207" stroke-width="2"/><circle cx="${x}" cy="${y}" r="5" fill="none" stroke="#a16207" stroke-width="1.5"/>`;
+const GLOBE = (x, y, r = 46) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#60a5fa" stroke="#1e3a8a" stroke-width="3"/><path d="M${x - r * .6} ${y - r * .4} q${r * .3} ${-r * .3} ${r * .6} 0 q${r * .1} ${r * .4} ${-r * .3} ${r * .5} z M${x + r * .1} ${y + r * .1} q${r * .4} ${-r * .2} ${r * .6} ${r * .2} q${-r * .2} ${r * .5} ${-r * .5} ${r * .3} z" fill="#22c55e"/><ellipse cx="${x}" cy="${y}" rx="${r * .45}" ry="${r}" fill="none" stroke="#1e3a8a" stroke-width="1.5"/><path d="M${x - r} ${y} L${x + r} ${y}" stroke="#1e3a8a" stroke-width="1.5"/>`;
+const TILE = (x, y, col, n) => `<rect x="${x}" y="${y}" width="54" height="54" rx="6" fill="${col}"/><text x="${x + 27}" y="${y + 37}" text-anchor="middle" font-size="28" font-weight="700" fill="#fff" font-family="sans-serif">${n}</text>`;
+const RUNNER = (x, y, col = '#dc2626') => `<circle cx="${x}" cy="${y}" r="12" fill="#fcd34d" stroke="#92400e" stroke-width="2"/><path d="M${x} ${y + 12} L${x - 6} ${y + 58} M${x - 6} ${y + 58} L${x - 26} ${y + 96} M${x - 6} ${y + 58} L${x + 18} ${y + 82} L${x + 14} ${y + 104} M${x - 2} ${y + 26} L${x - 26} ${y + 40} M${x - 2} ${y + 26} L${x + 22} ${y + 18}" stroke="${col}" stroke-width="7" fill="none" stroke-linecap="round"/>`;
+const PLANT = (x, y) => `<path d="M${x} ${y} L${x} ${y - 50}" stroke="#15803d" stroke-width="4"/><ellipse cx="${x - 14}" cy="${y - 30}" rx="14" ry="7" fill="#22c55e" transform="rotate(-30 ${x - 14} ${y - 30})"/><ellipse cx="${x + 14}" cy="${y - 42}" rx="14" ry="7" fill="#22c55e" transform="rotate(30 ${x + 14} ${y - 42})"/><rect x="${x - 18}" y="${y}" width="36" height="26" fill="#b45309"/>`;
+const POT = (x, y) => `<rect x="${x - 34}" y="${y - 22}" width="68" height="44" rx="6" fill="#64748b" stroke="#334155" stroke-width="3"/><path d="M${x - 46} ${y - 12} L${x - 34} ${y - 12} M${x + 34} ${y - 12} L${x + 46} ${y - 12}" stroke="#334155" stroke-width="5"/><ellipse cx="${x}" cy="${y - 22}" rx="34" ry="6" fill="#f8fafc"/>`;
+const OK = (x, y) => `<circle cx="${x}" cy="${y}" r="18" fill="#16a34a"/><path d="M${x - 8} ${y} l6 6 l11 -12" stroke="#fff" stroke-width="4" fill="none"/>`;
+
+/* ---------- Text ---------- */
+const TEXT = [
+  '<span class="sub">Food and energy.</span> Food gives us energy to study, play sport and <em>grow</em>. But which food is good for us, and how much of it do we need?',
+  '<span class="sub">The healthy plate.</span> Many doctors use a simple picture: the healthy plate. <em>Half</em> of the plate is for vegetables and fruit, like carrots, tomatoes, courgettes, apples and oranges. Try to eat food of different colours every day, because every colour gives your body something different.',
+  '<span class="sub">Food for energy.</span> A <em>quarter</em> of the plate is for bread, rice, cereal or potatoes. This food gives you energy for the whole morning or afternoon.',
+  '<span class="sub">Fish, eggs, beans and nuts.</span> The last quarter is for fish, chicken, eggs, beans or nuts. Beans and nuts are a good <em>choice</em> because they come from <em>plants</em>. You don\'t need a lot of meat: two or three times a week is enough.',
+  '<span class="sub">Dairy products.</span> Milk, yoghurt and cheese are dairy products. They are important because they are good for your <em>bones</em> and <em>teeth</em>.',
+  '<span class="sub">Drinks.</span> The best drink is water: six to eight glasses a day is a good idea. <em>Fizzy drinks</em> and many fruit juices contain a lot of sugar, so they are not a good choice for every day.',
+  '<span class="sub">Balance.</span> Nobody eats a perfect plate every day! A slice of cake at a party or a few crisps with friends is not a problem. The problem starts when we eat too much sugar, too many chips and sausages, and not enough fruit and vegetables, every day. A healthy <em>diet</em> isn\'t about eating less: it\'s about eating well.'
+];
+
+/* ---------- Diagram ---------- */
+const SCHEMA = [
+  { title: 'Why we eat', boxes: ['b1'] },
+  { title: 'The healthy plate', boxes: ['b2', 'b3', 'b4'] },
+  { title: 'Also important', boxes: ['b5', 'b6', 'b7'] }
+];
+
+const SCENES = [
+  { box: 'b1', label: 'food = energy',
+    svg: KITCHEN + RUNNER(120, 70) + '<g class="glow">' + BOLT(200, 60, 1.6) + '</g>' + APPLE(260, 170) + BREAD(320, 172) + '<g class="spin slow">' + `<circle cx="200" cy="60" r="34" fill="none" stroke="#f59e0b" stroke-width="4" stroke-dasharray="14 10"/>` + '</g>'
+  },
+  { box: 'b2', label: '½ vegetables and fruit',
+    svg: KITCHEN + PLATE(200, 112, 82) + `<path d="M200 112 L200 30 A82 82 0 0 0 200 194 Z" fill="#dcfce7"/>` +
+      '<g class="glow">' + CARROT(160, 80) + TOMATO(150, 128) + COURGETTE(170, 160) + APPLE(184, 104) + ORANGE(178, 60) + '</g>'
+  },
+  { box: 'b3', label: '¼ bread, rice, potatoes',
+    svg: KITCHEN + PLATE(200, 112, 82) + `<path d="M200 112 L282 112 A82 82 0 0 1 200 194 Z" fill="#fef3c7"/>` +
+      '<g class="glow">' + BREAD(236, 136) + POTATO(232, 168) + '</g>' + BOWL(330, 90) + RUNNER(60, 70, '#2563eb')
+  },
+  { box: 'b4', label: '¼ fish, eggs, beans, nuts',
+    svg: KITCHEN + PLATE(200, 112, 82) + `<path d="M200 112 L200 30 A82 82 0 0 1 282 112 Z" fill="#fee2e2"/>` +
+      '<g class="glow">' + FISH(226, 74, '#93c5fd') + EGG(252, 98) + BEANS(226, 98) + '</g>' + PLANT(340, 150) + NUTS(340, 180) + CHICKEN(60, 160)
+  },
+  { box: 'b5', label: 'dairy: bones and teeth',
+    svg: KITCHEN + CARTON(70, 150) + YOGHURT(120, 160) + CHEESE(170, 162) + '<g class="glow">' + BONE(270, 80) + TOOTH(320, 140) + '</g>' + ARROW(200, 140, 240, 110, '#16a34a')
+  },
+  { box: 'b6', label: 'water: 6–8 glasses',
+    svg: KITCHEN + [0, 1, 2, 3, 4, 5].map(i => GLASS(70 + i * 44, 170)).join('') + '<g class="glow">' + OK(170, 60) + '</g>' +
+      CAN(320, 90, '#ea580c') + SPOON(290, 130) + SUGAR(330, 140) + CROSS(320, 90, 26)
+  },
+  { box: 'b7', label: 'not too much, not too little',
+    svg: KITCHEN + CAKE(40, 170) + CRISPS(90, 160, '#7c3aed') + '<g class="rock">' + `<path d="M200 70 L200 180 M140 70 L260 70" stroke="#334155" stroke-width="5"/><path d="M140 70 L120 110 L160 110 Z M260 70 L240 110 L280 110 Z" fill="#94a3b8"/>` + APPLE(140, 100) + CHIPS(260, 96) + '</g>' + PLATE(330, 140, 40) + CARROT(330, 140)
+  }
+];
+
+const STOPS = {
+  b1: [
+    [{ q: 'What does food give us?', any: ['energy'], min: 1, sol: 'Energy to study, play sport and grow.' }],
+    []
+  ],
+  b2: [
+    [{ q: 'What picture do many doctors use?', any: ['plate'], min: 1, sol: 'The healthy plate.' }],
+    [{ q: 'How much of the plate is for vegetables and fruit?', all: [['half', '50', '1/2']], sol: 'Half of the plate.' }],
+    [{ q: 'Why is it good to eat food of different colours?', any: ['different', 'something', 'every colour', 'body'], min: 1, sol: 'Because every colour gives your body something different.' }]
+  ],
+  b3: [
+    [{ q: 'A quarter of the plate is for… Name two foods.', any: ['bread', 'rice', 'cereal', 'potato'], min: 2, sol: 'Bread, rice, cereal or potatoes.' }],
+    [{ q: 'What does this food give you?', any: ['energy'], min: 1, sol: 'Energy for the whole morning or afternoon.' }]
+  ],
+  b4: [
+    [{ q: 'Name two foods for the last quarter of the plate.', any: ['fish', 'chicken', 'egg', 'bean', 'nut'], min: 2, sol: 'Fish, chicken, eggs, beans or nuts.' }],
+    [{ q: 'Why are beans and nuts a good choice?', any: ['plant'], min: 1, sol: 'Because they come from plants.' }],
+    [{ q: 'How often do you need meat?', any: ['two', 'three', '2', '3'], min: 1, sol: 'Two or three times a week.' }]
+  ],
+  b5: [
+    [{ q: 'Name two dairy products.', any: ['milk', 'yoghurt', 'yogurt', 'cheese'], min: 2, sol: 'Milk, yoghurt and cheese.' }],
+    [{ q: 'Why are dairy products important?', any: ['bone', 'teeth', 'tooth'], min: 1, sol: 'Because they are good for your bones and teeth.' }]
+  ],
+  b6: [
+    [{ q: 'What is the best drink, and how many glasses a day?', all: [['water'], ['six', 'eight', '6', '8']], sol: 'Water: six to eight glasses a day.' }],
+    [{ q: 'Why are fizzy drinks not a good choice for every day?', any: ['sugar'], min: 1, sol: 'Because they contain a lot of sugar.' }]
+  ],
+  b7: [
+    [],
+    [{ q: 'Is a slice of cake at a party a problem?', any: ['no', 'not'], min: 1, sol: 'No, it is not a problem.' }],
+    [{ q: 'When does the problem start? Give one example.', any: ['too much', 'too many', 'not enough', 'every day'], min: 1, sol: 'When we eat too much sugar, too many chips and sausages, and not enough fruit and vegetables, every day.' }],
+    [{ q: 'What is a healthy diet about?', any: ['well'], min: 1, sol: 'Eating well.' }]
+  ]
+};
+
+const EXERCISES = {
+  key: [
+    { prompt: 'crescere', ok: ['grow'] },
+    { prompt: 'metà', ok: ['half'] },
+    { prompt: 'un quarto', ok: ['quarter', 'a quarter'] },
+    { prompt: 'scelta', ok: ['choice', 'a choice'] },
+    { prompt: 'piante', ok: ['plants'] },
+    { prompt: 'ossa', ok: ['bones'] },
+    { prompt: 'denti', ok: ['teeth'] },
+    { prompt: 'bibite gassate', ok: ['fizzy drinks'] },
+    { prompt: 'alimentazione, dieta', ok: ['diet', 'a diet'] }
+  ],
+  vocab: [
+    { prompt: 'a long yellow fruit', ok: ART('banana', 'bananas') },
+    { prompt: 'an orange vegetable: rabbits love it', ok: ART('carrot', 'carrots') },
+    { prompt: 'small white grains: you boil them in water', ok: ART('rice') },
+    { prompt: 'a sweet food that bees make', ok: ART('honey') },
+    { prompt: 'milk, cheese and yoghurt', ok: ART('dairy products', 'dairy') },
+    { prompt: 'thin slices of fried potato in a packet', ok: ART('crisps') },
+    { prompt: 'long pieces of fried potato, often with fish', ok: ART('chips') },
+    { prompt: 'meat from a cow', ok: ART('beef') },
+    { prompt: 'a big sea fish, often in a tin', ok: ART('tuna') },
+    { prompt: 'a long green vegetable', ok: ART('courgette', 'courgettes', 'zucchini') }
+  ],
+  gap: [
+    { prompt: 'Half of the healthy plate is for v________ and fruit.', ok: ['vegetables'] },
+    { prompt: 'Bread, rice and potatoes give you e________ for the whole morning.', ok: ['energy'] },
+    { prompt: 'You don\'t need a lot of m________: two or three times a week is enough.', ok: ['meat'] },
+    { prompt: 'Beans and nuts come from p________.', ok: ['plants'] },
+    { prompt: 'Dairy products are good for your b________ and teeth.', ok: ['bones'] },
+    { prompt: 'Try to drink six to eight g________ of water a day.', ok: ['glasses'] },
+    { prompt: 'Fizzy drinks contain a lot of s________.', ok: ['sugar'] },
+    { prompt: 'A s________ of cake at a party is not a problem.', ok: ['slice'] }
+  ],
+  passive: [
+    { prompt: 'There are too few vegetables on your plate.', start: 'There aren\'t …', ok: ['there aren\'t enough vegetables on your plate', 'there are not enough vegetables on your plate'], sol: 'There aren\'t enough vegetables on your plate.' },
+    { prompt: 'Tom eats a lot of crisps, and that isn\'t healthy.', start: 'Tom eats too …', ok: ['tom eats too many crisps'], sol: 'Tom eats too many crisps.' },
+    { prompt: 'There\'s too little water in the jug.', start: 'There isn\'t …', ok: ['there isn\'t enough water in the jug', 'there is not enough water in the jug'], sol: 'There isn\'t enough water in the jug.' },
+    { prompt: 'I\'ve got a small quantity of honey.', start: 'I\'ve got a …', ok: ['i\'ve got a little honey', 'i have got a little honey'], sol: 'I\'ve got a little honey.' },
+    { prompt: 'There are some nuts in the bowl, but not many.', start: 'There are a …', ok: ['there are a few nuts in the bowl'], sol: 'There are a few nuts in the bowl.' },
+    { prompt: 'There isn\'t any sugar in my tea.', start: 'There\'s …', ok: ['there\'s no sugar in my tea', 'there is no sugar in my tea'], sol: 'There\'s no sugar in my tea.' },
+    { prompt: 'What quantity of fruit do you eat every day?', start: 'How …', ok: ['how much fruit do you eat every day'], sol: 'How much fruit do you eat every day?' },
+    { prompt: 'What number of eggs do you need for the cake?', start: 'How …', ok: ['how many eggs do you need for the cake'], sol: 'How many eggs do you need for the cake?' }
+  ]
+};
+
+/* questions on the text: open answers, with a model answer */
+const TRANS = [
+  ['What is the "healthy plate"?', 'It is a simple picture that doctors use: it shows how much of each type of food we need on our plate.'],
+  ['Why is it a good idea to eat food of different colours?', 'Because every colour gives your body something different.'],
+  ['Why are beans and nuts a good choice?', 'Because they come from plants.'],
+  ['How much water do you need every day?', 'Six to eight glasses a day.'],
+  ['Why aren\'t fizzy drinks a good choice for every day?', 'Because they contain a lot of sugar.'],
+  ['When does food become a problem?', 'When we eat too much sugar, too many chips and sausages, and not enough fruit and vegetables, every day.']
+];
+
+const SUMMARY_MODEL = 'For lunch I usually have a lot of rice and a little cheese, and I don\'t eat many vegetables. I drink a can of fizzy drink, not water. My plate is not like the healthy plate: there isn\'t enough fruit and there aren\'t enough vegetables. I can eat some carrots or tomatoes, have an apple after lunch and drink two glasses of water.';
+
+const GLOSSARY = [];
+
+/* ---------- Render text ---------- */
+function renderText() {
+  document.getElementById('textBody').innerHTML = TEXT.map(p => `<p>${p}</p>`).join('');
+}
+
+/* ---------- Scenes ---------- */
+const S = { idx: 0, sub: 0, tries: 0, timers: [], started: false, checking: false, completed: false };
+const MAX_TRIES = 3;
+
+function renderSchema() {
+  document.getElementById('schema').innerHTML = SCHEMA.map(col => `
+    <div class="scol"><h4>${col.title}</h4>
+      ${col.boxes.map(b => `<div class="sbox" id="${b}">?</div>`).join('')}
+    </div>`).join('');
+}
+
+function updateSteps() {
+  const sc = SCENES[S.idx];
+  document.getElementById('steps').textContent = sc
+    ? `Scene ${S.idx + 1} / ${SCENES.length} · Question ${qNum()} / ${qTot()}`
+    : `Scene ${SCENES.length} / ${SCENES.length}`;
+  document.querySelectorAll('.sbox').forEach(b => b.classList.remove('cur'));
+  if (sc) document.getElementById(sc.box).classList.add('cur');
+}
+
+/* the sentences of the text shown as subtitles in each scene */
+function sentences(html) {
+  return html.replace(/<span class="sub">.*?<\/span>\s*/, '').replace(/<[^>]+>/g, '').split(/(?<=[.!?])\s+(?=[A-Z])/);
+}
+function captionsFor(i) {
+  return sentences(TEXT[i]);
+}
+/* reading time: about 0.4 s per word, at least 3.5 s per sentence */
+const readTime = c => Math.max(3500, c.split(/\s+/).length * 400);
+
+function clearTimers() { S.timers.forEach(clearTimeout); S.timers = []; }
+
+/* new scene: draw it, then play its first sentence */
+function playScene() {
+  const sc = SCENES[S.idx];
+  S.sub = 0; S.tries = 0;
+  document.getElementById('stage').innerHTML = `<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Scene ${S.idx + 1}">${sc.svg}</svg><div class="cap" id="cap"></div>`;
+  updateSteps();
+  playSentence(false);
+}
+
+/* one sentence as a subtitle; when it disappears the scene stops and the question appears */
+function playSentence(keepAnswers) {
+  const caption = captionsFor(S.idx)[S.sub];
+  const ms = readTime(caption);
+  const stage = document.getElementById('stage');
+  const cap = document.getElementById('cap');
+  stage.classList.remove('paused');
+  document.getElementById('qbox').classList.remove('show');
+  if (!keepAnswers) renderQuestion();
+  lockQuestion(true);
+  document.getElementById('sstatus').textContent = 'Watch the scene and read the text carefully.';
+  document.getElementById('playBtn').disabled = true;
+  const bar = document.querySelector('#sprog i');
+  bar.style.transition = 'none'; bar.style.width = '0';
+  bar.offsetWidth;
+  bar.style.transition = `width ${ms / 1000}s linear`; bar.style.width = '100%';
+  clearTimers();
+  cap.classList.remove('hide');
+  cap.textContent = caption;
+  S.timers.push(setTimeout(() => {
+    if (!currentQs().length) { nextStop(); return; }   /* sentence without a question: go on */
+    cap.classList.add('hide');
+    setTimeout(() => { cap.textContent = ''; }, 300);
+    stage.classList.add('paused');
+    document.getElementById('qbox').classList.add('show');
+    showQuestion();
+  }, ms));
+}
+
+function lockText(on) {
+  if (S.completed) on = false;
+  document.getElementById('textCard').classList.toggle('locked', on);
+}
+
+function startScene() {
+  lockText(true);
+  if (!S.started) { S.started = true; document.getElementById('playBtn').textContent = '▶ Playing'; }
+  playScene();
+  saveProgress();
+}
+
+function currentQs() { return STOPS[SCENES[S.idx].box][S.sub]; }
+/* questions counted only on sentences that have a question */
+function qTot() { return STOPS[SCENES[S.idx].box].filter(x => x.length).length; }
+function qNum() { return Math.max(1, STOPS[SCENES[S.idx].box].slice(0, S.sub + 1).filter(x => x.length).length); }
+
+function renderQuestion() {
+  const qs = currentQs();
+  const qb = document.getElementById('qbox');
+  qb.innerHTML = `<h4>Scene ${S.idx + 1} of ${SCENES.length} · Question ${qNum()} of ${qTot()}</h4>` + qs.map((q, i) => `
+    <div class="ex-item">
+      <div class="prompt">${qs.length > 1 ? (i + 1) + '. ' : ''}${q.q}</div>
+      <input type="text" id="sa${i}" autocomplete="off" spellcheck="false">
+      <div class="fb" id="sf${i}"></div>
+    </div>`).join('') + `<div class="row" id="srow"><button onclick="checkScene()">Check</button></div>`;
+  qb.onkeydown = e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT') { e.preventDefault(); checkScene(); } };
+}
+
+function lockQuestion(on) {
+  document.querySelectorAll('#qbox input, #qbox button').forEach(el => { el.disabled = on; });
+}
+
+function showQuestion() {
+  lockQuestion(false);
+  S.checking = false;
+  document.getElementById('sstatus').textContent = 'The text has disappeared. Answer the question.';
+  const first = document.getElementById('sa0');
+  if (first) first.focus({ preventScroll: true });
+}
+
+function norm(s) {
+  return s.toLowerCase()
+    .replace(/[’']/g, "'")
+    .replace(/[–—]/g, '-')
+    .replace(/[.,;:!?"“”]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function matches(q, val) {
+  const v = norm(val);
+  if (!v) return false;
+  const has = w => {
+    const k = norm(w);
+    return /^[a-z0-9]+$/.test(k) && k.length <= 3 ? new RegExp('\\b' + k + '(s|es)?\\b').test(v) : v.includes(k);
+  };
+  if (q.all && !q.all.every(group => group.some(has))) return false;
+  if (q.any && q.any.filter(has).length < (q.min || 1)) return false;
+  return true;
+}
+
+function fillBox() {
+  const sc = SCENES[S.idx];
+  const b = document.getElementById(sc.box);
+  b.textContent = sc.label;
+  b.classList.remove('cur');
+  b.classList.add('filled');
+}
+
+function checkScene() {
+  if (S.checking) return;
+  S.checking = true;
+  const qs = currentQs();
+  let allOk = true;
+  qs.forEach((q, i) => {
+    const inp = document.getElementById('sa' + i);
+    const fb = document.getElementById('sf' + i);
+    const ok = matches(q, inp.value);
+    inp.classList.remove('right', 'wrong');
+    inp.classList.add(ok ? 'right' : 'wrong');
+    fb.className = 'fb ' + (ok ? 'right' : 'wrong');
+    fb.textContent = ok ? 'Correct!' : 'Not correct.';
+    if (!ok) allOk = false;
+  });
+  S.tries++;
+  if (allOk) {
+    setTimeout(nextStop, 900);
+  } else if (S.tries >= MAX_TRIES) {
+    qs.forEach((q, i) => {
+      const fb = document.getElementById('sf' + i);
+      if (fb.classList.contains('wrong')) fb.innerHTML = 'The correct answer is: <strong>' + q.sol + '</strong>';
+    });
+    document.getElementById('srow').innerHTML = '<button onclick="nextStop()">Continue ▶</button>';
+    document.getElementById('sstatus').textContent = 'Read the correct answer, then press Continue.';
+  } else {
+    const left = MAX_TRIES - S.tries;
+    document.getElementById('sstatus').textContent = `Not correct: read the sentence again (${left} ${left === 1 ? 'attempt' : 'attempts'} left).`;
+    setTimeout(() => playSentence(true), 1200);
+  }
+}
+
+/* next sentence of the same scene, or next scene */
+function nextStop() {
+  S.tries = 0;
+  if (S.sub < STOPS[SCENES[S.idx].box].length - 1) {
+    S.sub++;
+    updateSteps();
+    playSentence(false);
+    saveProgress();
+    return;
+  }
+  fillBox();
+  nextScene();
+  saveProgress();
+}
+
+/* go on from the sentence where the student stopped (after leaving the page) */
+function resumeScene() {
+  lockText(true);
+  S.started = true;
+  const pb = document.getElementById('playBtn');
+  pb.textContent = '▶ Playing'; pb.onclick = startScene;
+  const sc = SCENES[S.idx];
+  S.tries = 0;
+  document.getElementById('stage').classList.remove('paused');
+  document.getElementById('stage').innerHTML = `<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Scene ${S.idx + 1}">${sc.svg}</svg><div class="cap" id="cap"></div>`;
+  updateSteps();
+  playSentence(false);
+}
+
+/* ---------- Progress saved on the tablet ---------- */
+const SAVE_KEY = 'healthy-food-1-v1';
+let RESTORING = false;
+function saveProgress() {
+  if (RESTORING) return;
+  const fields = {}, fbs = {}, scores = {};
+  document.querySelectorAll('#exercises input, #exercises textarea').forEach(el => {
+    if (el.id) fields[el.id] = { v: el.value, c: el.classList.contains('right') ? 'right' : el.classList.contains('wrong') ? 'wrong' : '' };
+  });
+  document.querySelectorAll('#exercises .fb').forEach(el => { if (el.id) fbs[el.id] = { c: el.className, h: el.innerHTML }; });
+  document.querySelectorAll('#exercises .score').forEach(el => { scores[el.id] = el.textContent; });
+  const data = {
+    scenes: { idx: S.idx, sub: S.sub, started: S.started, done: S.idx >= SCENES.length, completed: S.completed },
+    step: STEP, fields, fbs, scores, wrong: WRONG
+  };
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(data)); } catch (e) {}
+}
+function clearProgress() { try { localStorage.removeItem(SAVE_KEY); } catch (e) {} }
+
+function restoreProgress() {
+  let data;
+  try { data = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); } catch (e) { data = null; }
+  if (!data) return 0;
+  RESTORING = true;
+  /* exercises */
+  Object.entries(data.fields || {}).forEach(([id, f]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = f.v;
+    if (f.c) el.classList.add(f.c);
+    el.dispatchEvent(new Event('input'));
+  });
+  Object.entries(data.fbs || {}).forEach(([id, f]) => { const el = document.getElementById(id); if (el) { el.className = f.c; el.innerHTML = f.h; } });
+  Object.entries(data.scores || {}).forEach(([id, t]) => { const el = document.getElementById(id); if (el) el.textContent = t; });
+  Object.assign(WRONG, data.wrong || {});
+  /* scenes: the boxes already completed stay completed */
+  const sc = data.scenes || {};
+  if (sc.completed || sc.done) {
+    S.completed = true;
+    SCENES.forEach((s, i) => { S.idx = i; fillBox(); });
+  }
+  const idx = Math.max(0, Math.min(SCENES.length, sc.idx || 0));
+  for (let i = 0; i < idx; i++) { S.idx = i; fillBox(); }
+  S.idx = idx;
+  S.sub = sc.sub || 0;
+  const pb = document.getElementById('playBtn');
+  if (sc.done || idx >= SCENES.length) {
+    S.started = true;
+    updateSteps();
+    document.getElementById('sdone').classList.add('show');
+    lockText(false);
+    document.getElementById('sstatus').textContent = '';
+    pb.textContent = '↺ Watch again'; pb.onclick = restartScenes;
+  } else if (sc.started) {
+    if (S.sub >= STOPS[SCENES[S.idx].box].length) S.sub = 0;
+    updateSteps();
+    lockText(true);
+    pb.textContent = '▶ Continue'; pb.onclick = resumeScene;
+    document.getElementById('sstatus').textContent = 'Your work has been saved. Press Continue to go on from where you stopped.';
+    document.getElementById('stage').innerHTML = `<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${SCENES[S.idx].svg}</svg>`;
+    document.getElementById('stage').classList.add('paused');
+  } else {
+    S.idx = 0; S.sub = 0; updateSteps();
+  }
+  RESTORING = false;
+  return data.step || 0;
+}
+
+function nextScene() {
+  S.idx++;
+  document.getElementById('qbox').classList.remove('show');
+  if (S.idx >= SCENES.length) {
+    clearTimers();
+    updateSteps();
+    S.completed = true;
+    document.getElementById('sdone').classList.add('show');
+    lockText(false);
+    document.getElementById('sstatus').textContent = '';
+    document.getElementById('playBtn').textContent = '↺ Watch again';
+    document.getElementById('playBtn').disabled = false;
+    document.getElementById('playBtn').onclick = restartScenes;
+    return;
+  }
+  playScene();
+}
+
+/* watch the scenes again: the completed diagram and the text stay available */
+function restartScenes() {
+  S.idx = 0;
+  if (!S.completed) { lockText(true); renderSchema(); }
+  document.getElementById('sdone').classList.remove('show');
+  document.getElementById('playBtn').onclick = startScene;
+  document.getElementById('playBtn').textContent = '▶ Playing';
+  playScene();
+  saveProgress();
+}
+
+function drawCover() {
+  /* first frame of scene 1, still, before Start */
+  document.getElementById('stage').innerHTML = `<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${SCENES[0].svg}</svg>`;
+  document.getElementById('stage').classList.add('paused');
+}
+
+/* ---------- Exercises ---------- */
+function renderExercises() {
+  Object.keys(EXERCISES).forEach(key => {
+    const box = document.getElementById(key + 'Ex');
+    box.innerHTML = EXERCISES[key].map((it, i) => `
+      <div class="ex-item">
+        <div class="prompt">${i + 1}. ${it.prompt}</div>
+        ${it.start ? `<div class="hint">Start with: <em>${it.start}</em></div>` : ''}
+        ${it.start ? `<textarea id="${key}${i}" rows="2" style="min-height:52px" spellcheck="false"></textarea>` : `<input type="text" id="${key}${i}" autocomplete="off" spellcheck="false">`}
+        <div class="fb" id="${key}fb${i}"></div>
+      </div>`).join('');
+    box.onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) { e.preventDefault(); checkEx(key); } };
+  });
+}
+
+/* wrong attempts per sentence: the solution is shown only after two attempts */
+const WRONG = {};
+const MIN_TRIES = 2;
+
+function checkEx(key) {
+  let score = 0;
+  WRONG[key] = WRONG[key] || [];
+  EXERCISES[key].forEach((it, i) => {
+    const input = document.getElementById(key + i);
+    const fb = document.getElementById(key + 'fb' + i);
+    const val = norm(input.value);
+    input.classList.remove('right', 'wrong');
+    fb.className = 'fb';
+    if (!val) { fb.textContent = ''; return; }
+    if (it.ok.map(norm).includes(val)) {
+      score++;
+      input.classList.add('right');
+      fb.classList.add('right');
+      fb.textContent = 'Correct!';
+    } else {
+      WRONG[key][i] = (WRONG[key][i] || 0) + 1;
+      input.classList.add('wrong');
+      fb.classList.add('wrong');
+      fb.textContent = 'Not quite. Check spelling and verb form, then try again.';
+    }
+  });
+  document.getElementById(key + 'Score').textContent = `${score} / ${EXERCISES[key].length}`;
+}
+
+function showSolutions(key) {
+  const w = WRONG[key] || [];
+  EXERCISES[key].forEach((it, i) => {
+    const input = document.getElementById(key + i);
+    const fb = document.getElementById(key + 'fb' + i);
+    if (input.classList.contains('right')) return;
+    fb.className = 'fb';
+    if ((w[i] || 0) >= MIN_TRIES) fb.innerHTML = `Solution: <strong>${it.sol || it.ok[0]}</strong>`;
+    else fb.textContent = (w[i] || 0) === 1 ? 'Try once more before seeing the solution.' : 'Try this one first: write an answer and press Check.';
+  });
+}
+
+function resetEx(key) {
+  WRONG[key] = [];
+  EXERCISES[key].forEach((it, i) => {
+    const input = document.getElementById(key + i);
+    input.value = '';
+    input.classList.remove('right', 'wrong');
+    const fb = document.getElementById(key + 'fb' + i);
+    fb.className = 'fb';
+    fb.textContent = '';
+  });
+  document.getElementById(key + 'Score').textContent = '';
+}
+
+/* model answers: available only after writing a real attempt */
+const words = t => (t.trim().match(/[A-Za-z']+/g) || []).length;
+function gate(areaId, btnId, gateId, min) {
+  const area = document.getElementById(areaId), btn = document.getElementById(btnId), g = document.getElementById(gateId);
+  const upd = () => {
+    const n = words(area.value);
+    btn.disabled = n < min;
+    g.textContent = n < min ? `Write at least ${min} words to see the model (${n}/${min}).` : '';
+  };
+  area.addEventListener('input', upd);
+  upd();
+}
+
+/* start the whole page again: scenes, text lock, all exercises */
+function restartAll() {
+  if (!confirmRestart()) return;
+  clearTimers();
+  Object.assign(S, { idx: 0, sub: 0, tries: 0, started: false, checking: false, completed: false });
+  renderSchema(); updateSteps(); drawCover(); lockText(false);
+  document.getElementById('qbox').classList.remove('show');
+  document.getElementById('sdone').classList.remove('show');
+  document.querySelector('#sprog i').style.cssText = 'width:0';
+  document.getElementById('sstatus').textContent = 'Press Start to watch the first scene.';
+  const pb = document.getElementById('playBtn');
+  pb.textContent = '▶ Start'; pb.disabled = false; pb.onclick = startScene;
+  Object.keys(EXERCISES).forEach(resetEx);
+  document.querySelectorAll('#transEx textarea, #summary').forEach(t => { t.value = ''; t.dispatchEvent(new Event('input')); });
+  document.querySelectorAll('.model.show').forEach(m => m.classList.remove('show'));
+  document.querySelectorAll('.model').forEach(m => { const btn = m.previousElementSibling && m.previousElementSibling.querySelector('button'); if (btn) btn.textContent = 'Show model answer'; });
+  clearProgress();
+  goStep(0);
+}
+/* a small in-page confirmation (no browser pop-up) */
+let RESTART_ARMED = false;
+function confirmRestart() {
+  if (RESTART_ARMED) { RESTART_ARMED = false; return true; }
+  RESTART_ARMED = true;
+  document.querySelectorAll('button[onclick="restartAll()"]').forEach(btn => { btn.textContent = 'Press again to delete all your answers'; });
+  setTimeout(() => { RESTART_ARMED = false; document.querySelectorAll('button[onclick="restartAll()"]').forEach(btn => { btn.textContent = '↺ Start everything again'; }); }, 4000);
+  return false;
+}
+
+/* one activity at a time: scenes, text, each exercise, glossary */
+let STEP = 0;
+function steps() {
+  const list = [{ sec: 'scenes', name: 'Scenes' }, { sec: 'text', name: 'Text' }];
+  document.querySelectorAll('#exercises .excard').forEach((c, i) => list.push({ sec: 'exercises', card: i, name: 'Exercise ' + (i + 1) }));
+  return list;
+}
+function stepOf(sec) { return steps().findIndex(st => st.sec === sec); }
+/* the tablet's Back button goes to the previous activity instead of leaving the page */
+function goStep(n, fromHistory) {
+  const list = steps();
+  const old = STEP;
+  STEP = Math.max(0, Math.min(list.length - 1, n));
+  if (!fromHistory && STEP !== old) { try { history.pushState({ step: STEP }, ''); } catch (e) {} }
+  saveProgress();
+  const cur = list[STEP];
+  document.querySelectorAll('main > section').forEach(sec => sec.classList.toggle('on', sec.id === cur.sec));
+  document.querySelectorAll('#exercises .excard').forEach((c, i) => c.classList.toggle('active', i === cur.card));
+  document.querySelectorAll('nav.toc a').forEach(a => a.classList.toggle('on', a.dataset.sec === cur.sec));
+  const prev = list[STEP - 1], next = list[STEP + 1];
+  const nav = `
+    <button class="ghost" onclick="goStep(STEP - 1)" ${prev ? '' : 'disabled'}>← ${prev ? prev.name : 'Previous'}</button>
+    <span class="where">${cur.name} · ${STEP + 1} of ${list.length}</span>
+    ${next ? `<button onclick="goStep(STEP + 1)">${next.name} →</button>` : '<button onclick="restartAll()">↺ Start everything again</button>'}`;
+  document.getElementById('stepTop').innerHTML = nav;
+  document.getElementById('stepBottom').innerHTML = nav;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleModel(id, btn) {
+  const el = document.getElementById(id);
+  el.classList.toggle('show');
+  btn.textContent = el.classList.contains('show') ? 'Hide model answer' : 'Show model answer';
+}
+
+/* ---------- Downloads (Word) ---------- */
+const DOC_STYLE = `
+  body { font-family: Calibri, Arial, sans-serif; font-size: 12pt; line-height: 1.4; }
+  h1 { font-size: 18pt; color: #a85400; }
+  p { margin: 0 0 8pt; text-align: justify; }
+  em { font-style: normal; font-weight: bold; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 1px solid #999; padding: 4pt 6pt; vertical-align: top; font-size: 11pt; }
+  th { background: #ffe3a1; }
+  .note { color: #5b6475; font-size: 10pt; }`;
+
+function wordFile(title, bodyHtml, filename) {
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="utf-8"><title>${title}</title><style>${DOC_STYLE}</style></head>
+<body>${bodyHtml}</body></html>`;
+  const blob = new Blob(['﻿', html], { type: 'application/msword' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+
+const NOTE = '<p class="note">What\'s on your plate? – The Foundations · Unit 2 · Educazione civica</p>';
+
+function downloadText() {
+  wordFile('What\'s on your plate?',
+    `<h1>What's on your plate?</h1>${NOTE}${TEXT.map(p => `<p>${p.replace(/<span class="sub">(.*?)<\/span>/, '<b>$1</b>')}</p>`).join('')}`,
+    'healthy-food-1-text.doc');
+}
+
+
+renderText();
+renderSchema();
+updateSteps();
+drawCover();
+renderExercises();
+document.getElementById('summaryModel').textContent = SUMMARY_MODEL;
+if (document.getElementById('labelPic')) document.getElementById('labelPic').innerHTML = LABEL_SVG;
+document.getElementById('transEx').innerHTML = TRANS.map((t, i) => `
+  <div class="ex-item">
+    <div class="prompt">${i + 1}. ${t[0]}</div>
+    <textarea id="tr${i}" rows="2" style="min-height:52px" placeholder="Write your answer…"></textarea>
+    <div class="row" style="margin-top:6px"><button class="ghost" id="trb${i}" disabled onclick="toggleModel('trm${i}', this)">Show model answer</button><span class="gate" id="trg${i}"></span></div>
+    <div class="model" id="trm${i}">${t[1]}</div>
+  </div>`).join('');
+TRANS.forEach((t, i) => gate('tr' + i, 'trb' + i, 'trg' + i, 4));
+gate('summary', 'summaryBtn', 'summaryGate', 40);
+const savedStep = restoreProgress();
+STEP = -1;
+goStep(savedStep, true);
+try { history.replaceState({ step: STEP }, ''); } catch (e) {}
+window.addEventListener('popstate', e => { if (e.state && typeof e.state.step === 'number') goStep(e.state.step, true); });
+/* save every answer as it is typed, checked or reset */
+document.getElementById('exercises').addEventListener('input', saveProgress);
+document.getElementById('exercises').addEventListener('click', e => { if (e.target.tagName === 'BUTTON') setTimeout(saveProgress, 0); });
+window.addEventListener('pagehide', saveProgress);
+</script>
+<style>body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;} input, textarea, [class*="save"], [class*="save"] *, [id*="save"], [id*="Save"]{-webkit-user-select:text;user-select:text;}</style>
+<script>
+/* ================= NIENTE COPIA-INCOLLA negli esercizi (tutto il sito) ================= */
+(function(){
+  const FIELD='input:not([type=password]):not([type=checkbox]):not([type=radio]):not([type=range]):not([type=button]):not([type=submit]):not(.save-import-input):not(#importInput):not(#impInput):not([placeholder*="codice"]), textarea';
+  const FREE='[class*="save"],[id*="save"],[id*="Save"]';   /* codice di salvataggio: si copia e si incolla */
+  const last=new WeakMap();
+  const isField=el=>el&&el.matches&&el.matches(FIELD)&&!el.closest(FREE);
+  const anyField=el=>el&&el.closest&&el.closest("input,textarea");
+  function warn(el){
+    let n=el.parentElement&&el.parentElement.querySelector(".nopaste");
+    if(!n){n=document.createElement("div");n.className="nopaste";n.style.cssText="font-size:13px;font-weight:700;color:#c0392b;margin:4px 0";el.insertAdjacentElement("afterend",n);}
+    n.textContent="\u270B Qui non si può incollare: scrivi tu la risposta.";
+    clearTimeout(n._t);n._t=setTimeout(()=>n.remove(),4000);
+  }
+  ["paste","drop"].forEach(ev=>document.addEventListener(ev,e=>{const el=e.target.closest&&e.target.closest("input,textarea");if(isField(el)){e.preventDefault();warn(el);}},true));
+  document.addEventListener("focusin",e=>{if(isField(e.target))last.set(e.target,e.target.value);});
+  document.addEventListener("beforeinput",e=>{
+    const el=e.target;if(!isField(el))return;
+    last.set(el,el.value);
+    if(/^insertFrom(Paste|Drop)/.test(e.inputType)||((e.data||"").length>30)){e.preventDefault();warn(el);}
+  },true);
+  document.addEventListener("input",e=>{
+    const el=e.target;if(!isField(el))return;
+    const prev=last.has(el)?last.get(el):"";
+    if(el.value.length-prev.length>30){el.value=prev;warn(el);e.stopImmediatePropagation();}
+    else last.set(el,el.value);
+  },true);
+  /* niente copia del testo della pagina (consegne, frasi, testi); dentro le proprie risposte e il codice di salvataggio si può */
+  ["copy","cut"].forEach(ev=>document.addEventListener(ev,e=>{
+    if(anyField(document.activeElement)||anyField(e.target))return;
+    const s=document.getSelection(),a=s&&s.anchorNode&&(s.anchorNode.nodeType===1?s.anchorNode:s.anchorNode.parentElement);
+    if(a&&a.closest&&(a.closest(FREE)||anyField(a)))return;
+    if(e.target.closest&&e.target.closest(FREE))return;
+    e.preventDefault();
+  },true));
+  document.addEventListener("contextmenu",e=>{if(!anyField(e.target)&&!(e.target.closest&&e.target.closest(FREE)))e.preventDefault();},true);
+  document.addEventListener("selectstart",e=>{const t=e.target.nodeType===1?e.target:e.target.parentElement;if(t&&!anyField(t)&&!t.closest(FREE))e.preventDefault();},true);
+})();
+</script>
+</body>
+</html>
