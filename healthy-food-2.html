@@ -258,6 +258,7 @@
     <a href="#scenes" data-sec="scenes" onclick="event.preventDefault(); goStep(stepOf('scenes'))"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/></svg>Scenes</a>
     <a href="#text" data-sec="text" onclick="event.preventDefault(); goStep(stepOf('text'))"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2zM22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/></svg>Text</a>
     <a href="#exercises" data-sec="exercises" onclick="event.preventDefault(); goStep(stepOf('exercises'))"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Exercises</a>
+    <a href="#flashcards" data-sec="flashcards" onclick="event.preventDefault(); goStep(stepOf('flashcards'))"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg>Flashcards</a>
   </div>
 </nav>
 
@@ -360,6 +361,34 @@
       <textarea id="summary" style="min-height:160px" placeholder="Write here…"></textarea>
       <div class="row"><button class="ghost" id="summaryBtn" disabled onclick="toggleModel('summaryModel', this)">Show model answer</button><span class="gate" id="summaryGate"></span></div>
       <div class="model" id="summaryModel"></div>
+    </div>
+  </section>
+
+  <section id="flashcards">
+    <div class="sec-head"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg></span><h2>Flashcards</h2></div>
+    <p class="meta">Answer each question aloud, in English. Then turn the card and compare your answer with the model answer.</p>
+    <div class="fc-wrap">
+      <div id="fcMain">
+        <div class="fc-info"><span id="fcCount"></span><span id="fcPct"></span></div>
+        <div class="fc-bar"><div class="fc-fill" id="fcFill"></div></div>
+        <div class="fc-dots" id="fcDots"></div>
+        <div class="fc-scene" onclick="fcFlip()">
+          <div class="fc-card" id="fcCard">
+            <div class="fc-face"><button type="button" class="fc-say" id="fcSayQ" title="Listen" onclick="event.stopPropagation(); fcSay('q')">🔊</button><div class="fc-tag">Question · answer aloud</div><div class="fc-q" id="fcQ"></div><div class="fc-hint">↻ tap the card to see the model answer</div></div>
+            <div class="fc-face fc-back"><button type="button" class="fc-say" id="fcSayA" title="Listen" onclick="event.stopPropagation(); fcSay('a')">🔊</button><div class="fc-tag">Model answer</div><div class="fc-a" id="fcA"></div></div>
+          </div>
+        </div>
+        <div class="fc-ctrl">
+          <button class="ghost" id="fcPrev" onclick="fcGo(-1)">← Back</button>
+          <button class="ghost fc-flip" onclick="fcFlip()">Turn the card</button>
+          <button id="fcNext" onclick="fcGo(1)">Next →</button>
+        </div>
+      </div>
+      <div class="fc-done" id="fcDone">
+        <h3>All done!</h3>
+        <p class="meta">You have answered all the questions. Go back to the cards you found difficult and try again.</p>
+        <div class="row" style="justify-content:center"><button onclick="fcRestart()">↺ Start again</button></div>
+      </div>
     </div>
   </section>
 
@@ -1041,6 +1070,7 @@ let STEP = 0;
 function steps() {
   const list = [{ sec: 'scenes', name: 'Scenes' }, { sec: 'text', name: 'Text' }];
   document.querySelectorAll('#exercises .excard').forEach((c, i) => list.push({ sec: 'exercises', card: i, name: 'Exercise ' + (i + 1) }));
+  list.push({ sec: 'flashcards', name: 'Flashcards' });
   return list;
 }
 function stepOf(sec) { return steps().findIndex(st => st.sec === sec); }
@@ -1169,6 +1199,62 @@ window.addEventListener('pagehide', saveProgress);
   document.addEventListener("contextmenu",e=>{if(!anyField(e.target)&&!(e.target.closest&&e.target.closest(FREE)))e.preventDefault();},true);
   document.addEventListener("selectstart",e=>{const t=e.target.nodeType===1?e.target:e.target.parentElement;if(t&&!anyField(t)&&!t.closest(FREE))e.preventDefault();},true);
 })();
+</script>
+<script>
+/* ---------- Flashcards ---------- */
+const FC_CARDS = [
+  { q: 'How much food do people lose or waste in the world?', a: 'About <strong>a third of all the food</strong> in the world.' },
+  { q: 'Where does a big part of food waste happen?', a: '<strong>At home</strong>, not in shops or restaurants.' },
+  { q: 'Why do we waste food? Give two reasons.', a: 'We <strong>buy too many things</strong>, we <strong>cook too much</strong>, and we <strong>forget food at the back of the fridge</strong>.' },
+  { q: 'What can you do before you go shopping?', a: 'You can <strong>look in the fridge</strong> and <strong>write a shopping list</strong>. Then you <strong>buy only the things on your list</strong>.' },
+  { q: 'What is the difference between "best before" and "use by"?', a: '<strong>Best before</strong>: the food is at its best before that date, but <strong>you can often eat it after</strong>. <strong>Use by</strong> is about <strong>safety</strong>: don\'t eat the food after that date.' },
+  { q: 'What can you do with old food? Give an example.', a: 'You can use it in <strong>new recipes</strong>: for example, <strong>old bananas are great in a cake</strong>.' },
+  { q: 'What should you do at school or at a party?', a: 'You should <strong>take only the food you can eat</strong>. Food in the bin is <strong>money in the bin</strong>, too!' },
+  { q: 'What does Goal 12 of the 2030 Agenda ask?', a: 'It asks every country to <strong>cut food waste in half by 2030</strong>.' },
+  { q: 'What can your family do to waste less food?', a: 'For example: <strong>we can write a shopping list</strong>, <strong>check the fridge</strong> before we go shopping and <strong>cook the right quantity</strong> of pasta.' }
+];
+let fcCur = 0, fcSeen = {};
+function fcVoice() {
+  const v = speechSynthesis.getVoices();
+  const gb = v.filter(x => /^en[-_]gb/i.test(x.lang) || /united kingdom|\buk\b|british/i.test(x.name));
+  const good = x => /google|natural|online|enhanced|premium/i.test(x.name);
+  return gb.find(good) || gb[0] || null;
+}
+function fcSay(side) {
+  if (!('speechSynthesis' in window)) return;
+  const btn = document.querySelector(side === 'q' ? '#fcSayQ' : '#fcSayA');
+  if (speechSynthesis.speaking) { speechSynthesis.cancel(); document.querySelectorAll('.fc-say').forEach(b => b.classList.remove('on')); return; }
+  const d = document.createElement('div'); d.innerHTML = FC_CARDS[fcCur][side];
+  const u = new SpeechSynthesisUtterance(d.textContent.replace(/^T\d\.\d\s*·\s*/, ''));
+  const v = fcVoice(); if (v) u.voice = v; u.lang = 'en-GB'; u.rate = 0.9;
+  u.onend = u.onerror = () => btn.classList.remove('on');
+  btn.classList.add('on'); speechSynthesis.speak(u);
+}
+if ('speechSynthesis' in window) { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices(); }
+else document.querySelectorAll('.fc-say').forEach(b => b.style.display = 'none');
+function fcRender() {
+  if ('speechSynthesis' in window) { speechSynthesis.cancel(); document.querySelectorAll('.fc-say').forEach(b => b.classList.remove('on')); }
+  const c = FC_CARDS[fcCur];
+  document.getElementById('fcQ').innerHTML = c.q;
+  document.getElementById('fcA').innerHTML = c.a;
+  document.getElementById('fcCard').classList.remove('flipped');
+  fcSeen[fcCur] = true;
+  const pct = Math.round(Object.keys(fcSeen).length / FC_CARDS.length * 100);
+  document.getElementById('fcCount').textContent = 'Card ' + (fcCur + 1) + ' of ' + FC_CARDS.length;
+  document.getElementById('fcPct').textContent = pct + '%';
+  document.getElementById('fcFill').style.width = pct + '%';
+  document.querySelectorAll('#fcDots button').forEach((d, i) => { d.classList.toggle('active', i === fcCur); d.classList.toggle('seen', i !== fcCur && !!fcSeen[i]); });
+  document.getElementById('fcPrev').disabled = fcCur === 0;
+  document.getElementById('fcNext').textContent = fcCur === FC_CARDS.length - 1 ? 'Finish' : 'Next →';
+}
+function fcFlip() { document.getElementById('fcCard').classList.toggle('flipped'); }
+function fcGo(d) {
+  if (d === 1 && fcCur === FC_CARDS.length - 1) { document.getElementById('fcMain').style.display = 'none'; document.getElementById('fcDone').style.display = 'block'; return; }
+  fcCur = Math.max(0, Math.min(FC_CARDS.length - 1, fcCur + d)); fcRender();
+}
+function fcRestart() { fcCur = 0; fcSeen = {}; document.getElementById('fcDone').style.display = 'none'; document.getElementById('fcMain').style.display = 'block'; fcRender(); }
+FC_CARDS.forEach((c, i) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = i + 1; b.onclick = () => { fcCur = i; fcRender(); }; document.getElementById('fcDots').appendChild(b); });
+fcRender();
 </script>
 </body>
 </html>
