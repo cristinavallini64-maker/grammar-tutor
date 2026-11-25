@@ -134,6 +134,10 @@ input:focus{border-color:var(--cyan);}
   .tbl .hide-sm{display:none;}
   .stat .n{font-size:22px;}
 }
+.selp{border:1px solid rgba(255,77,109,.5);border-radius:10px;padding:14px 16px;margin:10px 0 16px;background:rgba(255,77,109,.06)}
+.selp h3{margin:0 0 6px}.selrow{margin:8px 0}.selpages{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:6px;max-height:220px;overflow:auto}
+.selpages label{white-space:nowrap;cursor:pointer}.selp input[type=date]{font:inherit;padding:3px 6px}
+td.ck,th.ck{width:28px;text-align:center}
 </style>
 </head>
 <body>
@@ -159,6 +163,7 @@ input:focus{border-color:var(--cyan);}
       </div>
       <div class="hdr-actions">
         <button class="btn ghost" onclick="reload()">&#x21BB; Aggiorna</button>
+        <button class="btn danger" onclick="openSel()">Cancella a scelta</button>
         <button class="btn danger" onclick="wipeAll()">Azzera tutto</button>
         <button class="btn ghost" onclick="logout()">Esci</button>
       </div>
@@ -177,6 +182,16 @@ input:focus{border-color:var(--cyan);}
     <div class="toolbar">
       <input id="search" type="text" placeholder="Cerca uno studente per email..." oninput="render()">
       <span class="count" id="count"></span>
+    </div>
+
+    <div id="selPanel" class="selp" style="display:none">
+      <h3>Cancella a scelta</h3>
+      <p class="muted">Scegli uno o più filtri: si cancellano solo i dati che li rispettano tutti. Quello che lasci vuoto vale per tutti.</p>
+      <div class="selrow"><b>Studenti:</b> <span id="selStud"></span></div>
+      <div class="selrow"><b>Pagine:</b> <span class="muted">(della scheda aperta sopra; nessuna spunta = tutte)</span>
+        <div id="selPages" class="selpages"></div></div>
+      <div class="selrow"><b>Periodo:</b> dal <input type="date" id="selFrom"> al <input type="date" id="selTo"> <span class="muted">(vuoto = sempre)</span></div>
+      <div class="selrow"><button class="btn danger" onclick="doSel()">Cancella</button> <button class="btn ghost" onclick="closeSel()">Chiudi</button></div>
     </div>
 
     <div id="tableHost"></div>
@@ -216,6 +231,45 @@ function wipeAll(){
     if(d && d.ok){ openRows.clear(); reload(); }
     else alert((d && d.error) || "Errore.");
   }).catch(() => alert("Errore di rete."));
+}
+
+/* ===== CANCELLA A SCELTA (25 nov 2026): studenti spuntati, pagine, periodo ===== */
+const SEL = new Set(); let VISIBLE = [];
+function toggleSel(email){ SEL.has(email) ? SEL.delete(email) : SEL.add(email); render(); }
+function selAll(on){ VISIBLE.forEach(e => on ? SEL.add(e) : SEL.delete(e)); render(); }
+function openSel(){ document.getElementById('selPanel').style.display = 'block'; fillSel(); }
+function closeSel(){ document.getElementById('selPanel').style.display = 'none'; }
+function fillSel(){
+  document.getElementById('selStud').innerHTML = SEL.size
+    ? SEL.size + ' spuntati nella tabella <a href="#" onclick="SEL.clear();render();return false">togli le spunte</a>'
+    : '<span class="muted">nessuno spuntato = tutti gli studenti (spunta le caselle accanto ai nomi)</span>';
+  const box = document.getElementById('selPages');
+  const was = new Set([...box.querySelectorAll('input:checked')].map(i => i.value));
+  const pages = [...new Set(DATA.byPage.filter(p => currentSec === 'all' || sectionOf(p.page) === currentSec).map(p => p.page))].sort();
+  box.innerHTML = pages.length ? pages.map(p => '<label><input type="checkbox" value="'+escAttr(p)+'"'+(was.has(p)?' checked':'')+'> '+esc(p.indexOf('/')<0 && /\.html$/.test(p) ? pageLabel(p) : p)+'</label>').join('') : '<span class="muted">nessuna pagina</span>';
+}
+function doSel(){
+  const emails = [...SEL];
+  const pages = [...document.querySelectorAll('#selPages input:checked')].map(i => i.value);
+  const from = document.getElementById('selFrom').value, to = document.getElementById('selTo').value;
+  if (!emails.length && !pages.length && !from && !to){ alert("Scegli almeno un filtro: studenti spuntati, pagine o periodo.\nPer cancellare tutto usa «Azzera tutto»."); return; }
+  if (from && to && from > to){ alert("Il periodo non va bene: la prima data è dopo la seconda."); return; }
+  const fmtD = d => d.split('-').reverse().join('/');
+  const txt = 'Cancellare i dati di: ' + (emails.length ? emails.length + ' studenti spuntati' : 'TUTTI gli studenti') +
+    '\nPagine: ' + (pages.length ? pages.join(', ') : 'tutte') +
+    '\nPeriodo: ' + (from || to ? (from ? 'dal ' + fmtD(from) : '') + (to ? ' al ' + fmtD(to) : '') : 'sempre') +
+    "\n\nL'operazione non è reversibile.";
+  if (!confirm(txt)) return;
+  const chunks = []; for (let i = 0; i < Math.max(1, emails.length); i += 80) chunks.push(emails.slice(i, i + 80));
+  let tot = 0;
+  chunks.reduce((pr, ch) => pr.then(() => fetch(WORKER_URL + "/delete-select", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ key: PW, emails: ch, pages: pages, from: from, to: to })
+    }).then(r => { if (r.status === 404) throw new Error("worker"); return r.json(); })
+      .then(d => { if (!d || !d.ok) throw new Error((d && d.error) || "Errore."); tot += d.deleted || 0; })
+  ), Promise.resolve())
+  .then(() => { SEL.clear(); openRows.clear(); reload(); alert("Fatto: cancellati " + tot + " dati."); })
+  .catch(e => alert(e.message === "worker" ? "Il Worker del tracker non è ancora aggiornato: incolla il worker.js nuovo su Cloudflare e premi Deploy." : (e.message || "Errore di rete.")));
 }
 
 function deleteStudent(email){
@@ -407,7 +461,9 @@ function render(){
 
   const arrow = k => 'class="'+(sortKey===k?'sorted '+(sortAsc?'asc':''):'')+'" onclick="setSort(\''+k+'\')"';
 
+  const allSel = rows.length && rows.every(r => SEL.has(r.email));
   let html = '<table class="tbl"><thead><tr>'+
+    '<th class="ck" title="Seleziona per cancellare"><input type="checkbox" '+(allSel?'checked':'')+' onclick="event.stopPropagation()" onchange="selAll(this.checked)"></th>'+
     '<th '+arrow('email')+'>Studente</th>'+
     '<th>Avanzamento</th>'+
     '<th class="hide-sm" '+arrow('seconds')+'>Tempo</th>'+
@@ -418,6 +474,7 @@ function render(){
   rows.forEach(r => {
     const isOpen = openRows.has(r.email);
     html += '<tr class="row-main'+(isOpen?' open':'')+'" onclick="toggle(\''+escAttr(r.email)+'\')">'+
+      '<td class="ck" onclick="event.stopPropagation()"><input type="checkbox" '+(SEL.has(r.email)?'checked':'')+' onchange="toggleSel(\''+escAttr(r.email)+'\')"></td>'+
       '<td class="email"><span class="caret">&#9654;</span>'+esc(r.email)+'</td>'+
       '<td>'+progressHtml(r.email)+'</td>'+
       '<td class="num hide-sm">'+fmtTime(r.seconds)+'</td>'+
@@ -428,6 +485,8 @@ function render(){
   });
   html += '</tbody></table>';
   host.innerHTML = html;
+  VISIBLE = rows.map(r => r.email);
+  if (document.getElementById('selPanel').style.display !== 'none') fillSel();
 }
 
 /* nomi leggibili delle pagine */
@@ -514,7 +573,46 @@ const TRACKED = {
   "Unit 4 S – Esercizi":     "https://cristinavallini64-maker.github.io/structure/past-perfect-relatives.html",
   "Unit 4 S – Lessico":      "https://cristinavallini64-maker.github.io/structure/lessico-u4.html",
   "Recupero Unit 1 – prima": "https://cristinavallini64-maker.github.io/grammar-tutor/recupero-u1.html",
-  "Recupero Unit 1 – terza": "https://cristinavallini64-maker.github.io/structure/recupero-u1.html"
+  "Recupero Unit 1 – terza": "https://cristinavallini64-maker.github.io/structure/recupero-u1.html",
+  "Esercitati Unit 1 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/present-simple.html",
+  "Esercitati Unit 2 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/food-quantity.html",
+  "Esercitati Unit 3 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/present-continuous.html",
+  "Esercitati Unit 4 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/past-simple.html",
+  "Esercitati Unit 5 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/unit5.html",
+  "Esercitati Unit 6 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/unit6.html",
+  "Esercitati Unit 7 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/unit7.html",
+  "Esercitati Unit 8 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/unit8tomorrow.html",
+  "Esercitati Unit 9 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/present-perfect.html",
+  "Esercitati Unit 10 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/unit10friends.html",
+  "Relatives Unit 9 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/defining-relatives.html",
+  "Lessico Unit 1 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/lessico-u1.html",
+  "Lessico Unit 2 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/lessico-u2.html",
+  "Lessico Unit 3 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/lessico-u3.html",
+  "Lessico Unit 4 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/lessico-u4.html",
+  "Lessico Unit 5 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/lessico-u5.html",
+  "Lessico Unit 6 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/lessico-u6.html",
+  "Lessico Unit 7 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/lessico-u7.html",
+  "Lessico Unit 8 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/lessico-u8.html",
+  "Lessico Unit 9 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/lessico-u9.html",
+  "Lessico Unit 10 – F": "https://cristinavallini64-maker.github.io/grammar-tutor/lessico-u10.html",
+  "Esercitati Unit 1 – S": "https://cristinavallini64-maker.github.io/structure/past-narrative.html",
+  "Esercitati Unit 2 – S": "https://cristinavallini64-maker.github.io/structure/present-perfect-advanced.html",
+  "Esercitati Unit 3 – S": "https://cristinavallini64-maker.github.io/structure/verb-patterns.html",
+  "Esercitati Unit 5 – S": "https://cristinavallini64-maker.github.io/structure/first-conditional.html",
+  "Esercitati Unit 6 – S": "https://cristinavallini64-maker.github.io/structure/second-conditional.html",
+  "Esercitati Unit 7 – S": "https://cristinavallini64-maker.github.io/structure/modals-advice.html",
+  "Esercitati Unit 8 – S": "https://cristinavallini64-maker.github.io/structure/modal-deduction.html",
+  "Esercitati Unit 9 – S": "https://cristinavallini64-maker.github.io/structure/passive-voice.html",
+  "Esercitati Unit 10 – S": "https://cristinavallini64-maker.github.io/structure/reported-speech.html",
+  "Lessico Unit 1 – S": "https://cristinavallini64-maker.github.io/structure/lessico-u1.html",
+  "Lessico Unit 2 – S": "https://cristinavallini64-maker.github.io/structure/lessico-u2.html",
+  "Lessico Unit 3 – S": "https://cristinavallini64-maker.github.io/structure/lessico-u3.html",
+  "Lessico Unit 5 – S": "https://cristinavallini64-maker.github.io/structure/lessico-u5.html",
+  "Lessico Unit 6 – S": "https://cristinavallini64-maker.github.io/structure/lessico-u6.html",
+  "Lessico Unit 7 – S": "https://cristinavallini64-maker.github.io/structure/lessico-u7.html",
+  "Lessico Unit 8 – S": "https://cristinavallini64-maker.github.io/structure/lessico-u8.html",
+  "Lessico Unit 9 – S": "https://cristinavallini64-maker.github.io/structure/lessico-u9.html",
+  "Lessico Unit 10 – S": "https://cristinavallini64-maker.github.io/structure/lessico-u10.html"
 };
 let LEVELS_OF = {};
 function loadLevelLists(){
